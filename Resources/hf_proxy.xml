@@ -23483,11 +23483,10 @@
             </summary>
         </member>
         <member name="P:HaiFeng.Properties.Resources.server">
-             <summary>
-               查找类似 模拟,ctp|0272|tcp://180.168.146.181:10200|tcp://180.168.146.181:10210
-            
-             的本地化字符串。
-             </summary>
+            <summary>
+              查找类似 模拟,ctp|9999|tcp://180.168.146.187:10000|tcp://180.168.146.187:10010
+            的本地化字符串。
+            </summary>
         </member>
         <member name="P:HaiFeng.Properties.Resources.thostmduserapi">
             <summary>
@@ -23802,37 +23801,48 @@
             合约信息
             </summary>
         </member>
-        <member name="F:HaiFeng.InstrumentField.InstrumentID">
+        <member name="E:HaiFeng.InstrumentField.PropertyChanged">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:HaiFeng.InstrumentField.NotifyPropertyChanged(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="propertyName"></param>
+        </member>
+        <member name="P:HaiFeng.InstrumentField.InstrumentID">
             <summary>
             合约代码
             </summary>
         </member>
-        <member name="F:HaiFeng.InstrumentField.ProductID">
+        <member name="P:HaiFeng.InstrumentField.ProductID">
             <summary>
-            产品代码
+            品种代码
             </summary>
         </member>
-        <member name="F:HaiFeng.InstrumentField.ExchangeID">
+        <member name="P:HaiFeng.InstrumentField.ExchangeID">
             <summary>
             交易所代码
             </summary>
         </member>
-        <member name="F:HaiFeng.InstrumentField.VolumeMultiple">
+        <member name="P:HaiFeng.InstrumentField.VolumeMultiple">
             <summary>
             合约数量乘数
             </summary>
         </member>
-        <member name="F:HaiFeng.InstrumentField.PriceTick">
+        <member name="P:HaiFeng.InstrumentField.PriceTick">
             <summary>
             最小变动价位
             </summary>
         </member>
-        <member name="F:HaiFeng.InstrumentField.ProductClass">
+        <member name="P:HaiFeng.InstrumentField.ProductClass">
             <summary>
             品种类型
             </summary>
         </member>
-        <member name="F:HaiFeng.InstrumentField.MaxOrderVolume">
+        <member name="P:HaiFeng.InstrumentField.MaxOrderVolume">
             <summary>
             最大委托量[限价]
             </summary>
@@ -23842,39 +23852,65 @@
             投资者持仓明细
             </summary>
         </member>
-        <member name="F:HaiFeng.PositionField.InstrumentID">
+        <member name="E:HaiFeng.PositionField.PropertyChanged">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:HaiFeng.PositionField.NotifyPropertyChanged(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="propertyName"></param>
+        </member>
+        <member name="P:HaiFeng.PositionField.InstrumentID">
             <summary>
             合约代码
             </summary>
         </member>
-        <member name="F:HaiFeng.PositionField.Direction">
+        <member name="P:HaiFeng.PositionField.Direction">
             <summary>
             买卖
             </summary>
         </member>
-        <member name="F:HaiFeng.PositionField.Price">
+        <member name="P:HaiFeng.PositionField.Price">
             <summary>
             持仓均价
             </summary>
         </member>
-        <member name="F:HaiFeng.PositionField.Position">
+        <member name="P:HaiFeng.PositionField.Position">
             <summary>
             持仓总量
             </summary>
         </member>
-        <member name="F:HaiFeng.PositionField.YdPosition">
+        <member name="P:HaiFeng.PositionField.YdPosition">
             <summary>
             昨仓
             </summary>
         </member>
-        <member name="F:HaiFeng.PositionField.TdPosition">
+        <member name="P:HaiFeng.PositionField.TdPosition">
             <summary>
-            持仓总量
+            今仓
             </summary>
         </member>
-        <member name="F:HaiFeng.PositionField.Hedge">
+        <member name="P:HaiFeng.PositionField.Hedge">
             <summary>
             投机套保标志
+            </summary>
+        </member>
+        <member name="P:HaiFeng.PositionField.CloseProfit">
+            <summary>
+            平仓盈亏
+            </summary>
+        </member>
+        <member name="P:HaiFeng.PositionField.PositionProfit">
+            <summary>
+            持仓盈亏
+            </summary>
+        </member>
+        <member name="P:HaiFeng.PositionField.Commission">
+            <summary>
+            手续费
             </summary>
         </member>
         <member name="T:HaiFeng.TradingAccount">
@@ -23882,42 +23918,53 @@
             帐户权益
             </summary>
         </member>
-        <member name="F:HaiFeng.TradingAccount.PreBalance">
+        <member name="E:HaiFeng.TradingAccount.PropertyChanged">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:HaiFeng.TradingAccount.NotifyPropertyChanged(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="propertyName"></param>
+        </member>
+        <member name="P:HaiFeng.TradingAccount.PreBalance">
             <summary>
             上次结算准备金
             </summary>
         </member>
-        <member name="F:HaiFeng.TradingAccount.PositionProfit">
+        <member name="P:HaiFeng.TradingAccount.PositionProfit">
             <summary>
             持仓盈亏
             </summary>
         </member>
-        <member name="F:HaiFeng.TradingAccount.CloseProfit">
+        <member name="P:HaiFeng.TradingAccount.CloseProfit">
             <summary>
             平仓盈亏
             </summary>
         </member>
-        <member name="F:HaiFeng.TradingAccount.Commission">
+        <member name="P:HaiFeng.TradingAccount.Commission">
             <summary>
             手续费
             </summary>
         </member>
-        <member name="F:HaiFeng.TradingAccount.CurrMargin">
+        <member name="P:HaiFeng.TradingAccount.CurrMargin">
             <summary>
             当前保证金总额
             </summary>
         </member>
-        <member name="F:HaiFeng.TradingAccount.FrozenCash">
+        <member name="P:HaiFeng.TradingAccount.FrozenCash">
             <summary>
             冻结的资金
             </summary>
         </member>
-        <member name="F:HaiFeng.TradingAccount.Available">
+        <member name="P:HaiFeng.TradingAccount.Available">
             <summary>
             可用资金
             </summary>
         </member>
-        <member name="F:HaiFeng.TradingAccount.Fund">
+        <member name="P:HaiFeng.TradingAccount.Fund">
             <summary>
             动态权益
             </summary>
@@ -23927,84 +23974,100 @@
             报单
             </summary>
         </member>
-        <member name="F:HaiFeng.OrderField.OrderID">
+        <member name="E:HaiFeng.OrderField.PropertyChanged">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:HaiFeng.OrderField.NotifyPropertyChanged(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="propertyName"></param>
+        </member>
+        <member name="P:HaiFeng.OrderField.OrderID">
             <summary>
             报单标识
             </summary>
         </member>
-        <member name="F:HaiFeng.OrderField.InstrumentID">
+        <member name="P:HaiFeng.OrderField.InstrumentID">
             <summary>
             合约
             </summary>
         </member>
-        <member name="F:HaiFeng.OrderField.Direction">
+        <member name="P:HaiFeng.OrderField.Direction">
             <summary>
             买卖
             </summary>
         </member>
-        <member name="F:HaiFeng.OrderField.Offset">
+        <member name="P:HaiFeng.OrderField.Offset">
             <summary>
             开平
             </summary>
         </member>
-        <member name="F:HaiFeng.OrderField.LimitPrice">
+        <member name="P:HaiFeng.OrderField.LimitPrice">
             <summary>
             报价
             </summary>
         </member>
-        <member name="F:HaiFeng.OrderField.AvgPrice">
+        <member name="P:HaiFeng.OrderField.AvgPrice">
             <summary>
             成交均价
             </summary>
         </member>
-        <member name="F:HaiFeng.OrderField.InsertTime">
+        <member name="P:HaiFeng.OrderField.InsertTime">
             <summary>
-            委托时间(交易所)
+            报单时间(交易所)
             </summary>
         </member>
-        <member name="F:HaiFeng.OrderField.TradeTime">
+        <member name="P:HaiFeng.OrderField.TradeTime">
             <summary>
             最后成交时间(撤单状态时为撤单时间-IsLocal有效)
             </summary>
         </member>
-        <member name="F:HaiFeng.OrderField.TradeVolume">
+        <member name="P:HaiFeng.OrderField.TradeVolume">
             <summary>
-            本次成交量,trade更新
+            末次成交量,trade更新
             </summary>
         </member>
-        <member name="F:HaiFeng.OrderField.Volume">
+        <member name="P:HaiFeng.OrderField.Volume">
             <summary>
             报单数量
             </summary>
         </member>
-        <member name="F:HaiFeng.OrderField.VolumeLeft">
+        <member name="P:HaiFeng.OrderField.VolumeLeft">
             <summary>
             未成交,trade更新
             </summary>
         </member>
-        <member name="F:HaiFeng.OrderField.Hedge">
+        <member name="P:HaiFeng.OrderField.Hedge">
             <summary>
             投保
             </summary>
         </member>
-        <member name="F:HaiFeng.OrderField.Status">
+        <member name="P:HaiFeng.OrderField.Status">
             <summary>
             状态
             </summary>
         </member>
-        <member name="F:HaiFeng.OrderField.StatusMsg">
+        <member name="P:HaiFeng.OrderField.StatusMsg">
             <summary>
             状态描述
             </summary>
         </member>
-        <member name="F:HaiFeng.OrderField.IsLocal">
+        <member name="P:HaiFeng.OrderField.IsLocal">
             <summary>
             是否自身委托
             </summary>
         </member>
-        <member name="F:HaiFeng.OrderField.Custom">
+        <member name="P:HaiFeng.OrderField.Custom">
             <summary>
             客户自定义字段(xSpeed仅支持数字)
+            </summary>
+        </member>
+        <member name="P:HaiFeng.OrderField.SysID">
+            <summary>
+            交易所生成的ID
             </summary>
         </member>
         <member name="T:HaiFeng.TradeField">
@@ -24012,125 +24075,152 @@
             成交
             </summary>
         </member>
-        <member name="F:HaiFeng.TradeField.TradeID">
+        <member name="E:HaiFeng.TradeField.PropertyChanged">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:HaiFeng.TradeField.NotifyPropertyChanged(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="propertyName"></param>
+        </member>
+        <member name="P:HaiFeng.TradeField.TradeID">
             <summary>
             成交编号
             </summary>
         </member>
-        <member name="F:HaiFeng.TradeField.InstrumentID">
+        <member name="P:HaiFeng.TradeField.InstrumentID">
             <summary>
             合约代码
             </summary>
         </member>
-        <member name="F:HaiFeng.TradeField.ExchangeID">
+        <member name="P:HaiFeng.TradeField.ExchangeID">
             <summary>
             交易所代码
             </summary>
         </member>
-        <member name="F:HaiFeng.TradeField.Direction">
+        <member name="P:HaiFeng.TradeField.Direction">
             <summary>
             买卖方向
             </summary>
         </member>
-        <member name="F:HaiFeng.TradeField.Offset">
+        <member name="P:HaiFeng.TradeField.Offset">
             <summary>
             开平标志
             </summary>
         </member>
-        <member name="F:HaiFeng.TradeField.Hedge">
+        <member name="P:HaiFeng.TradeField.Hedge">
             <summary>
             投机套保标志
             </summary>
         </member>
-        <member name="F:HaiFeng.TradeField.Price">
+        <member name="P:HaiFeng.TradeField.Price">
             <summary>
-            价格
+            成交价格
             </summary>
         </member>
-        <member name="F:HaiFeng.TradeField.Volume">
+        <member name="P:HaiFeng.TradeField.Volume">
             <summary>
-            数量
+            成交数量
             </summary>
         </member>
-        <member name="F:HaiFeng.TradeField.TradeTime">
+        <member name="P:HaiFeng.TradeField.TradeTime">
             <summary>
             成交时间
             </summary>
         </member>
-        <member name="F:HaiFeng.TradeField.TradingDay">
+        <member name="P:HaiFeng.TradeField.TradingDay">
             <summary>
             交易日
             </summary>
         </member>
-        <member name="F:HaiFeng.TradeField.OrderID">
+        <member name="P:HaiFeng.TradeField.OrderID">
             <summary>
             对应的委托标识
+            </summary>
+        </member>
+        <member name="P:HaiFeng.TradeField.SysID">
+            <summary>
+            交易所生成的编号
             </summary>
         </member>
         <member name="T:HaiFeng.MarketData">
             深度行情
         </member>
-        <member name="F:HaiFeng.MarketData.InstrumentID">
+        <member name="E:HaiFeng.MarketData.PropertyChanged">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:HaiFeng.MarketData.NotifyPropertyChanged(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="propertyName"></param>
+        </member>
+        <member name="P:HaiFeng.MarketData.InstrumentID">
             <summary>
             合约代码
             </summary>
         </member>
-        <member name="F:HaiFeng.MarketData.LastPrice">
+        <member name="P:HaiFeng.MarketData.LastPrice">
             <summary>
             最新价
             </summary>
         </member>
-        <member name="F:HaiFeng.MarketData.BidPrice">
+        <member name="P:HaiFeng.MarketData.BidPrice">
              <summary>
             申买价一
              </summary>
         </member>
-        <member name="F:HaiFeng.MarketData.BidVolume">
-             <summary>
+        <member name="P:HaiFeng.MarketData.BidVolume">
+            <summary>
             申买量一
-             </summary>
+            </summary>
         </member>
-        <member name="F:HaiFeng.MarketData.AskPrice">
+        <member name="P:HaiFeng.MarketData.AskPrice">
              <summary>
             申卖价一
              </summary>
         </member>
-        <member name="F:HaiFeng.MarketData.AskVolume">
+        <member name="P:HaiFeng.MarketData.AskVolume">
              <summary>
             申卖量一
              </summary>
         </member>
-        <member name="F:HaiFeng.MarketData.AveragePrice">
+        <member name="P:HaiFeng.MarketData.AveragePrice">
              <summary>
             当日均价
              </summary>
         </member>
-        <member name="F:HaiFeng.MarketData.Volume">
+        <member name="P:HaiFeng.MarketData.Volume">
              <summary>
             数量
              </summary>
         </member>
-        <member name="F:HaiFeng.MarketData.OpenInterest">
+        <member name="P:HaiFeng.MarketData.OpenInterest">
              <summary>
             持仓量
              </summary>
         </member>
-        <member name="F:HaiFeng.MarketData.UpdateTime">
+        <member name="P:HaiFeng.MarketData.UpdateTime">
              <summary>
             最后修改时间:yyyyMMdd HH:mm:ss(20141114:日期由主程序处理,因大商所取到的actionday==tradingday)
              </summary>
         </member>
-        <member name="F:HaiFeng.MarketData.UpdateMillisec">
+        <member name="P:HaiFeng.MarketData.UpdateMillisec">
              <summary>
             最后修改毫秒
              </summary>
         </member>
-        <member name="F:HaiFeng.MarketData.UpperLimitPrice">
+        <member name="P:HaiFeng.MarketData.UpperLimitPrice">
              <summary>
             涨停板价
              </summary>
         </member>
-        <member name="F:HaiFeng.MarketData.LowerLimitPrice">
+        <member name="P:HaiFeng.MarketData.LowerLimitPrice">
              <summary>
             跌停板价
              </summary>
