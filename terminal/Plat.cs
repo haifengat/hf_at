@@ -747,7 +747,7 @@ namespace HaiFeng
 			var col = db.GetCollection<BsonDocument>(pInstrument);
 			//取从前1天21:00:00开始;结束日15:30:00结束
 			var filter = Query.And(Query.GTE("_id", new BsonDateTime(pBegin.Date.AddDays(-1).Add(new TimeSpan(21, 0, 0)))), Query.LT("_id", new BsonDateTime(pEnd.Date.Add(new TimeSpan(15, 30, 0)))));
-			var list = col.Find(filter).ToList();						
+			var list = col.Find(filter).ToList();
 
 			var bars = list.Select(x => new Bar
 			{
@@ -814,7 +814,7 @@ namespace HaiFeng
 						continue;
 					//#InstrumentID,TradingDay,UpperLimitPrice,LowerLimitPrice,OpenPrice,ClosePrice,SettlementPrice,PreClosePrice,PreOpenInterest,PreSettlementPrice
 					//#a1507,20140801,4636,4280,4469,4490,4483,4458,32,4458
-//#LastPrice,BidPrice1,BidVolume1,AskPrice1,AskVolume1,AveragePrice,HighestPrice,LowestPrice,OpenInterest,Turnover,Volume,UpdateTime,UpdateMillisec
+					//#LastPrice,BidPrice1,BidVolume1,AskPrice1,AskVolume1,AveragePrice,HighestPrice,LowestPrice,OpenInterest,Turnover,Volume,UpdateTime,UpdateMillisec
 
 					//LastPrice,BidPrice1,BidVolume1,AskPrice1,AskVolume1,AveragePrice,HighestPrice,LowestPrice,OpenInterest, Turnover,Volume,UpdateTime,UpdateMillisec,ActionDay,TradingDay
 

@@ -181,14 +181,17 @@
       <Name>at_core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>copy $(ProjectDir)..\Resources $(TargetDir)
+@echo 复制Resources资源文件(包括NLog.ini) 到执行目录中</PostBuildEvent>
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties Reactor_Enabled="0" Reactor_Commands="" Reactor_Project="D:\haifeng_project\hf_plat_tb\hf_plat_core\hf_plat_core.nrproj" Reactor_Configuration="ALL" Reactor_Output="&lt;AssemblyLocation&gt;\..\..\hf_plat_terminal\debug\&lt;AssemblyFileName&gt;" Reactor_Deploy="0" />
+      <UserProperties Reactor_Deploy="0" Reactor_Output="&lt;AssemblyLocation&gt;\..\..\hf_plat_terminal\debug\&lt;AssemblyFileName&gt;" Reactor_Configuration="ALL" Reactor_Project="D:\haifeng_project\hf_plat_tb\hf_plat_core\hf_plat_core.nrproj" Reactor_Commands="" Reactor_Enabled="0" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

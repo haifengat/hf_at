@@ -1112,6 +1112,11 @@ namespace HaiFeng
 		/// <param name="pRemark">注释</param>
 		public void Buy(Numeric pLots, Numeric pPrice, string pRemark = "")
 		{
+			this.StrategyDatas[0].Buy((int)pLots, pPrice, pRemark);
+		}
+
+		public void BuyCover(Numeric pLots, Numeric pPrice, string pRemark = "")
+		{
 			if (PositionShort > 0)
 				BuyToCover(PositionShort, pPrice, pRemark);
 			this.StrategyDatas[0].Buy((int)pLots, pPrice, pRemark);
@@ -1135,6 +1140,11 @@ namespace HaiFeng
 		/// <param name="pPrice"> 价格 </param>
 		/// <param name="pRemark">注释</param>
 		public void SellShort(Numeric pLots, Numeric pPrice, string pRemark = "")
+		{
+			this.StrategyDatas[0].SellShort((int)pLots, pPrice, pRemark);
+		}
+
+		public void SellShortCover(Numeric pLots, Numeric pPrice, string pRemark = "")
 		{
 			if (PositionLong > 0)
 				Sell(PositionLong, pPrice, pRemark);
