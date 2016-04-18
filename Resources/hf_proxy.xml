@@ -23603,16 +23603,16 @@
         </member>
         <member name="M:HaiFeng.TradeProxy.ReqOrderInsert(System.String,HaiFeng.DirectionType,HaiFeng.OffsetType,System.Double,System.Int32,HaiFeng.OrderType,System.Int32,HaiFeng.HedgeType)">
             <summary>
-            
+            委托
             </summary>
-            <param name="pInstrument"></param>
-            <param name="pDirection"></param>
-            <param name="pOffset"></param>
-            <param name="pPrice"></param>
-            <param name="pVolume"></param>
-            <param name="pType"></param>
-            <param name="pCustom">6位数字</param>
-            <param name="pHedge"></param>
+            <param name="pInstrument">合约</param>
+            <param name="pDirection">买卖</param>
+            <param name="pOffset">开平</param>
+            <param name="pPrice">价格</param>
+            <param name="pVolume">数量</param>
+            <param name="pType">委托类型</param>
+            <param name="pCustom">自定义字段(6位数字)</param>
+            <param name="pHedge">投保</param>
             <returns></returns>
         </member>
         <member name="M:HaiFeng.TradeProxy.ReqOrderAction(System.String)">
@@ -23633,6 +23633,12 @@
         <member name="M:HaiFeng.TradeProxy.GetExchangeTime">
             <summary>
             取交易所时间
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:HaiFeng.TradeProxy.GetInstrumentStatus(System.String)">
+            <summary>
+            取交易所状态(参数错误时返回Closed)
             </summary>
             <returns></returns>
         </member>
@@ -23683,12 +23689,12 @@
         </member>
         <member name="F:HaiFeng.OffsetType.Open">
             <summary>
-            
+            开仓
             </summary>
         </member>
         <member name="F:HaiFeng.OffsetType.Close">
             <summary>
-            
+            平仓
             </summary>
         </member>
         <member name="F:HaiFeng.OffsetType.CloseToday">
@@ -23726,6 +23732,36 @@
             错误
             </summary>
         </member>
+        <member name="T:HaiFeng.Exchange">
+            <summary>
+            交易所
+            </summary>
+        </member>
+        <member name="F:HaiFeng.Exchange.DCE">
+            <summary>
+            大商所
+            </summary>
+        </member>
+        <member name="F:HaiFeng.Exchange.CZCE">
+            <summary>
+            郑商所
+            </summary>
+        </member>
+        <member name="F:HaiFeng.Exchange.SHFE">
+            <summary>
+            上期所
+            </summary>
+        </member>
+        <member name="F:HaiFeng.Exchange.CFFEX">
+            <summary>
+            中金所
+            </summary>
+        </member>
+        <member name="F:HaiFeng.Exchange.INE">
+            <summary>
+            上海国际能源交易中心股份有限公司
+            </summary>
+        </member>
         <member name="T:HaiFeng.ExchangeStatusType">
             <summary>
             交易所状态
@@ -23743,7 +23779,7 @@
         </member>
         <member name="F:HaiFeng.ExchangeStatusType.Trading">
             <summary>
-            交易
+            交易中
             </summary>
         </member>
         <member name="F:HaiFeng.ExchangeStatusType.Closed">
@@ -23796,21 +23832,36 @@
             现货期权
             </summary>
         </member>
-        <member name="T:HaiFeng.InstrumentField">
+        <member name="T:HaiFeng.BindableBase">
             <summary>
-            合约信息
+            {get;set;} = >  { get { return _Status; } set { SetProperty(ref ^1, value); } } }
             </summary>
         </member>
-        <member name="E:HaiFeng.InstrumentField.PropertyChanged">
+        <member name="E:HaiFeng.BindableBase.PropertyChanged">
             <summary>
             
             </summary>
         </member>
-        <member name="M:HaiFeng.InstrumentField.NotifyPropertyChanged(System.String)">
+        <member name="M:HaiFeng.BindableBase.SetProperty``1(``0@,``0,System.String)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="storage"></param>
+            <param name="value"></param>
+            <param name="propertyName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HaiFeng.BindableBase.NotifyPropertyChanged(System.Object)">
             <summary>
             
             </summary>
             <param name="propertyName"></param>
+        </member>
+        <member name="T:HaiFeng.InstrumentField">
+            <summary>
+            合约信息
+            </summary>
         </member>
         <member name="P:HaiFeng.InstrumentField.InstrumentID">
             <summary>
@@ -23851,17 +23902,6 @@
             <summary>
             投资者持仓明细
             </summary>
-        </member>
-        <member name="E:HaiFeng.PositionField.PropertyChanged">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:HaiFeng.PositionField.NotifyPropertyChanged(System.String)">
-            <summary>
-            
-            </summary>
-            <param name="propertyName"></param>
         </member>
         <member name="P:HaiFeng.PositionField.InstrumentID">
             <summary>
@@ -23913,21 +23953,16 @@
             手续费
             </summary>
         </member>
+        <member name="M:HaiFeng.PositionField.ToString">
+            <summary>
+            返回:合约,多空,持仓均价,总持仓,今仓,昨仓,平仓盈亏,持仓盈亏,手续费
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:HaiFeng.TradingAccount">
             <summary>
             帐户权益
             </summary>
-        </member>
-        <member name="E:HaiFeng.TradingAccount.PropertyChanged">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:HaiFeng.TradingAccount.NotifyPropertyChanged(System.String)">
-            <summary>
-            
-            </summary>
-            <param name="propertyName"></param>
         </member>
         <member name="P:HaiFeng.TradingAccount.PreBalance">
             <summary>
@@ -23969,21 +24004,16 @@
             动态权益
             </summary>
         </member>
+        <member name="M:HaiFeng.TradingAccount.ToString">
+            <summary>
+            返回:静态权益,持仓盈亏,平仓盈亏,保证金占用,冻结资金,可用资金,动态权益
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:HaiFeng.OrderField">
             <summary>
             报单
             </summary>
-        </member>
-        <member name="E:HaiFeng.OrderField.PropertyChanged">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:HaiFeng.OrderField.NotifyPropertyChanged(System.String)">
-            <summary>
-            
-            </summary>
-            <param name="propertyName"></param>
         </member>
         <member name="P:HaiFeng.OrderField.OrderID">
             <summary>
@@ -24070,21 +24100,16 @@
             交易所生成的ID
             </summary>
         </member>
+        <member name="M:HaiFeng.OrderField.ToString">
+            <summary>
+            返回:标识,合约,买卖,开平,报价,手数,报单时间,成交均价,剩余手数,成交时间,状态,状态信息,本地,自定义,交易所编号
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:HaiFeng.TradeField">
             <summary>
             成交
             </summary>
-        </member>
-        <member name="E:HaiFeng.TradeField.PropertyChanged">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:HaiFeng.TradeField.NotifyPropertyChanged(System.String)">
-            <summary>
-            
-            </summary>
-            <param name="propertyName"></param>
         </member>
         <member name="P:HaiFeng.TradeField.TradeID">
             <summary>
@@ -24146,23 +24171,97 @@
             交易所生成的编号
             </summary>
         </member>
+        <member name="M:HaiFeng.TradeField.ToString">
+            <summary>
+            返回:标识,合约,买卖,开平,成交价,手数,成交时间,报单单编号,交易所编号
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:HaiFeng.EnumDescriptionAttribute">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:HaiFeng.EnumDescriptionAttribute.Description">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:HaiFeng.EnumDescriptionAttribute.#ctor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="description"></param>
+        </member>
+        <member name="T:HaiFeng.EnumHelper">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:HaiFeng.EnumHelper.GetDescription(System.Enum)">
+            <summary>
+            Gets the <see cref="T:System.ComponentModel.DescriptionAttribute"/> of an <see cref="T:System.Enum"/> type value.
+            </summary>
+            <param name="value">The <see cref="T:System.Enum"/> type value.</param>
+            <returns>A string containing the text of the <see cref="T:System.ComponentModel.DescriptionAttribute"/>.</returns>
+        </member>
+        <member name="M:HaiFeng.EnumHelper.ToExtendedList``1(System.Type)">
+            <summary>
+             Converts the <see cref="T:System.Enum"/> type to an <see cref="T:System.Collections.IList"/> compatible object.
+            </summary>
+            <param name="type">The <see cref="T:System.Enum"/> type.</param>
+            <returns>An <see cref="T:System.Collections.IList"/> containing the enumerated type value and description.</returns>
+        </member>
+        <member name="T:HaiFeng.KeyValueTriplet`3">
+            <summary>
+            Defines a key/numeric key/value triplet that can be set or retrieved.
+            </summary>
+            <typeparam name="TKey"></typeparam>
+            <typeparam name="TNumericKey"></typeparam>
+            <typeparam name="TValue"></typeparam>
+        </member>
+        <member name="P:HaiFeng.KeyValueTriplet`3.Key">
+            <summary>
+            Gets the key in the key/numeric key/value triplet.
+            </summary>
+            <value>A <typeparamref name="TKey"/> that is the key of the <see cref="T:HaiFeng.KeyValueTriplet`3"/>.</value>
+        </member>
+        <member name="P:HaiFeng.KeyValueTriplet`3.NumericKey">
+            <summary>
+            Gets the numeric representation of the <see cref="P:HaiFeng.KeyValueTriplet`3.Key"/> in the key/numeric key/value triplet.
+            </summary>
+            <value>A <typeparamref name="TNumericKey"/> that is the numeric key of the <see cref="T:HaiFeng.KeyValueTriplet`3"/>.</value>
+        </member>
+        <member name="P:HaiFeng.KeyValueTriplet`3.Value">
+            <summary>
+            Gets the value in the key/numeric key/value triplet.
+            </summary>
+            <value>A <typeparamref name="TValue"/> that is the value of the <see cref="T:HaiFeng.KeyValueTriplet`3"/>.</value>
+        </member>
+        <member name="M:HaiFeng.KeyValueTriplet`3.#ctor(`0,`1,`2)">
+            <summary>
+            Inititalizes a new instance of the <see cref="T:HaiFeng.KeyValueTriplet`3"/>
+            structure with the specified key, numeric key, and value.
+            </summary>
+            <param name="key">The object defined in each key/numeric key/value triplet.</param>
+            <param name="numericKey">The numeric representation of each <paramref name="key"/> 
+            defined in each key/numeric key/value triplet.</param>
+            <param name="value">The definition associate with <paramref name="key"/>.</param>
+        </member>
+        <member name="M:HaiFeng.KeyValueTriplet`3.ToString">
+            <summary>
+            Returns a string representation of the <see cref="T:HaiFeng.KeyValueTriplet`3"/>,
+            using the string representations of the key, numeric key, and value.
+            </summary>
+            <returns>A string representation of the <see cref="T:HaiFeng.KeyValueTriplet`3"/>,
+            which includes the string representations of the key, numeric key, and value.</returns>
+        </member>
         <member name="T:HaiFeng.MarketData">
             深度行情
         </member>
-        <member name="E:HaiFeng.MarketData.PropertyChanged">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:HaiFeng.MarketData.NotifyPropertyChanged(System.String)">
-            <summary>
-            
-            </summary>
-            <param name="propertyName"></param>
-        </member>
         <member name="P:HaiFeng.MarketData.InstrumentID">
             <summary>
-            合约代码
+            合约代码SetProperty(ref _InstrumentID, value);
             </summary>
         </member>
         <member name="P:HaiFeng.MarketData.LastPrice">
@@ -24548,6 +24647,18 @@
             持仓
             </summary>
         </member>
+        <member name="P:HaiFeng.Trade.ExchangeTime">
+            <summary>
+            交易所时间
+            </summary>
+        </member>
+        <member name="M:HaiFeng.Trade.GetInstrumentStatus(System.String)">
+            <summary>
+            获取合约的交易状态(参数错误返回Close)
+            </summary>
+            <param name="pInstrument"></param>
+            <returns></returns>
+        </member>
         <member name="M:HaiFeng.Trade.ReqConnect">
             <summary>
             连接
@@ -24691,12 +24802,12 @@
         </member>
         <member name="E:HaiFeng.Trade.OnRtnCancel">
             <summary>
-            
+            撤单响应
             </summary>
         </member>
         <member name="T:HaiFeng.Trade.RtnTrade">
             <summary>
-            
+            成交响应
             </summary>
             <param name="sender"></param>
             <param name="e"></param>

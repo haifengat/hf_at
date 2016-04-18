@@ -697,7 +697,7 @@ namespace HaiFeng
 				if (pOrderItem.Offset == Offset.Close)
 				{
 					int lots = pOrderItem.Lots;
-					if (_t.DicInstrumentField.TryGetValue(pData.Instrument, out instField) && instField.ExchangeID == "SHFE")
+					if (_t.DicInstrumentField.TryGetValue(pData.Instrument, out instField) && instField.ExchangeID == Exchange.SHFE)
 					{
 						PositionField posiField;
 						if (_t.DicPositionField.TryGetValue(pData.Instrument + "_" + (pOrderItem.Dir == Direction.Buy ? "Sell" : "Buy"), out posiField))
