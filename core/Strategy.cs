@@ -887,6 +887,7 @@ namespace HaiFeng
 			this.StrategyDatas.Clear();
 			this.Datas.Clear();
 
+			bool _real = false;
 			//正式数据
 			foreach (Data data in pDatas)
 			{
@@ -894,7 +895,7 @@ namespace HaiFeng
 				StrategyData sd = new StrategyData(data);
 				sd.OnRtnOrder += (o, d) =>
 				{
-					if (_rtnOrder != null)
+					if (_rtnOrder != null && _real)
 						_rtnOrder(o, d, this);
 				};
 				this.StrategyDatas.Add(sd);
@@ -949,6 +950,7 @@ namespace HaiFeng
 			#endregion
 
 			this.Test();
+			_real = true;   //控制实盘发单
 
 			//this.Initialize(); //再次调用客户初始化函数: 首次调用时,数据源不正确
 		}

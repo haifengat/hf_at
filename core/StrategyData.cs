@@ -278,7 +278,7 @@ namespace HaiFeng
 
 			this.Operations.Add(order);
 
-			if (_rtnOrder != null)
+			if ( _rtnOrder != null)
 			{
 				_rtnOrder(order, this.Data);
 			}

@@ -135,10 +135,15 @@ namespace HaiFeng
 					pPrice += FloConfig.FirstAddTicks * (pDirection == DirectionType.Buy ? 1 : -1) * dif.PriceTick;
 				//限定在涨跌板范围内
 				MarketData f;
-				if (_q != null && _q.DicTick.TryGetValue(pInstrument, out f))
+				if (_q == null || !_q.DicTick.TryGetValue(pInstrument, out f))
 				{
-					pPrice = Math.Max(f.LowerLimitPrice, Math.Min(f.UpperLimitPrice, pPrice));
+					_q.ReqSubscribeMarketData(pInstrument);
+					Thread.Sleep(200);
 				}
+				if (_q == null || !_q.DicTick.TryGetValue(pInstrument, out f))
+					ShowInfo($"合约{pInstrument}无行情");
+				else
+					pPrice = Math.Max(f.LowerLimitPrice, Math.Min(f.UpperLimitPrice, pPrice));
 
 				if (DicExcStatus.TryGetValue(dif.ProductID, out es) || DicExcStatus.TryGetValue(dif.InstrumentID, out es) || DicExcStatus.TryGetValue(dif.ExchangeID.ToString(), out es))
 					if (es == ExchangeStatusType.NoTrading)//小节收盘中:待处理
