@@ -25,7 +25,7 @@ namespace HaiFeng
 		public DataSeries Close { get { return C; } }
 		public DataSeries Vol { get { return V; } }
 		public DataSeries OpenInt { get { return I; } }
-		
+
 		public Numeric Highest(DataSeries pSeries, Numeric pPeriod)
 		{
 			//_inds.GetOrAdd(string.Format("Highest_{0}_{1}", pSeries.SeriesName, pPeriod), new Highest(pSeries, (int) pPeriod));
@@ -347,7 +347,7 @@ namespace HaiFeng
 						{
 							this.DicPeriodTime[item.Key].Add(dtID);
 							item.Value.Add(tmp[0]);
-							break;		//不执行update
+							break;      //不执行update
 						}
 						else
 						{
@@ -507,7 +507,7 @@ namespace HaiFeng
 				MinMove = (int)InstrumentInfo.PriceTick;
 			else
 			{
-				PriceScale = 10 ^ -int.Parse(InstrumentInfo.PriceTick.ToString("F6").Split('.')[1]);
+				PriceScale = (Numeric)Math.Pow(10, -Math.Round(InstrumentInfo.PriceTick, 6).ToString().TrimEnd('0').Split('.')[1].Length);
 				MinMove = (int)(InstrumentInfo.PriceTick / PriceScale);
 			}
 			//Date = D;
@@ -749,7 +749,7 @@ namespace HaiFeng
 			}
 			set { this._name = value; }
 		}
-		
+
 		/// <summary>
 		/// 	合约
 		/// </summary>
@@ -873,7 +873,7 @@ namespace HaiFeng
 
 				var fi = this.GetType().GetField(p.Key, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
 				if (fi != null)
-					fi.SetValue(this, p.Value.Value);	//配置字段的值
+					fi.SetValue(this, p.Value.Value);   //配置字段的值
 			}
 		}
 
@@ -1028,11 +1028,11 @@ namespace HaiFeng
 				for (int i = 0; i < this.StrategyDatas.Count; ++i)
 				{
 					this.StrategyDatas[i].Data = new Data
-												  {
-													  Instrument = refDatas[i].Instrument,
-													  Interval = refDatas[i].Interval,
-													  IntervalType = refDatas[i].IntervalType
-												  };
+					{
+						Instrument = refDatas[i].Instrument,
+						Interval = refDatas[i].Interval,
+						IntervalType = refDatas[i].IntervalType
+					};
 				}
 				//重置所有指标的输入,指向新的new 的 strategyData
 				foreach (var i in this._indicators)
@@ -1205,7 +1205,7 @@ namespace HaiFeng
 				this.indicator2False(i);
 			}
 
-			TBKey();	//TB数据更新
+			TBKey();    //TB数据更新
 			periodUpper(); //跨周期数据更新
 
 			this.OnBarUpdate();
