@@ -37,6 +37,7 @@
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.panel1 = new System.Windows.Forms.Panel();
+			this.buttonClearFiles = new System.Windows.Forms.Button();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPageDB = new System.Windows.Forms.TabPage();
 			this.textBoxPwd = new System.Windows.Forms.TextBox();
@@ -72,7 +73,8 @@
 			this.label3 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-			this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
+			this.propertyGridParams = new System.Windows.Forms.PropertyGrid();
+			this.propertyGridFlo = new System.Windows.Forms.PropertyGrid();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.DataGridViewStrategies = new System.Windows.Forms.DataGridView();
 			this.StraName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -109,6 +111,7 @@
 			// 
 			// panel1
 			// 
+			this.panel1.Controls.Add(this.buttonClearFiles);
 			this.panel1.Controls.Add(this.tabControl1);
 			this.panel1.Controls.Add(this.comboBoxStrategyFile);
 			this.panel1.Controls.Add(this.buttonStrategyFile);
@@ -117,6 +120,16 @@
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(1125, 60);
 			this.panel1.TabIndex = 29;
+			// 
+			// buttonClearFiles
+			// 
+			this.buttonClearFiles.Location = new System.Drawing.Point(778, 32);
+			this.buttonClearFiles.Name = "buttonClearFiles";
+			this.buttonClearFiles.Size = new System.Drawing.Size(90, 23);
+			this.buttonClearFiles.TabIndex = 30;
+			this.buttonClearFiles.Text = "清除文件记录";
+			this.buttonClearFiles.UseVisualStyleBackColor = true;
+			this.buttonClearFiles.Click += new System.EventHandler(this.buttonClearFiles_Click);
 			// 
 			// tabControl1
 			// 
@@ -152,7 +165,7 @@
 			this.textBoxPwd.Name = "textBoxPwd";
 			this.textBoxPwd.PasswordChar = '*';
 			this.textBoxPwd.Size = new System.Drawing.Size(120, 21);
-			this.textBoxPwd.TabIndex = 43;
+			this.textBoxPwd.TabIndex = 2;
 			// 
 			// label8
 			// 
@@ -169,7 +182,7 @@
 			this.textBoxUser.Location = new System.Drawing.Point(301, -1);
 			this.textBoxUser.Name = "textBoxUser";
 			this.textBoxUser.Size = new System.Drawing.Size(120, 21);
-			this.textBoxUser.TabIndex = 43;
+			this.textBoxUser.TabIndex = 1;
 			// 
 			// label7
 			// 
@@ -186,7 +199,7 @@
 			this.textBoxServer.Location = new System.Drawing.Point(50, 0);
 			this.textBoxServer.Name = "textBoxServer";
 			this.textBoxServer.Size = new System.Drawing.Size(205, 21);
-			this.textBoxServer.TabIndex = 43;
+			this.textBoxServer.TabIndex = 1;
 			// 
 			// label1
 			// 
@@ -271,7 +284,7 @@
 			this.comboBoxStrategyFile.Location = new System.Drawing.Point(11, 34);
 			this.comboBoxStrategyFile.Name = "comboBoxStrategyFile";
 			this.comboBoxStrategyFile.Size = new System.Drawing.Size(682, 20);
-			this.comboBoxStrategyFile.TabIndex = 28;
+			this.comboBoxStrategyFile.TabIndex = 3;
 			// 
 			// buttonStrategyFile
 			// 
@@ -310,7 +323,7 @@
 			this.buttonAddStra.Location = new System.Drawing.Point(691, 9);
 			this.buttonAddStra.Name = "buttonAddStra";
 			this.buttonAddStra.Size = new System.Drawing.Size(40, 23);
-			this.buttonAddStra.TabIndex = 54;
+			this.buttonAddStra.TabIndex = 9;
 			this.buttonAddStra.Text = "添加";
 			this.buttonAddStra.UseVisualStyleBackColor = true;
 			// 
@@ -330,14 +343,14 @@
 			this.dateTimePickerEnd.Name = "dateTimePickerEnd";
 			this.dateTimePickerEnd.ShowCheckBox = true;
 			this.dateTimePickerEnd.Size = new System.Drawing.Size(126, 21);
-			this.dateTimePickerEnd.TabIndex = 49;
+			this.dateTimePickerEnd.TabIndex = 8;
 			// 
 			// dateTimePickerBegin
 			// 
 			this.dateTimePickerBegin.Location = new System.Drawing.Point(423, 10);
 			this.dateTimePickerBegin.Name = "dateTimePickerBegin";
 			this.dateTimePickerBegin.Size = new System.Drawing.Size(107, 21);
-			this.dateTimePickerBegin.TabIndex = 50;
+			this.dateTimePickerBegin.TabIndex = 7;
 			// 
 			// groupBoxLoad
 			// 
@@ -357,7 +370,7 @@
 			this.radioButtonK.Location = new System.Drawing.Point(15, 13);
 			this.radioButtonK.Name = "radioButtonK";
 			this.radioButtonK.Size = new System.Drawing.Size(41, 16);
-			this.radioButtonK.TabIndex = 45;
+			this.radioButtonK.TabIndex = 10;
 			this.radioButtonK.TabStop = true;
 			this.radioButtonK.Text = "K线";
 			this.radioButtonK.UseVisualStyleBackColor = true;
@@ -369,7 +382,7 @@
 			this.radioButtonT.Location = new System.Drawing.Point(57, 13);
 			this.radioButtonT.Name = "radioButtonT";
 			this.radioButtonT.Size = new System.Drawing.Size(47, 16);
-			this.radioButtonT.TabIndex = 44;
+			this.radioButtonT.TabIndex = 11;
 			this.radioButtonT.Text = "Tick";
 			this.radioButtonT.UseVisualStyleBackColor = true;
 			// 
@@ -378,7 +391,7 @@
 			this.buttonLoadStra.Location = new System.Drawing.Point(106, 10);
 			this.buttonLoadStra.Name = "buttonLoadStra";
 			this.buttonLoadStra.Size = new System.Drawing.Size(40, 23);
-			this.buttonLoadStra.TabIndex = 43;
+			this.buttonLoadStra.TabIndex = 12;
 			this.buttonLoadStra.Text = "加载";
 			this.buttonLoadStra.UseVisualStyleBackColor = true;
 			// 
@@ -398,7 +411,7 @@
 			this.comboBoxInterval.Location = new System.Drawing.Point(333, 10);
 			this.comboBoxInterval.Name = "comboBoxInterval";
 			this.comboBoxInterval.Size = new System.Drawing.Size(60, 20);
-			this.comboBoxInterval.TabIndex = 48;
+			this.comboBoxInterval.TabIndex = 6;
 			// 
 			// label6
 			// 
@@ -418,7 +431,7 @@
 			this.comboBoxInst.Location = new System.Drawing.Point(230, 10);
 			this.comboBoxInst.Name = "comboBoxInst";
 			this.comboBoxInst.Size = new System.Drawing.Size(74, 20);
-			this.comboBoxInst.TabIndex = 47;
+			this.comboBoxInst.TabIndex = 5;
 			// 
 			// ComboBoxType
 			// 
@@ -429,7 +442,7 @@
 			this.ComboBoxType.Location = new System.Drawing.Point(37, 10);
 			this.ComboBoxType.Name = "ComboBoxType";
 			this.ComboBoxType.Size = new System.Drawing.Size(164, 20);
-			this.ComboBoxType.TabIndex = 37;
+			this.ComboBoxType.TabIndex = 4;
 			// 
 			// label4
 			// 
@@ -469,7 +482,8 @@
 			// 
 			// splitContainer2.Panel1
 			// 
-			this.splitContainer2.Panel1.Controls.Add(this.propertyGrid1);
+			this.splitContainer2.Panel1.Controls.Add(this.propertyGridParams);
+			this.splitContainer2.Panel1.Controls.Add(this.propertyGridFlo);
 			// 
 			// splitContainer2.Panel2
 			// 
@@ -478,14 +492,22 @@
 			this.splitContainer2.SplitterDistance = 195;
 			this.splitContainer2.TabIndex = 38;
 			// 
-			// propertyGrid1
+			// propertyGridParams
 			// 
-			this.propertyGrid1.CategoryForeColor = System.Drawing.SystemColors.InactiveCaptionText;
-			this.propertyGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.propertyGrid1.Location = new System.Drawing.Point(0, 0);
-			this.propertyGrid1.Name = "propertyGrid1";
-			this.propertyGrid1.Size = new System.Drawing.Size(195, 458);
-			this.propertyGrid1.TabIndex = 27;
+			this.propertyGridParams.CategoryForeColor = System.Drawing.SystemColors.InactiveCaptionText;
+			this.propertyGridParams.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.propertyGridParams.Location = new System.Drawing.Point(0, 0);
+			this.propertyGridParams.Name = "propertyGridParams";
+			this.propertyGridParams.Size = new System.Drawing.Size(195, 238);
+			this.propertyGridParams.TabIndex = 13;
+			// 
+			// propertyGridFlo
+			// 
+			this.propertyGridFlo.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.propertyGridFlo.Location = new System.Drawing.Point(0, 238);
+			this.propertyGridFlo.Name = "propertyGridFlo";
+			this.propertyGridFlo.Size = new System.Drawing.Size(195, 220);
+			this.propertyGridFlo.TabIndex = 14;
 			// 
 			// splitContainer1
 			// 
@@ -724,7 +746,6 @@
 		private System.Windows.Forms.RadioButton radioButtonK;
 		private System.Windows.Forms.RadioButton radioButtonT;
 		private System.Windows.Forms.SplitContainer splitContainer2;
-		private System.Windows.Forms.PropertyGrid propertyGrid1;
 		private System.Windows.Forms.Button buttonAddStra;
 		private System.Windows.Forms.Button buttonDel;
 		private System.Windows.Forms.SplitContainer splitContainer1;
@@ -758,5 +779,8 @@
 		private System.Windows.Forms.Label label7;
 		private System.Windows.Forms.TextBox textBoxServer;
 		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.PropertyGrid propertyGridParams;
+		private System.Windows.Forms.PropertyGrid propertyGridFlo;
+		private System.Windows.Forms.Button buttonClearFiles;
 	}
 }

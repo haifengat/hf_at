@@ -23953,6 +23953,11 @@
             手续费
             </summary>
         </member>
+        <member name="P:HaiFeng.PositionField.Margin">
+            <summary>
+            保证金
+            </summary>
+        </member>
         <member name="M:HaiFeng.PositionField.ToString">
             <summary>
             返回:合约,多空,持仓均价,总持仓,今仓,昨仓,平仓盈亏,持仓盈亏,手续费

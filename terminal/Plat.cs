@@ -28,10 +28,14 @@ namespace HaiFeng
 	public partial class Plat : UserControl
 	{
 
-		public Plat(Trade pTrade, Quote pQuote)
+		public Plat(TradeExt pTrade, Quote pQuote)
 		{
 			_t = pTrade;
 			_q = pQuote;
+			_t.StartFollow(_q);
+
+			_t.OnInfo += (msg) => LogInfo(msg);
+
 			InitializeComponent();
 		}
 
@@ -49,7 +53,7 @@ namespace HaiFeng
 		private readonly List<Strategy> _listOrderStra = new List<Strategy>();
 		private readonly List<Strategy> _listOnTickStra = new List<Strategy>();
 
-		private readonly Trade _t;
+		private readonly TradeExt _t;
 		private readonly Quote _q;
 		private readonly DataTable _dtOrders = new DataTable();
 		private DataProcess _dataProcess = new DataProcess();
@@ -106,7 +110,9 @@ namespace HaiFeng
 			this.DataGridViewStrategies.RowTemplate.DefaultCellStyle.SelectionBackColor = this.DataGridViewStrategies.RowTemplate.DefaultCellStyle.BackColor;
 			this.DataGridViewStrategies.RowTemplate.DefaultCellStyle.SelectionForeColor = this.DataGridViewStrategies.RowTemplate.DefaultCellStyle.ForeColor;
 
-			this.propertyGrid1.PropertyValueChanged += propertyGrid1_PropertyValueChanged;
+			this.propertyGridParams.PropertyValueChanged += propertyGridParams_PropertyValueChanged;
+
+			this.propertyGridFlo.SelectedObject = _t.FloConfig; //跟单配置
 		}
 
 		//添加策略
@@ -151,7 +157,7 @@ namespace HaiFeng
 				this.DataGridViewStrategies.Rows[rid].Cells["EndDate"].Value = null;
 			//this.DataGridViewStrategies.Rows[rid].Cells["BeginDate"].Value = DateTime.Today.AddMonths(-3);
 
-			this.propertyGrid1.SelectedObject = stra;   //属性显示
+			this.propertyGridParams.SelectedObject = stra;   //属性显示
 
 			stra.OnRtnOrder += stra_OnRtnOrder;
 			return rid;
@@ -177,7 +183,7 @@ namespace HaiFeng
 			}
 
 			//参数是否可修改
-			this.propertyGrid1.Enabled = !this.propertyGrid1.Enabled;
+			this.propertyGridParams.Enabled = !this.propertyGridParams.Enabled;
 
 			if (row.Cells["Loaded"].Value != null && row.Cells["Loaded"].Value.Equals("已加载")) return;
 
@@ -232,7 +238,7 @@ namespace HaiFeng
 					return;
 				}
 				//参数是否可修改
-				this.propertyGrid1.Enabled = false;
+				this.propertyGridParams.Enabled = false;
 				//加载与tick加载同时处理
 				row.Cells["Loaded"].Value = "已加载";
 				foreach (MarketData tick in ticks)
@@ -305,7 +311,7 @@ namespace HaiFeng
 					bars = GetUpperPeriod(bars, data.Interval, EnumIntervalType.Min);
 
 				//参数是否可修改
-				this.propertyGrid1.Enabled = false;
+				this.propertyGridParams.Enabled = false;
 				//加载与tick加载同时处理
 				row.Cells["Loaded"].Value = "已加载";
 				foreach (Bar bar in bars)
@@ -368,11 +374,11 @@ namespace HaiFeng
 				return;
 
 			DataGridViewRow row = this.DataGridViewStrategies.SelectedRows[0];
-			this.propertyGrid1.Enabled = row.Cells["Loaded"].Value == null || !row.Cells["Loaded"].Value.Equals("已加载");
+			this.propertyGridParams.Enabled = row.Cells["Loaded"].Value == null || !row.Cells["Loaded"].Value.Equals("已加载");
 
 			if (_dicStrategies.TryGetValue((string)row.Cells["StraName"].Value, out _curStrategy))
 			{
-				this.propertyGrid1.SelectedObject = _curStrategy;
+				this.propertyGridParams.SelectedObject = _curStrategy;
 				if (_curStrategy.Datas.Count > 0)
 				{
 					foreach (var v in _curStrategy.Operations)
@@ -421,12 +427,12 @@ namespace HaiFeng
 		}
 
 		//策略参数被修改:提交
-		private void propertyGrid1_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+		private void propertyGridParams_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
 		{
 			foreach (DataGridViewRow row in this.DataGridViewStrategies.Rows)
 			{
 				Strategy stra;
-				if (_dicStrategies.TryGetValue((string)row.Cells["StraName"].Value, out stra) && stra.Equals(this.propertyGrid1.SelectedObject))
+				if (_dicStrategies.TryGetValue((string)row.Cells["StraName"].Value, out stra) && stra.Equals(this.propertyGridParams.SelectedObject))
 				{
 					row.Cells["Param"].Value = stra.GetParams();
 					return;
@@ -456,7 +462,10 @@ namespace HaiFeng
 				DataPathT = this.textBoxDataSourceTick.Text,
 				DataPathR = this.textBoxDataSourceReal.Text,
 				MongoServer = this.textBoxServer.Text,
+				MongoUser = this.textBoxUser.Text,
+				MongoPwd = this.textBoxPwd.Text,
 				StrategyFiles = new string[this.comboBoxStrategyFile.Items.Count],
+				FloConfig = _t.FloConfig,
 			};
 			for (int i = 0; i < this.comboBoxStrategyFile.Items.Count; i++)
 			{
@@ -480,6 +489,7 @@ namespace HaiFeng
 				{
 					LoadStrategyFile(file);
 				}
+				_t.FloConfig = cfg.FloConfig;
 			}
 			this.textBoxServer.Text = cfg.MongoServer;
 		}
@@ -692,33 +702,15 @@ namespace HaiFeng
 			//实际委托
 			if (_listOrderStra.IndexOf(pStrategy) >= 0)
 			{
+				LogInfo($"{pOrderItem.Date},{pOrderItem.Dir},{pOrderItem.Offset},{pOrderItem.Price},{pOrderItem.Lots},{pOrderItem.Remark}");
 				//处理上期所平今操作
-				InstrumentField instField;
 				if (pOrderItem.Offset == Offset.Close)
 				{
 					int lots = pOrderItem.Lots;
-					if (_t.DicInstrumentField.TryGetValue(pData.Instrument, out instField) && instField.ExchangeID == Exchange.SHFE)
-					{
-						PositionField posiField;
-						if (_t.DicPositionField.TryGetValue(pData.Instrument + "_" + (pOrderItem.Dir == Direction.Buy ? "Sell" : "Buy"), out posiField))
-						{
-							if (posiField.TdPosition > 0)
-							{
-								int lot = Math.Min(posiField.TdPosition, lots);
-								_t.ReqOrderInsert(pData.Instrument, pOrderItem.Dir == Direction.Buy ? DirectionType.Buy : DirectionType.Sell, OffsetType.CloseToday, (double)pOrderItem.Price, pOrderItem.Lots, pCustom: int.Parse(pStrategy.Name));
-								lots -= lot;
-							}
-							if (lots > 0)
-							{
-								_t.ReqOrderInsert(pData.Instrument, pOrderItem.Dir == Direction.Buy ? DirectionType.Buy : DirectionType.Sell, OffsetType.Close, (double)pOrderItem.Price, pOrderItem.Lots, pCustom: int.Parse(pStrategy.Name));
-							}
-						}
-					}
-					else
-						_t.ReqOrderInsert(pData.Instrument, pOrderItem.Dir == Direction.Buy ? DirectionType.Buy : DirectionType.Sell, OffsetType.Close, (double)pOrderItem.Price, pOrderItem.Lots, pCustom: int.Parse(pStrategy.Name));
+					_t.ClosePosi(pData.Instrument, pOrderItem.Dir == Direction.Buy ? DirectionType.Sell : DirectionType.Buy, (double)pOrderItem.Price, pOrderItem.Lots, int.Parse(pStrategy.Name) * 100);
 				}
 				else
-					_t.ReqOrderInsert(pData.Instrument, pOrderItem.Dir == Direction.Buy ? DirectionType.Buy : DirectionType.Sell, OffsetType.Open, (double)pOrderItem.Price, pOrderItem.Lots, pCustom: int.Parse(pStrategy.Name));
+					_t.ReqOrderInsert(pData.Instrument, pOrderItem.Dir == Direction.Buy ? DirectionType.Buy : DirectionType.Sell, OffsetType.Open, (double)pOrderItem.Price, pOrderItem.Lots, pCustom: int.Parse(pStrategy.Name) * 100);
 			}
 		}
 
@@ -1082,6 +1074,13 @@ namespace HaiFeng
 				}
 			}
 		}
+
+		private void buttonClearFiles_Click(object sender, EventArgs e)
+		{
+			this.comboBoxStrategyFile.Items.Clear();
+			this.comboBoxStrategyFile.Text = string.Empty;
+			this.ComboBoxType.Items.Clear();
+		}
 	}
 	public class ConfigFile
 	{
@@ -1092,6 +1091,7 @@ namespace HaiFeng
 		public string MongoServer { get; set; } = "192.168.105.202";
 		public string MongoUser { get; set; } = "";
 		public string MongoPwd { get; set; } = "";
+		public FollowConfig FloConfig { get; set; } = new FollowConfig();
 	}
 
 }

@@ -15,7 +15,7 @@ namespace HaiFeng
 		}
 
 		readonly DataTable _dt = new DataTable("ServerConfig");
-		public Trade Trade;
+		public TradeExt Trade;
 		public Quote Quote;
 		public string Server;
 		private DateTime _logTime = DateTime.MinValue;
@@ -41,12 +41,12 @@ namespace HaiFeng
 		{
 			_dt.Rows.Clear();
 			this.KryptonComboBoxServer.Items.Clear();
-            if (!File.Exists("server.txt"))
+			if (!File.Exists("server.txt"))
 				File.WriteAllText("server.txt", @"模拟,ctp|9999|tcp://180.168.146.187:10000|tcp://180.168.146.187:10010
 股指仿真,ctp|1010|tcp://simctp1010.yhqh.com:41205|tcp://simctp1010.yhqh.com:41213", Encoding.GetEncoding("GB2312"));
 			var lines = File.ReadAllLines("server.txt", Encoding.GetEncoding("GB2312"));
 			this.richTextBox1.Lines = lines;
-            foreach (string line in lines)
+			foreach (string line in lines)
 			{
 				if (string.IsNullOrEmpty(line))
 					continue;
@@ -101,7 +101,7 @@ namespace HaiFeng
 				Quote.OnRspUserLogin += quote_OnRspUserLogin;
 			}
 
-			Trade = new Trade
+			Trade = new TradeExt
 			{
 				Server = fs[2],
 				Investor = this.KryptonTextBoxInvestor.Text,

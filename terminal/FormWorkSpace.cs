@@ -34,7 +34,7 @@ namespace HaiFeng
 
 		#region 变量
 		//最大显示K线数
-		private int maxShowCandleNum = 3000;
+		private int maxShowCandleNum = 5000;
 
 		//chart中显示的图形注释编号：自增
 		ulong annotationID = 0;
@@ -61,7 +61,7 @@ namespace HaiFeng
 		private void FormWorkSpace_Load(object sender, EventArgs e)
 		{
 			//绑定
-			int cnt = _stra.D.Count;//Math.Min(this.maxShowCandleNum, _stra.D.Count);
+			int cnt = Math.Min(this.maxShowCandleNum, _stra.D.Count);
 			Numeric[] h = new Numeric[cnt];
 			Numeric[] l = new Numeric[cnt];
 			Numeric[] o = new Numeric[cnt];
@@ -141,6 +141,7 @@ namespace HaiFeng
 
 			foreach (var order in _stra.Operations)
 			{
+				if (order.Date < d[0]) continue;	//只处理显示范围内的信号
 				_listOperateArrow.Add(order);
 			}
 		}
