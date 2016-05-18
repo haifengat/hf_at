@@ -113,7 +113,6 @@
     <Compile Include="Macd.cs" />
     <Compile Include="MACross.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="test1.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\core\at_core.csproj">

@@ -31,7 +31,7 @@ namespace HaiFeng
 		{
 			if (CurrentBar <= Math.Max(MA1, MA2))
 				return;
-			
+
 			if (PositionLong == 0 && ma1[2] < ma2[2] && ma1[1] >= ma2[1])
 			{
 				if (PositionShort > 0)

@@ -25,7 +25,7 @@ namespace HaiFeng
 
 		public bool FixTick(MarketData tick, string tradingDay)
 		{
-			var proc = new string(tick.InstrumentID.TakeWhile(c => char.IsLetter(c)).ToArray());
+			var proc = new string(tick.InstrumentID.Where(c => !char.IsDigit(c)).ToArray());
 			var action = _tradeDates[_tradeDates.IndexOf(tradingDay) - 1];
 			DateTime dtTick;
 			if (_dicProcMinList[proc].FixMin(tick.UpdateTime, tick.UpdateMillisec, tradingDay, action, out dtTick))

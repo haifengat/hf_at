@@ -165,7 +165,7 @@
 			this.textBoxPwd.Name = "textBoxPwd";
 			this.textBoxPwd.PasswordChar = '*';
 			this.textBoxPwd.Size = new System.Drawing.Size(120, 21);
-			this.textBoxPwd.TabIndex = 2;
+			this.textBoxPwd.TabIndex = 3;
 			// 
 			// label8
 			// 
@@ -182,7 +182,7 @@
 			this.textBoxUser.Location = new System.Drawing.Point(301, -1);
 			this.textBoxUser.Name = "textBoxUser";
 			this.textBoxUser.Size = new System.Drawing.Size(120, 21);
-			this.textBoxUser.TabIndex = 1;
+			this.textBoxUser.TabIndex = 2;
 			// 
 			// label7
 			// 
@@ -284,7 +284,7 @@
 			this.comboBoxStrategyFile.Location = new System.Drawing.Point(11, 34);
 			this.comboBoxStrategyFile.Name = "comboBoxStrategyFile";
 			this.comboBoxStrategyFile.Size = new System.Drawing.Size(682, 20);
-			this.comboBoxStrategyFile.TabIndex = 3;
+			this.comboBoxStrategyFile.TabIndex = 4;
 			// 
 			// buttonStrategyFile
 			// 
