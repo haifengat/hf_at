@@ -307,8 +307,9 @@ namespace HaiFeng
 				{
 					return;
 				}
-				if (data.Interval > 1)
-					bars = GetUpperPeriod(bars, data.Interval, EnumIntervalType.Min);
+
+				if (data.Interval > 1 || data.IntervalType != EnumIntervalType.Min)
+					bars = GetUpperPeriod(bars, data.Interval, data.IntervalType);
 
 				//参数是否可修改
 				this.propertyGridParams.Enabled = false;
@@ -323,9 +324,6 @@ namespace HaiFeng
 																 //是否有结束日期:只测试
 																 //if (dtEnd == DateTime.MaxValue)
 			{
-
-
-
 				//订阅000合约
 				if (stra.InstrumentID.EndsWith("000"))
 				{
