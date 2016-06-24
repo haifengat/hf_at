@@ -12,7 +12,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "at_strategy", "strategy\at_
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "at_core", "core\at_core.csproj", "{91CBEF71-E159-455A-A052-688D3F2E9FA3}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FixTick", "FixTick\FixTick.shproj", "{4AE85C62-4BED-4635-9463-46DB7A7CDBFE}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		FixTick\FixTick.projitems*{aaf334e9-79af-4702-8996-768efbc4cea2}*SharedItemsImports = 4
+		FixTick\FixTick.projitems*{4ae85c62-4bed-4635-9463-46db7a7cdbfe}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64

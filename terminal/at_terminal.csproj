@@ -84,20 +84,14 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AsyncIO">
+      <HintPath>..\Resources\AsyncIO.dll</HintPath>
+    </Reference>
     <Reference Include="hf_proxy">
       <HintPath>..\Resources\hf_proxy.dll</HintPath>
     </Reference>
-    <Reference Include="MongoDB.Bson">
-      <HintPath>..\Resources\MongoDB.Bson.dll</HintPath>
-    </Reference>
-    <Reference Include="MongoDB.Driver">
-      <HintPath>..\Resources\MongoDB.Driver.dll</HintPath>
-    </Reference>
-    <Reference Include="MongoDB.Driver.Core">
-      <HintPath>..\Resources\MongoDB.Driver.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="MongoDB.Driver.Legacy">
-      <HintPath>..\Resources\MongoDB.Driver.Legacy.dll</HintPath>
+    <Reference Include="NetMQ">
+      <HintPath>..\Resources\NetMQ.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\Resources\Newtonsoft.Json.dll</HintPath>
@@ -117,7 +111,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataProcess.cs" />
     <Compile Include="FormLogin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -185,6 +178,7 @@
   <ItemGroup>
     <Folder Include="Resources\" />
   </ItemGroup>
+  <Import Project="..\FixTick\FixTick.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy $(ProjectDir)..\Resources $(TargetDir)
@@ -192,7 +186,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties Reactor_Enabled="0" Reactor_Commands="" Reactor_Project="D:\haifeng_project\hf_plat_tb\hf_plat_core\hf_plat_core.nrproj" Reactor_Configuration="ALL" Reactor_Output="&lt;AssemblyLocation&gt;\..\..\hf_plat_terminal\debug\&lt;AssemblyFileName&gt;" Reactor_Deploy="0" />
+      <UserProperties Reactor_Deploy="0" Reactor_Output="&lt;AssemblyLocation&gt;\..\..\hf_plat_terminal\debug\&lt;AssemblyFileName&gt;" Reactor_Configuration="ALL" Reactor_Project="D:\haifeng_project\hf_plat_tb\hf_plat_core\hf_plat_core.nrproj" Reactor_Commands="" Reactor_Enabled="0" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

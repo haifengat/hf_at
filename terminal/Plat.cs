@@ -16,9 +16,6 @@ using System.Globalization;
 using System.Net;
 using static HaiFeng.HFLog;
 using Newtonsoft.Json;
-using MongoDB.Driver;
-using MongoDB.Bson;
-using MongoDB.Driver.Builders;
 using System.Threading;
 using System.Threading.Tasks;
 using static System.Math;
@@ -100,9 +97,6 @@ namespace HaiFeng
 			this.buttonAddStra.Click += ButtonAdd_Click;//添加策略
 			this.buttonDel.Click += ButtonDel_Click;
 			this.buttonLoadStra.Click += ButtonLoadStra_Click; //加载策略
-			this.ButtonDataSource.Click += ButtonDataSource_Click;
-			this.buttonDataSourceTick.Click += ButtonDataSource_Click;
-			this.buttonDataSourceReal.Click += ButtonDataSource_Click;
 			this.DataGridViewStrategies.SelectionChanged += DataGridViewStrategies_SelectionChanged;
 			this.DataGridViewStrategies.CellContentClick += DataGridViewStrategies_CellContentClick;
 			this.DataGridViewStrategies.CellFormatting += DataGridViewStrategies_CellFormatting;
@@ -168,11 +162,11 @@ namespace HaiFeng
 		{
 			if (this.DataGridViewStrategies.SelectedRows.Count == 0) return;
 
-			if (_dataProcess.ProductInfo.Count == 0)
-			{
-				HFLog.LogInfo("读取配置信息(交易日历,交易时间段)...");
-				_dataProcess.UpdateInfo(this.textBoxServer.Text, this.textBoxUser.Text, this.textBoxPwd.Text);  //更新信息
-			}
+			//if (_dataProcess.ProductInfo.Count == 0)
+			//{
+			//	HFLog.LogInfo("读取配置信息(交易日历,交易时间段)...");
+			//	_dataProcess.UpdateInfo();  //更新信息
+			//}
 			DataGridViewRow row = this.DataGridViewStrategies.SelectedRows[0];
 			string name = (string)row.Cells["StraName"].Value;
 			Strategy stra;
@@ -206,7 +200,7 @@ namespace HaiFeng
 				VolumeMultiple = 10,    //默认值
 			};
 
-			ProductInfo pi;
+			Product pi;
 			if (_dataProcess.ProductInfo.TryGetValue(proc, out pi))
 			{
 				data.InstrumentInfo.PriceTick = (decimal)pi.PriceTick;
@@ -227,82 +221,53 @@ namespace HaiFeng
 			this.DataGridViewStrategies.Refresh();
 
 			if (data.IntervalType == EnumIntervalType.Sec || this.radioButtonT.Checked) //秒周期或tick加载
-			{
-				stra.Init(data);
-
-				var ticks = ReadTick(inst, dtBegin, dtEnd);
-				if (ticks == null)
-				{
-					//数据读取有误:恢复加载前状态
-
-					return;
-				}
-				//参数是否可修改
-				this.propertyGridParams.Enabled = false;
-				//加载与tick加载同时处理
-				row.Cells["Loaded"].Value = "已加载";
-				foreach (MarketData tick in ticks)
-				{
-					data.OnTick(new Tick
-					{
-						AskPrice = (Numeric)tick.AskPrice,
-						AskVolume = tick.AskVolume,
-						AveragePrice = (Numeric)tick.AveragePrice,
-						BidPrice = (Numeric)tick.BidPrice,
-						BidVolume = tick.BidVolume,
-						InstrumentID = tick.InstrumentID,
-						LastPrice = (Numeric)tick.LastPrice,
-						LowerLimitPrice = (Numeric)tick.LowerLimitPrice,
-						OpenInterest = (Numeric)tick.OpenInterest,
-						UpdateMillisec = tick.UpdateMillisec,
-						UpdateTime = tick.UpdateTime,
-						UpperLimitPrice = (Numeric)tick.UpperLimitPrice,
-						Volume = tick.Volume,
-					});
-					stra.Update();
-				}
-				//取当日tick加载:未加载当日数据
-				if (stra.D[0] < int.Parse(_t.TradingDay))
-				{
-					//var ticks = _useCompress ? ReadTickEncrypt(inst, DateTime.ParseExact(_t.TradingDay, "yyyyMMdd", null), DateTime.ParseExact(_t.TradingDay, "yyyyMMdd", null)) : ReadTick(inst, DateTime.ParseExact(_t.TradingDay, "yyyyMMdd", null), DateTime.ParseExact(_t.TradingDay, "yyyyMMdd", null));
-					var ticksReal = ReadTick(inst, dtEnd, dtEnd, true); //取当日tick数据
-					if (ticksReal != null)
-						foreach (MarketData tick in ticksReal)
-						{
-							data.OnTick(new Tick
-							{
-								AskPrice = (Numeric)tick.AskPrice,
-								AskVolume = tick.AskVolume,
-								AveragePrice = (Numeric)tick.AveragePrice,
-								BidPrice = (Numeric)tick.BidPrice,
-								BidVolume = tick.BidVolume,
-								InstrumentID = tick.InstrumentID,
-								LastPrice = (Numeric)tick.LastPrice,
-								LowerLimitPrice = double.IsNaN(tick.LowerLimitPrice) ? Numeric.MinValue : (Numeric)tick.LowerLimitPrice,
-								OpenInterest = (Numeric)tick.OpenInterest,
-								UpdateMillisec = tick.UpdateMillisec,
-								UpdateTime = tick.UpdateTime,
-								UpperLimitPrice = double.IsNaN(tick.UpperLimitPrice) ? Numeric.MaxValue : (Numeric)tick.UpperLimitPrice,
-								Volume = tick.Volume,
-							});
-							stra.Update();
-						}
-				}
-			}
+			{ }
 			else
 			{
-				List<Bar> bars = ReadDataMongo(inst, dtBegin, dtEnd);
-				//if (this.tabControl1.SelectedTab == this.tabPageDB) //数据库
-				//	bars = ReadDataMongo(inst, dtBegin, dtEnd);
-				//else
-				//	bars = _useCompress ? ReadDataEncrypt(inst, dtBegin, dtEnd) : ReadData(inst, data.Interval, data.IntervalType, dtBegin, dtEnd);
-				// 取当日数据
-				if (dtEnd > DateTime.ParseExact(_t.TradingDay, "yyyyMMdd", null))
+				List<Bar> bars = null;
+				if (data.IntervalType == EnumIntervalType.Min)
 				{
-					var listReal = ReadMongoReal(inst);
-					bars = (bars ?? new List<Bar>());
-					bars.AddRange(listReal);
+					bars = _dataProcess.GetData.QueryMin(inst, dtBegin.ToString("yyyyMMdd"), dtEnd.ToString("yyyyMMdd")).Select(n => new Bar
+					{
+						D = DateTime.ParseExact(n._id, "yyyyMMdd HH:mm:ss", null),
+						O = (decimal)n.Open,
+						H = (decimal)n.High,
+						L = (decimal)n.Low,
+						C = (decimal)n.Close,
+						V = n.Volume,
+						I = (decimal)n.OpenInterest
+					}).ToList();
+					// 取当日数据
+					if (dtEnd > DateTime.ParseExact(_t.TradingDay, "yyyyMMdd", null))
+					{
+						var listReal = _dataProcess.GetData.QueryReal(inst);
+						bars = (bars ?? new List<Bar>());
+						if (listReal != null)
+							bars.AddRange(listReal.Select(n => new Bar
+							{
+								D = DateTime.ParseExact(n._id, "yyyyMMdd HH:mm:ss", null),
+								O = (decimal)n.Open,
+								H = (decimal)n.High,
+								L = (decimal)n.Low,
+								C = (decimal)n.Close,
+								V = n.Volume,
+								I = (decimal)n.OpenInterest
+							}).ToList());
+					}
 				}
+				else
+					bars = _dataProcess.GetData.QueryDay(inst, dtBegin.ToString("yyyyMMdd"), dtEnd.ToString("yyyyMMdd")).Select(n => new Bar
+					{
+						D = DateTime.ParseExact(n._id, "yyyyMMdd HH:mm:ss", null),
+						O = (decimal)n.Open,
+						H = (decimal)n.High,
+						L = (decimal)n.Low,
+						C = (decimal)n.Close,
+						V = n.Volume,
+						I = (decimal)n.OpenInterest
+					}).ToList();
+
+				
 				if (bars == null)
 				{
 					return;
@@ -344,23 +309,6 @@ namespace HaiFeng
 				else
 					_q.ReqSubscribeMarketData(inst);
 				_listOnTickStra.Add(stra); //可以接收实际行情
-			}
-		}
-
-		//改变数据源
-		private void ButtonDataSource_Click(object sender, EventArgs e)
-		{
-			using (FolderBrowserDialog fbd = new FolderBrowserDialog())
-			{
-				if (fbd.ShowDialog() == DialogResult.OK)
-				{
-					if (sender == this.ButtonDataSource)
-						this.TextBoxDataSourceK.Text = fbd.SelectedPath;
-					else if (sender == this.buttonDataSourceTick)
-						this.textBoxDataSourceTick.Text = fbd.SelectedPath;
-					else
-						this.textBoxDataSourceReal.Text = fbd.SelectedPath;
-				}
 			}
 		}
 
@@ -456,12 +404,6 @@ namespace HaiFeng
 		{
 			ConfigFile cfg = new ConfigFile
 			{
-				DataPathK = this.TextBoxDataSourceK.Text,
-				DataPathT = this.textBoxDataSourceTick.Text,
-				DataPathR = this.textBoxDataSourceReal.Text,
-				MongoServer = this.textBoxServer.Text,
-				MongoUser = this.textBoxUser.Text,
-				MongoPwd = this.textBoxPwd.Text,
 				StrategyFiles = new string[this.comboBoxStrategyFile.Items.Count],
 				FloConfig = _t.FloConfig,
 			};
@@ -478,18 +420,12 @@ namespace HaiFeng
 			if (File.Exists("config.json"))
 			{
 				cfg = JsonConvert.DeserializeObject<ConfigFile>(File.ReadAllText("config.json"));
-				this.TextBoxDataSourceK.Text = cfg.DataPathK;
-				this.textBoxDataSourceTick.Text = cfg.DataPathT;
-				this.textBoxDataSourceReal.Text = cfg.DataPathR;
-				this.textBoxUser.Text = cfg.MongoUser;
-				this.textBoxPwd.Text = cfg.MongoPwd;
 				foreach (var file in cfg.StrategyFiles)
 				{
 					LoadStrategyFile(file);
 				}
 				_t.FloConfig = cfg.FloConfig;
 			}
-			this.textBoxServer.Text = cfg.MongoServer;
 		}
 
 		void SaveStrategy()
@@ -712,214 +648,6 @@ namespace HaiFeng
 			}
 		}
 
-		private MongoDatabase GetDatabase(string dbname)
-		{
-			//var strconn = "mongodb://reader:reader2015@192.168.105.203:27017/?authenticationDatabase=admin";
-			var serverAddress = this.textBoxServer.Text.IndexOf(':') >= 0 ? new MongoServerAddress(this.textBoxServer.Text.Split(':')[0], short.Parse(this.textBoxServer.Text.Split(':')[1])) : new MongoServerAddress(this.textBoxServer.Text);
-
-			var sett = new MongoServerSettings
-			{
-				Server = serverAddress,
-			};
-			if (!string.IsNullOrEmpty(this.textBoxUser.Text))
-				sett.Credentials = new[] { MongoCredential.CreateCredential("admin", this.textBoxUser.Text, this.textBoxPwd.Text) };
-			var server = new MongoServer(sett);
-			return server.GetDatabase(dbname);
-		}
-
-		public List<Bar> ReadDataMongo(string pInstrument, DateTime pBegin, DateTime pEnd)
-		{
-			//数据库连接字符串
-			HFLog.LogInfo("read mongo data start ...");
-
-			var db = GetDatabase("future_min");
-
-			var col = db.GetCollection<BsonDocument>(pInstrument);
-			//取从前1天21:00:00开始;结束日15:30:00结束
-			var filter = Query.And(Query.GTE("_id", new BsonDateTime(pBegin.Date.AddDays(-1).Add(new TimeSpan(21, 0, 0)))), Query.LT("_id", new BsonDateTime(pEnd.Date.Add(new TimeSpan(15, 30, 0)))));
-			var list = col.Find(filter).ToList();
-
-			var bars = list.Select(x => new Bar
-			{
-				D = x["_id"].ToUniversalTime().ToLocalTime(),
-				O = (decimal)x["Open"].AsDouble,
-				H = (decimal)x["High"].AsDouble,
-				L = (decimal)x["Low"].AsDouble,
-				C = (decimal)x["Close"].AsDouble,
-				V = x["Volume"].AsInt32,
-				I = (decimal)x["OpenInterest"].AsDouble,
-			}).ToList();
-			HFLog.LogInfo($"read mongo data finish ({bars.Count()}).");
-			return bars;
-		}
-
-		private List<Bar> ReadMongoReal(string pInstrument)
-		{
-			//数据库连接字符串
-			HFLog.LogInfo("read mongo data start ...");
-
-			var db = GetDatabase("future_real");
-			var col = db.GetCollection<BsonDocument>(pInstrument);
-			var list = col.FindAll();
-			//无数据:返回
-			//if (list.Fields == null) return new List<Bar>();
-
-			var bars = list.Select(x => new Bar
-			{
-				D = x["Date"].ToUniversalTime().ToLocalTime(),
-				O = (decimal)x["Open"].AsDouble,
-				H = (decimal)x["High"].AsDouble,
-				L = (decimal)x["Low"].AsDouble,
-				C = (decimal)x["Close"].AsDouble,
-				V = x["Volume"].AsInt32,
-				I = (decimal)x["OpenInterest"].AsDouble,
-			}).ToList();
-			HFLog.LogInfo($"read mongo data finish ({bars.Count()}).");
-			return bars;
-		}
-
-		#region 文本方式读取
-		//读取Tick数据
-		public List<MarketData> ReadTick(string pInstrument, DateTime pBegin, DateTime pEnd, bool pReal = false)
-		{
-			var bars = new List<MarketData>();
-			var dataPath = new DirectoryInfo(this.textBoxDataSourceTick.Text + "\\" + pInstrument);
-			if (pReal) //实时tick
-				dataPath = new DirectoryInfo(this.textBoxDataSourceReal.Text + "\\" + pInstrument);
-
-			if (!dataPath.Exists)
-			{
-				LogError("无Tick数据源!");
-				return null;
-			}
-			foreach (FileInfo fi in dataPath.GetFiles())// new DirectoryInfo(dataPath.FullName).GetFiles(pInstrument + ".csv", SearchOption.AllDirectories).OrderBy(n => n.DirectoryName))
-			{
-				if (DateTime.ParseExact(fi.Name.Split('_', '.')[1], "yyyyMMdd", null) < pBegin)
-					continue;
-				if (DateTime.ParseExact(fi.Name.Split('_', '.')[1], "yyyyMMdd", null) > pEnd)
-					break;
-				foreach (string line in File.ReadAllLines(fi.FullName))
-				{
-					if (!char.IsDigit(line[0]))
-						continue;
-					//#InstrumentID,TradingDay,UpperLimitPrice,LowerLimitPrice,OpenPrice,ClosePrice,SettlementPrice,PreClosePrice,PreOpenInterest,PreSettlementPrice
-					//#a1507,20140801,4636,4280,4469,4490,4483,4458,32,4458
-					//#LastPrice,BidPrice1,BidVolume1,AskPrice1,AskVolume1,AveragePrice,HighestPrice,LowestPrice,OpenInterest,Turnover,Volume,UpdateTime,UpdateMillisec
-
-					//LastPrice,BidPrice1,BidVolume1,AskPrice1,AskVolume1,AveragePrice,HighestPrice,LowestPrice,OpenInterest, Turnover,Volume,UpdateTime,UpdateMillisec,ActionDay,TradingDay
-
-					string[] fields = line.Split(',');
-					var tick = new MarketData
-					{
-						LastPrice = double.Parse(fields[0]),
-						BidPrice = double.Parse(fields[1]),
-						BidVolume = int.Parse(fields[2]),
-						AskPrice = double.Parse(fields[3]),
-						AskVolume = int.Parse(fields[4]),
-						AveragePrice = double.Parse(fields[5]),
-						OpenInterest = double.Parse(fields[8]),
-						Volume = int.Parse(fields[10]),
-						//UpdateTime = fields[13] + " " + fields[11],
-						UpdateTime = fields[11].IndexOf(" ") > 0 ? fields[11].Split(' ')[1] : fields[11],
-						UpdateMillisec = int.Parse(fields[12]),
-						InstrumentID = pInstrument,
-						LowerLimitPrice = double.NaN, //.Parse(fields[3]),
-						UpperLimitPrice = double.NaN, //(fields[3]),
-					};
-					if (_dataProcess.FixTick(tick, fields[14]))
-					{
-						bars.Add(tick);
-					}
-				}
-			}
-			return bars;
-		}
-
-		//读取分钟/日数据
-		public List<Bar> ReadData(string pInstrument, int pInterval, EnumIntervalType pIntervalType, DateTime pBegin, DateTime pEnd)
-		{
-			List<Bar> bars = new List<Bar>();
-
-			if (pInstrument.EndsWith("000"))
-			{
-				FileInfo fi = new FileInfo(this.TextBoxDataSourceK.Text + "\\Future_" + (pIntervalType == EnumIntervalType.Day ? "Day" : "Min") + "\\000\\" + pInstrument + ".csv");
-				if (!fi.Exists)
-				{
-					MessageBox.Show("数据源不正确!");
-					return null;
-				}
-
-				foreach (string line in File.ReadAllLines(fi.FullName))
-				{
-					if (!char.IsDigit(line[0]))
-						continue;
-
-					// 时间(精确到分),开,高,低,收,量,仓,均价
-					// 2010 /04/16 09:15,3497.2,3517.4,3497.2,3507.9,823,650
-					string[] fields = line.Split(',');
-					DateTime dt = DateTime.ParseExact(fields[0], "yyyy/MM/dd HH:mm", null);
-					if (dt < pBegin)
-						continue;
-					if (dt >= pEnd)
-						break;
-
-					bars.Add(new Bar
-					{
-						D = dt,
-						O = decimal.Parse(fields[1]),
-						H = decimal.Parse(fields[2]),
-						L = decimal.Parse(fields[3]),
-						C = decimal.Parse(fields[4]),
-						V = decimal.Parse(fields[5]),
-						I = decimal.Parse(fields[6]),
-						A = 0,
-					});
-				}
-				if (pInterval > 1)
-					bars = GetUpperPeriod(bars, pInterval, EnumIntervalType.Min);
-
-				return bars;
-			}
-
-			var dataPath = new DirectoryInfo(this.TextBoxDataSourceK.Text + "\\Future_" + (pIntervalType == EnumIntervalType.Day ? "Day" : "Min") + "\\" + pInstrument);
-			if (!dataPath.Exists)
-			{
-				MessageBox.Show("数据源不正确!");
-				return null;
-			}
-
-			foreach (FileInfo fi in dataPath.GetFiles())// new DirectoryInfo(dataPath.FullName).GetDirectories().GetFiles(pInstrument + "_*.csv", SearchOption.AllDirectories).OrderBy(n => n.DirectoryName))
-			{
-				if (DateTime.ParseExact(fi.Name.Split('_', '.')[1], "yyyyMMdd", null) < pBegin)
-					continue;
-				if (DateTime.ParseExact(fi.Name.Split('_', '.')[1], "yyyyMMdd", null) >= pEnd)
-					break;
-				foreach (string line in File.ReadAllLines(fi.FullName))
-				{
-					if (!char.IsDigit(line[0]))
-						continue;
-					//Open,High,Low,Close,Vol,OI,Avg,TickTime,TradingDay
-					string[] fields = line.Split(',');
-					bars.Add(new Bar
-					{
-						D = DateTime.Parse(fields[7]),
-						O = decimal.Parse(fields[0]),
-						H = decimal.Parse(fields[1]),
-						L = decimal.Parse(fields[2]),
-						C = decimal.Parse(fields[3]),
-						V = decimal.Parse(fields[4]),
-						I = decimal.Parse(fields[5]),
-						A = decimal.Parse(fields[6]),
-					});
-				}
-				if (pInterval > 1)
-					bars = GetUpperPeriod(bars, pInterval, EnumIntervalType.Min);
-
-			}
-			return bars;
-		}
-		#endregion
-
 		private List<Bar> GetUpperPeriod(IList<Bar> datasOfMinute, int pInterval, EnumIntervalType pIntervalType)
 		{
 			DateTime dtBegin = datasOfMinute[0].D;
@@ -1083,12 +811,6 @@ namespace HaiFeng
 	public class ConfigFile
 	{
 		public string[] StrategyFiles { get; set; }
-		public string DataPathK { get; set; }
-		public string DataPathT { get; set; }
-		public string DataPathR { get; set; } //实时数据
-		public string MongoServer { get; set; } = "192.168.105.202";
-		public string MongoUser { get; set; } = "";
-		public string MongoPwd { get; set; } = "";
 		public FollowConfig FloConfig { get; set; } = new FollowConfig();
 	}
 

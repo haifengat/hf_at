@@ -38,21 +38,6 @@
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.buttonClearFiles = new System.Windows.Forms.Button();
-			this.tabControl1 = new System.Windows.Forms.TabControl();
-			this.tabPageDB = new System.Windows.Forms.TabPage();
-			this.textBoxPwd = new System.Windows.Forms.TextBox();
-			this.label8 = new System.Windows.Forms.Label();
-			this.textBoxUser = new System.Windows.Forms.TextBox();
-			this.label7 = new System.Windows.Forms.Label();
-			this.textBoxServer = new System.Windows.Forms.TextBox();
-			this.label1 = new System.Windows.Forms.Label();
-			this.tabPageTxt = new System.Windows.Forms.TabPage();
-			this.textBoxDataSourceReal = new System.Windows.Forms.TextBox();
-			this.textBoxDataSourceTick = new System.Windows.Forms.TextBox();
-			this.TextBoxDataSourceK = new System.Windows.Forms.TextBox();
-			this.buttonDataSourceReal = new System.Windows.Forms.Button();
-			this.buttonDataSourceTick = new System.Windows.Forms.Button();
-			this.ButtonDataSource = new System.Windows.Forms.Button();
 			this.comboBoxStrategyFile = new System.Windows.Forms.ComboBox();
 			this.buttonStrategyFile = new System.Windows.Forms.Button();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -92,9 +77,6 @@
 			this.Graphics = new System.Windows.Forms.DataGridViewButtonColumn();
 			this.DataGridViewOrders = new System.Windows.Forms.DataGridView();
 			this.panel1.SuspendLayout();
-			this.tabControl1.SuspendLayout();
-			this.tabPageDB.SuspendLayout();
-			this.tabPageTxt.SuspendLayout();
 			this.groupBox1.SuspendLayout();
 			this.groupBoxLoad.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
@@ -112,18 +94,17 @@
 			// panel1
 			// 
 			this.panel1.Controls.Add(this.buttonClearFiles);
-			this.panel1.Controls.Add(this.tabControl1);
 			this.panel1.Controls.Add(this.comboBoxStrategyFile);
 			this.panel1.Controls.Add(this.buttonStrategyFile);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel1.Location = new System.Drawing.Point(0, 0);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(1125, 60);
+			this.panel1.Size = new System.Drawing.Size(1125, 32);
 			this.panel1.TabIndex = 29;
 			// 
 			// buttonClearFiles
 			// 
-			this.buttonClearFiles.Location = new System.Drawing.Point(778, 32);
+			this.buttonClearFiles.Location = new System.Drawing.Point(773, 5);
 			this.buttonClearFiles.Name = "buttonClearFiles";
 			this.buttonClearFiles.Size = new System.Drawing.Size(90, 23);
 			this.buttonClearFiles.TabIndex = 30;
@@ -131,164 +112,17 @@
 			this.buttonClearFiles.UseVisualStyleBackColor = true;
 			this.buttonClearFiles.Click += new System.EventHandler(this.buttonClearFiles_Click);
 			// 
-			// tabControl1
-			// 
-			this.tabControl1.Alignment = System.Windows.Forms.TabAlignment.Right;
-			this.tabControl1.Controls.Add(this.tabPageDB);
-			this.tabControl1.Controls.Add(this.tabPageTxt);
-			this.tabControl1.Location = new System.Drawing.Point(10, 1);
-			this.tabControl1.Multiline = true;
-			this.tabControl1.Name = "tabControl1";
-			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(965, 30);
-			this.tabControl1.TabIndex = 29;
-			// 
-			// tabPageDB
-			// 
-			this.tabPageDB.Controls.Add(this.textBoxPwd);
-			this.tabPageDB.Controls.Add(this.label8);
-			this.tabPageDB.Controls.Add(this.textBoxUser);
-			this.tabPageDB.Controls.Add(this.label7);
-			this.tabPageDB.Controls.Add(this.textBoxServer);
-			this.tabPageDB.Controls.Add(this.label1);
-			this.tabPageDB.Location = new System.Drawing.Point(4, 4);
-			this.tabPageDB.Name = "tabPageDB";
-			this.tabPageDB.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPageDB.Size = new System.Drawing.Size(921, 22);
-			this.tabPageDB.TabIndex = 1;
-			this.tabPageDB.Text = "Data";
-			this.tabPageDB.UseVisualStyleBackColor = true;
-			// 
-			// textBoxPwd
-			// 
-			this.textBoxPwd.Location = new System.Drawing.Point(474, -1);
-			this.textBoxPwd.Name = "textBoxPwd";
-			this.textBoxPwd.PasswordChar = '*';
-			this.textBoxPwd.Size = new System.Drawing.Size(120, 21);
-			this.textBoxPwd.TabIndex = 3;
-			// 
-			// label8
-			// 
-			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(430, 4);
-			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(29, 12);
-			this.label8.TabIndex = 42;
-			this.label8.Text = "密码";
-			this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			// 
-			// textBoxUser
-			// 
-			this.textBoxUser.Location = new System.Drawing.Point(301, -1);
-			this.textBoxUser.Name = "textBoxUser";
-			this.textBoxUser.Size = new System.Drawing.Size(120, 21);
-			this.textBoxUser.TabIndex = 2;
-			// 
-			// label7
-			// 
-			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(267, 3);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(29, 12);
-			this.label7.TabIndex = 42;
-			this.label7.Text = "帐号";
-			this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			// 
-			// textBoxServer
-			// 
-			this.textBoxServer.Location = new System.Drawing.Point(50, 0);
-			this.textBoxServer.Name = "textBoxServer";
-			this.textBoxServer.Size = new System.Drawing.Size(205, 21);
-			this.textBoxServer.TabIndex = 1;
-			// 
-			// label1
-			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(6, 5);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(41, 12);
-			this.label1.TabIndex = 42;
-			this.label1.Text = "服务器";
-			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			// 
-			// tabPageTxt
-			// 
-			this.tabPageTxt.Controls.Add(this.textBoxDataSourceReal);
-			this.tabPageTxt.Controls.Add(this.textBoxDataSourceTick);
-			this.tabPageTxt.Controls.Add(this.TextBoxDataSourceK);
-			this.tabPageTxt.Controls.Add(this.buttonDataSourceReal);
-			this.tabPageTxt.Controls.Add(this.buttonDataSourceTick);
-			this.tabPageTxt.Controls.Add(this.ButtonDataSource);
-			this.tabPageTxt.Location = new System.Drawing.Point(4, 4);
-			this.tabPageTxt.Name = "tabPageTxt";
-			this.tabPageTxt.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPageTxt.Size = new System.Drawing.Size(921, 22);
-			this.tabPageTxt.TabIndex = 0;
-			this.tabPageTxt.Text = "Text";
-			this.tabPageTxt.UseVisualStyleBackColor = true;
-			// 
-			// textBoxDataSourceReal
-			// 
-			this.textBoxDataSourceReal.Location = new System.Drawing.Point(555, 1);
-			this.textBoxDataSourceReal.Name = "textBoxDataSourceReal";
-			this.textBoxDataSourceReal.Size = new System.Drawing.Size(202, 21);
-			this.textBoxDataSourceReal.TabIndex = 26;
-			this.textBoxDataSourceReal.Text = "Z:\\";
-			this.textBoxDataSourceReal.WordWrap = false;
-			// 
-			// textBoxDataSourceTick
-			// 
-			this.textBoxDataSourceTick.Location = new System.Drawing.Point(279, 1);
-			this.textBoxDataSourceTick.Name = "textBoxDataSourceTick";
-			this.textBoxDataSourceTick.Size = new System.Drawing.Size(202, 21);
-			this.textBoxDataSourceTick.TabIndex = 27;
-			this.textBoxDataSourceTick.Text = "Z:\\";
-			this.textBoxDataSourceTick.WordWrap = false;
-			// 
-			// TextBoxDataSourceK
-			// 
-			this.TextBoxDataSourceK.Location = new System.Drawing.Point(2, 1);
-			this.TextBoxDataSourceK.Name = "TextBoxDataSourceK";
-			this.TextBoxDataSourceK.Size = new System.Drawing.Size(202, 21);
-			this.TextBoxDataSourceK.TabIndex = 28;
-			this.TextBoxDataSourceK.Text = "Z:\\";
-			this.TextBoxDataSourceK.WordWrap = false;
-			// 
-			// buttonDataSourceReal
-			// 
-			this.buttonDataSourceReal.Location = new System.Drawing.Point(757, -1);
-			this.buttonDataSourceReal.Name = "buttonDataSourceReal";
-			this.buttonDataSourceReal.Size = new System.Drawing.Size(74, 25);
-			this.buttonDataSourceReal.TabIndex = 29;
-			this.buttonDataSourceReal.Text = "实时数据源";
-			// 
-			// buttonDataSourceTick
-			// 
-			this.buttonDataSourceTick.Location = new System.Drawing.Point(481, -1);
-			this.buttonDataSourceTick.Name = "buttonDataSourceTick";
-			this.buttonDataSourceTick.Size = new System.Drawing.Size(74, 25);
-			this.buttonDataSourceTick.TabIndex = 30;
-			this.buttonDataSourceTick.Text = "Tick数据源";
-			// 
-			// ButtonDataSource
-			// 
-			this.ButtonDataSource.Location = new System.Drawing.Point(204, -1);
-			this.ButtonDataSource.Name = "ButtonDataSource";
-			this.ButtonDataSource.Size = new System.Drawing.Size(75, 25);
-			this.ButtonDataSource.TabIndex = 31;
-			this.ButtonDataSource.Text = "K线数据源";
-			// 
 			// comboBoxStrategyFile
 			// 
 			this.comboBoxStrategyFile.FormattingEnabled = true;
-			this.comboBoxStrategyFile.Location = new System.Drawing.Point(11, 34);
+			this.comboBoxStrategyFile.Location = new System.Drawing.Point(6, 7);
 			this.comboBoxStrategyFile.Name = "comboBoxStrategyFile";
 			this.comboBoxStrategyFile.Size = new System.Drawing.Size(682, 20);
 			this.comboBoxStrategyFile.TabIndex = 4;
 			// 
 			// buttonStrategyFile
 			// 
-			this.buttonStrategyFile.Location = new System.Drawing.Point(697, 33);
+			this.buttonStrategyFile.Location = new System.Drawing.Point(692, 6);
 			this.buttonStrategyFile.Name = "buttonStrategyFile";
 			this.buttonStrategyFile.Size = new System.Drawing.Size(75, 23);
 			this.buttonStrategyFile.TabIndex = 27;
@@ -312,7 +146,7 @@
 			this.groupBox1.Controls.Add(this.label3);
 			this.groupBox1.Controls.Add(this.label2);
 			this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
-			this.groupBox1.Location = new System.Drawing.Point(0, 60);
+			this.groupBox1.Location = new System.Drawing.Point(0, 32);
 			this.groupBox1.Name = "groupBox1";
 			this.groupBox1.Size = new System.Drawing.Size(1125, 35);
 			this.groupBox1.TabIndex = 37;
@@ -477,7 +311,7 @@
 			// splitContainer2
 			// 
 			this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.splitContainer2.Location = new System.Drawing.Point(0, 95);
+			this.splitContainer2.Location = new System.Drawing.Point(0, 67);
 			this.splitContainer2.Name = "splitContainer2";
 			// 
 			// splitContainer2.Panel1
@@ -488,7 +322,7 @@
 			// splitContainer2.Panel2
 			// 
 			this.splitContainer2.Panel2.Controls.Add(this.splitContainer1);
-			this.splitContainer2.Size = new System.Drawing.Size(1125, 458);
+			this.splitContainer2.Size = new System.Drawing.Size(1125, 486);
 			this.splitContainer2.SplitterDistance = 195;
 			this.splitContainer2.TabIndex = 38;
 			// 
@@ -498,13 +332,13 @@
 			this.propertyGridParams.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.propertyGridParams.Location = new System.Drawing.Point(0, 0);
 			this.propertyGridParams.Name = "propertyGridParams";
-			this.propertyGridParams.Size = new System.Drawing.Size(195, 238);
+			this.propertyGridParams.Size = new System.Drawing.Size(195, 266);
 			this.propertyGridParams.TabIndex = 13;
 			// 
 			// propertyGridFlo
 			// 
 			this.propertyGridFlo.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.propertyGridFlo.Location = new System.Drawing.Point(0, 238);
+			this.propertyGridFlo.Location = new System.Drawing.Point(0, 266);
 			this.propertyGridFlo.Name = "propertyGridFlo";
 			this.propertyGridFlo.Size = new System.Drawing.Size(195, 220);
 			this.propertyGridFlo.TabIndex = 14;
@@ -523,8 +357,8 @@
 			// splitContainer1.Panel2
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.DataGridViewOrders);
-			this.splitContainer1.Size = new System.Drawing.Size(926, 458);
-			this.splitContainer1.SplitterDistance = 123;
+			this.splitContainer1.Size = new System.Drawing.Size(926, 486);
+			this.splitContainer1.SplitterDistance = 130;
 			this.splitContainer1.TabIndex = 30;
 			// 
 			// DataGridViewStrategies
@@ -567,7 +401,7 @@
 			this.DataGridViewStrategies.RowTemplate.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
 			this.DataGridViewStrategies.RowTemplate.Height = 27;
 			this.DataGridViewStrategies.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.DataGridViewStrategies.Size = new System.Drawing.Size(926, 123);
+			this.DataGridViewStrategies.Size = new System.Drawing.Size(926, 130);
 			this.DataGridViewStrategies.TabIndex = 30;
 			// 
 			// StraName
@@ -690,7 +524,7 @@
 			this.DataGridViewOrders.RowHeadersWidth = 6;
 			this.DataGridViewOrders.RowTemplate.Height = 27;
 			this.DataGridViewOrders.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.DataGridViewOrders.Size = new System.Drawing.Size(926, 331);
+			this.DataGridViewOrders.Size = new System.Drawing.Size(926, 352);
 			this.DataGridViewOrders.TabIndex = 29;
 			// 
 			// Plat
@@ -703,11 +537,6 @@
 			this.Name = "Plat";
 			this.Size = new System.Drawing.Size(1125, 553);
 			this.panel1.ResumeLayout(false);
-			this.tabControl1.ResumeLayout(false);
-			this.tabPageDB.ResumeLayout(false);
-			this.tabPageDB.PerformLayout();
-			this.tabPageTxt.ResumeLayout(false);
-			this.tabPageTxt.PerformLayout();
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
 			this.groupBoxLoad.ResumeLayout(false);
@@ -764,21 +593,6 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn ExcStatus;
 		private System.Windows.Forms.DataGridViewButtonColumn report;
 		private System.Windows.Forms.DataGridViewButtonColumn Graphics;
-		private System.Windows.Forms.TabControl tabControl1;
-		private System.Windows.Forms.TabPage tabPageTxt;
-		private System.Windows.Forms.TextBox textBoxDataSourceReal;
-		private System.Windows.Forms.TextBox textBoxDataSourceTick;
-		private System.Windows.Forms.TextBox TextBoxDataSourceK;
-		private System.Windows.Forms.Button buttonDataSourceReal;
-		private System.Windows.Forms.Button buttonDataSourceTick;
-		private System.Windows.Forms.Button ButtonDataSource;
-		private System.Windows.Forms.TabPage tabPageDB;
-		private System.Windows.Forms.TextBox textBoxPwd;
-		private System.Windows.Forms.Label label8;
-		private System.Windows.Forms.TextBox textBoxUser;
-		private System.Windows.Forms.Label label7;
-		private System.Windows.Forms.TextBox textBoxServer;
-		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.PropertyGrid propertyGridParams;
 		private System.Windows.Forms.PropertyGrid propertyGridFlo;
 		private System.Windows.Forms.Button buttonClearFiles;
