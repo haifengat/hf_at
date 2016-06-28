@@ -225,7 +225,7 @@ namespace HaiFeng
 			else
 			{
 				List<Bar> bars = null;
-				if (data.IntervalType == EnumIntervalType.Min)
+				if (data.IntervalType == EnumIntervalType.Min || data.IntervalType == EnumIntervalType.Hour)
 				{
 					bars = _dataProcess.GetData.QueryMin(inst, dtBegin.ToString("yyyyMMdd"), dtEnd.ToString("yyyyMMdd")).Select(n => new Bar
 					{
@@ -258,7 +258,19 @@ namespace HaiFeng
 				else
 					bars = _dataProcess.GetData.QueryDay(inst, dtBegin.ToString("yyyyMMdd"), dtEnd.ToString("yyyyMMdd")).Select(n => new Bar
 					{
-						D = DateTime.ParseExact(n._id, "yyyyMMdd HH:mm:ss", null),
+						/*{ 
+							"_id" : "20140519", 
+							"Open" : 16050.0, 
+							"High" : 16050.0, 
+							"Low" : 15890.0, 
+							"Close" : 16015.0, 
+							"Volume" : NumberInt(3604), 
+							"OpenInterest" : 2984.0, 
+							"UpperLimit" : 17280.0, 
+							"LowerLimit" : 14720.0, 
+							"Settlement" : 15965.0
+						}*/
+						D = DateTime.ParseExact(n._id, "yyyyMMdd", null),
 						O = (decimal)n.Open,
 						H = (decimal)n.High,
 						L = (decimal)n.Low,
@@ -267,7 +279,7 @@ namespace HaiFeng
 						I = (decimal)n.OpenInterest
 					}).ToList();
 
-				
+
 				if (bars == null)
 				{
 					return;
