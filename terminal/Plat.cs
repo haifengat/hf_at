@@ -649,6 +649,7 @@ namespace HaiFeng
 			if (_listOrderStra.IndexOf(pStrategy) >= 0)
 			{
 				LogInfo($"{pOrderItem.Date},{pOrderItem.Dir},{pOrderItem.Offset},{pOrderItem.Price},{pOrderItem.Lots},{pOrderItem.Remark}");
+				
 				//处理上期所平今操作
 				if (pOrderItem.Offset == Offset.Close)
 				{

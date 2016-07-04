@@ -299,7 +299,10 @@ namespace HaiFeng
 				{
 					var o = _stra.Operations[i];
 					if (o.Date == dt)
-						e.Text += "\r\n" + (o.Dir == Direction.Buy ? "买" : "卖") + (o.Offset == Offset.Open ? "开" : "平") + o.Lots + "@" + o.Price.ToString("F2");
+					{
+						e.Text += $"\r\n{(o.Dir == Direction.Buy ? "买" : "卖")}{(o.Offset == Offset.Open ? "开" : "平")} {o.Lots}@{o.Price:.2}";
+						e.Text += $"\r\n[{o.Remark}]";
+					}
 				}
 			}
 		}

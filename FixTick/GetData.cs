@@ -112,7 +112,9 @@ namespace HaiFeng
 			{
 				Type = BarType.TradeDate
 			});
-			return JsonConvert.DeserializeObject<List<string>>(msg);
+			var list = JsonConvert.DeserializeObject<List<string>>(msg);
+			list.Sort();
+			return list;
 		}
 	}
 }
