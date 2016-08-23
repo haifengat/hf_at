@@ -698,12 +698,15 @@ namespace HaiFeng
 			TBKey();    //TB数据更新
 			periodUpper(); //跨周期数据更新
 
+			foreach (var i in this._indicators)//.Where(i => !i.IsOperated))
+			{
+				//base data series run the indicator before strategy
+				if(new[] { i.IndA,i.IndC,i.IndD,i.IndH,i.IndI,i.IndL,i.IndO,i.IndV}.ToList().IndexOf(i.Input) >= 0)
+					//i.isUpdated = false;
+					i.update();// .OnBarUpdate();
+			}
+
 			this.OnBarUpdate();
-			//foreach (var i in this._indicators)//.Where(i => !i.IsOperated))
-			//{
-			//	i.isUpdated = false;
-			//	i.update();// .OnBarUpdate();
-			//}
 		}
 
 		private void indicator2False(Indicator pIdx)
