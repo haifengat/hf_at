@@ -59,6 +59,8 @@
 			this.label2 = new System.Windows.Forms.Label();
 			this.splitContainer2 = new System.Windows.Forms.SplitContainer();
 			this.propertyGridParams = new System.Windows.Forms.PropertyGrid();
+			this.label7 = new System.Windows.Forms.Label();
+			this.label1 = new System.Windows.Forms.Label();
 			this.propertyGridFlo = new System.Windows.Forms.PropertyGrid();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.DataGridViewStrategies = new System.Windows.Forms.DataGridView();
@@ -317,6 +319,8 @@
 			// splitContainer2.Panel1
 			// 
 			this.splitContainer2.Panel1.Controls.Add(this.propertyGridParams);
+			this.splitContainer2.Panel1.Controls.Add(this.label7);
+			this.splitContainer2.Panel1.Controls.Add(this.label1);
 			this.splitContainer2.Panel1.Controls.Add(this.propertyGridFlo);
 			// 
 			// splitContainer2.Panel2
@@ -330,17 +334,37 @@
 			// 
 			this.propertyGridParams.CategoryForeColor = System.Drawing.SystemColors.InactiveCaptionText;
 			this.propertyGridParams.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.propertyGridParams.Location = new System.Drawing.Point(0, 0);
+			this.propertyGridParams.Location = new System.Drawing.Point(0, 20);
 			this.propertyGridParams.Name = "propertyGridParams";
-			this.propertyGridParams.Size = new System.Drawing.Size(195, 266);
-			this.propertyGridParams.TabIndex = 13;
+			this.propertyGridParams.Size = new System.Drawing.Size(195, 232);
+			this.propertyGridParams.TabIndex = 32;
+			// 
+			// label7
+			// 
+			this.label7.Dock = System.Windows.Forms.DockStyle.Top;
+			this.label7.Location = new System.Drawing.Point(0, 0);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(195, 20);
+			this.label7.TabIndex = 31;
+			this.label7.Text = "策略参数";
+			this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			// 
+			// label1
+			// 
+			this.label1.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.label1.Location = new System.Drawing.Point(0, 252);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(195, 20);
+			this.label1.TabIndex = 15;
+			this.label1.Text = "追单设置";
+			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// propertyGridFlo
 			// 
 			this.propertyGridFlo.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.propertyGridFlo.Location = new System.Drawing.Point(0, 266);
+			this.propertyGridFlo.Location = new System.Drawing.Point(0, 272);
 			this.propertyGridFlo.Name = "propertyGridFlo";
-			this.propertyGridFlo.Size = new System.Drawing.Size(195, 220);
+			this.propertyGridFlo.Size = new System.Drawing.Size(195, 214);
 			this.propertyGridFlo.TabIndex = 14;
 			// 
 			// splitContainer1
@@ -364,7 +388,6 @@
 			// DataGridViewStrategies
 			// 
 			this.DataGridViewStrategies.AllowUserToAddRows = false;
-			this.DataGridViewStrategies.AllowUserToDeleteRows = false;
 			this.DataGridViewStrategies.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
 			dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
 			dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
@@ -593,8 +616,10 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn ExcStatus;
 		private System.Windows.Forms.DataGridViewButtonColumn report;
 		private System.Windows.Forms.DataGridViewButtonColumn Graphics;
-		private System.Windows.Forms.PropertyGrid propertyGridParams;
 		private System.Windows.Forms.PropertyGrid propertyGridFlo;
 		private System.Windows.Forms.Button buttonClearFiles;
+		private System.Windows.Forms.PropertyGrid propertyGridParams;
+		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.Label label1;
 	}
 }

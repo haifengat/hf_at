@@ -35,7 +35,7 @@ namespace HaiFeng
 				using (FormLogin fl = new FormLogin())
 					if (fl.ShowDialog() == DialogResult.OK)
 					{
-						f.Text = $"AT  v{Application.ProductVersion} [{fl.Trade.Investor}@{fl.Trade.Server}]";
+						f.Text = $"AT  v{Application.ProductVersion}";
 						Plat plat = new Plat(fl.Trade, fl.Quote);
 						plat.Dock = DockStyle.Fill;
 						f.Height = plat.Height;

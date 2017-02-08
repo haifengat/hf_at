@@ -87,31 +87,24 @@ namespace HaiFeng
 			ShowMsg("connecting ...");
 			string front = (string)_dt.Rows.Find(this.KryptonComboBoxServer.Text)[1];
 			string[] fs = front.Split('|');
+			_Investor = this.KryptonTextBoxInvestor.Text;
+			_Password = this.KryptonTextBoxPassword.Text;
+			_ServerTrade = fs[2];
+			_Broker = fs[1];
+			_ServerQuote = fs[3];
 
 			if (!string.IsNullOrEmpty(fs[3]))
 			{
-				Quote = new Quote
-				{
-					Broker = fs[1],
-					Server = fs[3],
-					Investor = this.KryptonTextBoxInvestor.Text,
-					Password = this.KryptonTextBoxPassword.Text,
-				};
+				Quote = new CTPQuote();
 				Quote.OnFrontConnected += quote_OnFrontConnected;
 				Quote.OnRspUserLogin += quote_OnRspUserLogin;
 			}
 
-			Trade = new TradeExt
-			{
-				Server = fs[2],
-				Investor = this.KryptonTextBoxInvestor.Text,
-				Password = this.KryptonTextBoxPassword.Text,
-				Broker = fs[1],
-			};
+			Trade = new TradeExt();
 			Trade.OnFrontConnected += trade_OnFrontConnected;
 			Trade.OnRspUserLogin += trade_OnRspUserLogin;
 			Trade.OnRtnExchangeStatus += trade_OnRtnExchangeStatus;
-			Trade.ReqConnect();
+			Trade.ReqConnect(_ServerTrade);
 		}
 
 		private void kryptonButtonExit_Click(object sender, EventArgs e)
@@ -148,7 +141,7 @@ namespace HaiFeng
 				if (Quote == null)
 					LoginSuccess();
 				else
-					Quote.ReqConnect();
+					Quote.ReqConnect(_ServerQuote);
 			}
 			else
 			{
@@ -162,7 +155,7 @@ namespace HaiFeng
 		void trade_OnFrontConnected(object sender, EventArgs e)
 		{
 			ShowMsg("connected.");
-			((Trade)sender).ReqUserLogin();
+			((Trade)sender).ReqUserLogin(_Investor, _Password, _Broker);
 			ShowMsg("loging ...");
 		}
 
@@ -173,7 +166,7 @@ namespace HaiFeng
 
 		void quote_OnFrontConnected(object sender, EventArgs e)
 		{
-			((Quote)sender).ReqUserLogin();
+			((Quote)sender).ReqUserLogin(_Investor, _Password, _Broker);
 		}
 
 		//登录成功
@@ -191,7 +184,7 @@ namespace HaiFeng
 			this.Invoke(new Action(() =>
 			{
 				Server = this.KryptonComboBoxServer.Text;
-				File.WriteAllText("login.ini", Trade.Investor + "@" + Server);
+				File.WriteAllText("login.ini", _Investor + "@" + Server);
 				this.DialogResult = DialogResult.OK;
 			}));
 		}
@@ -200,6 +193,11 @@ namespace HaiFeng
 		/// 消息传递,接口登录过程中有消息返回时被调用.
 		/// </summary>
 		public Action<string> Msg;
+		private string _Broker;
+		private string _ServerQuote;
+		private string _ServerTrade;
+		private string _Investor;
+		private string _Password;
 
 		void ShowMsg(string pMsg)
 		{

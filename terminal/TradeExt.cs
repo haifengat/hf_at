@@ -5,12 +5,15 @@ using System.Threading;
 
 namespace HaiFeng
 {
-	public partial class TradeExt : Trade
+	public partial class TradeExt : CTPTrade
 	{
 		int _custom = 100000;
 
 		public TradeExt()
 		{
+			this.OnFrontConnected += (snd, ea) => ShowInfo("connected.");
+			this.OnRspUserLogout += (snd, ea) => ShowInfo($"logout:{ea.Value}");
+
 			this.OnRtnOrder += (snd, e) =>
 			  {
 				  if (!e.Value.IsLocal) return;
@@ -153,7 +156,7 @@ namespace HaiFeng
 						return 0;
 					}
 			}
-			return base.ReqOrderInsert(pInstrument, pDirection, pOffset, pPrice, pVolume, pType, pCustom, pHedge);
+			return base.ReqOrderInsert(pInstrument, pDirection, pOffset, pPrice, pVolume, pCustom, pType, pHedge);
 		}
 
 
@@ -162,6 +165,7 @@ namespace HaiFeng
 		#region 追单功能
 		public FollowConfig FloConfig = new FollowConfig();    //是否为null,处理多次调用
 		bool _initFlow = false;   //是否初始化过
+		internal string _ServerTrade;
 
 		/// <summary>
 		/// 启动追单

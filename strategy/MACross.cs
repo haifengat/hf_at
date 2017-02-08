@@ -7,7 +7,7 @@ namespace HaiFeng
 	{
 		public MACross()
 		{
-		
+
 
 		}
 

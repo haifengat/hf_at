@@ -645,11 +645,12 @@ namespace HaiFeng
 		//策略委托:
 		void stra_OnRtnOrder(OrderItem pOrderItem, Data pData, Strategy pStrategy)
 		{
+			_dtOrders.Rows.Add(_dtOrders.Rows.Count + 1, pOrderItem.Date, pOrderItem.Dir, pOrderItem.Offset, pOrderItem.Price, pOrderItem.Lots, pOrderItem.Remark);
 			//实际委托
 			if (_listOrderStra.IndexOf(pStrategy) >= 0)
 			{
 				LogInfo($"{pOrderItem.Date},{pOrderItem.Dir},{pOrderItem.Offset},{pOrderItem.Price},{pOrderItem.Lots},{pOrderItem.Remark}");
-				
+
 				//处理上期所平今操作
 				if (pOrderItem.Offset == Offset.Close)
 				{
@@ -726,8 +727,7 @@ namespace HaiFeng
 			foreach (Bar v in datasOfMinute)
 			{
 				//在当前K线范围内:更新
-				if (v.D >= dtBegin
-					&& v.D < dtNext)
+				if (v.D >= dtBegin && v.D < dtNext)
 				{
 					item.H = Math.Max(item.H, v.H);
 					item.L = Math.Min(item.L, v.L);
