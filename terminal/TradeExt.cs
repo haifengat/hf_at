@@ -73,7 +73,7 @@ namespace HaiFeng
 		/// 会触发 oninfo 事件
 		/// </summary>
 		/// <param name="msg"></param>
-		public void ShowInfo(string msg) { if (_showInfo != null) _showInfo(msg); }
+		private void ShowInfo(string msg) { _showInfo?.Invoke(msg); }
 
 		/// <summary>
 		/// 平仓

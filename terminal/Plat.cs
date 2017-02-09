@@ -32,6 +32,13 @@ namespace HaiFeng
 			_t.StartFollow(_q);
 
 			_t.OnInfo += (msg) => LogInfo(msg);
+			// 增加信息输出
+			_t.OnFrontConnected += (snd, ea) => LogDebug("连接成功");
+			_t.OnRspUserLogout += (snd, ea) => LogDebug($"断开【{ea.Value,4}】");
+			_t.OnRtnErrOrder += (snd, ea) => LogError($"{ea.Value.InstrumentID,-8}{ea.Value.Direction,4}{ea.Value.Offset,6}{ea.Value.StatusMsg}");
+			_t.OnRtnOrder += (snd, ea) => LogWarn($"{ea.Value.InstrumentID,-8}{ea.Value.Direction,4}{ea.Value.Offset,6}{ea.Value.StatusMsg}");
+			_t.OnRtnNotice += (snd, ea) => LogWarn($"重要提示: {ea.Value}");
+			_t.OnRtnCancel += (snd, ea) => LogWarn($"{ea.Value.InstrumentID,-8}{ea.Value.Direction,4}{ea.Value.Offset,6}{ea.Value.StatusMsg}");
 
 			InitializeComponent();
 		}
@@ -322,6 +329,7 @@ namespace HaiFeng
 					_q.ReqSubscribeMarketData(inst);
 				_listOnTickStra.Add(stra); //可以接收实际行情
 			}
+			LogInfo($"【{stra.Name,8}】策略加载数据完成.");
 		}
 
 		//选择不同策略:显示策略成交记录
@@ -434,7 +442,8 @@ namespace HaiFeng
 				cfg = JsonConvert.DeserializeObject<ConfigFile>(File.ReadAllText("config.json"));
 				foreach (var file in cfg.StrategyFiles)
 				{
-					LoadStrategyFile(file);
+					if (File.Exists(file))
+						LoadStrategyFile(file);
 				}
 				_t.FloConfig = cfg.FloConfig;
 			}
@@ -483,6 +492,8 @@ namespace HaiFeng
 					}
 
 					int rid = AddStra(stra, fields[0], fields[2], fields[3], DateTime.Parse(fields[4]), string.IsNullOrWhiteSpace(fields[5]) ? DateTime.MaxValue : DateTime.Parse(fields[5]));
+
+					LogInfo($"【{stra.Name,8}】读取策略 {(rid == -1 ? "出错" : "完成")}");
 					//if (rid == -1)//加载不成功
 					//{
 					//	continue;
@@ -649,7 +660,7 @@ namespace HaiFeng
 			//实际委托
 			if (_listOrderStra.IndexOf(pStrategy) >= 0)
 			{
-				LogInfo($"{pOrderItem.Date},{pOrderItem.Dir},{pOrderItem.Offset},{pOrderItem.Price},{pOrderItem.Lots},{pOrderItem.Remark}");
+				LogInfo($"【{pStrategy.Name,8}】{pOrderItem.Date,20}{pOrderItem.Dir,4}{pOrderItem.Offset,6}{pOrderItem.Price,12:F2}{pOrderItem.Lots,4}{pOrderItem.Remark}");
 
 				//处理上期所平今操作
 				if (pOrderItem.Offset == Offset.Close)

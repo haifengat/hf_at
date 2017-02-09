@@ -87,6 +87,9 @@
     <Reference Include="AsyncIO">
       <HintPath>..\Resources\AsyncIO.dll</HintPath>
     </Reference>
+    <Reference Include="IrisSkin4">
+      <HintPath>..\Resources\IrisSkin4.dll</HintPath>
+    </Reference>
     <Reference Include="NetMQ">
       <HintPath>..\Resources\NetMQ.dll</HintPath>
     </Reference>

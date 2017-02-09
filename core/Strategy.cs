@@ -697,7 +697,6 @@ namespace HaiFeng
 
 			TBKey();    //TB数据更新
 			periodUpper(); //跨周期数据更新
-
 			foreach (var i in this._indicators)//.Where(i => !i.IsOperated))
 			{
 				//base data series run the indicator before strategy

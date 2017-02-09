@@ -16,8 +16,8 @@ namespace HaiFeng
 		static void Main(string[] args)
 		{
 			_errLog = "err_" + Application.ProductName + ".log";
-
-			Console.Title = "AT  v" + Application.ProductVersion;
+			var ver = new Version(Application.ProductVersion);
+			Console.Title = $"AT {ver.Major}.{ver.MajorRevision}";
 			DisableCloseButton(Console.Title);
 			//Application.Run(new Form1() { Text = Console.Title });
 
@@ -29,13 +29,13 @@ namespace HaiFeng
 			Application.ThreadException += Application_ThreadException;
 			//处理非UI线程异常 
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-
 			using (Form f = new Form())
 			{
 				using (FormLogin fl = new FormLogin())
 					if (fl.ShowDialog() == DialogResult.OK)
 					{
-						f.Text = $"AT  v{Application.ProductVersion}";
+						f.Text = $"AT {ver.Major}.{ver.MajorRevision} ({fl.KryptonTextBoxInvestor.Text}@{fl.KryptonComboBoxServer.Text})";
+						Console.Title += $" ({fl.KryptonTextBoxInvestor.Text}@{fl.KryptonComboBoxServer.Text})";
 						Plat plat = new Plat(fl.Trade, fl.Quote);
 						plat.Dock = DockStyle.Fill;
 						f.Height = plat.Height;
