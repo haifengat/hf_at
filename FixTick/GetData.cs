@@ -88,6 +88,10 @@ namespace HaiFeng
 			return msg;
 		}
 
+		/// <summary>
+		/// 获取品种信息(最小变动/合约乘数)
+		/// </summary>
+		/// <returns></returns>
 		public List<Product> QueryProduct()
 		{
 			string msg = SendAndReceive(new ReqPackage
@@ -97,6 +101,10 @@ namespace HaiFeng
 			return JsonConvert.DeserializeObject<List<Product>>(msg);
 		}
 
+		/// <summary>
+		/// 获取各品种交易时间
+		/// </summary>
+		/// <returns></returns>
 		public List<WorkingTime> QueryTime()
 		{
 			string msg = SendAndReceive(new ReqPackage
@@ -106,6 +114,10 @@ namespace HaiFeng
 			return JsonConvert.DeserializeObject<List<WorkingTime>>(msg);
 		}
 
+		/// <summary>
+		/// 获取交易日历
+		/// </summary>
+		/// <returns></returns>
 		public List<string> QueryDate()
 		{
 			var msg = SendAndReceive(new ReqPackage

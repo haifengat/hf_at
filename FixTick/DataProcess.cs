@@ -12,6 +12,7 @@ namespace HaiFeng
 {
 	public class DataProcess
 	{
+		//交易日历
 		List<string> _tradeDates = new List<string>();
 		public ConcurrentDictionary<string, Product> ProductInfo = new ConcurrentDictionary<string, Product>();
 		private ConcurrentDictionary<string, WorkingTime> _workingTimes = new ConcurrentDictionary<string, WorkingTime>();

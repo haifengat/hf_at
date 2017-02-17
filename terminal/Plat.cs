@@ -25,22 +25,13 @@ namespace HaiFeng
 	public partial class Plat : UserControl
 	{
 
-		public Plat(TradeExt pTrade, Quote pQuote)
+		public Plat()
 		{
-			_t = pTrade;
-			_q = pQuote;
-			_t.StartFollow(_q);
-
-			_t.OnInfo += (msg) => LogInfo(msg);
-			// 增加信息输出
-			_t.OnFrontConnected += (snd, ea) => LogDebug("连接成功");
-			_t.OnRspUserLogout += (snd, ea) => LogDebug($"断开【{ea.Value,4}】");
-			_t.OnRtnErrOrder += (snd, ea) => LogError($"{ea.Value.InstrumentID,-8}{ea.Value.Direction,4}{ea.Value.Offset,6}{ea.Value.StatusMsg}");
-			_t.OnRtnOrder += (snd, ea) => LogWarn($"{ea.Value.InstrumentID,-8}{ea.Value.Direction,4}{ea.Value.Offset,6}{ea.Value.StatusMsg}");
-			_t.OnRtnNotice += (snd, ea) => LogWarn($"重要提示: {ea.Value}");
-			_t.OnRtnCancel += (snd, ea) => LogWarn($"{ea.Value.InstrumentID,-8}{ea.Value.Direction,4}{ea.Value.Offset,6}{ea.Value.StatusMsg}");
-
 			InitializeComponent();
+			this.buttonLogin.Click += ButtonLogin_Click;
+			//修改完成后保存前置配置
+			this.richTextBox1.Leave += (snd, ea) => ReadServer();
+			ReadServer();
 		}
 
 		protected override void OnHandleDestroyed(EventArgs e)
@@ -57,24 +48,150 @@ namespace HaiFeng
 		private readonly List<Strategy> _listOrderStra = new List<Strategy>();
 		private readonly List<Strategy> _listOnTickStra = new List<Strategy>();
 
-		private readonly TradeExt _t;
-		private readonly Quote _q;
-		private readonly DataTable _dtOrders = new DataTable();
-		private DataProcess _dataProcess = new DataProcess();
+		private TradeExt _t;
+		private Quote _q;
 
-		private readonly System.Windows.Forms.Timer _timer = new System.Windows.Forms.Timer
+		////// 接口登录
+		//读取前置配置信息
+		void ReadServer()
 		{
-			Interval = 1000
-		};
+			if (!File.Exists("server.txt"))
+				File.WriteAllText("server.txt", @"模拟,ctp|9999|tcp://180.168.146.187:10000|tcp://180.168.146.187:10010
+股指仿真,ctp|1010|tcp://simctp1010.yhqh.com:41205|tcp://simctp1010.yhqh.com:41213", Encoding.GetEncoding("GB2312"));
 
-		private Strategy _curStrategy;
-		private readonly ConcurrentDictionary<string, MarketData> _dicTick000 = new ConcurrentDictionary<string, MarketData>(); //用于处理000数据
+			var lines = File.ReadAllLines("server.txt", Encoding.GetEncoding("GB2312"));
+			this.richTextBox1.Lines = lines;
+			var _dt = new DataTable();
+			_dt.Columns.Add("txt", typeof(string));
+			_dt.Columns.Add("val", typeof(string));
+			_dt.PrimaryKey = new[] { _dt.Columns[0] };
+			foreach (string line in lines)
+			{
+				if (string.IsNullOrEmpty(line))
+					continue;
+				_dt.Rows.Add(line.Split(','));
+			}
 
+			this.comboBoxServer.DataSource = _dt;
+			this.comboBoxServer.DisplayMember = "txt";
+			this.comboBoxServer.ValueMember = "val";
 
-		protected override void OnLoad(EventArgs e)
+			//保存的登录信息
+			if (File.Exists("login.ini"))
+			{
+				string[] fs = File.ReadAllLines("login.ini");
+				this.comboBoxServer.Text = fs[0].Split('@')[1];
+				this.textBoxUser.Text = fs[0].Split('@')[0];
+				this.ActiveControl = this.textBoxPwd;
+			}
+		}
+
+		//登录
+		private void ButtonLogin_Click(object sender, EventArgs e)
 		{
-			base.OnLoad(e);
+			if ((DateTime.Now - _logTime).TotalSeconds < 3)
+				return;
+			_logTime = DateTime.Now;
+			LogInfo("connecting ...");
+			string front = (string)this.comboBoxServer.SelectedValue;
+			string[] fs = front.Split('|');
+			_ServerTrade = fs[2];
+			_Broker = fs[1];
+			_ServerQuote = fs[3];
+			_Investor = this.textBoxUser.Text;
+			_Password = this.textBoxPwd.Text;
 
+			if (!string.IsNullOrEmpty(fs[3]))
+			{
+				_q = new CTPQuote();
+				_q.OnFrontConnected += quote_OnFrontConnected;
+				_q.OnRspUserLogin += quote_OnRspUserLogin;
+				_q.OnRtnTick += _q_OnRtnTick;
+			}
+
+			_t = new TradeExt();
+			_t.OnFrontConnected += trade_OnFrontConnected;
+			_t.OnRspUserLogin += trade_OnRspUserLogin;
+			_t.OnRtnExchangeStatus += trade_OnRtnExchangeStatus;
+
+			_t.OnInfo += (msg) => LogInfo(msg);
+			_t.OnRspUserLogout += (snd, ea) => LogDebug($"断开【{ea.Value,4}】");
+			_t.OnRtnErrOrder += (snd, ea) => LogError($"{ea.Value.InstrumentID,-8}{ea.Value.Direction,4}{ea.Value.Offset,6}{ea.Value.StatusMsg}");
+			_t.OnRtnOrder += (snd, ea) => LogWarn($"{ea.Value.InstrumentID,-8}{ea.Value.Direction,4}{ea.Value.Offset,6}{ea.Value.StatusMsg}");
+			_t.OnRtnNotice += (snd, ea) => LogWarn($"重要提示: {ea.Value}");
+			_t.OnRtnCancel += (snd, ea) => LogWarn($"{ea.Value.InstrumentID,-8}{ea.Value.Direction,4}{ea.Value.Offset,6}{ea.Value.StatusMsg}");
+
+			_t.ReqConnect(_ServerTrade);
+		}
+
+		void trade_OnRtnExchangeStatus(object sender, StatusEventArgs e)
+		{
+			//ShowMsg(e.Exchange + "=>" + e.Status);
+		}
+
+		void trade_OnRspUserLogin(object sender, IntEventArgs e)
+		{
+			if (e.Value == 0)
+			{
+				LogWarn("登录成功.");
+				//Thread.Sleep(1500);
+				//交易登录成功后,登录行情
+				if (_q == null)
+					SaveLogInfo();
+				else
+					_q.ReqConnect(_ServerQuote);
+			}
+			else
+			{
+				LogError("login error:" + e.Value);
+				_t.ReqUserLogout();
+				_t = null;
+				_q = null;
+			}
+		}
+
+		void trade_OnFrontConnected(object sender, EventArgs e)
+		{
+			LogDebug("连接成功");
+			((Trade)sender).ReqUserLogin(_Investor, _Password, _Broker);
+			LogInfo("登录中 ...");
+		}
+
+		void quote_OnRspUserLogin(object sender, IntEventArgs e)
+		{
+			_t.StartFollow(_q);
+			SaveLogInfo();
+			//重新订阅所有策略的行情
+			foreach (DataGridViewRow v in this.DataGridViewStrategies.Rows)
+				_q.ReqSubscribeMarketData((string)v.Cells["Instrument"].Value);
+		}
+
+		private void SaveLogInfo()
+		{
+			//未登录过(多次登录时不处理)
+			if (this.panelLogin.Enabled)
+			{
+				_tradingDate = _dataProcess.GetData.QueryDate();
+				this.Invoke(new Action(() =>
+				{
+					this.panelLogin.Enabled = false;
+					Console.Title += $" ({textBoxUser.Text}@{comboBoxServer.Text})";
+					File.WriteAllText("login.ini", _Investor + "@" + this.comboBoxServer.Text);
+					InitTerminalControls();
+				}));
+			}
+		}
+
+		void quote_OnFrontConnected(object sender, EventArgs e)
+		{
+			((Quote)sender).ReqUserLogin(_Investor, _Password, _Broker);
+		}
+		
+		////////////////////
+		
+
+		void InitTerminalControls()
+		{
 			//合约列表
 			var listInst = _t.DicInstrumentField.Keys.ToList();
 			listInst.Sort();
@@ -93,9 +210,7 @@ namespace HaiFeng
 			}
 			//_dtOrders.PrimaryKey = new[] { _dtOrders.Columns[""] };
 			this.DataGridViewOrders.DataSource = _dtOrders;
-
-			_q.OnRtnTick += _q_OnRtnTick;
-
+			
 			LoadConfig();
 			LoadStrategy();
 
@@ -113,7 +228,40 @@ namespace HaiFeng
 
 			this.propertyGridParams.PropertyValueChanged += propertyGridParams_PropertyValueChanged;
 
-			this.propertyGridFlo.SelectedObject = _t.FloConfig; //跟单配置
+			this.propertyGridFlo.SelectedObject = _cfg.FloConfig; //跟单配置
+			this.propertyGrid1.SelectedObject = _cfg.RestartTimes;   //起停时间
+		}
+
+		//策略产生的买卖信号表
+		private readonly DataTable _dtOrders = new DataTable();
+
+		//数据处理功能模块
+		private DataProcess _dataProcess = new DataProcess();
+
+		//平台相关配置
+		ConfigATP _cfg = null;
+
+		private readonly System.Windows.Forms.Timer _timer = new System.Windows.Forms.Timer
+		{
+			Interval = 1000
+		};
+
+		private Strategy _curStrategy;
+		private readonly ConcurrentDictionary<string, MarketData> _dicTick000 = new ConcurrentDictionary<string, MarketData>(); //用于处理000数据
+
+		//限制3秒内不允许重复点击登录按钮
+		private DateTime _logTime = DateTime.MinValue;
+		private string _ServerTrade;
+		private string _ServerQuote;
+		private string _Broker;
+		private string _Password;
+		private string _Investor;
+		private List<string> _tradingDate;
+
+		protected override void OnLoad(EventArgs e)
+		{
+			base.OnLoad(e);
+
 		}
 
 		//添加策略
@@ -422,31 +570,31 @@ namespace HaiFeng
 
 		private void SaveConfig()
 		{
-			ConfigFile cfg = new ConfigFile
-			{
-				StrategyFiles = new string[this.comboBoxStrategyFile.Items.Count],
-				FloConfig = _t.FloConfig,
-			};
+			if (_cfg == null) return;
+			_cfg.StrategyFiles = new string[this.comboBoxStrategyFile.Items.Count];
 			for (int i = 0; i < this.comboBoxStrategyFile.Items.Count; i++)
 			{
-				cfg.StrategyFiles[i] = (string)this.comboBoxStrategyFile.Items[i];
+				_cfg.StrategyFiles[i] = (string)this.comboBoxStrategyFile.Items[i];
 			}
-			File.WriteAllText("config.json", JsonConvert.SerializeObject(cfg));
+			File.WriteAllText("config.json", JsonConvert.SerializeObject(_cfg, Newtonsoft.Json.Formatting.Indented));
 		}
 
 		private void LoadConfig()
 		{
-			ConfigFile cfg = new ConfigFile();
 			if (File.Exists("config.json"))
 			{
-				cfg = JsonConvert.DeserializeObject<ConfigFile>(File.ReadAllText("config.json"));
-				foreach (var file in cfg.StrategyFiles)
+				_cfg = JsonConvert.DeserializeObject<ConfigATP>(File.ReadAllText("config.json"));
+				foreach (var file in _cfg.StrategyFiles)
 				{
 					if (File.Exists(file))
 						LoadStrategyFile(file);
 				}
-				_t.FloConfig = cfg.FloConfig;
 			}
+			else
+			{
+				_cfg = new ConfigATP();
+			}
+			_t.FloConfig = _cfg.FloConfig;
 		}
 
 		void SaveStrategy()
@@ -513,21 +661,59 @@ namespace HaiFeng
 
 		void _timer_Tick(object sender, EventArgs e)
 		{
-
-			//更新时间与交易所状态
-			foreach (DataGridViewRow row in this.DataGridViewStrategies.Rows)
+			//自动启停控制
+			if (_t == null)
 			{
-				Strategy stra;
-				if (_dicStrategies.TryGetValue((string)row.Cells["StraName"].Value, out stra))
+				if (_tradingDate.IndexOf(DateTime.Today.ToString("yyyyMMdd")) < 0)
 				{
-					if (stra.Datas.Count > 0)
+					//LogError($"{DateTime.Today.ToString("yyyyMMdd")} 非交易日");
+				}
+				else
+				{
+					//如果时间在设定的开始时间的5分钟内则重启接口
+					var now = DateTime.Now.TimeOfDay;
+					if (_cfg.RestartTimes.Count(n => now > TimeSpan.Parse(n) && now < TimeSpan.Parse(n).Add(TimeSpan.FromMinutes(5))) > 0)
 					{
-						row.Cells["UpdateTime"].Value = string.IsNullOrEmpty(stra.Tick.UpdateTime) ? stra.D[0].ToString() : stra.Tick.UpdateTime.Split(' ')[1];
-						ExchangeStatusType status;
-						if (_t.DicExcStatus.Count == 1)
-							row.Cells["ExcStatus"].Value = _t.DicExcStatus.ElementAt(0).Value;
-						else if (_t.DicExcStatus.TryGetValue(stra.InstrumentInfo.ProductID, out status))
-							row.Cells["ExcStatus"].Value = status;
+						this.ButtonLogin_Click(null, null);
+						Log("接口启动");
+					}
+				}
+			}
+			else if (_t.IsLogin)
+			{//退出接口:1.全部结束  2.2:00:00后全部非交易状态
+				if ((_t.DicExcStatus.Count(n => n.Value != ExchangeStatusType.Closed) == 0) || (DateTime.Now.TimeOfDay > TimeSpan.Parse("02:00:00") && DateTime.Now.TimeOfDay < TimeSpan.Parse("03:00:00") && _t.DicExcStatus.Count(n => n.Value == ExchangeStatusType.Trading) == 0))
+				{
+					Thread.Sleep(1000 * 5);
+					if (_t != null)
+					{
+						_t.ReqUserLogout();
+						_t = null;
+					}
+					if (_q != null) //行情未登出???
+					{
+						_q.ReqUserLogout();
+						_q = null;
+					}
+					Log("接口退出");
+				}
+				else
+				{
+					//更新时间与交易所状态
+					foreach (DataGridViewRow row in this.DataGridViewStrategies.Rows)
+					{
+						Strategy stra;
+						if (_dicStrategies.TryGetValue((string)row.Cells["StraName"].Value, out stra))
+						{
+							if (stra.Datas.Count > 0)
+							{
+								row.Cells["UpdateTime"].Value = string.IsNullOrEmpty(stra.Tick.UpdateTime) ? stra.D[0].ToString() : stra.Tick.UpdateTime.Split(' ')[1];
+								ExchangeStatusType status;
+								if (_t.DicExcStatus.Count == 1)
+									row.Cells["ExcStatus"].Value = _t.DicExcStatus.ElementAt(0).Value;
+								else if (_t.DicExcStatus.TryGetValue(stra.InstrumentInfo.ProductID, out status))
+									row.Cells["ExcStatus"].Value = status;
+							}
+						}
 					}
 				}
 			}
@@ -832,10 +1018,15 @@ namespace HaiFeng
 			this.ComboBoxType.Items.Clear();
 		}
 	}
-	public class ConfigFile
+	public class ConfigATP
 	{
+		[Browsable(false)]
 		public string[] StrategyFiles { get; set; }
+		[Category("配置"), DisplayName("追单设置"), Browsable(true)]
 		public FollowConfig FloConfig { get; set; } = new FollowConfig();
-	}
 
+		//public RunTime[] RunTimes { get; set; } = new[] { new RunTime { Begin = TimeSpan.Parse("08:45:00"), End = TimeSpan.Parse("15:30:00")} };
+		[Category("配置"), DisplayName("重启时间")]
+		public string[] RestartTimes { get; set; } = new[] { "08:45:00", "20:45:00" };
+	}
 }

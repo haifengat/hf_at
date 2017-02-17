@@ -31,20 +31,21 @@ namespace HaiFeng
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 			using (Form f = new Form())
 			{
-				using (FormLogin fl = new FormLogin())
-					if (fl.ShowDialog() == DialogResult.OK)
-					{
-						f.Text = $"AT {ver.Major}.{ver.MajorRevision} ({fl.KryptonTextBoxInvestor.Text}@{fl.KryptonComboBoxServer.Text})";
-						Console.Title += $" ({fl.KryptonTextBoxInvestor.Text}@{fl.KryptonComboBoxServer.Text})";
-						Plat plat = new Plat(fl.Trade, fl.Quote);
-						plat.Dock = DockStyle.Fill;
-						f.Height = plat.Height;
-						f.Width = plat.Width;
-						f.Controls.Add(plat);
-						f.ShowDialog();
-						fl.Trade.ReqUserLogout();
-						fl.Quote.ReqUserLogout();
-					}
+				//using (FormLogin fl = new FormLogin())
+				//	if (fl.ShowDialog() == DialogResult.OK)
+				{
+					//f.Text = $"AT {ver.Major}.{ver.MajorRevision} ({fl.KryptonTextBoxInvestor.Text}@{fl.KryptonComboBoxServer.Text})";
+					//Console.Title += $" ({fl.KryptonTextBoxInvestor.Text}@{fl.KryptonComboBoxServer.Text})";
+					//Plat plat = new Plat(fl.Trade, fl.Quote);
+					Plat plat = new Plat();
+					plat.Dock = DockStyle.Fill;
+					f.Height = plat.Height;
+					f.Width = plat.Width;
+					f.Controls.Add(plat);
+					f.ShowDialog();
+					//fl.Trade.ReqUserLogout();
+					//fl.Quote.ReqUserLogout();
+				}
 			}
 			Environment.Exit(0); //正常关闭
 		}

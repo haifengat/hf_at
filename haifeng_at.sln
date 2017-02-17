@@ -14,8 +14,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "at_core", "core\at_core.csp
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FixTick", "FixTick\FixTick.shproj", "{4AE85C62-4BED-4635-9463-46DB7A7CDBFE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GalaxyOMSClient", "..\GalaxyOMSClient\GalaxyOMSClient.csproj", "{807C1A70-4D69-4625-B80D-3B5AE2A6667F}"
-EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		FixTick\FixTick.projitems*{4ae85c62-4bed-4635-9463-46db7a7cdbfe}*SharedItemsImports = 13
@@ -66,18 +64,6 @@ Global
 		{91CBEF71-E159-455A-A052-688D3F2E9FA3}.Release|x64.Build.0 = Release|x64
 		{91CBEF71-E159-455A-A052-688D3F2E9FA3}.Release|x86.ActiveCfg = Release|x86
 		{91CBEF71-E159-455A-A052-688D3F2E9FA3}.Release|x86.Build.0 = Release|x86
-		{807C1A70-4D69-4625-B80D-3B5AE2A6667F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{807C1A70-4D69-4625-B80D-3B5AE2A6667F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{807C1A70-4D69-4625-B80D-3B5AE2A6667F}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{807C1A70-4D69-4625-B80D-3B5AE2A6667F}.Debug|x64.Build.0 = Debug|Any CPU
-		{807C1A70-4D69-4625-B80D-3B5AE2A6667F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{807C1A70-4D69-4625-B80D-3B5AE2A6667F}.Debug|x86.Build.0 = Debug|Any CPU
-		{807C1A70-4D69-4625-B80D-3B5AE2A6667F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{807C1A70-4D69-4625-B80D-3B5AE2A6667F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{807C1A70-4D69-4625-B80D-3B5AE2A6667F}.Release|x64.ActiveCfg = Release|Any CPU
-		{807C1A70-4D69-4625-B80D-3B5AE2A6667F}.Release|x64.Build.0 = Release|Any CPU
-		{807C1A70-4D69-4625-B80D-3B5AE2A6667F}.Release|x86.ActiveCfg = Release|Any CPU
-		{807C1A70-4D69-4625-B80D-3B5AE2A6667F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

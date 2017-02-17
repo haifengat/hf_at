@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
+using System.Linq;
 
 namespace HaiFeng
 {
@@ -165,7 +167,12 @@ namespace HaiFeng
 		#region 追单功能
 		public FollowConfig FloConfig = new FollowConfig();    //是否为null,处理多次调用
 		bool _initFlow = false;   //是否初始化过
-		internal string _ServerTrade;
+		internal string Investor;
+
+		public string Password { get; internal set; }
+		public string Broker { get; internal set; }
+		public string FrontAddr { get; internal set; }
+		public string FrontAddrQuote { get; internal set; }
 
 		/// <summary>
 		/// 启动追单
@@ -244,6 +251,7 @@ namespace HaiFeng
 		#endregion
 
 	}
+
 
 	public class FollowConfig
 	{
