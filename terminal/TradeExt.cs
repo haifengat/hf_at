@@ -13,51 +13,69 @@ namespace HaiFeng
 
 		public TradeExt()
 		{
-			this.OnFrontConnected += (snd, ea) => ShowInfo("connected.");
-			this.OnRspUserLogout += (snd, ea) => ShowInfo($"logout:{ea.Value}");
+			this.OnFrontConnected += TradeExt_OnFrontConnected;
+			this.OnRspUserLogout += TradeExt_OnRspUserLogout;
 
-			this.OnRtnOrder += (snd, e) =>
-			  {
-				  if (!e.Value.IsLocal) return;
-
-				  ShowInfo($"[{e.Value.Custom}]报单({e.Value.StatusMsg})[{e.Value.InstrumentID},{e.Value.Direction},{ e.Value.Offset},{e.Value.LimitPrice},{ e.Value.Volume},剩{ e.Value.VolumeLeft}]");
-			  };
-			this.OnRtnCancel += (snd, e) =>
-			{
-				if (!e.Value.IsLocal) return;
-
-				ShowInfo($"[{e.Value.Custom}]报单({e.Value.StatusMsg})[{e.Value.InstrumentID},{e.Value.Direction},{ e.Value.Offset},{e.Value.LimitPrice},{ e.Value.Volume},剩{ e.Value.VolumeLeft}]");
-			};
+			this.OnRtnOrder += TradeExt_OnRtnOrder1;
+			this.OnRtnCancel += TradeExt_OnRtnCancel1;
 			//this.OnRtnTrade += (snd, e) =>
 			//{
 			//	ShowInfo($"[OrderID:{e.Value.OrderID}]报单成交[{e.Value.InstrumentID},{e.Value.Direction},{ e.Value.Offset},{e.Value.Price},{ e.Value.Volume}]");
 			//};
-			this.OnRtnErrOrder += (snd, e) =>
+			this.OnRtnErrOrder += TradeExt_OnRtnErrOrder1;
+
+			this.OnRtnExchangeStatus += TradeExt_OnRtnExchangeStatus;
+		}
+
+		private void TradeExt_OnRspUserLogout(object sender, IntEventArgs e)
+		{
+			ShowInfo($"logout:{e.Value}");
+		}
+
+		private void TradeExt_OnFrontConnected(object sender, EventArgs e)
+		{
+			ShowInfo("connected.");
+		}
+
+		private void TradeExt_OnRtnExchangeStatus(object sender, StatusEventArgs e)
+		{
+			if (_listWaitTrading.Count == 0) return;
+
+			if (e.Status == ExchangeStatusType.Trading)
 			{
-				if (!e.Value.IsLocal) return;
-
-				ShowInfo($"[{e.Value.Custom}]报单错误({e.Value.StatusMsg})[{e.Value.InstrumentID},{e.Value.Direction},{ e.Value.Offset},{e.Value.LimitPrice},{ e.Value.Volume},剩{ e.Value.VolumeLeft}]");
-			};
-
-			this.OnRtnExchangeStatus += (snd, e) =>
-			{
-				if (_listWaitTrading.Count == 0) return;
-
-				if (e.Status == ExchangeStatusType.Trading)
+				//处理收盘前未发的委托
+				for (int i = 0; i < _listWaitTrading.Count; i++)
 				{
-					//处理收盘前未发的委托
-					for (int i = 0; i < _listWaitTrading.Count; i++)
+					var list = _listWaitTrading[i];
+					var inst = (string)list[0];
+					if (DicInstrumentField[inst].ProductID == e.Exchange || DicInstrumentField[inst].InstrumentID == e.Exchange || DicInstrumentField[inst].ExchangeID.ToString() == e.Exchange)
 					{
-						var list = _listWaitTrading[i];
-						var inst = (string)list[0];
-						if (DicInstrumentField[inst].ProductID == e.Exchange || DicInstrumentField[inst].InstrumentID == e.Exchange || DicInstrumentField[inst].ExchangeID.ToString() == e.Exchange)
-						{
-							_listWaitTrading.RemoveAt(i--);
-							ReqOrderInsert(inst, (DirectionType)list[1], (OffsetType)list[2], (double)list[3], (int)list[4], (OrderType)list[5], (int)list[6], (HedgeType)list[7]);
-						}
+						_listWaitTrading.RemoveAt(i--);
+						ReqOrderInsert(inst, (DirectionType)list[1], (OffsetType)list[2], (double)list[3], (int)list[4], (OrderType)list[5], (int)list[6], (HedgeType)list[7]);
 					}
 				}
-			};
+			}
+		}
+
+		private void TradeExt_OnRtnErrOrder1(object sender, ErrOrderArgs e)
+		{
+			if (!e.Value.IsLocal) return;
+
+			ShowInfo($"[{e.Value.Custom}]报单错误({e.Value.StatusMsg})[{e.Value.InstrumentID},{e.Value.Direction},{ e.Value.Offset},{e.Value.LimitPrice},{ e.Value.Volume},剩{ e.Value.VolumeLeft}]");
+		}
+
+		private void TradeExt_OnRtnCancel1(object sender, OrderArgs e)
+		{
+			if (!e.Value.IsLocal) return;
+
+			ShowInfo($"[{e.Value.Custom}]报单({e.Value.StatusMsg})[{e.Value.InstrumentID},{e.Value.Direction},{ e.Value.Offset},{e.Value.LimitPrice},{ e.Value.Volume},剩{ e.Value.VolumeLeft}]");
+		}
+
+		private void TradeExt_OnRtnOrder1(object sender, OrderArgs e)
+		{
+			if (!e.Value.IsLocal) return;
+
+			ShowInfo($"[{e.Value.Custom}]报单({e.Value.StatusMsg})[{e.Value.InstrumentID},{e.Value.Direction},{ e.Value.Offset},{e.Value.LimitPrice},{ e.Value.Volume},剩{ e.Value.VolumeLeft}]");
 		}
 
 		public event ShowInfoAction OnInfo
@@ -167,7 +185,6 @@ namespace HaiFeng
 		#region 追单功能
 		public FollowConfig FloConfig = new FollowConfig();    //是否为null,处理多次调用
 		bool _initFlow = false;   //是否初始化过
-		internal string Investor;
 
 		public string Password { get; internal set; }
 		public string Broker { get; internal set; }

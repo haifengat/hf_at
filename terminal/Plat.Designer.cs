@@ -28,15 +28,18 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.panelLogin = new System.Windows.Forms.Panel();
+			this.richTextBox1 = new System.Windows.Forms.RichTextBox();
 			this.buttonLogin = new System.Windows.Forms.Button();
 			this.textBoxPwd = new System.Windows.Forms.TextBox();
 			this.textBoxUser = new System.Windows.Forms.TextBox();
@@ -52,10 +55,6 @@
 			this.buttonDel = new System.Windows.Forms.Button();
 			this.dateTimePickerEnd = new System.Windows.Forms.DateTimePicker();
 			this.dateTimePickerBegin = new System.Windows.Forms.DateTimePicker();
-			this.groupBoxLoad = new System.Windows.Forms.GroupBox();
-			this.radioButtonK = new System.Windows.Forms.RadioButton();
-			this.radioButtonT = new System.Windows.Forms.RadioButton();
-			this.buttonLoadStra = new System.Windows.Forms.Button();
 			this.label5 = new System.Windows.Forms.Label();
 			this.comboBoxInterval = new System.Windows.Forms.ComboBox();
 			this.label6 = new System.Windows.Forms.Label();
@@ -64,15 +63,20 @@
 			this.label4 = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
-			this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-			this.propertyGridParams = new System.Windows.Forms.PropertyGrid();
-			this.label8 = new System.Windows.Forms.Label();
-			this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
-			this.label7 = new System.Windows.Forms.Label();
-			this.label1 = new System.Windows.Forms.Label();
-			this.propertyGridFlo = new System.Windows.Forms.PropertyGrid();
+			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.pictureBox1 = new System.Windows.Forms.PictureBox();
+			this.numericUpDownTimes = new System.Windows.Forms.NumericUpDown();
+			this.label15 = new System.Windows.Forms.Label();
+			this.numericUpDownReorder = new System.Windows.Forms.NumericUpDown();
+			this.label14 = new System.Windows.Forms.Label();
+			this.numericUpDownWait = new System.Windows.Forms.NumericUpDown();
+			this.label13 = new System.Windows.Forms.Label();
+			this.numericUpDownFirst = new System.Windows.Forms.NumericUpDown();
+			this.label12 = new System.Windows.Forms.Label();
+			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.DataGridViewStrategies = new System.Windows.Forms.DataGridView();
+			this.DataGridViewOrders = new System.Windows.Forms.DataGridView();
 			this.StraName = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Param = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -80,21 +84,20 @@
 			this.Interval = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.BeginDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.EndDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Loaded = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Loaded = new System.Windows.Forms.DataGridViewButtonColumn();
 			this.Order = new System.Windows.Forms.DataGridViewCheckBoxColumn();
 			this.UpdateTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.ExcStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.report = new System.Windows.Forms.DataGridViewButtonColumn();
 			this.Graphics = new System.Windows.Forms.DataGridViewButtonColumn();
-			this.DataGridViewOrders = new System.Windows.Forms.DataGridView();
-			this.richTextBox1 = new System.Windows.Forms.RichTextBox();
 			this.panelLogin.SuspendLayout();
 			this.groupBox1.SuspendLayout();
-			this.groupBoxLoad.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-			this.splitContainer2.Panel1.SuspendLayout();
-			this.splitContainer2.Panel2.SuspendLayout();
-			this.splitContainer2.SuspendLayout();
+			this.groupBox2.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDownTimes)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDownReorder)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDownWait)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDownFirst)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
@@ -116,8 +119,17 @@
 			this.panelLogin.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panelLogin.Location = new System.Drawing.Point(0, 0);
 			this.panelLogin.Name = "panelLogin";
-			this.panelLogin.Size = new System.Drawing.Size(1125, 28);
+			this.panelLogin.Size = new System.Drawing.Size(1154, 28);
 			this.panelLogin.TabIndex = 29;
+			// 
+			// richTextBox1
+			// 
+			this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Right;
+			this.richTextBox1.Location = new System.Drawing.Point(572, 0);
+			this.richTextBox1.Name = "richTextBox1";
+			this.richTextBox1.Size = new System.Drawing.Size(582, 28);
+			this.richTextBox1.TabIndex = 100;
+			this.richTextBox1.Text = "";
 			// 
 			// buttonLogin
 			// 
@@ -219,7 +231,6 @@
 			this.groupBox1.Controls.Add(this.buttonDel);
 			this.groupBox1.Controls.Add(this.dateTimePickerEnd);
 			this.groupBox1.Controls.Add(this.dateTimePickerBegin);
-			this.groupBox1.Controls.Add(this.groupBoxLoad);
 			this.groupBox1.Controls.Add(this.label5);
 			this.groupBox1.Controls.Add(this.comboBoxInterval);
 			this.groupBox1.Controls.Add(this.label6);
@@ -231,7 +242,7 @@
 			this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
 			this.groupBox1.Location = new System.Drawing.Point(0, 28);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(1125, 64);
+			this.groupBox1.Size = new System.Drawing.Size(1154, 64);
 			this.groupBox1.TabIndex = 37;
 			this.groupBox1.TabStop = false;
 			// 
@@ -268,49 +279,6 @@
 			this.dateTimePickerBegin.Name = "dateTimePickerBegin";
 			this.dateTimePickerBegin.Size = new System.Drawing.Size(107, 21);
 			this.dateTimePickerBegin.TabIndex = 7;
-			// 
-			// groupBoxLoad
-			// 
-			this.groupBoxLoad.Controls.Add(this.radioButtonK);
-			this.groupBoxLoad.Controls.Add(this.radioButtonT);
-			this.groupBoxLoad.Controls.Add(this.buttonLoadStra);
-			this.groupBoxLoad.Location = new System.Drawing.Point(812, 27);
-			this.groupBoxLoad.Name = "groupBoxLoad";
-			this.groupBoxLoad.Size = new System.Drawing.Size(151, 34);
-			this.groupBoxLoad.TabIndex = 52;
-			this.groupBoxLoad.TabStop = false;
-			// 
-			// radioButtonK
-			// 
-			this.radioButtonK.AutoSize = true;
-			this.radioButtonK.Checked = true;
-			this.radioButtonK.Location = new System.Drawing.Point(15, 13);
-			this.radioButtonK.Name = "radioButtonK";
-			this.radioButtonK.Size = new System.Drawing.Size(41, 16);
-			this.radioButtonK.TabIndex = 10;
-			this.radioButtonK.TabStop = true;
-			this.radioButtonK.Text = "K线";
-			this.radioButtonK.UseVisualStyleBackColor = true;
-			// 
-			// radioButtonT
-			// 
-			this.radioButtonT.AutoSize = true;
-			this.radioButtonT.Enabled = false;
-			this.radioButtonT.Location = new System.Drawing.Point(57, 13);
-			this.radioButtonT.Name = "radioButtonT";
-			this.radioButtonT.Size = new System.Drawing.Size(47, 16);
-			this.radioButtonT.TabIndex = 11;
-			this.radioButtonT.Text = "Tick";
-			this.radioButtonT.UseVisualStyleBackColor = true;
-			// 
-			// buttonLoadStra
-			// 
-			this.buttonLoadStra.Location = new System.Drawing.Point(106, 10);
-			this.buttonLoadStra.Name = "buttonLoadStra";
-			this.buttonLoadStra.Size = new System.Drawing.Size(40, 23);
-			this.buttonLoadStra.TabIndex = 12;
-			this.buttonLoadStra.Text = "加载";
-			this.buttonLoadStra.UseVisualStyleBackColor = true;
 			// 
 			// label5
 			// 
@@ -391,89 +359,112 @@
 			this.label2.Text = "策略";
 			this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			// 
-			// splitContainer2
+			// groupBox2
 			// 
-			this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.splitContainer2.Location = new System.Drawing.Point(0, 92);
-			this.splitContainer2.Name = "splitContainer2";
+			this.groupBox2.Controls.Add(this.pictureBox1);
+			this.groupBox2.Controls.Add(this.numericUpDownTimes);
+			this.groupBox2.Controls.Add(this.label15);
+			this.groupBox2.Controls.Add(this.numericUpDownReorder);
+			this.groupBox2.Controls.Add(this.label14);
+			this.groupBox2.Controls.Add(this.numericUpDownWait);
+			this.groupBox2.Controls.Add(this.label13);
+			this.groupBox2.Controls.Add(this.numericUpDownFirst);
+			this.groupBox2.Controls.Add(this.label12);
+			this.groupBox2.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.groupBox2.Location = new System.Drawing.Point(0, 514);
+			this.groupBox2.Name = "groupBox2";
+			this.groupBox2.Size = new System.Drawing.Size(1154, 39);
+			this.groupBox2.TabIndex = 39;
+			this.groupBox2.TabStop = false;
 			// 
-			// splitContainer2.Panel1
+			// pictureBox1
 			// 
-			this.splitContainer2.Panel1.Controls.Add(this.propertyGridParams);
-			this.splitContainer2.Panel1.Controls.Add(this.label8);
-			this.splitContainer2.Panel1.Controls.Add(this.propertyGrid1);
-			this.splitContainer2.Panel1.Controls.Add(this.label7);
-			this.splitContainer2.Panel1.Controls.Add(this.label1);
-			this.splitContainer2.Panel1.Controls.Add(this.propertyGridFlo);
+			this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Right;
+			this.pictureBox1.Location = new System.Drawing.Point(1119, 17);
+			this.pictureBox1.Name = "pictureBox1";
+			this.pictureBox1.Size = new System.Drawing.Size(32, 19);
+			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+			this.pictureBox1.TabIndex = 10;
+			this.pictureBox1.TabStop = false;
+			this.toolTip1.SetToolTip(this.pictureBox1, "停止");
 			// 
-			// splitContainer2.Panel2
+			// numericUpDownTimes
 			// 
-			this.splitContainer2.Panel2.Controls.Add(this.splitContainer1);
-			this.splitContainer2.Size = new System.Drawing.Size(1125, 461);
-			this.splitContainer2.SplitterDistance = 195;
-			this.splitContainer2.TabIndex = 38;
+			this.numericUpDownTimes.Font = new System.Drawing.Font("Consolas", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.numericUpDownTimes.Location = new System.Drawing.Point(458, 10);
+			this.numericUpDownTimes.Name = "numericUpDownTimes";
+			this.numericUpDownTimes.Size = new System.Drawing.Size(42, 24);
+			this.numericUpDownTimes.TabIndex = 9;
+			this.numericUpDownTimes.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			// 
-			// propertyGridParams
+			// label15
 			// 
-			this.propertyGridParams.CategoryForeColor = System.Drawing.SystemColors.InactiveCaptionText;
-			this.propertyGridParams.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.propertyGridParams.Location = new System.Drawing.Point(0, 20);
-			this.propertyGridParams.Name = "propertyGridParams";
-			this.propertyGridParams.Size = new System.Drawing.Size(195, 171);
-			this.propertyGridParams.TabIndex = 35;
+			this.label15.AutoSize = true;
+			this.label15.Location = new System.Drawing.Point(404, 16);
+			this.label15.Name = "label15";
+			this.label15.Size = new System.Drawing.Size(53, 12);
+			this.label15.TabIndex = 8;
+			this.label15.Text = "追单次数";
 			// 
-			// label8
+			// numericUpDownReorder
 			// 
-			this.label8.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.label8.Location = new System.Drawing.Point(0, 191);
-			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(195, 20);
-			this.label8.TabIndex = 34;
-			this.label8.Text = "启停时间";
-			this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.numericUpDownReorder.Font = new System.Drawing.Font("Consolas", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.numericUpDownReorder.Location = new System.Drawing.Point(360, 10);
+			this.numericUpDownReorder.Name = "numericUpDownReorder";
+			this.numericUpDownReorder.Size = new System.Drawing.Size(42, 24);
+			this.numericUpDownReorder.TabIndex = 9;
+			this.numericUpDownReorder.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			// 
-			// propertyGrid1
+			// label14
 			// 
-			this.propertyGrid1.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.propertyGrid1.HelpVisible = false;
-			this.propertyGrid1.Location = new System.Drawing.Point(0, 211);
-			this.propertyGrid1.Name = "propertyGrid1";
-			this.propertyGrid1.Size = new System.Drawing.Size(195, 55);
-			this.propertyGrid1.TabIndex = 33;
-			this.propertyGrid1.ToolbarVisible = false;
+			this.label14.AutoSize = true;
+			this.label14.Location = new System.Drawing.Point(284, 16);
+			this.label14.Name = "label14";
+			this.label14.Size = new System.Drawing.Size(77, 12);
+			this.label14.TabIndex = 8;
+			this.label14.Text = "再发偏移跳数";
 			// 
-			// label7
+			// numericUpDownWait
 			// 
-			this.label7.Dock = System.Windows.Forms.DockStyle.Top;
-			this.label7.Location = new System.Drawing.Point(0, 0);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(195, 20);
-			this.label7.TabIndex = 31;
-			this.label7.Text = "策略参数";
-			this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.numericUpDownWait.Font = new System.Drawing.Font("Consolas", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.numericUpDownWait.Location = new System.Drawing.Point(235, 11);
+			this.numericUpDownWait.Name = "numericUpDownWait";
+			this.numericUpDownWait.Size = new System.Drawing.Size(42, 24);
+			this.numericUpDownWait.TabIndex = 9;
+			this.numericUpDownWait.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			this.toolTip1.SetToolTip(this.numericUpDownWait, "设置0时不追单");
 			// 
-			// label1
+			// label13
 			// 
-			this.label1.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.label1.Location = new System.Drawing.Point(0, 266);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(195, 20);
-			this.label1.TabIndex = 15;
-			this.label1.Text = "追单设置";
-			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.label13.AutoSize = true;
+			this.label13.Location = new System.Drawing.Point(159, 17);
+			this.label13.Name = "label13";
+			this.label13.Size = new System.Drawing.Size(77, 12);
+			this.label13.TabIndex = 8;
+			this.label13.Text = "撤单等待秒数";
 			// 
-			// propertyGridFlo
+			// numericUpDownFirst
 			// 
-			this.propertyGridFlo.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.propertyGridFlo.Location = new System.Drawing.Point(0, 286);
-			this.propertyGridFlo.Name = "propertyGridFlo";
-			this.propertyGridFlo.Size = new System.Drawing.Size(195, 175);
-			this.propertyGridFlo.TabIndex = 14;
+			this.numericUpDownFirst.Font = new System.Drawing.Font("Consolas", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.numericUpDownFirst.Location = new System.Drawing.Point(114, 11);
+			this.numericUpDownFirst.Name = "numericUpDownFirst";
+			this.numericUpDownFirst.Size = new System.Drawing.Size(42, 24);
+			this.numericUpDownFirst.TabIndex = 9;
+			this.numericUpDownFirst.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			// 
+			// label12
+			// 
+			this.label12.AutoSize = true;
+			this.label12.Location = new System.Drawing.Point(36, 17);
+			this.label12.Name = "label12";
+			this.label12.Size = new System.Drawing.Size(77, 12);
+			this.label12.TabIndex = 8;
+			this.label12.Text = "首发偏移跳数";
 			// 
 			// splitContainer1
 			// 
 			this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+			this.splitContainer1.Location = new System.Drawing.Point(0, 92);
 			this.splitContainer1.Name = "splitContainer1";
 			this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
 			// 
@@ -484,22 +475,22 @@
 			// splitContainer1.Panel2
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.DataGridViewOrders);
-			this.splitContainer1.Size = new System.Drawing.Size(926, 461);
-			this.splitContainer1.SplitterDistance = 102;
-			this.splitContainer1.TabIndex = 30;
+			this.splitContainer1.Size = new System.Drawing.Size(1154, 422);
+			this.splitContainer1.SplitterDistance = 90;
+			this.splitContainer1.TabIndex = 40;
 			// 
 			// DataGridViewStrategies
 			// 
 			this.DataGridViewStrategies.AllowUserToAddRows = false;
 			this.DataGridViewStrategies.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-			dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle9.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.DataGridViewStrategies.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
+			dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.DataGridViewStrategies.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
 			this.DataGridViewStrategies.ColumnHeadersHeight = 27;
 			this.DataGridViewStrategies.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
 			this.DataGridViewStrategies.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -522,13 +513,38 @@
 			this.DataGridViewStrategies.MultiSelect = false;
 			this.DataGridViewStrategies.Name = "DataGridViewStrategies";
 			this.DataGridViewStrategies.RowHeadersWidth = 6;
-			dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			this.DataGridViewStrategies.RowsDefaultCellStyle = dataGridViewCellStyle15;
+			dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			this.DataGridViewStrategies.RowsDefaultCellStyle = dataGridViewCellStyle8;
 			this.DataGridViewStrategies.RowTemplate.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
 			this.DataGridViewStrategies.RowTemplate.Height = 27;
 			this.DataGridViewStrategies.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.DataGridViewStrategies.Size = new System.Drawing.Size(926, 102);
+			this.DataGridViewStrategies.Size = new System.Drawing.Size(1154, 90);
 			this.DataGridViewStrategies.TabIndex = 30;
+			// 
+			// DataGridViewOrders
+			// 
+			this.DataGridViewOrders.AllowUserToAddRows = false;
+			this.DataGridViewOrders.AllowUserToDeleteRows = false;
+			this.DataGridViewOrders.AllowUserToOrderColumns = true;
+			dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle9.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.DataGridViewOrders.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
+			this.DataGridViewOrders.ColumnHeadersHeight = 27;
+			this.DataGridViewOrders.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+			this.DataGridViewOrders.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.DataGridViewOrders.Location = new System.Drawing.Point(0, 0);
+			this.DataGridViewOrders.Name = "DataGridViewOrders";
+			this.DataGridViewOrders.ReadOnly = true;
+			this.DataGridViewOrders.RowHeadersWidth = 6;
+			this.DataGridViewOrders.RowTemplate.Height = 27;
+			this.DataGridViewOrders.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+			this.DataGridViewOrders.Size = new System.Drawing.Size(1154, 328);
+			this.DataGridViewOrders.TabIndex = 29;
 			// 
 			// StraName
 			// 
@@ -568,27 +584,33 @@
 			// 
 			// BeginDate
 			// 
-			dataGridViewCellStyle10.Format = "d";
-			dataGridViewCellStyle10.NullValue = null;
-			this.BeginDate.DefaultCellStyle = dataGridViewCellStyle10;
+			dataGridViewCellStyle2.Format = "d";
+			dataGridViewCellStyle2.NullValue = null;
+			this.BeginDate.DefaultCellStyle = dataGridViewCellStyle2;
 			this.BeginDate.HeaderText = "开始";
 			this.BeginDate.Name = "BeginDate";
 			this.BeginDate.ReadOnly = true;
 			// 
 			// EndDate
 			// 
-			dataGridViewCellStyle11.Format = "d";
-			dataGridViewCellStyle11.NullValue = null;
-			this.EndDate.DefaultCellStyle = dataGridViewCellStyle11;
+			dataGridViewCellStyle3.Format = "d";
+			dataGridViewCellStyle3.NullValue = null;
+			this.EndDate.DefaultCellStyle = dataGridViewCellStyle3;
 			this.EndDate.HeaderText = "结束";
 			this.EndDate.Name = "EndDate";
 			this.EndDate.ReadOnly = true;
 			// 
 			// Loaded
 			// 
+			dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle4.NullValue = "未加载";
+			this.Loaded.DefaultCellStyle = dataGridViewCellStyle4;
 			this.Loaded.HeaderText = "状态";
 			this.Loaded.Name = "Loaded";
 			this.Loaded.ReadOnly = true;
+			this.Loaded.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+			this.Loaded.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+			this.Loaded.Text = "未加载";
 			// 
 			// Order
 			// 
@@ -604,83 +626,51 @@
 			// 
 			// ExcStatus
 			// 
-			dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle12.NullValue = "Normal";
-			dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.ExcStatus.DefaultCellStyle = dataGridViewCellStyle12;
+			dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle5.NullValue = "Normal";
+			dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.ExcStatus.DefaultCellStyle = dataGridViewCellStyle5;
 			this.ExcStatus.HeaderText = "交易";
 			this.ExcStatus.Name = "ExcStatus";
 			this.ExcStatus.ReadOnly = true;
 			// 
 			// report
 			// 
-			dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle13.NullValue = "报告";
-			this.report.DefaultCellStyle = dataGridViewCellStyle13;
+			dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle6.NullValue = "报告";
+			this.report.DefaultCellStyle = dataGridViewCellStyle6;
 			this.report.HeaderText = "测试报告";
 			this.report.Name = "report";
 			// 
 			// Graphics
 			// 
-			dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle14.NullValue = "显示";
-			this.Graphics.DefaultCellStyle = dataGridViewCellStyle14;
+			dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle7.NullValue = "显示";
+			this.Graphics.DefaultCellStyle = dataGridViewCellStyle7;
 			this.Graphics.HeaderText = "图形显示";
 			this.Graphics.Name = "Graphics";
-			// 
-			// DataGridViewOrders
-			// 
-			this.DataGridViewOrders.AllowUserToAddRows = false;
-			this.DataGridViewOrders.AllowUserToDeleteRows = false;
-			this.DataGridViewOrders.AllowUserToOrderColumns = true;
-			dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle16.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			dataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.DataGridViewOrders.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle16;
-			this.DataGridViewOrders.ColumnHeadersHeight = 27;
-			this.DataGridViewOrders.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-			this.DataGridViewOrders.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.DataGridViewOrders.Location = new System.Drawing.Point(0, 0);
-			this.DataGridViewOrders.Name = "DataGridViewOrders";
-			this.DataGridViewOrders.ReadOnly = true;
-			this.DataGridViewOrders.RowHeadersWidth = 6;
-			this.DataGridViewOrders.RowTemplate.Height = 27;
-			this.DataGridViewOrders.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.DataGridViewOrders.Size = new System.Drawing.Size(926, 355);
-			this.DataGridViewOrders.TabIndex = 29;
-			// 
-			// richTextBox1
-			// 
-			this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Right;
-			this.richTextBox1.Location = new System.Drawing.Point(543, 0);
-			this.richTextBox1.Name = "richTextBox1";
-			this.richTextBox1.Size = new System.Drawing.Size(582, 28);
-			this.richTextBox1.TabIndex = 100;
-			this.richTextBox1.Text = "";
 			// 
 			// Plat
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add(this.splitContainer2);
+			this.Controls.Add(this.splitContainer1);
+			this.Controls.Add(this.groupBox2);
 			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.panelLogin);
 			this.Name = "Plat";
-			this.Size = new System.Drawing.Size(1125, 553);
+			this.Size = new System.Drawing.Size(1154, 553);
 			this.panelLogin.ResumeLayout(false);
 			this.panelLogin.PerformLayout();
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
-			this.groupBoxLoad.ResumeLayout(false);
-			this.groupBoxLoad.PerformLayout();
-			this.splitContainer2.Panel1.ResumeLayout(false);
-			this.splitContainer2.Panel2.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-			this.splitContainer2.ResumeLayout(false);
+			this.groupBox2.ResumeLayout(false);
+			this.groupBox2.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDownTimes)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDownReorder)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDownWait)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDownFirst)).EndInit();
 			this.splitContainer1.Panel1.ResumeLayout(false);
 			this.splitContainer1.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -702,17 +692,32 @@
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.Button buttonLoadStra;
-		private System.Windows.Forms.GroupBox groupBoxLoad;
 		private System.Windows.Forms.DateTimePicker dateTimePickerEnd;
 		private System.Windows.Forms.DateTimePicker dateTimePickerBegin;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.Label label6;
-		private System.Windows.Forms.RadioButton radioButtonK;
-		private System.Windows.Forms.RadioButton radioButtonT;
-		private System.Windows.Forms.SplitContainer splitContainer2;
 		private System.Windows.Forms.Button buttonAddStra;
 		private System.Windows.Forms.Button buttonDel;
+		private System.Windows.Forms.Button buttonClearFiles;
+		private System.Windows.Forms.Button buttonLogin;
+		private System.Windows.Forms.TextBox textBoxPwd;
+		private System.Windows.Forms.TextBox textBoxUser;
+		private System.Windows.Forms.ComboBox comboBoxServer;
+		private System.Windows.Forms.Label label9;
+		private System.Windows.Forms.Label label10;
+		private System.Windows.Forms.Label label11;
+		private System.Windows.Forms.RichTextBox richTextBox1;
+		private System.Windows.Forms.GroupBox groupBox2;
+		private System.Windows.Forms.NumericUpDown numericUpDownWait;
+		private System.Windows.Forms.Label label13;
+		private System.Windows.Forms.NumericUpDown numericUpDownFirst;
+		private System.Windows.Forms.Label label12;
+		private System.Windows.Forms.NumericUpDown numericUpDownReorder;
+		private System.Windows.Forms.Label label14;
+		private System.Windows.Forms.NumericUpDown numericUpDownTimes;
+		private System.Windows.Forms.Label label15;
+		private System.Windows.Forms.PictureBox pictureBox1;
+		private System.Windows.Forms.ToolTip toolTip1;
 		private System.Windows.Forms.SplitContainer splitContainer1;
 		private System.Windows.Forms.DataGridView DataGridViewStrategies;
 		private System.Windows.Forms.DataGridView DataGridViewOrders;
@@ -723,26 +728,11 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn Interval;
 		private System.Windows.Forms.DataGridViewTextBoxColumn BeginDate;
 		private System.Windows.Forms.DataGridViewTextBoxColumn EndDate;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Loaded;
+		private System.Windows.Forms.DataGridViewButtonColumn Loaded;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn Order;
 		private System.Windows.Forms.DataGridViewTextBoxColumn UpdateTime;
 		private System.Windows.Forms.DataGridViewTextBoxColumn ExcStatus;
 		private System.Windows.Forms.DataGridViewButtonColumn report;
 		private System.Windows.Forms.DataGridViewButtonColumn Graphics;
-		private System.Windows.Forms.PropertyGrid propertyGridFlo;
-		private System.Windows.Forms.Button buttonClearFiles;
-		private System.Windows.Forms.Label label7;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.PropertyGrid propertyGridParams;
-		private System.Windows.Forms.Label label8;
-		private System.Windows.Forms.PropertyGrid propertyGrid1;
-		private System.Windows.Forms.Button buttonLogin;
-		private System.Windows.Forms.TextBox textBoxPwd;
-		private System.Windows.Forms.TextBox textBoxUser;
-		private System.Windows.Forms.ComboBox comboBoxServer;
-		private System.Windows.Forms.Label label9;
-		private System.Windows.Forms.Label label10;
-		private System.Windows.Forms.Label label11;
-		private System.Windows.Forms.RichTextBox richTextBox1;
 	}
 }

@@ -32,7 +32,7 @@ namespace HaiFeng
 			using (Form f = new Form())
 			{
 				//using (FormLogin fl = new FormLogin())
-				//	if (fl.ShowDialog() == DialogResult.OK)
+				//if (fl.ShowDialog() == DialogResult.OK)
 				{
 					//f.Text = $"AT {ver.Major}.{ver.MajorRevision} ({fl.KryptonTextBoxInvestor.Text}@{fl.KryptonComboBoxServer.Text})";
 					//Console.Title += $" ({fl.KryptonTextBoxInvestor.Text}@{fl.KryptonComboBoxServer.Text})";

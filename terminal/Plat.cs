@@ -115,13 +115,23 @@ namespace HaiFeng
 			_t.OnRtnExchangeStatus += trade_OnRtnExchangeStatus;
 
 			_t.OnInfo += (msg) => LogInfo(msg);
-			_t.OnRspUserLogout += (snd, ea) => LogDebug($"断开【{ea.Value,4}】");
+			_t.OnRspUserLogout += _t_OnRspUserLogout;
 			_t.OnRtnErrOrder += (snd, ea) => LogError($"{ea.Value.InstrumentID,-8}{ea.Value.Direction,4}{ea.Value.Offset,6}{ea.Value.StatusMsg}");
 			_t.OnRtnOrder += (snd, ea) => LogWarn($"{ea.Value.InstrumentID,-8}{ea.Value.Direction,4}{ea.Value.Offset,6}{ea.Value.StatusMsg}");
 			_t.OnRtnNotice += (snd, ea) => LogWarn($"重要提示: {ea.Value}");
 			_t.OnRtnCancel += (snd, ea) => LogWarn($"{ea.Value.InstrumentID,-8}{ea.Value.Direction,4}{ea.Value.Offset,6}{ea.Value.StatusMsg}");
 
 			_t.ReqConnect(_ServerTrade);
+		}
+
+		private void _t_OnRspUserLogout(object sender, IntEventArgs e)
+		{
+			LogDebug($"断开【{e.Value,4}】");
+			this.Invoke(new Action(() =>
+			{
+				this.pictureBox1.Image = Properties.Resources.Close;
+				this.toolTip1.SetToolTip(this.pictureBox1, "停止");
+			}));
 		}
 
 		void trade_OnRtnExchangeStatus(object sender, StatusEventArgs e)
@@ -140,6 +150,11 @@ namespace HaiFeng
 					SaveLogInfo();
 				else
 					_q.ReqConnect(_ServerQuote);
+				this.Invoke(new Action(() =>
+				{
+					this.pictureBox1.Image = Properties.Resources.Open;
+					this.toolTip1.SetToolTip(this.pictureBox1, "已连接");
+				}));
 			}
 			else
 			{
@@ -186,10 +201,8 @@ namespace HaiFeng
 		{
 			((Quote)sender).ReqUserLogin(_Investor, _Password, _Broker);
 		}
-		
-		////////////////////
-		
 
+		// 初始化控件&绑定
 		void InitTerminalControls()
 		{
 			//合约列表
@@ -210,7 +223,7 @@ namespace HaiFeng
 			}
 			//_dtOrders.PrimaryKey = new[] { _dtOrders.Columns[""] };
 			this.DataGridViewOrders.DataSource = _dtOrders;
-			
+
 			LoadConfig();
 			LoadStrategy();
 
@@ -218,7 +231,6 @@ namespace HaiFeng
 			_timer.Start();
 			this.buttonAddStra.Click += ButtonAdd_Click;//添加策略
 			this.buttonDel.Click += ButtonDel_Click;
-			this.buttonLoadStra.Click += ButtonLoadStra_Click; //加载策略
 			this.DataGridViewStrategies.SelectionChanged += DataGridViewStrategies_SelectionChanged;
 			this.DataGridViewStrategies.CellContentClick += DataGridViewStrategies_CellContentClick;
 			this.DataGridViewStrategies.CellFormatting += DataGridViewStrategies_CellFormatting;
@@ -226,10 +238,11 @@ namespace HaiFeng
 			this.DataGridViewStrategies.RowTemplate.DefaultCellStyle.SelectionBackColor = this.DataGridViewStrategies.RowTemplate.DefaultCellStyle.BackColor;
 			this.DataGridViewStrategies.RowTemplate.DefaultCellStyle.SelectionForeColor = this.DataGridViewStrategies.RowTemplate.DefaultCellStyle.ForeColor;
 
-			this.propertyGridParams.PropertyValueChanged += propertyGridParams_PropertyValueChanged;
-
-			this.propertyGridFlo.SelectedObject = _cfg.FloConfig; //跟单配置
-			this.propertyGrid1.SelectedObject = _cfg.RestartTimes;   //起停时间
+			//this.propertyGridFlo.SelectedObject = _cfg.FloConfig;	
+			this.numericUpDownFirst.DataBindings.Add("Value", _cfg.FloConfig, "FirstAddTicks", false, DataSourceUpdateMode.OnPropertyChanged);
+			this.numericUpDownWait.DataBindings.Add("Value", _cfg.FloConfig, "WaitSecondsAfterOrder", false, DataSourceUpdateMode.OnPropertyChanged);
+			this.numericUpDownReorder.DataBindings.Add("Value", _cfg.FloConfig, "NotFirstAddticks", false, DataSourceUpdateMode.OnPropertyChanged);
+			this.numericUpDownTimes.DataBindings.Add("Value", _cfg.FloConfig, "FollowTimes", false, DataSourceUpdateMode.OnPropertyChanged);
 		}
 
 		//策略产生的买卖信号表
@@ -272,9 +285,24 @@ namespace HaiFeng
 			if (this.comboBoxInterval.SelectedIndex < 0) return;
 
 			Strategy stra = (Strategy)Activator.CreateInstance((Type)this.ComboBoxType.SelectedItem);
-			AddStra(stra, _dicStrategies.Count == 0 ? "1" : (_dicStrategies.Select(n => int.Parse(n.Key)).Max() + 1).ToString(), this.comboBoxInst.Text, this.comboBoxInterval.Text, this.dateTimePickerBegin.Value.Date, this.dateTimePickerEnd.Checked ? this.dateTimePickerEnd.Value.Date : DateTime.MaxValue);
+
+			//参数配置,20170307:弹出窗口
+			using (FormParams fp = new FormParams())
+			{
+				//参数配置
+				fp.propertyGrid1.SelectedObject = stra;
+				if (fp.ShowDialog(this) != DialogResult.OK) return;
+
+				int rid = AddStra(stra, _dicStrategies.Count == 0 ? "1" : (_dicStrategies.Select(n => int.Parse(n.Key)).Max() + 1).ToString(), this.comboBoxInst.Text, this.comboBoxInterval.Text, this.dateTimePickerBegin.Value.Date, this.dateTimePickerEnd.Checked ? this.dateTimePickerEnd.Value.Date : DateTime.MaxValue);
+
+				//数据加载
+				this.DataGridViewStrategies.Rows[rid].Cells["Loaded"].Value = "加载中...";
+				LoadStraData(stra, this.comboBoxInterval.Text, this.comboBoxInst.Text);
+				this.DataGridViewStrategies.Rows[rid].Cells["Loaded"].Value = "已加载";
+			}
 		}
 
+		//删除按钮
 		private void ButtonDel_Click(object sender, EventArgs e)
 		{
 			if (this.DataGridViewStrategies.SelectedRows.Count == 0) return;
@@ -292,6 +320,7 @@ namespace HaiFeng
 			this.DataGridViewStrategies.Rows.Remove(row);
 		}
 
+		//策略添加
 		private int AddStra(Strategy stra, string pName, string pInstrument, string pInterval, DateTime pBegin, DateTime pEnd)
 		{
 			if (!_dicStrategies.TryAdd(pName, stra))
@@ -306,39 +335,22 @@ namespace HaiFeng
 				this.DataGridViewStrategies.Rows[rid].Cells["EndDate"].Value = null;
 			//this.DataGridViewStrategies.Rows[rid].Cells["BeginDate"].Value = DateTime.Today.AddMonths(-3);
 
-			this.propertyGridParams.SelectedObject = stra;   //属性显示
+			//20170307 this.propertyGridParams.SelectedObject = stra;   //属性显示
 
 			stra.OnRtnOrder += stra_OnRtnOrder;
+			//鼠标提示信息:策略,参数...
+			//表格右键开启停止提示???
 			return rid;
 		}
-
-		//加载策略
-		private void ButtonLoadStra_Click(object sender, EventArgs e)
+		
+		/// <summary>
+		/// 加载测试数据
+		/// </summary>
+		/// <param name="stra">策略</param>
+		/// <param name="internalType">周期(例:1 Min)</param>
+		/// <param name="inst">合约(例:TA1709,区分大小写)</param>
+		private void LoadStraData(Strategy stra, string internalType, string inst)
 		{
-			if (this.DataGridViewStrategies.SelectedRows.Count == 0) return;
-
-			//if (_dataProcess.ProductInfo.Count == 0)
-			//{
-			//	HFLog.LogInfo("读取配置信息(交易日历,交易时间段)...");
-			//	_dataProcess.UpdateInfo();  //更新信息
-			//}
-			DataGridViewRow row = this.DataGridViewStrategies.SelectedRows[0];
-			string name = (string)row.Cells["StraName"].Value;
-			Strategy stra;
-			if (!_dicStrategies.TryGetValue(name, out stra))
-			{
-				LogError($"无对应的策略:{name}");
-				return;
-			}
-
-			//参数是否可修改
-			this.propertyGridParams.Enabled = !this.propertyGridParams.Enabled;
-
-			if (row.Cells["Loaded"].Value != null && row.Cells["Loaded"].Value.Equals("已加载")) return;
-
-			string internalType = (string)row.Cells["Interval"].Value;
-			var inst = (string)row.Cells["Instrument"].Value;
-
 			Data data = new Data
 			{
 				Interval = int.Parse(internalType.Split(' ')[1]),
@@ -362,96 +374,84 @@ namespace HaiFeng
 				data.InstrumentInfo.VolumeMultiple = (int)pi.VolumeTuple;
 			}
 
-			DateTime dtBegin = (DateTime)row.Cells["BeginDate"].Value;
-			DateTime dtEnd;// = this.dateTimePickerEnd.Checked ? this.dateTimePickerEnd.Value.Date.AddDays(1) : DateTime.MaxValue;
-			if (row.Cells["EndDate"].Value == null)
-				dtEnd = DateTime.ParseExact(_t.TradingDay, "yyyyMMdd", null).AddDays(1);
-			else
-				dtEnd = (DateTime)row.Cells["EndDate"].Value;
+			DateTime dtBegin = this.dateTimePickerBegin.Value;
+			DateTime dtEnd = this.dateTimePickerEnd.Checked ? this.dateTimePickerEnd.Value.Date.AddDays(1) : DateTime.ParseExact(_t.TradingDay, "yyyyMMdd", null).AddDays(1);
 
 			_dtOrders.Rows.Clear(); //清除委托列表
 
-			row.Cells["Loaded"].Value = "加载中...";
 			this.DataGridViewStrategies.EndEdit();
 			this.DataGridViewStrategies.Refresh();
 
-			if (data.IntervalType == EnumIntervalType.Sec || this.radioButtonT.Checked) //秒周期或tick加载
-			{ }
-			else
+			List<Bar> bars = null;
+			if (data.IntervalType == EnumIntervalType.Min || data.IntervalType == EnumIntervalType.Hour)
 			{
-				List<Bar> bars = null;
-				if (data.IntervalType == EnumIntervalType.Min || data.IntervalType == EnumIntervalType.Hour)
+				bars = _dataProcess.GetData.QueryMin(inst, dtBegin.ToString("yyyyMMdd"), dtEnd.ToString("yyyyMMdd")).Select(n => new Bar
 				{
-					bars = _dataProcess.GetData.QueryMin(inst, dtBegin.ToString("yyyyMMdd"), dtEnd.ToString("yyyyMMdd")).Select(n => new Bar
-					{
-						D = DateTime.ParseExact(n._id, "yyyyMMdd HH:mm:ss", null),
-						O = (decimal)n.Open,
-						H = (decimal)n.High,
-						L = (decimal)n.Low,
-						C = (decimal)n.Close,
-						V = n.Volume,
-						I = (decimal)n.OpenInterest
-					}).ToList();
-					// 取当日数据
-					if (dtEnd > DateTime.ParseExact(_t.TradingDay, "yyyyMMdd", null))
-					{
-						var listReal = _dataProcess.GetData.QueryReal(inst);
-						bars = (bars ?? new List<Bar>());
-						if (listReal != null)
-							bars.AddRange(listReal.Select(n => new Bar
-							{
-								D = DateTime.ParseExact(n._id, "yyyyMMdd HH:mm:ss", null),
-								O = (decimal)n.Open,
-								H = (decimal)n.High,
-								L = (decimal)n.Low,
-								C = (decimal)n.Close,
-								V = n.Volume,
-								I = (decimal)n.OpenInterest
-							}).ToList());
-					}
-				}
-				else
-					bars = _dataProcess.GetData.QueryDay(inst, dtBegin.ToString("yyyyMMdd"), dtEnd.ToString("yyyyMMdd")).Select(n => new Bar
-					{
-						/*{ 
-							"_id" : "20140519", 
-							"Open" : 16050.0, 
-							"High" : 16050.0, 
-							"Low" : 15890.0, 
-							"Close" : 16015.0, 
-							"Volume" : NumberInt(3604), 
-							"OpenInterest" : 2984.0, 
-							"UpperLimit" : 17280.0, 
-							"LowerLimit" : 14720.0, 
-							"Settlement" : 15965.0
-						}*/
-						D = DateTime.ParseExact(n._id, "yyyyMMdd", null),
-						O = (decimal)n.Open,
-						H = (decimal)n.High,
-						L = (decimal)n.Low,
-						C = (decimal)n.Close,
-						V = n.Volume,
-						I = (decimal)n.OpenInterest
-					}).ToList();
-
-
-				if (bars == null)
+					D = DateTime.ParseExact(n._id, "yyyyMMdd HH:mm:ss", null),
+					O = (decimal)n.Open,
+					H = (decimal)n.High,
+					L = (decimal)n.Low,
+					C = (decimal)n.Close,
+					V = n.Volume,
+					I = (decimal)n.OpenInterest
+				}).ToList();
+				// 取当日数据
+				if (dtEnd > DateTime.ParseExact(_t.TradingDay, "yyyyMMdd", null))
 				{
-					return;
+					var listReal = _dataProcess.GetData.QueryReal(inst);
+					bars = (bars ?? new List<Bar>());
+					if (listReal != null)
+						bars.AddRange(listReal.Select(n => new Bar
+						{
+							D = DateTime.ParseExact(n._id, "yyyyMMdd HH:mm:ss", null),
+							O = (decimal)n.Open,
+							H = (decimal)n.High,
+							L = (decimal)n.Low,
+							C = (decimal)n.Close,
+							V = n.Volume,
+							I = (decimal)n.OpenInterest
+						}).ToList());
 				}
-
-				if (data.Interval > 1 || data.IntervalType != EnumIntervalType.Min)
-					bars = GetUpperPeriod(bars, data.Interval, data.IntervalType);
-
-				//参数是否可修改
-				this.propertyGridParams.Enabled = false;
-				//加载与tick加载同时处理
-				row.Cells["Loaded"].Value = "已加载";
-				foreach (Bar bar in bars)
-					data.Add(bar); //加入bar
-								   //=>初始化策略/回测
-				stra.Init(data);
 			}
+			else
+				bars = _dataProcess.GetData.QueryDay(inst, dtBegin.ToString("yyyyMMdd"), dtEnd.ToString("yyyyMMdd")).Select(n => new Bar
+				{
+					/*{ 
+						"_id" : "20140519", 
+						"Open" : 16050.0, 
+						"High" : 16050.0, 
+						"Low" : 15890.0, 
+						"Close" : 16015.0, 
+						"Volume" : NumberInt(3604), 
+						"OpenInterest" : 2984.0, 
+						"UpperLimit" : 17280.0, 
+						"LowerLimit" : 14720.0, 
+						"Settlement" : 15965.0
+					}*/
+					D = DateTime.ParseExact(n._id, "yyyyMMdd", null),
+					O = (decimal)n.Open,
+					H = (decimal)n.High,
+					L = (decimal)n.Low,
+					C = (decimal)n.Close,
+					V = n.Volume,
+					I = (decimal)n.OpenInterest
+				}).ToList();
+
+
+			if (bars == null)
+			{
+				return;
+			}
+
+			if (data.Interval > 1 || data.IntervalType != EnumIntervalType.Min)
+				bars = GetUpperPeriod(bars, data.Interval, data.IntervalType);
+			
+			//加载与tick加载同时处理
+			foreach (Bar bar in bars)
+				data.Add(bar); //加入bar
+							   //=>初始化策略/回测
+			stra.Init(data);
+
 			DataGridViewStrategies_SelectionChanged(null, null); //刷新委托列表
 																 //是否有结束日期:只测试
 																 //if (dtEnd == DateTime.MaxValue)
@@ -488,11 +488,9 @@ namespace HaiFeng
 				return;
 
 			DataGridViewRow row = this.DataGridViewStrategies.SelectedRows[0];
-			this.propertyGridParams.Enabled = row.Cells["Loaded"].Value == null || !row.Cells["Loaded"].Value.Equals("已加载");
 
 			if (_dicStrategies.TryGetValue((string)row.Cells["StraName"].Value, out _curStrategy))
 			{
-				this.propertyGridParams.SelectedObject = _curStrategy;
 				if (_curStrategy.Datas.Count > 0)
 				{
 					foreach (var v in _curStrategy.Operations)
@@ -503,7 +501,7 @@ namespace HaiFeng
 			}
 		}
 
-		//委托/报告/图显
+		//加载/委托/报告/图显
 		private void DataGridViewStrategies_CellContentClick(object sender, DataGridViewCellEventArgs e)
 		{
 			if (e.ColumnIndex < 0 || e.RowIndex < 0)
@@ -537,23 +535,19 @@ namespace HaiFeng
 				{
 					new FormWorkSpace(_curStrategy).Show();
 				}
-			}
-		}
-
-		//策略参数被修改:提交
-		private void propertyGridParams_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
-		{
-			foreach (DataGridViewRow row in this.DataGridViewStrategies.Rows)
-			{
-				Strategy stra;
-				if (_dicStrategies.TryGetValue((string)row.Cells["StraName"].Value, out stra) && stra.Equals(this.propertyGridParams.SelectedObject))
+				else if(head == "Loaded") //加载
 				{
-					row.Cells["Param"].Value = stra.GetParams();
-					return;
+					DataGridViewButtonCell cell = (DataGridViewButtonCell)row.Cells[e.ColumnIndex];
+					if(cell.Value == null || cell.Value.ToString() == "未加载")
+					{
+						cell.Value = "加载中";
+						LoadStraData(stra, (string)row.Cells["Interval"].Value, (string)row.Cells["Instrument"].Value);
+						cell.Value = "已加载";
+					}
 				}
 			}
 		}
-
+		
 		//格式化时间字段
 		private void DataGridViewStrategies_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
 		{
@@ -671,11 +665,11 @@ namespace HaiFeng
 				else
 				{
 					//如果时间在设定的开始时间的5分钟内则重启接口
-					var now = DateTime.Now.TimeOfDay;
-					if (_cfg.RestartTimes.Count(n => now > TimeSpan.Parse(n) && now < TimeSpan.Parse(n).Add(TimeSpan.FromMinutes(5))) > 0)
+					var now = DateTime.Now;
+					if ((new[] { _cfg.OpenTime, _cfg.CloseTime }).Count(n => now > n && now < n.Add(TimeSpan.FromMinutes(5))) > 0)
 					{
 						this.ButtonLogin_Click(null, null);
-						Log("接口启动");
+						LogInfo("接口启动");
 					}
 				}
 			}
@@ -694,7 +688,7 @@ namespace HaiFeng
 						_q.ReqUserLogout();
 						_q = null;
 					}
-					Log("接口退出");
+					LogInfo("接口退出");
 				}
 				else
 				{
@@ -1026,7 +1020,10 @@ namespace HaiFeng
 		public FollowConfig FloConfig { get; set; } = new FollowConfig();
 
 		//public RunTime[] RunTimes { get; set; } = new[] { new RunTime { Begin = TimeSpan.Parse("08:45:00"), End = TimeSpan.Parse("15:30:00")} };
-		[Category("配置"), DisplayName("重启时间")]
-		public string[] RestartTimes { get; set; } = new[] { "08:45:00", "20:45:00" };
+		[Category("7*24"), DisplayName("开始时间")]
+		public DateTime OpenTime { get; set; } = DateTime.Today.Add(TimeSpan.Parse("08:40:00"));
+
+		[Category("7*24"), DisplayName("结束时间")]
+		public DateTime CloseTime { get; set; } = DateTime.Today.Add(TimeSpan.Parse("20:40:00"));
 	}
 }
