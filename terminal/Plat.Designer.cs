@@ -31,7 +31,6 @@
 			this.components = new System.ComponentModel.Container();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -47,9 +46,6 @@
 			this.label9 = new System.Windows.Forms.Label();
 			this.label10 = new System.Windows.Forms.Label();
 			this.label11 = new System.Windows.Forms.Label();
-			this.buttonClearFiles = new System.Windows.Forms.Button();
-			this.comboBoxStrategyFile = new System.Windows.Forms.ComboBox();
-			this.buttonStrategyFile = new System.Windows.Forms.Button();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.buttonAddStra = new System.Windows.Forms.Button();
 			this.buttonDel = new System.Windows.Forms.Button();
@@ -74,9 +70,7 @@
 			this.numericUpDownFirst = new System.Windows.Forms.NumericUpDown();
 			this.label12 = new System.Windows.Forms.Label();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.DataGridViewStrategies = new System.Windows.Forms.DataGridView();
-			this.DataGridViewOrders = new System.Windows.Forms.DataGridView();
 			this.StraName = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Param = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -98,12 +92,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDownReorder)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDownWait)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDownFirst)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-			this.splitContainer1.Panel1.SuspendLayout();
-			this.splitContainer1.Panel2.SuspendLayout();
-			this.splitContainer1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.DataGridViewStrategies)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.DataGridViewOrders)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// panelLogin
@@ -194,40 +183,9 @@
 			this.label11.TabIndex = 7;
 			this.label11.Text = "服务器";
 			// 
-			// buttonClearFiles
-			// 
-			this.buttonClearFiles.Location = new System.Drawing.Point(777, 11);
-			this.buttonClearFiles.Name = "buttonClearFiles";
-			this.buttonClearFiles.Size = new System.Drawing.Size(90, 23);
-			this.buttonClearFiles.TabIndex = 30;
-			this.buttonClearFiles.Text = "清除文件记录";
-			this.buttonClearFiles.UseVisualStyleBackColor = true;
-			this.buttonClearFiles.Click += new System.EventHandler(this.buttonClearFiles_Click);
-			// 
-			// comboBoxStrategyFile
-			// 
-			this.comboBoxStrategyFile.FormattingEnabled = true;
-			this.comboBoxStrategyFile.Location = new System.Drawing.Point(10, 13);
-			this.comboBoxStrategyFile.Name = "comboBoxStrategyFile";
-			this.comboBoxStrategyFile.Size = new System.Drawing.Size(682, 20);
-			this.comboBoxStrategyFile.TabIndex = 4;
-			// 
-			// buttonStrategyFile
-			// 
-			this.buttonStrategyFile.Location = new System.Drawing.Point(696, 12);
-			this.buttonStrategyFile.Name = "buttonStrategyFile";
-			this.buttonStrategyFile.Size = new System.Drawing.Size(75, 23);
-			this.buttonStrategyFile.TabIndex = 27;
-			this.buttonStrategyFile.Text = "策略文件";
-			this.buttonStrategyFile.UseVisualStyleBackColor = true;
-			this.buttonStrategyFile.Click += new System.EventHandler(this.buttonLoadStrategy_Click);
-			// 
 			// groupBox1
 			// 
-			this.groupBox1.Controls.Add(this.buttonClearFiles);
 			this.groupBox1.Controls.Add(this.buttonAddStra);
-			this.groupBox1.Controls.Add(this.comboBoxStrategyFile);
-			this.groupBox1.Controls.Add(this.buttonStrategyFile);
 			this.groupBox1.Controls.Add(this.buttonDel);
 			this.groupBox1.Controls.Add(this.dateTimePickerEnd);
 			this.groupBox1.Controls.Add(this.dateTimePickerBegin);
@@ -242,13 +200,13 @@
 			this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
 			this.groupBox1.Location = new System.Drawing.Point(0, 28);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(1154, 64);
+			this.groupBox1.Size = new System.Drawing.Size(1154, 35);
 			this.groupBox1.TabIndex = 37;
 			this.groupBox1.TabStop = false;
 			// 
 			// buttonAddStra
 			// 
-			this.buttonAddStra.Location = new System.Drawing.Point(691, 36);
+			this.buttonAddStra.Location = new System.Drawing.Point(691, 10);
 			this.buttonAddStra.Name = "buttonAddStra";
 			this.buttonAddStra.Size = new System.Drawing.Size(40, 23);
 			this.buttonAddStra.TabIndex = 9;
@@ -257,7 +215,7 @@
 			// 
 			// buttonDel
 			// 
-			this.buttonDel.Location = new System.Drawing.Point(737, 36);
+			this.buttonDel.Location = new System.Drawing.Point(737, 10);
 			this.buttonDel.Name = "buttonDel";
 			this.buttonDel.Size = new System.Drawing.Size(40, 23);
 			this.buttonDel.TabIndex = 53;
@@ -267,7 +225,7 @@
 			// dateTimePickerEnd
 			// 
 			this.dateTimePickerEnd.Checked = false;
-			this.dateTimePickerEnd.Location = new System.Drawing.Point(559, 37);
+			this.dateTimePickerEnd.Location = new System.Drawing.Point(559, 11);
 			this.dateTimePickerEnd.Name = "dateTimePickerEnd";
 			this.dateTimePickerEnd.ShowCheckBox = true;
 			this.dateTimePickerEnd.Size = new System.Drawing.Size(126, 21);
@@ -275,7 +233,7 @@
 			// 
 			// dateTimePickerBegin
 			// 
-			this.dateTimePickerBegin.Location = new System.Drawing.Point(423, 37);
+			this.dateTimePickerBegin.Location = new System.Drawing.Point(423, 11);
 			this.dateTimePickerBegin.Name = "dateTimePickerBegin";
 			this.dateTimePickerBegin.Size = new System.Drawing.Size(107, 21);
 			this.dateTimePickerBegin.TabIndex = 7;
@@ -283,7 +241,7 @@
 			// label5
 			// 
 			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(394, 41);
+			this.label5.Location = new System.Drawing.Point(394, 15);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(29, 12);
 			this.label5.TabIndex = 39;
@@ -293,7 +251,7 @@
 			// comboBoxInterval
 			// 
 			this.comboBoxInterval.FormattingEnabled = true;
-			this.comboBoxInterval.Location = new System.Drawing.Point(333, 37);
+			this.comboBoxInterval.Location = new System.Drawing.Point(333, 11);
 			this.comboBoxInterval.Name = "comboBoxInterval";
 			this.comboBoxInterval.Size = new System.Drawing.Size(60, 20);
 			this.comboBoxInterval.TabIndex = 6;
@@ -301,7 +259,7 @@
 			// label6
 			// 
 			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(530, 41);
+			this.label6.Location = new System.Drawing.Point(530, 15);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(29, 12);
 			this.label6.TabIndex = 38;
@@ -313,7 +271,7 @@
 			this.comboBoxInst.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
 			this.comboBoxInst.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
 			this.comboBoxInst.FormattingEnabled = true;
-			this.comboBoxInst.Location = new System.Drawing.Point(230, 37);
+			this.comboBoxInst.Location = new System.Drawing.Point(230, 11);
 			this.comboBoxInst.Name = "comboBoxInst";
 			this.comboBoxInst.Size = new System.Drawing.Size(74, 20);
 			this.comboBoxInst.TabIndex = 5;
@@ -324,7 +282,7 @@
 			this.ComboBoxType.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
 			this.ComboBoxType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.ComboBoxType.DropDownWidth = 200;
-			this.ComboBoxType.Location = new System.Drawing.Point(37, 37);
+			this.ComboBoxType.Location = new System.Drawing.Point(37, 11);
 			this.ComboBoxType.Name = "ComboBoxType";
 			this.ComboBoxType.Size = new System.Drawing.Size(164, 20);
 			this.ComboBoxType.TabIndex = 4;
@@ -332,7 +290,7 @@
 			// label4
 			// 
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(304, 41);
+			this.label4.Location = new System.Drawing.Point(304, 15);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(29, 12);
 			this.label4.TabIndex = 40;
@@ -342,7 +300,7 @@
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(201, 41);
+			this.label3.Location = new System.Drawing.Point(201, 15);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(29, 12);
 			this.label3.TabIndex = 41;
@@ -352,7 +310,7 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(8, 41);
+			this.label2.Location = new System.Drawing.Point(8, 15);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(29, 12);
 			this.label2.TabIndex = 42;
@@ -461,23 +419,14 @@
 			this.label12.TabIndex = 8;
 			this.label12.Text = "首发偏移跳数";
 			// 
-			// splitContainer1
+			// toolTip1
 			// 
-			this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.splitContainer1.Location = new System.Drawing.Point(0, 92);
-			this.splitContainer1.Name = "splitContainer1";
-			this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
-			// 
-			// splitContainer1.Panel1
-			// 
-			this.splitContainer1.Panel1.Controls.Add(this.DataGridViewStrategies);
-			// 
-			// splitContainer1.Panel2
-			// 
-			this.splitContainer1.Panel2.Controls.Add(this.DataGridViewOrders);
-			this.splitContainer1.Size = new System.Drawing.Size(1154, 422);
-			this.splitContainer1.SplitterDistance = 90;
-			this.splitContainer1.TabIndex = 40;
+			this.toolTip1.AutomaticDelay = 200;
+			this.toolTip1.AutoPopDelay = 3000;
+			this.toolTip1.InitialDelay = 200;
+			this.toolTip1.IsBalloon = true;
+			this.toolTip1.ReshowDelay = 40;
+			this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Warning;
 			// 
 			// DataGridViewStrategies
 			// 
@@ -509,7 +458,7 @@
             this.Graphics});
 			this.DataGridViewStrategies.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.DataGridViewStrategies.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-			this.DataGridViewStrategies.Location = new System.Drawing.Point(0, 0);
+			this.DataGridViewStrategies.Location = new System.Drawing.Point(0, 63);
 			this.DataGridViewStrategies.MultiSelect = false;
 			this.DataGridViewStrategies.Name = "DataGridViewStrategies";
 			this.DataGridViewStrategies.RowHeadersWidth = 6;
@@ -518,33 +467,9 @@
 			this.DataGridViewStrategies.RowTemplate.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
 			this.DataGridViewStrategies.RowTemplate.Height = 27;
 			this.DataGridViewStrategies.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.DataGridViewStrategies.Size = new System.Drawing.Size(1154, 90);
-			this.DataGridViewStrategies.TabIndex = 30;
-			// 
-			// DataGridViewOrders
-			// 
-			this.DataGridViewOrders.AllowUserToAddRows = false;
-			this.DataGridViewOrders.AllowUserToDeleteRows = false;
-			this.DataGridViewOrders.AllowUserToOrderColumns = true;
-			dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle9.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.DataGridViewOrders.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
-			this.DataGridViewOrders.ColumnHeadersHeight = 27;
-			this.DataGridViewOrders.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-			this.DataGridViewOrders.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.DataGridViewOrders.Location = new System.Drawing.Point(0, 0);
-			this.DataGridViewOrders.Name = "DataGridViewOrders";
-			this.DataGridViewOrders.ReadOnly = true;
-			this.DataGridViewOrders.RowHeadersWidth = 6;
-			this.DataGridViewOrders.RowTemplate.Height = 27;
-			this.DataGridViewOrders.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.DataGridViewOrders.Size = new System.Drawing.Size(1154, 328);
-			this.DataGridViewOrders.TabIndex = 29;
+			this.DataGridViewStrategies.ShowCellToolTips = false;
+			this.DataGridViewStrategies.Size = new System.Drawing.Size(1154, 451);
+			this.DataGridViewStrategies.TabIndex = 40;
 			// 
 			// StraName
 			// 
@@ -654,7 +579,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add(this.splitContainer1);
+			this.Controls.Add(this.DataGridViewStrategies);
 			this.Controls.Add(this.groupBox2);
 			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.panelLogin);
@@ -671,20 +596,13 @@
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDownReorder)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDownWait)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDownFirst)).EndInit();
-			this.splitContainer1.Panel1.ResumeLayout(false);
-			this.splitContainer1.Panel2.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-			this.splitContainer1.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.DataGridViewStrategies)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.DataGridViewOrders)).EndInit();
 			this.ResumeLayout(false);
 
 		}
 
 		#endregion
 		private System.Windows.Forms.Panel panelLogin;
-		private System.Windows.Forms.Button buttonStrategyFile;
-		private System.Windows.Forms.ComboBox comboBoxStrategyFile;
 		private System.Windows.Forms.GroupBox groupBox1;
 		private System.Windows.Forms.ComboBox comboBoxInterval;
 		private System.Windows.Forms.ComboBox comboBoxInst;
@@ -698,7 +616,6 @@
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.Button buttonAddStra;
 		private System.Windows.Forms.Button buttonDel;
-		private System.Windows.Forms.Button buttonClearFiles;
 		private System.Windows.Forms.Button buttonLogin;
 		private System.Windows.Forms.TextBox textBoxPwd;
 		private System.Windows.Forms.TextBox textBoxUser;
@@ -718,9 +635,7 @@
 		private System.Windows.Forms.Label label15;
 		private System.Windows.Forms.PictureBox pictureBox1;
 		private System.Windows.Forms.ToolTip toolTip1;
-		private System.Windows.Forms.SplitContainer splitContainer1;
 		private System.Windows.Forms.DataGridView DataGridViewStrategies;
-		private System.Windows.Forms.DataGridView DataGridViewOrders;
 		private System.Windows.Forms.DataGridViewTextBoxColumn StraName;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Type;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Param;

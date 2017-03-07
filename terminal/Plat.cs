@@ -131,6 +131,7 @@ namespace HaiFeng
 			{
 				this.pictureBox1.Image = Properties.Resources.Close;
 				this.toolTip1.SetToolTip(this.pictureBox1, "停止");
+				this.toolTip1.Show("停止.", this.pictureBox1, 6000);
 			}));
 		}
 
@@ -154,6 +155,10 @@ namespace HaiFeng
 				{
 					this.pictureBox1.Image = Properties.Resources.Open;
 					this.toolTip1.SetToolTip(this.pictureBox1, "已连接");
+					//this.toolTip1.Show("已连接.", this.pictureBox1, 6000);
+
+					this.toolTip1.SetToolTip(this.ComboBoxType, "策略文件(dll)放置在(./strategies)目录中.");
+					this.toolTip1.Show("策略文件(dll)放置在(./strategies)目录中.", this.ComboBoxType, 6000);
 				}));
 			}
 			else
@@ -222,7 +227,6 @@ namespace HaiFeng
 					_dtOrders.Columns.Add(v.Name, v.PropertyType);
 			}
 			//_dtOrders.PrimaryKey = new[] { _dtOrders.Columns[""] };
-			this.DataGridViewOrders.DataSource = _dtOrders;
 
 			LoadConfig();
 			LoadStrategy();
@@ -299,6 +303,10 @@ namespace HaiFeng
 				this.DataGridViewStrategies.Rows[rid].Cells["Loaded"].Value = "加载中...";
 				LoadStraData(stra, this.comboBoxInterval.Text, this.comboBoxInst.Text);
 				this.DataGridViewStrategies.Rows[rid].Cells["Loaded"].Value = "已加载";
+
+				var colIdx = this.DataGridViewStrategies.Columns.IndexOf(this.DataGridViewStrategies.Columns["Order"]);
+				var rect = this.DataGridViewStrategies.GetCellDisplayRectangle(colIdx, rid, false);
+				this.toolTip1.Show("勾选'委托',对接口下单.", this.DataGridViewStrategies, rect.X + 30, rect.Y + 20, 3000);
 			}
 		}
 
@@ -342,7 +350,7 @@ namespace HaiFeng
 			//表格右键开启停止提示???
 			return rid;
 		}
-		
+
 		/// <summary>
 		/// 加载测试数据
 		/// </summary>
@@ -445,7 +453,7 @@ namespace HaiFeng
 
 			if (data.Interval > 1 || data.IntervalType != EnumIntervalType.Min)
 				bars = GetUpperPeriod(bars, data.Interval, data.IntervalType);
-			
+
 			//加载与tick加载同时处理
 			foreach (Bar bar in bars)
 				data.Add(bar); //加入bar
@@ -535,19 +543,22 @@ namespace HaiFeng
 				{
 					new FormWorkSpace(_curStrategy).Show();
 				}
-				else if(head == "Loaded") //加载
+				else if (head == "Loaded") //加载
 				{
 					DataGridViewButtonCell cell = (DataGridViewButtonCell)row.Cells[e.ColumnIndex];
-					if(cell.Value == null || cell.Value.ToString() == "未加载")
+					if (cell.Value == null || cell.Value.ToString() == "未加载")
 					{
 						cell.Value = "加载中";
 						LoadStraData(stra, (string)row.Cells["Interval"].Value, (string)row.Cells["Instrument"].Value);
 						cell.Value = "已加载";
+
+						var rect = this.DataGridViewStrategies.GetCellDisplayRectangle(e.ColumnIndex + 1, e.RowIndex, false);
+						this.toolTip1.Show("勾选'委托',对接口下单.", this.DataGridViewStrategies, rect.X + 30, rect.Y + 20, 3000);
 					}
 				}
 			}
 		}
-		
+
 		//格式化时间字段
 		private void DataGridViewStrategies_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
 		{
@@ -565,11 +576,6 @@ namespace HaiFeng
 		private void SaveConfig()
 		{
 			if (_cfg == null) return;
-			_cfg.StrategyFiles = new string[this.comboBoxStrategyFile.Items.Count];
-			for (int i = 0; i < this.comboBoxStrategyFile.Items.Count; i++)
-			{
-				_cfg.StrategyFiles[i] = (string)this.comboBoxStrategyFile.Items[i];
-			}
 			File.WriteAllText("config.json", JsonConvert.SerializeObject(_cfg, Newtonsoft.Json.Formatting.Indented));
 		}
 
@@ -578,10 +584,13 @@ namespace HaiFeng
 			if (File.Exists("config.json"))
 			{
 				_cfg = JsonConvert.DeserializeObject<ConfigATP>(File.ReadAllText("config.json"));
-				foreach (var file in _cfg.StrategyFiles)
+				//foreach (var file in _cfg.StrategyFiles)
+				//20170307:读取指定目录策略文件
+				Directory.CreateDirectory("./strategies");
+				foreach (var file in new DirectoryInfo("./strategies").GetFiles("*.dll", SearchOption.AllDirectories))
 				{
-					if (File.Exists(file))
-						LoadStrategyFile(file);
+					//if (File.Exists(file))
+					LoadStrategyFile(file.FullName);
 				}
 			}
 			else
@@ -983,39 +992,15 @@ namespace HaiFeng
 					if (t.BaseType == typeof(Strategy))
 						this.ComboBoxType.Items.Add(t);
 				}
-				this.comboBoxStrategyFile.Items.Insert(0, file);
-				this.comboBoxStrategyFile.SelectedIndex = 0;
 			}
 			catch (Exception err)
 			{
 				MessageBox.Show(err.Message);
 			}
 		}
-
-		//加载策略
-		private void buttonLoadStrategy_Click(object sender, EventArgs e)
-		{
-			using (OpenFileDialog fbd = new OpenFileDialog())
-			{
-				if (fbd.ShowDialog() == DialogResult.OK)
-				{
-					LoadStrategyFile(fbd.FileName);
-
-				}
-			}
-		}
-
-		private void buttonClearFiles_Click(object sender, EventArgs e)
-		{
-			this.comboBoxStrategyFile.Items.Clear();
-			this.comboBoxStrategyFile.Text = string.Empty;
-			this.ComboBoxType.Items.Clear();
-		}
 	}
 	public class ConfigATP
 	{
-		[Browsable(false)]
-		public string[] StrategyFiles { get; set; }
 		[Category("配置"), DisplayName("追单设置"), Browsable(true)]
 		public FollowConfig FloConfig { get; set; } = new FollowConfig();
 
