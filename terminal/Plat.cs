@@ -40,7 +40,8 @@ namespace HaiFeng
 			SaveConfig();
 			//解除事件绑定及现场清理
 			_timer.Stop();
-			_q.OnRtnTick -= _q_OnRtnTick;
+			if (_q != null)
+				_q.OnRtnTick -= _q_OnRtnTick;
 			base.OnHandleDestroyed(e);
 		}
 
@@ -51,7 +52,6 @@ namespace HaiFeng
 		private TradeExt _t;
 		private Quote _q;
 
-		////// 接口登录
 		//读取前置配置信息
 		void ReadServer()
 		{
@@ -113,20 +113,17 @@ namespace HaiFeng
 			_t.OnFrontConnected += trade_OnFrontConnected;
 			_t.OnRspUserLogin += trade_OnRspUserLogin;
 			_t.OnRtnExchangeStatus += trade_OnRtnExchangeStatus;
-
+			//接口相关信息
 			_t.OnInfo += (msg) => LogInfo(msg);
 			_t.OnRspUserLogout += _t_OnRspUserLogout;
-			_t.OnRtnErrOrder += (snd, ea) => LogError($"{ea.Value.InstrumentID,-8}{ea.Value.Direction,4}{ea.Value.Offset,6}{ea.Value.StatusMsg}");
-			_t.OnRtnOrder += (snd, ea) => LogWarn($"{ea.Value.InstrumentID,-8}{ea.Value.Direction,4}{ea.Value.Offset,6}{ea.Value.StatusMsg}");
 			_t.OnRtnNotice += (snd, ea) => LogWarn($"重要提示: {ea.Value}");
-			_t.OnRtnCancel += (snd, ea) => LogWarn($"{ea.Value.InstrumentID,-8}{ea.Value.Direction,4}{ea.Value.Offset,6}{ea.Value.StatusMsg}");
 
 			_t.ReqConnect(_ServerTrade);
 		}
 
 		private void _t_OnRspUserLogout(object sender, IntEventArgs e)
 		{
-			LogDebug($"断开【{e.Value,4}】");
+			LogDebug($"断开,{e.Value,4}");
 			this.Invoke(new Action(() =>
 			{
 				this.pictureBox1.Image = Properties.Resources.Close;
@@ -196,6 +193,7 @@ namespace HaiFeng
 				{
 					this.panelLogin.Enabled = false;
 					Console.Title += $" ({textBoxUser.Text}@{comboBoxServer.Text})";
+					this.ParentForm.Text = Console.Title;
 					File.WriteAllText("login.ini", _Investor + "@" + this.comboBoxServer.Text);
 					InitTerminalControls();
 				}));
@@ -216,7 +214,7 @@ namespace HaiFeng
 			this.comboBoxInst.Items.AddRange(listInst.ToArray());
 
 			//时间周期
-			this.comboBoxInterval.Items.AddRange(new[] { "Sec 1", "Min 1", "Min 3", "Min 5", "Min 10", "Min 15", "Min 30", "Hour 1", "Day 1", "Week 1", "Year 1" });
+			this.comboBoxInterval.Items.AddRange(new[] { "Min 1", "Min 3", "Min 5", "Min 10", "Min 15", "Min 30", "Hour 1", "Day 1", "Week 1", "Year 1" });
 
 			//设置表格
 			_dtOrders.Columns.Add("ID", typeof(int));//增加编号列
@@ -295,6 +293,7 @@ namespace HaiFeng
 			{
 				//参数配置
 				fp.propertyGrid1.SelectedObject = stra;
+				fp.StartPosition = FormStartPosition.CenterParent;
 				if (fp.ShowDialog(this) != DialogResult.OK) return;
 
 				int rid = AddStra(stra, _dicStrategies.Count == 0 ? "1" : (_dicStrategies.Select(n => int.Parse(n.Key)).Max() + 1).ToString(), this.comboBoxInst.Text, this.comboBoxInterval.Text, this.dateTimePickerBegin.Value.Date, this.dateTimePickerEnd.Checked ? this.dateTimePickerEnd.Value.Date : DateTime.MaxValue);
@@ -485,7 +484,7 @@ namespace HaiFeng
 					_q.ReqSubscribeMarketData(inst);
 				_listOnTickStra.Add(stra); //可以接收实际行情
 			}
-			LogInfo($"【{stra.Name,8}】策略加载数据完成.");
+			LogInfo($"{stra.Name,8},策略加载数据完成.");
 		}
 
 		//选择不同策略:显示策略成交记录
@@ -644,7 +643,7 @@ namespace HaiFeng
 
 					int rid = AddStra(stra, fields[0], fields[2], fields[3], DateTime.Parse(fields[4]), string.IsNullOrWhiteSpace(fields[5]) ? DateTime.MaxValue : DateTime.Parse(fields[5]));
 
-					LogInfo($"【{stra.Name,8}】读取策略 {(rid == -1 ? "出错" : "完成")}");
+					LogInfo($"{stra.Name,8},读取策略 {(rid == -1 ? "出错" : "完成")}");
 					//if (rid == -1)//加载不成功
 					//{
 					//	continue;
@@ -674,11 +673,11 @@ namespace HaiFeng
 				else
 				{
 					//如果时间在设定的开始时间的5分钟内则重启接口
-					var now = DateTime.Now;
-					if ((new[] { _cfg.OpenTime, _cfg.CloseTime }).Count(n => now > n && now < n.Add(TimeSpan.FromMinutes(5))) > 0)
+					var now = DateTime.Now.TimeOfDay;
+					if ((new[] { _cfg.OpenTime.TimeOfDay, _cfg.CloseTime.TimeOfDay }).Count(n => now > n && now < n.Add(TimeSpan.FromMinutes(5))) > 0)
 					{
+						LogInfo("接口隔夜启动");
 						this.ButtonLogin_Click(null, null);
-						LogInfo("接口启动");
 					}
 				}
 			}
@@ -849,7 +848,7 @@ namespace HaiFeng
 			//实际委托
 			if (_listOrderStra.IndexOf(pStrategy) >= 0)
 			{
-				LogInfo($"【{pStrategy.Name,8}】{pOrderItem.Date,20}{pOrderItem.Dir,4}{pOrderItem.Offset,6}{pOrderItem.Price,12:F2}{pOrderItem.Lots,4}{pOrderItem.Remark}");
+				LogInfo($"{pStrategy.Name,-8}{pOrderItem.Date,20}{pOrderItem.Dir,4}{pOrderItem.Offset,6}{pOrderItem.Price,12:F2}{pOrderItem.Lots,4}{pOrderItem.Remark}");
 
 				//处理上期所平今操作
 				if (pOrderItem.Offset == Offset.Close)

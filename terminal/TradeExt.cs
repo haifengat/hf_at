@@ -39,6 +39,7 @@ namespace HaiFeng
 
 		private void TradeExt_OnRtnExchangeStatus(object sender, StatusEventArgs e)
 		{
+			//处理小节休盘后,再发送.
 			if (_listWaitTrading.Count == 0) return;
 
 			if (e.Status == ExchangeStatusType.Trading)
@@ -61,21 +62,21 @@ namespace HaiFeng
 		{
 			if (!e.Value.IsLocal) return;
 
-			ShowInfo($"[{e.Value.Custom}]报单错误({e.Value.StatusMsg})[{e.Value.InstrumentID},{e.Value.Direction},{ e.Value.Offset},{e.Value.LimitPrice},{ e.Value.Volume},剩{ e.Value.VolumeLeft}]");
+			ShowInfo($"报单错误,{e.Value.Custom:000000000000},{e.Value.InstrumentID,-8},{e.Value.Direction,4},{e.Value.Offset,6},{e.Value.LimitPrice,8},{e.Value.Volume,4},剩{e.Value.VolumeLeft,4},{e.Value.StatusMsg}");
 		}
 
 		private void TradeExt_OnRtnCancel1(object sender, OrderArgs e)
 		{
 			if (!e.Value.IsLocal) return;
 
-			ShowInfo($"[{e.Value.Custom}]报单({e.Value.StatusMsg})[{e.Value.InstrumentID},{e.Value.Direction},{ e.Value.Offset},{e.Value.LimitPrice},{ e.Value.Volume},剩{ e.Value.VolumeLeft}]");
+			ShowInfo($"撤单,{e.Value.Custom:000000000000},{e.Value.InstrumentID,-8},{e.Value.Direction,4},{e.Value.Offset,6},{e.Value.LimitPrice,8},{e.Value.Volume,4},剩{e.Value.VolumeLeft,4},{e.Value.StatusMsg}");
 		}
 
 		private void TradeExt_OnRtnOrder1(object sender, OrderArgs e)
 		{
 			if (!e.Value.IsLocal) return;
 
-			ShowInfo($"[{e.Value.Custom}]报单({e.Value.StatusMsg})[{e.Value.InstrumentID},{e.Value.Direction},{ e.Value.Offset},{e.Value.LimitPrice},{ e.Value.Volume},剩{ e.Value.VolumeLeft}]");
+			ShowInfo($"报单,{e.Value.Custom:000000000000},{e.Value.InstrumentID,-8},{e.Value.Direction,4},{e.Value.Offset,6},{e.Value.LimitPrice,8},{e.Value.Volume,4},剩{e.Value.VolumeLeft,4},{e.Value.StatusMsg}");
 		}
 
 		public event ShowInfoAction OnInfo

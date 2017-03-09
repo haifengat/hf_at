@@ -17,7 +17,7 @@ namespace HaiFeng
 				if (cfg == null)
 				{
 					cfg = new NLog.Config.LoggingConfiguration();
-					cfg.LoggingRules.Add(new NLog.Config.LoggingRule("log", LogLevel.Warn, new NLog.Targets.ColoredConsoleTarget
+					cfg.LoggingRules.Add(new NLog.Config.LoggingRule("log", LogLevel.Info, new NLog.Targets.ColoredConsoleTarget
 					{
 						Name = "console",
 						Layout = "${longdate} ${message}",
