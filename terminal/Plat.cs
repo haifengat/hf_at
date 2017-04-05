@@ -730,7 +730,7 @@ namespace HaiFeng
 			MarketData tick = e.Tick;
 			if (_t.DicExcStatus.Count > 1) //非模拟才进行处理
 			{
-				if (!_dataProcess.FixTick(tick, _t.TradingDay))    //修正tick时间格式:yyyMMdd HH:mm:ss
+				if (!_dataProcess.FixTick(tick, _t.TradingDay, _t.DicInstrumentField[tick.InstrumentID].ProductID))    //修正tick时间格式:yyyMMdd HH:mm:ss
 					return;
 			}
 

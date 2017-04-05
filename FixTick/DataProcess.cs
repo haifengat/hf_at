@@ -27,9 +27,15 @@ namespace HaiFeng
 
 		public GetData GetData { get { return _getData; } }
 
-		public bool FixTick(MarketData tick, string tradingDay)
+		/// <summary>
+		/// 20170405期权上市后不能再用“去尾数字法”取合约的productid
+		/// </summary>
+		/// <param name="tick"></param>
+		/// <param name="tradingDay"></param>
+		/// <param name="proc"></param>
+		/// <returns></returns>
+		public bool FixTick(MarketData tick, string tradingDay, string proc)
 		{
-			var proc = new string(tick.InstrumentID.Where(c => !char.IsDigit(c)).ToArray());
 			var action = _tradeDates[_tradeDates.IndexOf(tradingDay) - 1];
 			DateTime dtTick;
 			if (_dicProcMinList[proc].FixMin(tick.UpdateTime, tick.UpdateMillisec, tradingDay, action, out dtTick))
