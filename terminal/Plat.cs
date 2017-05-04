@@ -273,12 +273,6 @@ namespace HaiFeng
 		private string _Investor;
 		private List<string> _tradingDate;
 
-		protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
-
-		}
-
 		//添加策略
 		void ButtonAdd_Click(object sender, EventArgs e)
 		{
@@ -300,7 +294,7 @@ namespace HaiFeng
 
 				//数据加载
 				this.DataGridViewStrategies.Rows[rid].Cells["Loaded"].Value = "加载中...";
-				LoadStraData(stra, this.comboBoxInterval.Text, this.comboBoxInst.Text);
+				LoadStraData(stra, this.comboBoxInterval.Text, this.comboBoxInst.Text, this.dateTimePickerBegin.Value.Date, this.dateTimePickerEnd.Checked ? this.dateTimePickerEnd.Value.Date : DateTime.MaxValue);
 				this.DataGridViewStrategies.Rows[rid].Cells["Loaded"].Value = "已加载";
 
 				var colIdx = this.DataGridViewStrategies.Columns.IndexOf(this.DataGridViewStrategies.Columns["Order"]);
@@ -327,7 +321,16 @@ namespace HaiFeng
 			this.DataGridViewStrategies.Rows.Remove(row);
 		}
 
-		//策略添加
+		/// <summary>
+		/// 策略添加,返回添加后的行号
+		/// </summary>
+		/// <param name="stra"></param>
+		/// <param name="pName"></param>
+		/// <param name="pInstrument"></param>
+		/// <param name="pInterval"></param>
+		/// <param name="pBegin"></param>
+		/// <param name="pEnd"></param>
+		/// <returns></returns>
 		private int AddStra(Strategy stra, string pName, string pInstrument, string pInterval, DateTime pBegin, DateTime pEnd)
 		{
 			if (!_dicStrategies.TryAdd(pName, stra))
@@ -337,6 +340,7 @@ namespace HaiFeng
 			}
 			stra.Name = pName;
 			int rid = this.DataGridViewStrategies.Rows.Add(stra.Name, stra.GetType(), stra.GetParams(), pInstrument, pInterval, pBegin, pEnd);
+
 			this.DataGridViewStrategies.Rows[rid].Cells["Order"].Value = false;
 			if (pEnd.Date == DateTime.MaxValue.Date)
 				this.DataGridViewStrategies.Rows[rid].Cells["EndDate"].Value = null;
@@ -356,7 +360,7 @@ namespace HaiFeng
 		/// <param name="stra">策略</param>
 		/// <param name="internalType">周期(例:1 Min)</param>
 		/// <param name="inst">合约(例:TA1709,区分大小写)</param>
-		private void LoadStraData(Strategy stra, string internalType, string inst)
+		private void LoadStraData(Strategy stra, string internalType, string inst, DateTime dtBegin, DateTime dtEnd)
 		{
 			Data data = new Data
 			{
@@ -381,8 +385,10 @@ namespace HaiFeng
 				data.InstrumentInfo.VolumeMultiple = (int)pi.VolumeTuple;
 			}
 
-			DateTime dtBegin = this.dateTimePickerBegin.Value;
-			DateTime dtEnd = this.dateTimePickerEnd.Checked ? this.dateTimePickerEnd.Value.Date.AddDays(1) : DateTime.ParseExact(_t.TradingDay, "yyyyMMdd", null).AddDays(1);
+			//20170504从表行中取数据,而非界面上的数据.否则在"行"中点"加载"处理有误.
+			//DateTime dtBegin = this.dateTimePickerBegin.Value;
+			//DateTime dtEnd = this.dateTimePickerEnd.Checked ? this.dateTimePickerEnd.Value.Date.AddDays(1) : DateTime.ParseExact(_t.TradingDay, "yyyyMMdd", null).AddDays(1);
+			dtEnd = dtEnd == DateTime.MaxValue ? DateTime.ParseExact(_t.TradingDay, "yyyyMMdd", null).AddDays(1) : dtEnd.AddDays(1);
 
 			_dtOrders.Rows.Clear(); //清除委托列表
 
@@ -462,6 +468,9 @@ namespace HaiFeng
 			DataGridViewStrategies_SelectionChanged(null, null); //刷新委托列表
 																 //是否有结束日期:只测试
 																 //if (dtEnd == DateTime.MaxValue)
+
+			//未设置结束日期=>可订阅并接收行情
+			if (dtEnd == DateTime.MaxValue)
 			{
 				//订阅000合约
 				if (stra.InstrumentID.EndsWith("000"))
@@ -548,7 +557,7 @@ namespace HaiFeng
 					if (cell.Value == null || cell.Value.ToString() == "未加载")
 					{
 						cell.Value = "加载中";
-						LoadStraData(stra, (string)row.Cells["Interval"].Value, (string)row.Cells["Instrument"].Value);
+						LoadStraData(stra, (string)row.Cells["Interval"].Value, (string)row.Cells["Instrument"].Value, (DateTime)row.Cells["BeginDate"].Value, row.Cells["EndDate"].Value == null ? DateTime.MaxValue : (DateTime)row.Cells["EndDate"].Value);
 						cell.Value = "已加载";
 
 						var rect = this.DataGridViewStrategies.GetCellDisplayRectangle(e.ColumnIndex + 1, e.RowIndex, false);
@@ -586,7 +595,9 @@ namespace HaiFeng
 				//foreach (var file in _cfg.StrategyFiles)
 				//20170307:读取指定目录策略文件
 				Directory.CreateDirectory("./strategies");
-				foreach (var file in new DirectoryInfo("./strategies").GetFiles("*.dll", SearchOption.AllDirectories))
+				var files = new DirectoryInfo("./strategies").GetFiles("*.dll", SearchOption.AllDirectories).ToList();
+				files.Add(new FileInfo("./at_strategy.dll")); //测试用
+				foreach (var file in files)
 				{
 					//if (File.Exists(file))
 					LoadStrategyFile(file.FullName);

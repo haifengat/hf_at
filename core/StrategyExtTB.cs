@@ -23,21 +23,21 @@ namespace HaiFeng
 		public DataSeries Vol { get { return V; } }
 		public DataSeries OpenInt { get { return I; } }
 
-		public Numeric Highest(DataSeries pSeries, Numeric pPeriod)
+		public Numeric Highest(DataSeries pSeries, Numeric pPeriod, int pPreBars = 0)
 		{
 			//_inds.GetOrAdd(string.Format("Highest_{0}_{1}", pSeries.SeriesName, pPeriod), new Highest(pSeries, (int) pPeriod));
 			Numeric rtn = Numeric.MinValue;
-			for (int i = 0; i < pPeriod; ++i)
+			for (int i = pPreBars; i < pPeriod; ++i)
 			{
 				if (pSeries[i] > rtn)
 					rtn = pSeries[i];
 			}
 			return rtn;
 		}
-		public Numeric Lowest(DataSeries pSeries, Numeric pPeriod)
+		public Numeric Lowest(DataSeries pSeries, Numeric pPeriod, int pPreBars = 0)
 		{
 			Numeric rtn = Numeric.MaxValue;
-			for (int i = 0; i < pPeriod; ++i)
+			for (int i = pPreBars; i < pPeriod; ++i)
 			{
 				if (pSeries[i] < rtn)
 					rtn = pSeries[i];
