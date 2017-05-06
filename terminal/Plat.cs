@@ -29,6 +29,7 @@ namespace HaiFeng
 		{
 			InitializeComponent();
 			this.buttonLogin.Click += ButtonLogin_Click;
+			this.buttonOffline.Click += Offline_Click;
 			//修改完成后保存前置配置
 			this.richTextBox1.Leave += (snd, ea) => ReadServer();
 			ReadServer();
@@ -121,6 +122,17 @@ namespace HaiFeng
 			_t.ReqConnect(_ServerTrade);
 		}
 
+		//脱机
+		private void Offline_Click(object sender, EventArgs e)
+		{
+			this.panelLogin.Enabled = false;
+			_offline = true;
+			this.toolTip1.SetToolTip(this.ComboBoxType, "策略文件(dll)放置在(./strategies)目录中.");
+			this.toolTip1.Show("策略文件(dll)放置在(./strategies)目录中.", this.ComboBoxType, 6000);
+			LogInfo("脱机模式启动平台");
+			InitTerminalControls();
+		}
+
 		private void _t_OnRspUserLogout(object sender, IntEventArgs e)
 		{
 			LogDebug($"断开,{e.Value,4}");
@@ -209,7 +221,8 @@ namespace HaiFeng
 		void InitTerminalControls()
 		{
 			//合约列表
-			var listInst = _t.DicInstrumentField.Keys.ToList();
+			//var listInst = _t.DicInstrumentField.Keys.ToList();
+			var listInst = _dataProcess.GetData.QueryInstrument();
 			listInst.Sort();
 			this.comboBoxInst.Items.AddRange(listInst.ToArray());
 
@@ -229,8 +242,11 @@ namespace HaiFeng
 			LoadConfig();
 			LoadStrategy();
 
-			_timer.Tick += _timer_Tick;
-			_timer.Start();
+			if (!_offline)
+			{
+				_timer.Tick += _timer_Tick;
+				_timer.Start();
+			}
 			this.buttonAddStra.Click += ButtonAdd_Click;//添加策略
 			this.buttonDel.Click += ButtonDel_Click;
 			this.DataGridViewStrategies.SelectionChanged += DataGridViewStrategies_SelectionChanged;
@@ -272,6 +288,7 @@ namespace HaiFeng
 		private string _Password;
 		private string _Investor;
 		private List<string> _tradingDate;
+		private bool _offline = false; //是否为脱机模式登录
 
 		//添加策略
 		void ButtonAdd_Click(object sender, EventArgs e)
@@ -293,13 +310,7 @@ namespace HaiFeng
 				int rid = AddStra(stra, _dicStrategies.Count == 0 ? "1" : (_dicStrategies.Select(n => int.Parse(n.Key)).Max() + 1).ToString(), this.comboBoxInst.Text, this.comboBoxInterval.Text, this.dateTimePickerBegin.Value.Date, this.dateTimePickerEnd.Checked ? this.dateTimePickerEnd.Value.Date : DateTime.MaxValue);
 
 				//数据加载
-				this.DataGridViewStrategies.Rows[rid].Cells["Loaded"].Value = "加载中...";
-				LoadStraData(stra, this.comboBoxInterval.Text, this.comboBoxInst.Text, this.dateTimePickerBegin.Value.Date, this.dateTimePickerEnd.Checked ? this.dateTimePickerEnd.Value.Date : DateTime.MaxValue);
-				this.DataGridViewStrategies.Rows[rid].Cells["Loaded"].Value = "已加载";
-
-				var colIdx = this.DataGridViewStrategies.Columns.IndexOf(this.DataGridViewStrategies.Columns["Order"]);
-				var rect = this.DataGridViewStrategies.GetCellDisplayRectangle(colIdx, rid, false);
-				this.toolTip1.Show("勾选'委托',对接口下单.", this.DataGridViewStrategies, rect.X + 30, rect.Y + 20, 3000);
+				LoadStraData(rid, stra, this.comboBoxInterval.Text, this.comboBoxInst.Text, this.dateTimePickerBegin.Value.Date, this.dateTimePickerEnd.Checked ? this.dateTimePickerEnd.Value.Date : DateTime.MaxValue);
 			}
 		}
 
@@ -348,10 +359,25 @@ namespace HaiFeng
 
 			//20170307 this.propertyGridParams.SelectedObject = stra;   //属性显示
 
-			stra.OnRtnOrder += stra_OnRtnOrder;
+			if (!_offline)
+				stra.OnRtnOrder += stra_OnRtnOrder;
 			//鼠标提示信息:策略,参数...
 			//表格右键开启停止提示???
 			return rid;
+		}
+
+		private void LoadStraData(int rid, Strategy stra, string internalType, string inst, DateTime dtBegin, DateTime dtEnd)
+		{
+			this.DataGridViewStrategies.Rows[rid].Cells["Loaded"].Value = "加载中...";
+			LoadStraData(stra, internalType, inst, dtBegin, dtEnd);
+			this.DataGridViewStrategies.Rows[rid].Cells["Loaded"].Value = "已加载";
+
+			if (!_offline)
+			{
+				var colIdx = this.DataGridViewStrategies.Columns.IndexOf(this.DataGridViewStrategies.Columns["Order"]);
+				var rect = this.DataGridViewStrategies.GetCellDisplayRectangle(colIdx, rid, false);
+				this.toolTip1.Show("勾选'委托',对接口下单.", this.DataGridViewStrategies, rect.X + 30, rect.Y + 20, 3000);
+			}
 		}
 
 		/// <summary>
@@ -369,6 +395,7 @@ namespace HaiFeng
 				Instrument = inst,
 			};
 
+			//需处理成按合约取品种(期权规则与期货不同)
 			string proc = new string(inst.TakeWhile(char.IsLetter).ToArray());
 			data.InstrumentInfo = new InstrumentInfo
 			{
@@ -388,17 +415,17 @@ namespace HaiFeng
 			//20170504从表行中取数据,而非界面上的数据.否则在"行"中点"加载"处理有误.
 			//DateTime dtBegin = this.dateTimePickerBegin.Value;
 			//DateTime dtEnd = this.dateTimePickerEnd.Checked ? this.dateTimePickerEnd.Value.Date.AddDays(1) : DateTime.ParseExact(_t.TradingDay, "yyyyMMdd", null).AddDays(1);
-			dtEnd = dtEnd == DateTime.MaxValue ? DateTime.ParseExact(_t.TradingDay, "yyyyMMdd", null).AddDays(1) : dtEnd.AddDays(1);
 
 			_dtOrders.Rows.Clear(); //清除委托列表
 
 			this.DataGridViewStrategies.EndEdit();
 			this.DataGridViewStrategies.Refresh();
 
+			var qryEndDate = dtEnd == DateTime.MaxValue ? DateTime.Today.AddDays(7) : dtEnd.AddDays(1);
 			List<Bar> bars = null;
 			if (data.IntervalType == EnumIntervalType.Min || data.IntervalType == EnumIntervalType.Hour)
 			{
-				bars = _dataProcess.GetData.QueryMin(inst, dtBegin.ToString("yyyyMMdd"), dtEnd.ToString("yyyyMMdd")).Select(n => new Bar
+				bars = _dataProcess.GetData.QueryMin(inst, dtBegin.ToString("yyyyMMdd"), qryEndDate.ToString("yyyyMMdd")).Select(n => new Bar
 				{
 					D = DateTime.ParseExact(n._id, "yyyyMMdd HH:mm:ss", null),
 					O = (decimal)n.Open,
@@ -409,7 +436,7 @@ namespace HaiFeng
 					I = (decimal)n.OpenInterest
 				}).ToList();
 				// 取当日数据
-				if (dtEnd > DateTime.ParseExact(_t.TradingDay, "yyyyMMdd", null))
+				if (dtEnd == DateTime.MaxValue)
 				{
 					var listReal = _dataProcess.GetData.QueryReal(inst);
 					bars = (bars ?? new List<Bar>());
@@ -426,8 +453,8 @@ namespace HaiFeng
 						}).ToList());
 				}
 			}
-			else
-				bars = _dataProcess.GetData.QueryDay(inst, dtBegin.ToString("yyyyMMdd"), dtEnd.ToString("yyyyMMdd")).Select(n => new Bar
+			else //取日线数据
+				bars = _dataProcess.GetData.QueryDay(inst, dtBegin.ToString("yyyyMMdd"), qryEndDate.ToString("yyyyMMdd")).Select(n => new Bar
 				{
 					/*{ 
 						"_id" : "20140519", 
@@ -470,7 +497,7 @@ namespace HaiFeng
 																 //if (dtEnd == DateTime.MaxValue)
 
 			//未设置结束日期=>可订阅并接收行情
-			if (dtEnd == DateTime.MaxValue)
+			if (dtEnd == DateTime.MaxValue && _q != null)
 			{
 				//订阅000合约
 				if (stra.InstrumentID.EndsWith("000"))
@@ -553,16 +580,7 @@ namespace HaiFeng
 				}
 				else if (head == "Loaded") //加载
 				{
-					DataGridViewButtonCell cell = (DataGridViewButtonCell)row.Cells[e.ColumnIndex];
-					if (cell.Value == null || cell.Value.ToString() == "未加载")
-					{
-						cell.Value = "加载中";
-						LoadStraData(stra, (string)row.Cells["Interval"].Value, (string)row.Cells["Instrument"].Value, (DateTime)row.Cells["BeginDate"].Value, row.Cells["EndDate"].Value == null ? DateTime.MaxValue : (DateTime)row.Cells["EndDate"].Value);
-						cell.Value = "已加载";
-
-						var rect = this.DataGridViewStrategies.GetCellDisplayRectangle(e.ColumnIndex + 1, e.RowIndex, false);
-						this.toolTip1.Show("勾选'委托',对接口下单.", this.DataGridViewStrategies, rect.X + 30, rect.Y + 20, 3000);
-					}
+					LoadStraData(e.RowIndex, stra, (string)row.Cells["Interval"].Value, (string)row.Cells["Instrument"].Value, (DateTime)row.Cells["BeginDate"].Value, row.Cells["EndDate"].Value == null ? DateTime.MaxValue : (DateTime)row.Cells["EndDate"].Value);
 				}
 			}
 		}
@@ -607,7 +625,8 @@ namespace HaiFeng
 			{
 				_cfg = new ConfigATP();
 			}
-			_t.FloConfig = _cfg.FloConfig;
+			if (_t != null)
+				_t.FloConfig = _cfg.FloConfig;
 		}
 
 		void SaveStrategy()

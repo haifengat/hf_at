@@ -128,5 +128,20 @@ namespace HaiFeng
 			list.Sort();
 			return list;
 		}
+
+		/// <summary>
+		/// 查合约
+		/// </summary>
+		/// <returns></returns>
+		public List<string> QueryInstrument()
+		{
+			var msg = SendAndReceive(new ReqPackage
+			{
+				Type = BarType.Instrument,
+			});
+			var list = JsonConvert.DeserializeObject<List<string>>(msg);
+			list.Sort();
+			return list;
+		}
 	}
 }

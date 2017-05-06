@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace HaiFeng
 {
-	enum BarType { Min, Day, Real, Time, Product, TradeDate }
+	enum BarType { Min, Day, Real, Time, Product, TradeDate, Instrument }
+
 
 	class ReqPackage
 	{
