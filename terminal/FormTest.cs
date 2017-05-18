@@ -147,12 +147,8 @@ namespace HaiFeng
 			foreach (Series s in this.chartDB1.Series)
 				s.Points.Clear();
 
-			string product = "";
-			for (int i = 0; i < _stra.InstrumentID.Length; i++)
-				if (char.IsDigit(_stra.InstrumentID[i]))
-					break;
-				else
-					product += _stra.InstrumentID[i];
+			string product = new string(_stra.InstrumentID.TakeWhile(char.IsLetter).ToArray());
+			var procInfo = _stra.Datas[0].InstrumentInfo;
 			DataRow dr = dtRate.Rows.Find(product);
 			var crate = new Tuple<decimal, decimal, decimal, decimal, decimal>((decimal)dr[1], (decimal)dr[2], (decimal)dr[3], (decimal)dr[4], (decimal)dr[5]);// dicRate[product];
 
@@ -210,7 +206,7 @@ namespace HaiFeng
 						}
 						else
 						{
-							eq += eqShort = (avgShort - oi.Price) * oi.Lots; //平仓盈亏
+							eq += eqShort = (avgShort - oi.Price) * oi.Lots * procInfo.VolumeMultiple; //平仓盈亏
 							pShort -= oi.Lots;
 						}
 					}
@@ -223,7 +219,7 @@ namespace HaiFeng
 						}
 						else
 						{
-							eq += eqLong = (oi.Price - avgLong) * oi.Lots; //平仓盈亏
+							eq += eqLong = (oi.Price - avgLong) * oi.Lots * procInfo.VolumeMultiple; //平仓盈亏
 							pLong -= oi.Lots;
 						}
 					}
@@ -268,7 +264,7 @@ namespace HaiFeng
 								drNew["平仓价格"] = operationCopy[i].Price;
 								drNew["手数"] = closeLots;
 								drNew["手续费"] = closeLots * ((crate.Item1 > 1 ? crate.Item1 : (operationCopy[iOpen].Price * crate.Item1)) + (crate.Item2 > 1 ? crate.Item2 : (operationCopy[i].Price * crate.Item2)));
-								drNew["净利"] = (operationCopy[i].Price - operationCopy[iOpen].Price);// * App.DicInstrument[_stra.InstrumentID].VolumeMultiple - (decimal)drNew["手续费"];
+								drNew["净利"] = (operationCopy[i].Price - operationCopy[iOpen].Price) * procInfo.VolumeMultiple - (decimal)drNew["手续费"];
 
 								DataRow drLast = this.dtOperation.AsEnumerable().LastOrDefault();
 								if (drLast == null)
@@ -329,7 +325,7 @@ namespace HaiFeng
 								drNew["平仓价格"] = operationCopy[i].Price;
 								drNew["手数"] = closeLots;
 								drNew["手续费"] = closeLots * ((crate.Item1 > 1 ? crate.Item1 : (operationCopy[iOpen].Price * crate.Item1)) + (crate.Item2 > 1 ? crate.Item2 : (operationCopy[i].Price * crate.Item2)));
-								drNew["净利"] = -(operationCopy[i].Price - operationCopy[iOpen].Price);// * App.DicInstrument[_stra.InstrumentID].VolumeMultiple - (decimal)drNew["手续费"];
+								drNew["净利"] = -(operationCopy[i].Price - operationCopy[iOpen].Price) * procInfo.VolumeMultiple - (decimal)drNew["手续费"];
 								DataRow drLast = this.dtOperation.AsEnumerable().LastOrDefault();
 								if (drLast == null)
 									drNew["净利合计"] = drNew["净利"];
