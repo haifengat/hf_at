@@ -264,7 +264,7 @@ namespace HaiFeng
 								drNew["平仓价格"] = operationCopy[i].Price;
 								drNew["手数"] = closeLots;
 								drNew["手续费"] = closeLots * ((crate.Item1 > 1 ? crate.Item1 : (operationCopy[iOpen].Price * crate.Item1)) + (crate.Item2 > 1 ? crate.Item2 : (operationCopy[i].Price * crate.Item2)));
-								drNew["净利"] = (operationCopy[i].Price - operationCopy[iOpen].Price) * procInfo.VolumeMultiple - (decimal)drNew["手续费"];
+								drNew["净利"] = (operationCopy[i].Price - operationCopy[iOpen].Price) * closeLots * procInfo.VolumeMultiple - (decimal)drNew["手续费"];
 
 								DataRow drLast = this.dtOperation.AsEnumerable().LastOrDefault();
 								if (drLast == null)
@@ -325,7 +325,7 @@ namespace HaiFeng
 								drNew["平仓价格"] = operationCopy[i].Price;
 								drNew["手数"] = closeLots;
 								drNew["手续费"] = closeLots * ((crate.Item1 > 1 ? crate.Item1 : (operationCopy[iOpen].Price * crate.Item1)) + (crate.Item2 > 1 ? crate.Item2 : (operationCopy[i].Price * crate.Item2)));
-								drNew["净利"] = -(operationCopy[i].Price - operationCopy[iOpen].Price) * procInfo.VolumeMultiple - (decimal)drNew["手续费"];
+								drNew["净利"] = -(operationCopy[i].Price - operationCopy[iOpen].Price) * closeLots * procInfo.VolumeMultiple - (decimal)drNew["手续费"];
 								DataRow drLast = this.dtOperation.AsEnumerable().LastOrDefault();
 								if (drLast == null)
 									drNew["净利合计"] = drNew["净利"];

@@ -18,7 +18,7 @@ namespace HaiFeng
 		public int DnLine = 24;
 
 		[Parameter("手数", "交易参数")]
-		public int Lots = 1;
+		public int Lots = 5;
 		[Parameter("开始止赢(%)", "交易参数")]
 		public decimal StopProfitStart = 5;
 		[Parameter("回落止赢(%)", "交易参数")]
@@ -28,71 +28,7 @@ namespace HaiFeng
 		public decimal StopLossLong = 3;
 		[Parameter("止损-空(%)", "交易参数")]
 		public decimal StopLossShort = 3;
-		/*//------------------------------------------------------------------------
-// 简称: RB_02
-// 名称: RangeBreak
-// 类别: 公式应用
-// 类型: 用户应用
-// 输出:
-//------------------------------------------------------------------------
 
-Params
-    Numeric UpLine(24);
-    Numeric DnLine(24);
-	
-	Numeric StopProfitStart(5);
-	Numeric StopProfit(20);
-	
-	Numeric StopLossLong(6);
-	Numeric StopLossShort(3);
-Vars
-	Bool UpBreak;
-	Bool DnBreak;
-	Numeric UpValue;
-	Numeric DnValue;
-	
-	Numeric stopLine;
-	
-	
-	If(BarsSinceEntry > 0)
-	{
-		if(MarketPosition == 1)
-		{
-			//止盈
-			If(Highest(H, BarsSinceEntry) >= EntryPrice * (1+StopProfitStart/100))
-			{
-				stopLine = EntryPrice + (Highest(H, BarsSinceEntry) - EntryPrice) * (1-StopProfit/100); //回落止盈
-				Commentary("回落止盈");
-			}
-			If(L[0] <= EntryPrice * (1-StopLossLong/100))
-			{
-				stopLine = EntryPrice * (1-StopLossLong/100);
-				Commentary("止损");
-			}
-			//止损
-			If(L[0] <= stopLine)
-				Sell(0, Min(O[0], stopLine));
-		}
-		else if(MarketPosition == -1)
-		{
-			//止盈
-			If(Lowest(L, BarsSinceEntry) <= EntryPrice * (1-StopProfitStart/100))
-			{
-				stopLine = EntryPrice - (EntryPrice - Lowest(L, BarsSinceEntry)) * (1-StopProfit/100); //回落止盈
-				Commentary("回落止盈");
-			}
-			If(H[0] >= EntryPrice * (1+StopLossShort/100))
-			{
-				stopLine = EntryPrice * (1+StopLossShort/100);
-				Commentary("止损");
-			}
-			//止盈
-			If(L[0] <= stopLine)
-				Sell(0, Min(O[0], stopLine));
-		}
-	}
-End
-*/
 		public override void OnBarUpdate()
 		{
 			if (CurrentBar < Max(UpLine, DnLine)) return;

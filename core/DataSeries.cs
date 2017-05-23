@@ -1,4 +1,5 @@
 ﻿#region
+using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 using System.Runtime.CompilerServices;
 
@@ -25,6 +26,8 @@ namespace HaiFeng
 
 		private readonly string _name;
 
+		static ConcurrentDictionary<string, DataSeries> _dicOperateAdd = new ConcurrentDictionary<string, DataSeries>();
+
 		/// <summary>
 		/// 构建函数(参数勿填)
 		/// </summary>
@@ -35,13 +38,13 @@ namespace HaiFeng
 			//this.SeriesName = new StackTrace(true).GetFrame(1).GetMethod().Name; // pSeriesName; .Net4下结果不正确(.cto)
 			_name = pSeriesName;
 		}
-		
+
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="index"></param>
 		/// <returns></returns>
-		public new Numeric this [int index]
+		public new Numeric this[int index]
 		{
 			get
 			{
@@ -83,6 +86,104 @@ namespace HaiFeng
 		public new void Add(Numeric p)
 		{
 			base.Add(p);
+		}
+
+		/// <summary>
+		/// 两个序列中各值相加(两序列数目必须相等)
+		/// </summary>
+		/// <param name="s1"></param>
+		/// <param name="s2"></param>
+		/// <returns></returns>
+		public static DataSeries operator +(DataSeries s1, DataSeries s2)
+		{
+			if (s1.Count != s2.Count) return null;
+			string str = $"{s1._name}+{s2._name}";
+			var ds = _dicOperateAdd.GetOrAdd(str, new DataSeries());
+			//更新
+			if (ds.Count == s1.Count)
+				ds[0] = s1[0] + s2[0];
+			else//添加
+				for (int i = ds.Count; i < s1.Count; i++)
+					ds.Add(s1.Items[i] + s2.Items[i]);
+			return ds;
+		}
+
+		/// <summary>
+		/// 两个序列中各值相加(两序列数目必须相等)
+		/// </summary>
+		/// <param name="s1"></param>
+		/// <param name="s2"></param>
+		/// <returns></returns>
+		public static DataSeries operator -(DataSeries s1, DataSeries s2)
+		{
+			if (s1.Count != s2.Count) return null;
+			string str = $"{s1._name}-{s2._name}";
+			var ds = _dicOperateAdd.GetOrAdd(str, new DataSeries());
+			//更新
+			if (ds.Count == s1.Count)
+				ds[0] = s1[0] - s2[0];
+			else//添加
+				for (int i = ds.Count; i < s1.Count; i++)
+					ds.Add(s1.Items[i] - s2.Items[i]);
+			return ds;
+		}
+
+		/// <summary>
+		/// 两个序列中各值相加(两序列数目必须相等)
+		/// </summary>
+		/// <param name="s1"></param>
+		/// <param name="s2"></param>
+		/// <returns></returns>
+		public static DataSeries operator *(DataSeries s1, DataSeries s2)
+		{
+			if (s1.Count != s2.Count) return null;
+			string str = $"{s1._name}*{s2._name}";
+			var ds = _dicOperateAdd.GetOrAdd(str, new DataSeries());
+			//更新
+			if (ds.Count == s1.Count)
+				ds[0] = s1[0] * s2[0];
+			else//添加
+				for (int i = ds.Count; i < s1.Count; i++)
+					ds.Add(s1.Items[i] * s2.Items[i]);
+			return ds;
+		}
+		/// <summary>
+		/// 两个序列中各值相加(两序列数目必须相等)
+		/// </summary>
+		/// <param name="s1"></param>
+		/// <param name="s2"></param>
+		/// <returns></returns>
+		public static DataSeries operator /(DataSeries s1, DataSeries s2)
+		{
+			if (s1.Count != s2.Count) return null;
+			string str = $"{s1._name}/{s2._name}";
+			var ds = _dicOperateAdd.GetOrAdd(str, new DataSeries());
+			//更新
+			if (ds.Count == s1.Count)
+				ds[0] = s1[0] / s2[0];
+			else//添加
+				for (int i = ds.Count; i < s1.Count; i++)
+					ds.Add(s1.Items[i] / s2.Items[i]);
+			return ds;
+		}
+		/// <summary>
+		/// 两个序列中各值相加(两序列数目必须相等)
+		/// </summary>
+		/// <param name="s1"></param>
+		/// <param name="s2"></param>
+		/// <returns></returns>
+		public static DataSeries operator %(DataSeries s1, DataSeries s2)
+		{
+			if (s1.Count != s2.Count) return null;
+			string str = $"{s1._name}%{s2._name}";
+			var ds = _dicOperateAdd.GetOrAdd(str, new DataSeries());
+			//更新
+			if (ds.Count == s1.Count)
+				ds[0] = s1[0] % s2[0];
+			else//添加
+				for (int i = ds.Count; i < s1.Count; i++)
+					ds.Add(s1.Items[i] % s2.Items[i]);
+			return ds;
 		}
 	}
 
