@@ -704,7 +704,7 @@ namespace HaiFeng
 				{
 					//如果时间在设定的开始时间的5分钟内则重启接口
 					var now = DateTime.Now.TimeOfDay;
-					if ((new[] { _cfg.OpenTime.TimeOfDay, _cfg.CloseTime.TimeOfDay }).Count(n => now > n && now < n.Add(TimeSpan.FromMinutes(5))) > 0)
+					if ((new[] { _cfg.OpenTime1.TimeOfDay, _cfg.OpenTime2.TimeOfDay }).Count(n => now > n && now < n.Add(TimeSpan.FromMinutes(5))) > 0)
 					{
 						LogInfo("接口隔夜启动");
 						this.ButtonLogin_Click(null, null);
@@ -1034,10 +1034,10 @@ namespace HaiFeng
 		public FollowConfig FloConfig { get; set; } = new FollowConfig();
 
 		//public RunTime[] RunTimes { get; set; } = new[] { new RunTime { Begin = TimeSpan.Parse("08:45:00"), End = TimeSpan.Parse("15:30:00")} };
-		[Category("7*24"), DisplayName("开始时间")]
-		public DateTime OpenTime { get; set; } = DateTime.Today.Add(TimeSpan.Parse("08:40:00"));
+		[Category("7*24"), DisplayName("开始时间I")]
+		public DateTime OpenTime1 { get; set; } = DateTime.Today.Add(TimeSpan.Parse("08:40:00"));
 
-		[Category("7*24"), DisplayName("结束时间")]
-		public DateTime CloseTime { get; set; } = DateTime.Today.Add(TimeSpan.Parse("20:40:00"));
+		[Category("7*24"), DisplayName("开始时间II")]
+		public DateTime OpenTime2 { get; set; } = DateTime.Today.Add(TimeSpan.Parse("20:40:00"));
 	}
 }

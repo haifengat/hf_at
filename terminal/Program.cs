@@ -29,22 +29,24 @@ namespace HaiFeng
 			Application.ThreadException += Application_ThreadException;
 			//处理非UI线程异常 
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-			using (Form f = new Form())
+
+			//定时启动
+			//取日历判断是否应该启动->加载plat->填写前置帐号密码等参数->登录->判断登录是否成功->已加载的所有策略点"加载"->委托(与上次状态相同)
+			using (Plat plat = new Plat()
 			{
-				//using (FormLogin fl = new FormLogin())
-				//if (fl.ShowDialog() == DialogResult.OK)
+				Dock = DockStyle.Fill
+			})
+			{
+				using (Form f = new Form
 				{
-					//f.Text = $"AT {ver.Major}.{ver.MajorRevision} ({fl.KryptonTextBoxInvestor.Text}@{fl.KryptonComboBoxServer.Text})";
-					//Console.Title += $" ({fl.KryptonTextBoxInvestor.Text}@{fl.KryptonComboBoxServer.Text})";
-					//Plat plat = new Plat(fl.Trade, fl.Quote);
-					Plat plat = new Plat();
-					plat.Dock = DockStyle.Fill;
-					f.Height = plat.Height;
-					f.Width = plat.Width;
+					Height = plat.Height,
+					Width = plat.Width,
+					Icon = Properties.Resources.HF
+				})
+				{
 					f.Controls.Add(plat);
 					f.ShowDialog();
-					//fl.Trade.ReqUserLogout();
-					//fl.Quote.ReqUserLogout();
+					f.Close();
 				}
 			}
 			Environment.Exit(0); //正常关闭
