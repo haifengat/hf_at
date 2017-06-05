@@ -608,23 +608,21 @@ namespace HaiFeng
 		private void LoadConfig()
 		{
 			if (File.Exists("config.json"))
-			{
 				_cfg = JsonConvert.DeserializeObject<ConfigATP>(File.ReadAllText("config.json"));
-				//foreach (var file in _cfg.StrategyFiles)
-				//20170307:读取指定目录策略文件
-				Directory.CreateDirectory("./strategies");
-				var files = new DirectoryInfo("./strategies").GetFiles("*.dll", SearchOption.AllDirectories).ToList();
-				files.Add(new FileInfo("./at_strategy.dll")); //测试用
-				foreach (var file in files)
-				{
-					//if (File.Exists(file))
-					LoadStrategyFile(file.FullName);
-				}
-			}
 			else
-			{
 				_cfg = new ConfigATP();
+
+			//foreach (var file in _cfg.StrategyFiles)
+			//20170307:读取指定目录策略文件
+			Directory.CreateDirectory("./strategies");
+			var files = new DirectoryInfo("./strategies").GetFiles("*.dll", SearchOption.AllDirectories).ToList();
+			files.Add(new FileInfo("./at_strategy.dll")); //测试用
+			foreach (var file in files)
+			{
+				//if (File.Exists(file))
+				LoadStrategyFile(file.FullName);
 			}
+
 			if (_t != null)
 				_t.FloConfig = _cfg.FloConfig;
 		}
