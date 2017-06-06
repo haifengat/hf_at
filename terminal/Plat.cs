@@ -30,8 +30,6 @@ namespace HaiFeng
 			InitializeComponent();
 			this.buttonLogin.Click += ButtonLogin_Click;
 			this.buttonOffline.Click += Offline_Click;
-			//修改完成后保存前置配置
-			this.richTextBox1.Leave += (snd, ea) => ReadServer();
 			ReadServer();
 		}
 
@@ -56,21 +54,44 @@ namespace HaiFeng
 		//读取前置配置信息
 		void ReadServer()
 		{
-			if (!File.Exists("server.txt"))
-				File.WriteAllText("server.txt", @"模拟,ctp|9999|tcp://180.168.146.187:10000|tcp://180.168.146.187:10010
-股指仿真,ctp|1010|tcp://simctp1010.yhqh.com:41205|tcp://simctp1010.yhqh.com:41213", Encoding.GetEncoding("GB2312"));
-
-			var lines = File.ReadAllLines("server.txt", Encoding.GetEncoding("GB2312"));
-			this.richTextBox1.Lines = lines;
+			//20170606:与Q7兼容
 			var _dt = new DataTable();
 			_dt.Columns.Add("txt", typeof(string));
 			_dt.Columns.Add("val", typeof(string));
 			_dt.PrimaryKey = new[] { _dt.Columns[0] };
-			foreach (string line in lines)
+			if(!File.Exists("./simnow.xml"))
 			{
-				if (string.IsNullOrEmpty(line))
-					continue;
-				_dt.Rows.Add(line.Split(','));
+				File.WriteAllText("./simnow.xml", Properties.Resources.simnow, Encoding.GetEncoding("GB2312"));
+			}
+			XmlDocument doc = new XmlDocument();
+			foreach (var file in Directory.GetFiles("./", "*.xml", SearchOption.TopDirectoryOnly))
+			{
+				doc.Load(file);
+				XmlElement broker = doc.DocumentElement["broker"];
+				//过滤非配置文件
+				if (broker == null) continue;
+
+				var brokerid = broker.GetAttribute("BrokerID");
+				var brokername = broker.GetAttribute("BrokerName");
+				XmlNodeList nlist = broker["Servers"].ChildNodes;
+				foreach (XmlNode server in nlist)
+				{
+					var linename = brokername + "-" + server["Name"].InnerText;
+					var tradefront = "";
+					foreach (XmlNode addr in server["Trading"].ChildNodes)
+						tradefront += $"tcp://{addr.InnerText},";
+					tradefront = tradefront.TrimEnd(',');
+					var quotefront = "";
+					foreach (XmlNode addr in server["MarketData"].ChildNodes)
+						quotefront += $"tcp://{addr.InnerText},";
+					quotefront = quotefront.TrimEnd(',');
+					_dt.Rows.Add(linename, $"ctp|{brokerid}|{tradefront}|{quotefront}");
+				}
+			}
+			if(_dt.Rows.Count == 0)
+			{
+				MessageBox.Show("未读取到服务器配置数据!");
+				return;
 			}
 
 			this.comboBoxServer.DataSource = _dt;
@@ -96,9 +117,9 @@ namespace HaiFeng
 			LogInfo("connecting ...");
 			string front = (string)this.comboBoxServer.SelectedValue;
 			string[] fs = front.Split('|');
-			_ServerTrade = fs[2];
 			_Broker = fs[1];
-			_ServerQuote = fs[3];
+			_ServerTrade = fs[2].Split(',');
+			_ServerQuote = fs[3].Split(',');
 			_Investor = this.textBoxUser.Text;
 			_Password = this.textBoxPwd.Text;
 
@@ -282,8 +303,8 @@ namespace HaiFeng
 
 		//限制3秒内不允许重复点击登录按钮
 		private DateTime _logTime = DateTime.MinValue;
-		private string _ServerTrade;
-		private string _ServerQuote;
+		private string[] _ServerTrade;
+		private string[] _ServerQuote;
 		private string _Broker;
 		private string _Password;
 		private string _Investor;

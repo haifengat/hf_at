@@ -29,15 +29,24 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.panelLogin = new System.Windows.Forms.Panel();
+			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+			this.label11 = new System.Windows.Forms.Label();
+			this.buttonOffline = new System.Windows.Forms.Button();
+			this.label10 = new System.Windows.Forms.Label();
+			this.buttonLogin = new System.Windows.Forms.Button();
+			this.label9 = new System.Windows.Forms.Label();
+			this.textBoxPwd = new System.Windows.Forms.TextBox();
+			this.comboBoxServer = new System.Windows.Forms.ComboBox();
+			this.textBoxUser = new System.Windows.Forms.TextBox();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.buttonAddStra = new System.Windows.Forms.Button();
 			this.buttonDel = new System.Windows.Forms.Button();
@@ -76,17 +85,10 @@
 			this.ExcStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.report = new System.Windows.Forms.DataGridViewButtonColumn();
 			this.Graphics = new System.Windows.Forms.DataGridViewButtonColumn();
-			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-			this.label11 = new System.Windows.Forms.Label();
-			this.buttonOffline = new System.Windows.Forms.Button();
-			this.label10 = new System.Windows.Forms.Label();
-			this.buttonLogin = new System.Windows.Forms.Button();
-			this.label9 = new System.Windows.Forms.Label();
-			this.textBoxPwd = new System.Windows.Forms.TextBox();
-			this.comboBoxServer = new System.Windows.Forms.ComboBox();
-			this.textBoxUser = new System.Windows.Forms.TextBox();
-			this.richTextBox1 = new System.Windows.Forms.RichTextBox();
 			this.panelLogin.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+			this.splitContainer1.Panel1.SuspendLayout();
+			this.splitContainer1.SuspendLayout();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -95,10 +97,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDownWait)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDownFirst)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.DataGridViewStrategies)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-			this.splitContainer1.Panel1.SuspendLayout();
-			this.splitContainer1.Panel2.SuspendLayout();
-			this.splitContainer1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// panelLogin
@@ -109,6 +107,100 @@
 			this.panelLogin.Name = "panelLogin";
 			this.panelLogin.Size = new System.Drawing.Size(1195, 28);
 			this.panelLogin.TabIndex = 29;
+			// 
+			// splitContainer1
+			// 
+			this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+			this.splitContainer1.IsSplitterFixed = true;
+			this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+			this.splitContainer1.Name = "splitContainer1";
+			// 
+			// splitContainer1.Panel1
+			// 
+			this.splitContainer1.Panel1.Controls.Add(this.label11);
+			this.splitContainer1.Panel1.Controls.Add(this.buttonOffline);
+			this.splitContainer1.Panel1.Controls.Add(this.label10);
+			this.splitContainer1.Panel1.Controls.Add(this.buttonLogin);
+			this.splitContainer1.Panel1.Controls.Add(this.label9);
+			this.splitContainer1.Panel1.Controls.Add(this.textBoxPwd);
+			this.splitContainer1.Panel1.Controls.Add(this.comboBoxServer);
+			this.splitContainer1.Panel1.Controls.Add(this.textBoxUser);
+			this.splitContainer1.Size = new System.Drawing.Size(1195, 28);
+			this.splitContainer1.SplitterDistance = 617;
+			this.splitContainer1.TabIndex = 42;
+			// 
+			// label11
+			// 
+			this.label11.AutoSize = true;
+			this.label11.Location = new System.Drawing.Point(12, 10);
+			this.label11.Name = "label11";
+			this.label11.Size = new System.Drawing.Size(41, 12);
+			this.label11.TabIndex = 7;
+			this.label11.Text = "服务器";
+			// 
+			// buttonOffline
+			// 
+			this.buttonOffline.Location = new System.Drawing.Point(538, 4);
+			this.buttonOffline.Name = "buttonOffline";
+			this.buttonOffline.Size = new System.Drawing.Size(75, 23);
+			this.buttonOffline.TabIndex = 101;
+			this.buttonOffline.Text = "脱机";
+			this.buttonOffline.UseVisualStyleBackColor = true;
+			// 
+			// label10
+			// 
+			this.label10.AutoSize = true;
+			this.label10.Location = new System.Drawing.Point(174, 10);
+			this.label10.Name = "label10";
+			this.label10.Size = new System.Drawing.Size(29, 12);
+			this.label10.TabIndex = 6;
+			this.label10.Text = "帐号";
+			// 
+			// buttonLogin
+			// 
+			this.buttonLogin.Location = new System.Drawing.Point(456, 4);
+			this.buttonLogin.Name = "buttonLogin";
+			this.buttonLogin.Size = new System.Drawing.Size(75, 23);
+			this.buttonLogin.TabIndex = 11;
+			this.buttonLogin.Text = "登录";
+			this.buttonLogin.UseVisualStyleBackColor = true;
+			// 
+			// label9
+			// 
+			this.label9.AutoSize = true;
+			this.label9.Location = new System.Drawing.Point(312, 10);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(29, 12);
+			this.label9.TabIndex = 5;
+			this.label9.Text = "密码";
+			// 
+			// textBoxPwd
+			// 
+			this.textBoxPwd.BackColor = System.Drawing.SystemColors.Control;
+			this.textBoxPwd.Location = new System.Drawing.Point(341, 6);
+			this.textBoxPwd.Name = "textBoxPwd";
+			this.textBoxPwd.PasswordChar = '*';
+			this.textBoxPwd.Size = new System.Drawing.Size(108, 21);
+			this.textBoxPwd.TabIndex = 10;
+			// 
+			// comboBoxServer
+			// 
+			this.comboBoxServer.BackColor = System.Drawing.SystemColors.Control;
+			this.comboBoxServer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.comboBoxServer.FormattingEnabled = true;
+			this.comboBoxServer.Location = new System.Drawing.Point(53, 6);
+			this.comboBoxServer.Name = "comboBoxServer";
+			this.comboBoxServer.Size = new System.Drawing.Size(121, 20);
+			this.comboBoxServer.TabIndex = 8;
+			// 
+			// textBoxUser
+			// 
+			this.textBoxUser.BackColor = System.Drawing.SystemColors.Control;
+			this.textBoxUser.Location = new System.Drawing.Point(203, 6);
+			this.textBoxUser.Name = "textBoxUser";
+			this.textBoxUser.Size = new System.Drawing.Size(109, 21);
+			this.textBoxUser.TabIndex = 9;
 			// 
 			// groupBox1
 			// 
@@ -359,14 +451,14 @@
 			// 
 			this.DataGridViewStrategies.AllowUserToAddRows = false;
 			this.DataGridViewStrategies.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-			dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle9.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.DataGridViewStrategies.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
+			dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.DataGridViewStrategies.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
 			this.DataGridViewStrategies.ColumnHeadersHeight = 27;
 			this.DataGridViewStrategies.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
 			this.DataGridViewStrategies.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -389,8 +481,8 @@
 			this.DataGridViewStrategies.MultiSelect = false;
 			this.DataGridViewStrategies.Name = "DataGridViewStrategies";
 			this.DataGridViewStrategies.RowHeadersWidth = 6;
-			dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			this.DataGridViewStrategies.RowsDefaultCellStyle = dataGridViewCellStyle16;
+			dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			this.DataGridViewStrategies.RowsDefaultCellStyle = dataGridViewCellStyle8;
 			this.DataGridViewStrategies.RowTemplate.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
 			this.DataGridViewStrategies.RowTemplate.Height = 27;
 			this.DataGridViewStrategies.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -436,27 +528,27 @@
 			// 
 			// BeginDate
 			// 
-			dataGridViewCellStyle10.Format = "d";
-			dataGridViewCellStyle10.NullValue = null;
-			this.BeginDate.DefaultCellStyle = dataGridViewCellStyle10;
+			dataGridViewCellStyle2.Format = "d";
+			dataGridViewCellStyle2.NullValue = null;
+			this.BeginDate.DefaultCellStyle = dataGridViewCellStyle2;
 			this.BeginDate.HeaderText = "开始";
 			this.BeginDate.Name = "BeginDate";
 			this.BeginDate.ReadOnly = true;
 			// 
 			// EndDate
 			// 
-			dataGridViewCellStyle11.Format = "d";
-			dataGridViewCellStyle11.NullValue = null;
-			this.EndDate.DefaultCellStyle = dataGridViewCellStyle11;
+			dataGridViewCellStyle3.Format = "d";
+			dataGridViewCellStyle3.NullValue = null;
+			this.EndDate.DefaultCellStyle = dataGridViewCellStyle3;
 			this.EndDate.HeaderText = "结束";
 			this.EndDate.Name = "EndDate";
 			this.EndDate.ReadOnly = true;
 			// 
 			// Loaded
 			// 
-			dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle12.NullValue = "未加载";
-			this.Loaded.DefaultCellStyle = dataGridViewCellStyle12;
+			dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle4.NullValue = "未加载";
+			this.Loaded.DefaultCellStyle = dataGridViewCellStyle4;
 			this.Loaded.HeaderText = "状态";
 			this.Loaded.Name = "Loaded";
 			this.Loaded.ReadOnly = true;
@@ -478,136 +570,29 @@
 			// 
 			// ExcStatus
 			// 
-			dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle13.NullValue = "Normal";
-			dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.ExcStatus.DefaultCellStyle = dataGridViewCellStyle13;
+			dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle5.NullValue = "Normal";
+			dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.ExcStatus.DefaultCellStyle = dataGridViewCellStyle5;
 			this.ExcStatus.HeaderText = "交易";
 			this.ExcStatus.Name = "ExcStatus";
 			this.ExcStatus.ReadOnly = true;
 			// 
 			// report
 			// 
-			dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle14.NullValue = "报告";
-			this.report.DefaultCellStyle = dataGridViewCellStyle14;
+			dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle6.NullValue = "报告";
+			this.report.DefaultCellStyle = dataGridViewCellStyle6;
 			this.report.HeaderText = "测试报告";
 			this.report.Name = "report";
 			// 
 			// Graphics
 			// 
-			dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle15.NullValue = "显示";
-			this.Graphics.DefaultCellStyle = dataGridViewCellStyle15;
+			dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle7.NullValue = "显示";
+			this.Graphics.DefaultCellStyle = dataGridViewCellStyle7;
 			this.Graphics.HeaderText = "图形显示";
 			this.Graphics.Name = "Graphics";
-			// 
-			// splitContainer1
-			// 
-			this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-			this.splitContainer1.IsSplitterFixed = true;
-			this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-			this.splitContainer1.Name = "splitContainer1";
-			// 
-			// splitContainer1.Panel1
-			// 
-			this.splitContainer1.Panel1.Controls.Add(this.label11);
-			this.splitContainer1.Panel1.Controls.Add(this.buttonOffline);
-			this.splitContainer1.Panel1.Controls.Add(this.label10);
-			this.splitContainer1.Panel1.Controls.Add(this.buttonLogin);
-			this.splitContainer1.Panel1.Controls.Add(this.label9);
-			this.splitContainer1.Panel1.Controls.Add(this.textBoxPwd);
-			this.splitContainer1.Panel1.Controls.Add(this.comboBoxServer);
-			this.splitContainer1.Panel1.Controls.Add(this.textBoxUser);
-			// 
-			// splitContainer1.Panel2
-			// 
-			this.splitContainer1.Panel2.Controls.Add(this.richTextBox1);
-			this.splitContainer1.Size = new System.Drawing.Size(1195, 28);
-			this.splitContainer1.SplitterDistance = 617;
-			this.splitContainer1.TabIndex = 42;
-			// 
-			// label11
-			// 
-			this.label11.AutoSize = true;
-			this.label11.Location = new System.Drawing.Point(12, 10);
-			this.label11.Name = "label11";
-			this.label11.Size = new System.Drawing.Size(41, 12);
-			this.label11.TabIndex = 7;
-			this.label11.Text = "服务器";
-			// 
-			// buttonOffline
-			// 
-			this.buttonOffline.Location = new System.Drawing.Point(538, 4);
-			this.buttonOffline.Name = "buttonOffline";
-			this.buttonOffline.Size = new System.Drawing.Size(75, 23);
-			this.buttonOffline.TabIndex = 101;
-			this.buttonOffline.Text = "脱机";
-			this.buttonOffline.UseVisualStyleBackColor = true;
-			// 
-			// label10
-			// 
-			this.label10.AutoSize = true;
-			this.label10.Location = new System.Drawing.Point(174, 10);
-			this.label10.Name = "label10";
-			this.label10.Size = new System.Drawing.Size(29, 12);
-			this.label10.TabIndex = 6;
-			this.label10.Text = "帐号";
-			// 
-			// buttonLogin
-			// 
-			this.buttonLogin.Location = new System.Drawing.Point(456, 4);
-			this.buttonLogin.Name = "buttonLogin";
-			this.buttonLogin.Size = new System.Drawing.Size(75, 23);
-			this.buttonLogin.TabIndex = 11;
-			this.buttonLogin.Text = "登录";
-			this.buttonLogin.UseVisualStyleBackColor = true;
-			// 
-			// label9
-			// 
-			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(312, 10);
-			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(29, 12);
-			this.label9.TabIndex = 5;
-			this.label9.Text = "密码";
-			// 
-			// textBoxPwd
-			// 
-			this.textBoxPwd.BackColor = System.Drawing.SystemColors.Control;
-			this.textBoxPwd.Location = new System.Drawing.Point(341, 6);
-			this.textBoxPwd.Name = "textBoxPwd";
-			this.textBoxPwd.PasswordChar = '*';
-			this.textBoxPwd.Size = new System.Drawing.Size(108, 21);
-			this.textBoxPwd.TabIndex = 10;
-			// 
-			// comboBoxServer
-			// 
-			this.comboBoxServer.BackColor = System.Drawing.SystemColors.Control;
-			this.comboBoxServer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.comboBoxServer.FormattingEnabled = true;
-			this.comboBoxServer.Location = new System.Drawing.Point(53, 6);
-			this.comboBoxServer.Name = "comboBoxServer";
-			this.comboBoxServer.Size = new System.Drawing.Size(121, 20);
-			this.comboBoxServer.TabIndex = 8;
-			// 
-			// textBoxUser
-			// 
-			this.textBoxUser.BackColor = System.Drawing.SystemColors.Control;
-			this.textBoxUser.Location = new System.Drawing.Point(203, 6);
-			this.textBoxUser.Name = "textBoxUser";
-			this.textBoxUser.Size = new System.Drawing.Size(109, 21);
-			this.textBoxUser.TabIndex = 9;
-			// 
-			// richTextBox1
-			// 
-			this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.richTextBox1.Location = new System.Drawing.Point(0, 0);
-			this.richTextBox1.Name = "richTextBox1";
-			this.richTextBox1.Size = new System.Drawing.Size(574, 28);
-			this.richTextBox1.TabIndex = 103;
-			this.richTextBox1.Text = "";
 			// 
 			// Plat
 			// 
@@ -620,6 +605,10 @@
 			this.Name = "Plat";
 			this.Size = new System.Drawing.Size(1195, 553);
 			this.panelLogin.ResumeLayout(false);
+			this.splitContainer1.Panel1.ResumeLayout(false);
+			this.splitContainer1.Panel1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+			this.splitContainer1.ResumeLayout(false);
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
 			this.groupBox2.ResumeLayout(false);
@@ -630,11 +619,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDownWait)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDownFirst)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.DataGridViewStrategies)).EndInit();
-			this.splitContainer1.Panel1.ResumeLayout(false);
-			this.splitContainer1.Panel1.PerformLayout();
-			this.splitContainer1.Panel2.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-			this.splitContainer1.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -688,6 +672,5 @@
 		private System.Windows.Forms.TextBox textBoxPwd;
 		private System.Windows.Forms.ComboBox comboBoxServer;
 		private System.Windows.Forms.TextBox textBoxUser;
-		private System.Windows.Forms.RichTextBox richTextBox1;
 	}
 }
