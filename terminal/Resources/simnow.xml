@@ -1,35 +1,15 @@
-<?xml version="1.0" encoding="GB2312" ?>
-
-<root  UpgradeURL="http://upgrade.quick7.net/q7/yhqh/real/upgrade.xml">
+﻿<?xml version="1.0" encoding="GB2312" ?>
+<root>
 	<broker BrokerID="9999" BrokerName="模拟">
-		<FloatProfitAlgorithm>浮盈不计，浮亏计</FloatProfitAlgorithm>		
-		<!--
-			"浮盈浮亏都计算";
-			"浮盈不计，浮亏计";
-			"浮盈计，浮亏不计";
-			"浮盈浮亏都不计算";
-		-->
-		<MarginAlgorithm>按开仓价计算</MarginAlgorithm>
-		<!--
-			"按前结算计算";
-			"按最新价计算";
-			"盘中按最新价计算, 盘后按结算价计算";
-			"按最新均价计算";
-			"按开仓价计算";
-		-->		
-		<IsDiscountCZCE>1</IsDiscountCZCE>		
-		<!--
-			郑州组合是否优惠
-		-->		
 		<Servers>
 			<Server>
 				<Name>sim</Name>
 				<Trading>
-                    <item>180.168.146.187:10000</item>
-                </Trading>
-                <MarketData>
-                    <item>180.168.146.187:10010</item>
-                </MarketData>
+                    			<item>180.168.146.187:10000</item>
+                		</Trading>
+                		<MarketData>
+                    			<item>180.168.146.187:10010</item>
+                		</MarketData>
 			</Server>
 		</Servers>
 	</broker>

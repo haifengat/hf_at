@@ -90,7 +90,7 @@ namespace HaiFeng
 			}
 
 			AdjustRate();
-			this.chartDB1.ChartAreas[0].AxisY.Interval = 100;
+			this.chartDB1.ChartAreas[0].AxisY.Interval = 10000;
 
 			var v = _stra;
 			{
@@ -733,7 +733,12 @@ namespace HaiFeng
 				this.chartDB1.Annotations.Add(hl);
 				this.chartDB1.Series[0].ChartType = SeriesChartType.Point;
 			}
-
+			if (this.chartDB1.Series[0].Points.Count > 0)
+			{
+				this.chartDB1.ChartAreas[0].AxisY.IsStartedFromZero = true;
+				var diff = this.chartDB1.Series[0].Points.Max(n => n.YValues[0]) - this.chartDB1.Series[0].Points.Min(n => n.YValues[0]);
+				this.chartDB1.ChartAreas[0].AxisY.Interval = (int.Parse(diff.ToString()[0].ToString()) < 5 ? 1 : 5) * Math.Pow(10, (int)Math.Log10(diff / 10)); //Math.Pow(10, (int)Math.Log10(diff) - (diff.ToString()[0] > '2' ? 0 : 1));
+			}
 			if (this.checkBoxMA.Checked)
 				checkBoxMA_CheckedChanged(null, null);
 		}
