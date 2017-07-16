@@ -87,7 +87,7 @@ namespace HaiFeng
 
 			for (int j = 0; j < cnt; j++)
 			{
-				if (j == 0 || _stra.Date[cnt - 1 - j] != _stra.Date[cnt - 1 - j + 1])
+				if (j == 0 || _stra.D[cnt - 1 - j] != _stra.D[cnt - 1 - j + 1])
 					this.chart1.Series[0].Points[j].AxisLabel = d[j].ToString("MM/dd");
 				else
 					this.chart1.Series[0].Points[j].AxisLabel = d[j].ToString("HH:mm");
@@ -240,58 +240,58 @@ namespace HaiFeng
 				}
 
 				//跨周期
-				if (_stra.DicPeriodValue.Count > 0)
-					e.Text += "\r\n------ 跨周期 ------";
-				foreach (var a in _stra.DicPeriodValue)
-				{
-					var ldt = _stra.DicPeriodTime[a.Key].LastOrDefault(n => n <= dt);
+				//if (_stra.DicPeriodValue.Count > 0)
+				//	e.Text += "\r\n------ 跨周期 ------";
+				//foreach (var a in _stra.DicPeriodValue)
+				//{
+				//	var ldt = _stra.DicPeriodTime[a.Key].LastOrDefault(n => n <= dt);
 
-					int curBar = _stra.DicPeriodTime[a.Key].Count - _stra.DicPeriodTime[a.Key].IndexOf(ldt);
-					string i3 = "";
-					switch (a.Key.Item3)
-					{
-						case Strategy.PeriodType.Tick:
-							i3 = "笔";
-							break;
-						case Strategy.PeriodType.Second:
-							i3 = "秒";
-							break;
-						case Strategy.PeriodType.Minute:
-							i3 = "分";
-							break;
-						case Strategy.PeriodType.Hour:
-							i3 = "时";
-							break;
-						case Strategy.PeriodType.Day:
-							i3 = "天";
-							break;
-						case Strategy.PeriodType.Week:
-							i3 = "周";
-							break;
-						case Strategy.PeriodType.Month:
-							i3 = "月";
-							break;
-						case Strategy.PeriodType.Year:
-							i3 = "年";
-							break;
-					}
-					e.Text += "\r\n↑" + a.Key.Item1 + " " + a.Key.Item2 + i3 + " : " + a.Value[curBar].ToString("F2");
+				//	int curBar = _stra.DicPeriodTime[a.Key].Count - _stra.DicPeriodTime[a.Key].IndexOf(ldt);
+				//	string i3 = "";
+				//	switch (a.Key.Item3)
+				//	{
+				//		case Strategy.PeriodType.Tick:
+				//			i3 = "笔";
+				//			break;
+				//		case Strategy.PeriodType.Second:
+				//			i3 = "秒";
+				//			break;
+				//		case Strategy.PeriodType.Minute:
+				//			i3 = "分";
+				//			break;
+				//		case Strategy.PeriodType.Hour:
+				//			i3 = "时";
+				//			break;
+				//		case Strategy.PeriodType.Day:
+				//			i3 = "天";
+				//			break;
+				//		case Strategy.PeriodType.Week:
+				//			i3 = "周";
+				//			break;
+				//		case Strategy.PeriodType.Month:
+				//			i3 = "月";
+				//			break;
+				//		case Strategy.PeriodType.Year:
+				//			i3 = "年";
+				//			break;
+				//	}
+				//	e.Text += "\r\n↑" + a.Key.Item1 + " " + a.Key.Item2 + i3 + " : " + a.Value[curBar].ToString("F2");
 
-					//指标提示
-					foreach (var i in _stra.Indicators.Where(n => n.Input == a.Value))
-					{
-						e.Text += "\r\n↑" + i.GetType().Name + "(";
-						foreach (int p in i.Periods)
-							e.Text += p + ",";
-						e.Text = e.Text.Remove(e.Text.Length - 1);
-						e.Text += ")";
-						if (i.CustomSeries.Count == 1)
-							e.Text += ":" + i.CustomSeries.ElementAt(0).Value[curBar].ToString("F2");
-						else
-							foreach (var o in i.CustomSeries)
-								e.Text += "\r\n" + o.Key + " : " + o.Value[curBar].ToString("F2");
-					}
-				}
+				//	//指标提示
+				//	foreach (var i in _stra.Indicators.Where(n => n.Input == a.Value))
+				//	{
+				//		e.Text += "\r\n↑" + i.GetType().Name + "(";
+				//		foreach (int p in i.Periods)
+				//			e.Text += p + ",";
+				//		e.Text = e.Text.Remove(e.Text.Length - 1);
+				//		e.Text += ")";
+				//		if (i.CustomSeries.Count == 1)
+				//			e.Text += ":" + i.CustomSeries.ElementAt(0).Value[curBar].ToString("F2");
+				//		else
+				//			foreach (var o in i.CustomSeries)
+				//				e.Text += "\r\n" + o.Key + " : " + o.Value[curBar].ToString("F2");
+				//	}
+				//}
 
 				//交易提示
 				//foreach (Operation o in v.Value.Operations.Where(n => n.D == dt))

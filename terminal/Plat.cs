@@ -11,14 +11,14 @@ using HaiFeng;
 using System.IO;
 using System.Xml;
 using System.Reflection;
-using Numeric = System.Decimal;
 using System.Globalization;
 using System.Net;
-using static HaiFeng.HFLog;
 using Newtonsoft.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using static System.Math;
+using static HaiFeng.HFLog;
+using Numeric = System.Decimal;
 
 namespace HaiFeng
 {
@@ -30,7 +30,20 @@ namespace HaiFeng
 			InitializeComponent();
 			this.buttonLogin.Click += ButtonLogin_Click;
 			this.buttonOffline.Click += Offline_Click;
-			ReadServer();
+			ReadServerConfig();
+
+			this.comboBoxServer.DataSource = _dtServer;
+			this.comboBoxServer.DisplayMember = "txt";
+			this.comboBoxServer.ValueMember = "val";
+
+			//读取登录信息
+			if (File.Exists("login.ini"))
+			{
+				string[] fs = File.ReadAllLines("login.ini");
+				this.comboBoxServer.Text = fs[0].Split('@')[1];
+				this.textBoxUser.Text = fs[0].Split('@')[0];
+				this.ActiveControl = this.textBoxPwd;
+			}
 		}
 
 		protected override void OnHandleDestroyed(EventArgs e)
@@ -47,100 +60,13 @@ namespace HaiFeng
 		private ConcurrentDictionary<string, Strategy> _dicStrategies = new ConcurrentDictionary<string, Strategy>();
 		private readonly List<Strategy> _listOrderStra = new List<Strategy>();
 		private readonly List<Strategy> _listOnTickStra = new List<Strategy>();
-
-		private TradeExt _t;
-		private Quote _q;
-
-		//读取前置配置信息
-		void ReadServer()
-		{
-			//20170606:与Q7兼容
-			var _dt = new DataTable();
-			_dt.Columns.Add("txt", typeof(string));
-			_dt.Columns.Add("val", typeof(string));
-			_dt.PrimaryKey = new[] { _dt.Columns[0] };
-			if(!File.Exists("./simnow.xml"))
-			{
-				File.WriteAllText("./simnow.xml", Properties.Resources.simnow, Encoding.GetEncoding("GB2312"));
-			}
-			XmlDocument doc = new XmlDocument();
-			foreach (var file in Directory.GetFiles("./", "*.xml", SearchOption.TopDirectoryOnly))
-			{
-				doc.Load(file);
-				XmlElement broker = doc.DocumentElement["broker"];
-				//过滤非配置文件
-				if (broker == null) continue;
-
-				var brokerid = broker.GetAttribute("BrokerID");
-				var brokername = broker.GetAttribute("BrokerName");
-				XmlNodeList nlist = broker["Servers"].ChildNodes;
-				foreach (XmlNode server in nlist)
-				{
-					var linename = brokername + "-" + server["Name"].InnerText;
-					var tradefront = "";
-					foreach (XmlNode addr in server["Trading"].ChildNodes)
-						tradefront += $"tcp://{addr.InnerText},";
-					tradefront = tradefront.TrimEnd(',');
-					var quotefront = "";
-					foreach (XmlNode addr in server["MarketData"].ChildNodes)
-						quotefront += $"tcp://{addr.InnerText},";
-					quotefront = quotefront.TrimEnd(',');
-					_dt.Rows.Add(linename, $"ctp|{brokerid}|{tradefront}|{quotefront}");
-				}
-			}
-			if(_dt.Rows.Count == 0)
-			{
-				MessageBox.Show("未读取到服务器配置数据!");
-				return;
-			}
-
-			this.comboBoxServer.DataSource = _dt;
-			this.comboBoxServer.DisplayMember = "txt";
-			this.comboBoxServer.ValueMember = "val";
-
-			//保存的登录信息
-			if (File.Exists("login.ini"))
-			{
-				string[] fs = File.ReadAllLines("login.ini");
-				this.comboBoxServer.Text = fs[0].Split('@')[1];
-				this.textBoxUser.Text = fs[0].Split('@')[0];
-				this.ActiveControl = this.textBoxPwd;
-			}
-		}
+		string[] fs;
 
 		//登录
 		private void ButtonLogin_Click(object sender, EventArgs e)
 		{
-			if ((DateTime.Now - _logTime).TotalSeconds < 3)
-				return;
-			_logTime = DateTime.Now;
-			LogInfo("connecting ...");
-			string front = (string)this.comboBoxServer.SelectedValue;
-			string[] fs = front.Split('|');
-			_Broker = fs[1];
-			_ServerTrade = fs[2].Split(',');
-			_ServerQuote = fs[3].Split(',');
-			_Investor = this.textBoxUser.Text;
-			_Password = this.textBoxPwd.Text;
-
-			if (!string.IsNullOrEmpty(fs[3]))
-			{
-				_q = new CTPQuote();
-				_q.OnFrontConnected += quote_OnFrontConnected;
-				_q.OnRspUserLogin += quote_OnRspUserLogin;
-				_q.OnRtnTick += _q_OnRtnTick;
-			}
-
-			_t = new TradeExt();
-			_t.OnFrontConnected += trade_OnFrontConnected;
-			_t.OnRspUserLogin += trade_OnRspUserLogin;
-			_t.OnRtnExchangeStatus += trade_OnRtnExchangeStatus;
-			//接口相关信息
-			_t.OnInfo += (msg) => LogInfo(msg);
-			_t.OnRspUserLogout += _t_OnRspUserLogout;
-			_t.OnRtnNotice += (snd, ea) => LogWarn($"重要提示: {ea.Value}");
-
-			_t.ReqConnect(_ServerTrade);
+			fs = ((string)this.comboBoxServer.SelectedValue).Split('|');
+			LoginTrade(fs[2].Split(','), fs[1], this.textBoxUser.Text, this.textBoxPwd.Text);
 		}
 
 		//脱机
@@ -175,12 +101,10 @@ namespace HaiFeng
 			if (e.Value == 0)
 			{
 				LogWarn("登录成功.");
-				//Thread.Sleep(1500);
-				//交易登录成功后,登录行情
-				if (_q == null)
-					SaveLogInfo();
-				else
-					_q.ReqConnect(_ServerQuote);
+
+				if (!string.IsNullOrEmpty(fs[3]))
+					LoginQuote(fs[3].Split(','), fs[1], this.textBoxUser.Text, this.textBoxPwd.Text);
+
 				this.Invoke(new Action(() =>
 				{
 					this.pictureBox1.Image = Properties.Resources.Open;
@@ -200,20 +124,46 @@ namespace HaiFeng
 			}
 		}
 
-		void trade_OnFrontConnected(object sender, EventArgs e)
-		{
-			LogDebug("连接成功");
-			((Trade)sender).ReqUserLogin(_Investor, _Password, _Broker);
-			LogInfo("登录中 ...");
-		}
-
 		void quote_OnRspUserLogin(object sender, IntEventArgs e)
 		{
 			_t.StartFollow(_q);
+			//隔夜处理,夜盘开始后需重新订阅.
+			foreach(var v in _listOnTickStra)
+			{
+				SubscribeInstrument(v.InstrumentID);
+				SubscribeInstrument(v.Datas[0].InstrumentOrder);
+			}
 			SaveLogInfo();
-			//重新订阅所有策略的行情
-			foreach (DataGridViewRow v in this.DataGridViewStrategies.Rows)
-				_q.ReqSubscribeMarketData((string)v.Cells["Instrument"].Value);
+		}
+
+		void SubscribeInstrument(string inst)
+		{
+			//000
+			if (inst.EndsWith("000"))
+			{
+				var insts = _t.DicInstrumentField.Where(n => n.Value.ProductID == inst.TrimEnd('0')).Select(n => n.Value.InstrumentID).ToArray();
+				if (insts.Count() > 0)
+				{
+					//_q.ReqSubscribeMarketData(insts);//不能订阅多个??
+					foreach (var v in insts)
+						_q.ReqSubscribeMarketData(v);
+					Thread.Sleep(500);
+					foreach (var g in insts)
+					{
+						MarketData f;
+						if (_q.DicTick.TryGetValue(g, out f))
+							_dicTick000[g] = f;
+					}
+					_dicTick000.TryAdd(inst, new MarketData
+					{
+						InstrumentID = inst,
+						UpdateTime = _dicTick000.Max(n => n.Value.UpdateTime),
+						UpdateMillisec = 0,
+					});
+					return;
+				}
+			}
+			_q.ReqSubscribeMarketData(inst);
 		}
 
 		private void SaveLogInfo()
@@ -221,31 +171,41 @@ namespace HaiFeng
 			//未登录过(多次登录时不处理)
 			if (this.panelLogin.Enabled)
 			{
+				//交易日历,需每年更新
 				_tradingDate = _dataProcess.GetData.QueryDate();
 				this.Invoke(new Action(() =>
 				{
 					this.panelLogin.Enabled = false;
 					Console.Title += $" ({textBoxUser.Text}@{comboBoxServer.Text})";
 					this.ParentForm.Text = Console.Title;
-					File.WriteAllText("login.ini", _Investor + "@" + this.comboBoxServer.Text);
+					File.WriteAllText("login.ini", _t.Investor + "@" + this.comboBoxServer.Text);
 					InitTerminalControls();
 				}));
 			}
 		}
 
-		void quote_OnFrontConnected(object sender, EventArgs e)
-		{
-			((Quote)sender).ReqUserLogin(_Investor, _Password, _Broker);
-		}
-
 		// 初始化控件&绑定
 		void InitTerminalControls()
 		{
+			this.comboBoxServer.DataSource = _dtServer;
+			this.comboBoxServer.DisplayMember = "txt";
+			this.comboBoxServer.ValueMember = "val";
+
+			//保存的登录信息
+			if (File.Exists("login.ini"))
+			{
+				string[] fs = File.ReadAllLines("login.ini");
+				this.comboBoxServer.Text = fs[0].Split('@')[1];
+				this.textBoxUser.Text = fs[0].Split('@')[0];
+				this.ActiveControl = this.textBoxPwd;
+			}
+
 			//合约列表
 			//var listInst = _t.DicInstrumentField.Keys.ToList();
 			var listInst = _dataProcess.GetData.QueryInstrument();
 			listInst.Sort();
 			this.comboBoxInst.Items.AddRange(listInst.ToArray());
+			this.comboBoxInstOrder.Items.AddRange(listInst.ToArray());
 
 			//时间周期
 			this.comboBoxInterval.Items.AddRange(new[] { "Min 1", "Min 3", "Min 5", "Min 10", "Min 15", "Min 30", "Hour 1", "Day 1", "Week 1", "Year 1" });
@@ -301,13 +261,6 @@ namespace HaiFeng
 		private Strategy _curStrategy;
 		private readonly ConcurrentDictionary<string, MarketData> _dicTick000 = new ConcurrentDictionary<string, MarketData>(); //用于处理000数据
 
-		//限制3秒内不允许重复点击登录按钮
-		private DateTime _logTime = DateTime.MinValue;
-		private string[] _ServerTrade;
-		private string[] _ServerQuote;
-		private string _Broker;
-		private string _Password;
-		private string _Investor;
 		private List<string> _tradingDate;
 		private bool _offline = false; //是否为脱机模式登录
 
@@ -328,10 +281,10 @@ namespace HaiFeng
 				fp.StartPosition = FormStartPosition.CenterParent;
 				if (fp.ShowDialog(this) != DialogResult.OK) return;
 
-				int rid = AddStra(stra, _dicStrategies.Count == 0 ? "1" : (_dicStrategies.Select(n => int.Parse(n.Key)).Max() + 1).ToString(), this.comboBoxInst.Text, this.comboBoxInterval.Text, this.dateTimePickerBegin.Value.Date, this.dateTimePickerEnd.Checked ? this.dateTimePickerEnd.Value.Date : DateTime.MaxValue);
+				int rid = AddStra(stra, _dicStrategies.Count == 0 ? "1" : (_dicStrategies.Select(n => int.Parse(n.Key)).Max() + 1).ToString(), this.comboBoxInst.Text, this.comboBoxInstOrder.Text, this.comboBoxInterval.Text, this.dateTimePickerBegin.Value.Date, this.dateTimePickerEnd.Checked ? this.dateTimePickerEnd.Value.Date : DateTime.MaxValue);
 
 				//数据加载
-				LoadStraData(rid, stra, this.comboBoxInterval.Text, this.comboBoxInst.Text, this.dateTimePickerBegin.Value.Date, this.dateTimePickerEnd.Checked ? this.dateTimePickerEnd.Value.Date : DateTime.MaxValue);
+				LoadStraData(rid, stra, this.comboBoxInterval.Text, this.comboBoxInst.Text, this.comboBoxInstOrder.Text, this.dateTimePickerBegin.Value.Date, this.dateTimePickerEnd.Checked ? this.dateTimePickerEnd.Value.Date : DateTime.MaxValue);
 			}
 		}
 
@@ -353,17 +306,8 @@ namespace HaiFeng
 			this.DataGridViewStrategies.Rows.Remove(row);
 		}
 
-		/// <summary>
-		/// 策略添加,返回添加后的行号
-		/// </summary>
-		/// <param name="stra"></param>
-		/// <param name="pName"></param>
-		/// <param name="pInstrument"></param>
-		/// <param name="pInterval"></param>
-		/// <param name="pBegin"></param>
-		/// <param name="pEnd"></param>
-		/// <returns></returns>
-		private int AddStra(Strategy stra, string pName, string pInstrument, string pInterval, DateTime pBegin, DateTime pEnd)
+		// 策略添加到表中,返回添加后的行号
+		private int AddStra(Strategy stra, string pName, string pInstrument, string pInstrumentOrder, string pInterval, DateTime pBegin, DateTime? pEnd)
 		{
 			if (!_dicStrategies.TryAdd(pName, stra))
 			{
@@ -371,11 +315,11 @@ namespace HaiFeng
 				return -1;
 			}
 			stra.Name = pName;
-			int rid = this.DataGridViewStrategies.Rows.Add(stra.Name, stra.GetType(), stra.GetParams(), pInstrument, pInterval, pBegin, pEnd);
+			int rid = this.DataGridViewStrategies.Rows.Add(stra.Name, stra.GetType(), stra.GetParams(), pInstrument, pInstrumentOrder, pInterval, pBegin, pEnd);
 
 			this.DataGridViewStrategies.Rows[rid].Cells["Order"].Value = false;
-			if (pEnd.Date == DateTime.MaxValue.Date)
-				this.DataGridViewStrategies.Rows[rid].Cells["EndDate"].Value = null;
+			//if (pEnd.Date == DateTime.MaxValue.Date)
+			this.DataGridViewStrategies.Rows[rid].Cells["EndDate"].Value = null;
 			//this.DataGridViewStrategies.Rows[rid].Cells["BeginDate"].Value = DateTime.Today.AddMonths(-3);
 
 			//20170307 this.propertyGridParams.SelectedObject = stra;   //属性显示
@@ -387,10 +331,11 @@ namespace HaiFeng
 			return rid;
 		}
 
-		private void LoadStraData(int rid, Strategy stra, string internalType, string inst, DateTime dtBegin, DateTime dtEnd)
+		//加载测试指定行的策略的
+		private void LoadStraData(int rid, Strategy stra, string internalType, string inst, string order_inst, DateTime dtBegin, DateTime dtEnd)
 		{
 			this.DataGridViewStrategies.Rows[rid].Cells["Loaded"].Value = "加载中...";
-			LoadStraData(stra, internalType, inst, dtBegin, dtEnd);
+			LoadStraData(stra, internalType, inst, order_inst, dtBegin, dtEnd);
 			this.DataGridViewStrategies.Rows[rid].Cells["Loaded"].Value = "已加载";
 
 			if (!_offline)
@@ -401,19 +346,15 @@ namespace HaiFeng
 			}
 		}
 
-		/// <summary>
-		/// 加载测试数据
-		/// </summary>
-		/// <param name="stra">策略</param>
-		/// <param name="internalType">周期(例:1 Min)</param>
-		/// <param name="inst">合约(例:TA1709,区分大小写)</param>
-		private void LoadStraData(Strategy stra, string internalType, string inst, DateTime dtBegin, DateTime dtEnd)
+		// 加载测试数据
+		private void LoadStraData(Strategy stra, string internalType, string inst, string order_inst, DateTime dtBegin, DateTime dtEnd)
 		{
 			Data data = new Data
 			{
 				Interval = int.Parse(internalType.Split(' ')[1]),
 				IntervalType = (EnumIntervalType)Enum.Parse(typeof(EnumIntervalType), internalType.Split(' ')[0]),
 				Instrument = inst,
+				InstrumentOrder = order_inst,
 			};
 
 			//需处理成按合约取品种(期权规则与期货不同)
@@ -521,24 +462,8 @@ namespace HaiFeng
 			if (dtEnd == DateTime.MaxValue && _q != null)
 			{
 				//订阅000合约
-				if (stra.InstrumentID.EndsWith("000"))
-				{
-					foreach (var g in _t.DicInstrumentField.Where(n => n.Value.ProductID == stra.InstrumentID.TrimEnd('0')))
-					{
-						_q.ReqSubscribeMarketData(g.Key);
-						_dicTick000.TryAdd(g.Key, new MarketData
-						{
-							InstrumentID = g.Key,
-						});
-					}
-					_dicTick000.TryAdd(stra.InstrumentID, new MarketData
-					{
-						InstrumentID = stra.InstrumentID,
-						UpdateMillisec = 0,
-					});
-				}
-				else
-					_q.ReqSubscribeMarketData(inst);
+				SubscribeInstrument(stra.InstrumentID);
+				SubscribeInstrument(stra.Datas[0].InstrumentOrder);
 				_listOnTickStra.Add(stra); //可以接收实际行情
 			}
 			LogInfo($"{stra.Name,8},策略加载数据完成.");
@@ -601,7 +526,7 @@ namespace HaiFeng
 				}
 				else if (head == "Loaded") //加载
 				{
-					LoadStraData(e.RowIndex, stra, (string)row.Cells["Interval"].Value, (string)row.Cells["Instrument"].Value, (DateTime)row.Cells["BeginDate"].Value, row.Cells["EndDate"].Value == null ? DateTime.MaxValue : (DateTime)row.Cells["EndDate"].Value);
+					LoadStraData(e.RowIndex, stra, (string)row.Cells["Interval"].Value, (string)row.Cells["Instrument"].Value, (string)row.Cells["InstrumentOrder"].Value, (DateTime)row.Cells["BeginDate"].Value, row.Cells["EndDate"].Value == null ? DateTime.MaxValue : (DateTime)row.Cells["EndDate"].Value);
 				}
 			}
 		}
@@ -650,32 +575,42 @@ namespace HaiFeng
 
 		void SaveStrategy()
 		{
-			string str = "StraName,Type,Instrument,Interval,BeginDate,EndDate,Param\r\n";
+			List<StrategyConfig> list = new List<StrategyConfig>();
+			//string str = "StraName,Type,Instrument,InstrumentOrder,Interval,BeginDate,EndDate,Param\r\n";
 			foreach (DataGridViewRow row in this.DataGridViewStrategies.Rows)
 			{//参数置于最后,避免参数中的','影响加载时分隔
 				Strategy stra;
 				if (!_dicStrategies.TryGetValue((string)row.Cells["StraName"].Value, out stra))
 					continue;
-				str += string.Format("{0},{1},{2},{3},{4},{5} ,{6}\r\n", stra.Name, stra.GetType(),
-					row.Cells["Instrument"].Value, row.Cells["Interval"].Value,
-					row.Cells["BeginDate"].Value, row.Cells["EndDate"].Value, row.Cells["Param"].Value);
+				list.Add(new StrategyConfig
+				{
+					Name = stra.Name,
+					Type = stra.GetType(),
+					Instrument = (string)row.Cells["Instrument"].Value,
+					InstrumentOrder = (string)row.Cells["InstrumentOrder"].Value,
+					Interval = (string)row.Cells["Interval"].Value,
+					BeginDate = (DateTime)row.Cells["BeginDate"].Value,
+					EndDate = (DateTime?)row.Cells["EndDate"].Value,
+					Params = (string)row.Cells["Param"].Value,
+				});
+				//str += $"{stra.Name},{stra.GetType()},{row.Cells["Instrument"].Value},{row.Cells["InstrumentOrder"].Value},{row.Cells["Interval"].Value},{row.Cells["BeginDate"].Value},{row.Cells["EndDate"].Value},{row.Cells["Param"].Value}\r\n";
 			}
-			File.WriteAllText("strategies.txt", str);
+			File.WriteAllText("strategies.cfg", JsonConvert.SerializeObject(list));
 		}
 
 		void LoadStrategy()
 		{
-			if (File.Exists("strategies.txt"))
+			if (File.Exists("strategies.cfg"))
 			{
-				string[] lines = File.ReadAllLines("strategies.txt");
-				for (int i = 1; i < lines.Length; ++i)
+				//string[] lines = File.ReadAllLines("strategies.txt");
+				var list = JsonConvert.DeserializeObject<List<StrategyConfig>>(File.ReadAllText("strategies.cfg"));
+				foreach (var sc in list)
 				{
-					string[] fields = lines[i].Split(new[] { ',' }, 7);
 					Type straType = null;
 					//类型是否存在
 					foreach (Type t in this.ComboBoxType.Items)
 					{
-						if (t.ToString() == fields[1])
+						if (t == sc.Type)
 						{
 							straType = t;
 							break;
@@ -685,27 +620,14 @@ namespace HaiFeng
 						continue;
 					Strategy stra = (Strategy)Activator.CreateInstance(straType);
 					//参数赋值
-					foreach (var v in fields[6].Trim('(', ')').Split(','))
+					foreach (var v in sc.Params.Trim('(', ')').Split(','))
 					{
 						stra.SetParameterValue(v.Split(':')[0], v.Split(':')[1]);
 					}
 
-					int rid = AddStra(stra, fields[0], fields[2], fields[3], DateTime.Parse(fields[4]), string.IsNullOrWhiteSpace(fields[5]) ? DateTime.MaxValue : DateTime.Parse(fields[5]));
+					int rid = AddStra(stra, sc.Name, sc.Instrument, sc.InstrumentOrder, sc.Interval, sc.BeginDate, sc.EndDate);
 
 					LogInfo($"{stra.Name,8},读取策略 {(rid == -1 ? "出错" : "完成")}");
-					//if (rid == -1)//加载不成功
-					//{
-					//	continue;
-					//}
-					////按读取数据修正
-					//this.DataGridViewStrategies.Rows[rid].Cells["Instrument"].Value = fields[2];
-					//this.DataGridViewStrategies.Rows[rid].Cells["Interval"].Value = fields[3];
-					//this.DataGridViewStrategies.Rows[rid].Cells["BeginDate"].Value = DateTime.Parse(fields[4]);
-					//if (!string.IsNullOrWhiteSpace(fields[5]))
-					//{
-					//	//((DataGridViewTextBoxCell)this.DataGridViewStrategies.Rows[rid].Cells["EndDate"]).Checked = true;
-					//	this.DataGridViewStrategies.Rows[rid].Cells["EndDate"].Value = DateTime.Parse(fields[5]);
-					//}
 				}
 			}
 		}
@@ -812,76 +734,79 @@ namespace HaiFeng
 			MarketData f000;
 			if (_dicTick000.TryGetValue(instField.ProductID + "000", out f000) && tick.UpdateTime != f000.UpdateTime)
 			{
-				if (string.IsNullOrEmpty(f000.UpdateTime))
-					f000.UpdateTime = e.Tick.UpdateTime;
-				else
+				double priceTick = instField.PriceTick;
+
+				int sumV = 0;
+				double sumI = 0;
+				List<MarketData> ts = new List<MarketData>();
+
+				foreach (var inst in _t.DicInstrumentField.Values.Where(n => n.ProductID == instField.ProductID))
 				{
-					double priceTick = instField.PriceTick;
-
-					int sumV = 0;
-					double sumI = 0;
-					List<MarketData> ts = new List<MarketData>();
-
-					foreach (var inst in _t.DicInstrumentField.Values.Where(n => n.ProductID == instField.ProductID))
+					MarketData md;
+					if (!_dicTick000.TryGetValue(inst.InstrumentID, out md)) continue;
+					if (md.Volume <= 0 || md.OpenInterest <= 0) continue;
+					ts.Add(md);
+				}
+				//无有用数据:不处理
+				if (ts.Count > 0)
+				{
+					foreach (var v in ts)
 					{
-						MarketData md;
-						if (!_dicTick000.TryGetValue(inst.InstrumentID, out md)) continue;
-						if (md.Volume <= 0 || md.OpenInterest <= 0) continue;
-						ts.Add(md);
+						sumV += v.Volume;
+						sumI += v.OpenInterest;
 					}
-					//无有用数据:不处理
-					if (ts.Count > 0)
+
+					f000.Volume = sumV;
+					f000.OpenInterest = sumI;
+					f000.UpdateTime = tick.UpdateTime;
+
+					//数据初始化
+					f000.LastPrice = 0;
+					f000.BidPrice = 0;
+					f000.BidVolume = 0;
+					f000.AskPrice = 0;
+					f000.AskVolume = 0;
+					f000.AveragePrice = 0;
+
+					foreach (var v in ts)
 					{
-						foreach (var v in ts)
+						double rate = v.OpenInterest / sumI;
+
+						f000.LastPrice += v.LastPrice * rate;
+						f000.BidPrice += v.BidPrice * rate;
+						f000.BidVolume += v.BidVolume;
+						f000.AskPrice += v.AskPrice * rate;
+						f000.AskVolume += v.AskVolume;
+						f000.AveragePrice += v.AveragePrice * rate;
+					}
+					//数据修正
+					f000.LastPrice = Math.Round(f000.LastPrice / priceTick, 0) * priceTick;
+					f000.BidPrice = Math.Round(f000.BidPrice / priceTick, 0) * priceTick;
+					f000.AskPrice = Math.Round(f000.AskPrice / priceTick, 0) * priceTick;
+					f000.AveragePrice = Math.Round(f000.AveragePrice / priceTick, 0) * priceTick;
+
+					tick = f000; //指向000数据
+					foreach (var v in _dicStrategies)
+					{
+						if (_listOnTickStra.IndexOf(v.Value) >= 0 && v.Value.InstrumentID == tick.InstrumentID)
 						{
-							sumV += v.Volume;
-							sumI += v.OpenInterest;
-						}
-
-						f000.Volume = sumV;
-						f000.OpenInterest = sumI;
-						f000.UpdateTime = tick.UpdateTime;
-
-						foreach (var v in ts)
-						{
-							double rate = v.Volume / sumV * 0.1 + v.OpenInterest / sumI * 0.9;
-
-							f000.LastPrice += v.LastPrice * rate;
-							f000.BidPrice += v.BidPrice * rate;
-							f000.BidVolume += v.BidVolume;
-							f000.AskPrice += v.AskPrice * rate;
-							f000.AskVolume += v.AskVolume;
-							f000.AveragePrice += v.AveragePrice * rate;
-						}
-						//数据修正
-						f000.LastPrice = Math.Round(f000.LastPrice / priceTick, 0) * priceTick;
-						f000.BidPrice = Math.Round(f000.BidPrice / priceTick, 0) * priceTick;
-						f000.AskPrice = Math.Round(f000.AskPrice / priceTick, 0) * priceTick;
-						f000.AveragePrice = Math.Round(f000.AveragePrice / priceTick, 0) * priceTick;
-
-						tick = f000; //指向000数据
-						foreach (var v in _dicStrategies)
-						{
-							if (_listOnTickStra.IndexOf(v.Value) >= 0 && v.Value.InstrumentID == tick.InstrumentID)
+							v.Value.Datas[0].OnTick(new Tick
 							{
-								v.Value.Datas[0].OnTick(new Tick
-								{
-									AskPrice = (Numeric)tick.AskPrice,
-									AskVolume = tick.AskVolume,
-									AveragePrice = (Numeric)tick.AveragePrice,
-									BidPrice = (Numeric)tick.BidPrice,
-									BidVolume = tick.BidVolume,
-									InstrumentID = tick.InstrumentID,
-									LastPrice = (Numeric)tick.LastPrice,
-									LowerLimitPrice = (Numeric)tick.LowerLimitPrice,
-									OpenInterest = (Numeric)tick.OpenInterest,
-									UpdateMillisec = tick.UpdateMillisec,
-									UpdateTime = tick.UpdateTime,
-									UpperLimitPrice = (Numeric)tick.UpperLimitPrice,
-									Volume = tick.Volume,
-								});
-								v.Value.Update();
-							}
+								AskPrice = (Numeric)tick.AskPrice,
+								AskVolume = tick.AskVolume,
+								AveragePrice = (Numeric)tick.AveragePrice,
+								BidPrice = (Numeric)tick.BidPrice,
+								BidVolume = tick.BidVolume,
+								InstrumentID = tick.InstrumentID,
+								LastPrice = (Numeric)tick.LastPrice,
+								LowerLimitPrice = (Numeric)tick.LowerLimitPrice,
+								OpenInterest = (Numeric)tick.OpenInterest,
+								UpdateMillisec = tick.UpdateMillisec,
+								UpdateTime = tick.UpdateTime,
+								UpperLimitPrice = (Numeric)tick.UpperLimitPrice,
+								Volume = tick.Volume,
+							});
+							v.Value.Update();
 						}
 					}
 					//更新合约数据
@@ -903,10 +828,10 @@ namespace HaiFeng
 				if (pOrderItem.Offset == Offset.Close)
 				{
 					int lots = pOrderItem.Lots;
-					_t.ClosePosi(pData.Instrument, pOrderItem.Dir == Direction.Buy ? DirectionType.Sell : DirectionType.Buy, (double)pOrderItem.Price, pOrderItem.Lots, int.Parse(pStrategy.Name) * 100);
+					_t.ClosePosi(pData.InstrumentOrder, pOrderItem.Dir == Direction.Buy ? DirectionType.Sell : DirectionType.Buy, (double)pOrderItem.Price, pOrderItem.Lots, int.Parse(pStrategy.Name) * 100);
 				}
 				else
-					_t.ReqOrderInsert(pData.Instrument, pOrderItem.Dir == Direction.Buy ? DirectionType.Buy : DirectionType.Sell, OffsetType.Open, (double)pOrderItem.Price, pOrderItem.Lots, pCustom: int.Parse(pStrategy.Name) * 100);
+					_t.ReqOrderInsert(pData.InstrumentOrder, pOrderItem.Dir == Direction.Buy ? DirectionType.Buy : DirectionType.Sell, OffsetType.Open, (double)pOrderItem.Price, pOrderItem.Lots, pCustom: int.Parse(pStrategy.Name) * 100);
 			}
 		}
 
@@ -1046,17 +971,5 @@ namespace HaiFeng
 				MessageBox.Show(err.Message);
 			}
 		}
-	}
-	public class ConfigATP
-	{
-		[Category("配置"), DisplayName("追单设置"), Browsable(true)]
-		public FollowConfig FloConfig { get; set; } = new FollowConfig();
-
-		//public RunTime[] RunTimes { get; set; } = new[] { new RunTime { Begin = TimeSpan.Parse("08:45:00"), End = TimeSpan.Parse("15:30:00")} };
-		[Category("7*24"), DisplayName("开始时间I")]
-		public DateTime OpenTime1 { get; set; } = DateTime.Today.Add(TimeSpan.Parse("08:40:00"));
-
-		[Category("7*24"), DisplayName("开始时间II")]
-		public DateTime OpenTime2 { get; set; } = DateTime.Today.Add(TimeSpan.Parse("20:40:00"));
 	}
 }

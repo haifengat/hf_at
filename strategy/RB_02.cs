@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Math;
+using static HaiFeng.Functions;
 
 namespace HaiFeng
 {
 	class RB_02 : Strategy
 	{
-		public override void Initialize()
-		{
-		}
-
 		[Parameter("压力线参数", "RB")]
 		public int UpLine = 24;
 		[Parameter("支持线参数", "RB")]
@@ -29,12 +27,21 @@ namespace HaiFeng
 		[Parameter("止损-空(%)", "交易参数")]
 		public decimal StopLossShort = 3;
 
+
+		Highest ht;
+		Lowest lt;
+		public override void Initialize()
+		{
+			ht = new Highest(H, UpLine);
+			lt = new Lowest(L, DnLine);
+		}
+
 		public override void OnBarUpdate()
 		{
 			if (CurrentBar < Max(UpLine, DnLine)) return;
 
-			var UpValue = Highest(H, UpLine, 1);
-			var DnValue = Lowest(L, DnLine, 1);
+			var UpValue = ht[1];
+			var DnValue = lt[1];
 
 			var UpBreak = H[0] >= UpValue;
 			var DnBreak = L[0] <= DnValue;
@@ -53,7 +60,7 @@ namespace HaiFeng
 			}
 
 			//止盈止损
-			if (BarsSinceEntry == 0) return;
+			if (BarsSinceEntryLong == 0 && BarsSinceEntryShort == 0) return;
 
 			decimal stopLine = 0;
 			if (PositionLong > 0)

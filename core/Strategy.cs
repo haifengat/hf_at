@@ -403,8 +403,6 @@ namespace HaiFeng
 				this.StrategyDatas.Add(sd);
 			}
 
-			TBInit(); //初始化TB相关数据
-
 			this.Initialize(); //调用客户初始化函数
 
 			#region 初始化自身数据
@@ -694,9 +692,7 @@ namespace HaiFeng
 			{
 				this.indicator2False(i);
 			}
-
-			TBKey();    //TB数据更新
-			periodUpper(); //跨周期数据更新
+			
 			foreach (var i in this._indicators)//.Where(i => !i.IsOperated))
 			{
 				//base data series run the indicator before strategy

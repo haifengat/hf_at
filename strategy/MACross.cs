@@ -7,8 +7,6 @@ namespace HaiFeng
 	{
 		public MACross()
 		{
-
-
 		}
 
 		[Parameter("均线1")]

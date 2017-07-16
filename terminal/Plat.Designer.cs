@@ -72,10 +72,13 @@
 			this.label12 = new System.Windows.Forms.Label();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
 			this.DataGridViewStrategies = new System.Windows.Forms.DataGridView();
+			this.label1 = new System.Windows.Forms.Label();
+			this.comboBoxInstOrder = new System.Windows.Forms.ComboBox();
 			this.StraName = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Param = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Instrument = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.InstrumentOrder = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Interval = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.BeginDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.EndDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -211,9 +214,11 @@
 			this.groupBox1.Controls.Add(this.label5);
 			this.groupBox1.Controls.Add(this.comboBoxInterval);
 			this.groupBox1.Controls.Add(this.label6);
+			this.groupBox1.Controls.Add(this.comboBoxInstOrder);
 			this.groupBox1.Controls.Add(this.comboBoxInst);
 			this.groupBox1.Controls.Add(this.ComboBoxType);
 			this.groupBox1.Controls.Add(this.label4);
+			this.groupBox1.Controls.Add(this.label1);
 			this.groupBox1.Controls.Add(this.label3);
 			this.groupBox1.Controls.Add(this.label2);
 			this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -225,7 +230,7 @@
 			// 
 			// buttonAddStra
 			// 
-			this.buttonAddStra.Location = new System.Drawing.Point(691, 10);
+			this.buttonAddStra.Location = new System.Drawing.Point(823, 10);
 			this.buttonAddStra.Name = "buttonAddStra";
 			this.buttonAddStra.Size = new System.Drawing.Size(40, 23);
 			this.buttonAddStra.TabIndex = 9;
@@ -234,7 +239,7 @@
 			// 
 			// buttonDel
 			// 
-			this.buttonDel.Location = new System.Drawing.Point(737, 10);
+			this.buttonDel.Location = new System.Drawing.Point(864, 10);
 			this.buttonDel.Name = "buttonDel";
 			this.buttonDel.Size = new System.Drawing.Size(40, 23);
 			this.buttonDel.TabIndex = 53;
@@ -244,7 +249,7 @@
 			// dateTimePickerEnd
 			// 
 			this.dateTimePickerEnd.Checked = false;
-			this.dateTimePickerEnd.Location = new System.Drawing.Point(559, 11);
+			this.dateTimePickerEnd.Location = new System.Drawing.Point(696, 11);
 			this.dateTimePickerEnd.Name = "dateTimePickerEnd";
 			this.dateTimePickerEnd.ShowCheckBox = true;
 			this.dateTimePickerEnd.Size = new System.Drawing.Size(126, 21);
@@ -252,7 +257,7 @@
 			// 
 			// dateTimePickerBegin
 			// 
-			this.dateTimePickerBegin.Location = new System.Drawing.Point(423, 11);
+			this.dateTimePickerBegin.Location = new System.Drawing.Point(558, 11);
 			this.dateTimePickerBegin.Name = "dateTimePickerBegin";
 			this.dateTimePickerBegin.Size = new System.Drawing.Size(107, 21);
 			this.dateTimePickerBegin.TabIndex = 7;
@@ -260,7 +265,7 @@
 			// label5
 			// 
 			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(394, 15);
+			this.label5.Location = new System.Drawing.Point(528, 15);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(29, 12);
 			this.label5.TabIndex = 39;
@@ -270,7 +275,7 @@
 			// comboBoxInterval
 			// 
 			this.comboBoxInterval.FormattingEnabled = true;
-			this.comboBoxInterval.Location = new System.Drawing.Point(333, 11);
+			this.comboBoxInterval.Location = new System.Drawing.Point(467, 11);
 			this.comboBoxInterval.Name = "comboBoxInterval";
 			this.comboBoxInterval.Size = new System.Drawing.Size(60, 20);
 			this.comboBoxInterval.TabIndex = 6;
@@ -278,7 +283,7 @@
 			// label6
 			// 
 			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(530, 15);
+			this.label6.Location = new System.Drawing.Point(666, 15);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(29, 12);
 			this.label6.TabIndex = 38;
@@ -290,7 +295,7 @@
 			this.comboBoxInst.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
 			this.comboBoxInst.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
 			this.comboBoxInst.FormattingEnabled = true;
-			this.comboBoxInst.Location = new System.Drawing.Point(230, 11);
+			this.comboBoxInst.Location = new System.Drawing.Point(233, 11);
 			this.comboBoxInst.Name = "comboBoxInst";
 			this.comboBoxInst.Size = new System.Drawing.Size(74, 20);
 			this.comboBoxInst.TabIndex = 5;
@@ -301,7 +306,7 @@
 			this.ComboBoxType.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
 			this.ComboBoxType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.ComboBoxType.DropDownWidth = 200;
-			this.ComboBoxType.Location = new System.Drawing.Point(37, 11);
+			this.ComboBoxType.Location = new System.Drawing.Point(38, 11);
 			this.ComboBoxType.Name = "ComboBoxType";
 			this.ComboBoxType.Size = new System.Drawing.Size(164, 20);
 			this.ComboBoxType.TabIndex = 4;
@@ -309,7 +314,7 @@
 			// label4
 			// 
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(304, 15);
+			this.label4.Location = new System.Drawing.Point(437, 15);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(29, 12);
 			this.label4.TabIndex = 40;
@@ -319,7 +324,7 @@
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(201, 15);
+			this.label3.Location = new System.Drawing.Point(203, 15);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(29, 12);
 			this.label3.TabIndex = 41;
@@ -466,6 +471,7 @@
             this.Type,
             this.Param,
             this.Instrument,
+            this.InstrumentOrder,
             this.Interval,
             this.BeginDate,
             this.EndDate,
@@ -489,6 +495,26 @@
 			this.DataGridViewStrategies.ShowCellToolTips = false;
 			this.DataGridViewStrategies.Size = new System.Drawing.Size(1195, 451);
 			this.DataGridViewStrategies.TabIndex = 40;
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(308, 15);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(53, 12);
+			this.label1.TabIndex = 41;
+			this.label1.Text = "委托合约";
+			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			// 
+			// comboBoxInstOrder
+			// 
+			this.comboBoxInstOrder.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+			this.comboBoxInstOrder.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+			this.comboBoxInstOrder.FormattingEnabled = true;
+			this.comboBoxInstOrder.Location = new System.Drawing.Point(362, 11);
+			this.comboBoxInstOrder.Name = "comboBoxInstOrder";
+			this.comboBoxInstOrder.Size = new System.Drawing.Size(74, 20);
+			this.comboBoxInstOrder.TabIndex = 5;
 			// 
 			// StraName
 			// 
@@ -517,6 +543,11 @@
 			this.Instrument.Name = "Instrument";
 			this.Instrument.ReadOnly = true;
 			this.Instrument.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+			// 
+			// InstrumentOrder
+			// 
+			this.InstrumentOrder.HeaderText = "委托合约";
+			this.InstrumentOrder.Name = "InstrumentOrder";
 			// 
 			// Interval
 			// 
@@ -650,19 +681,6 @@
 		private System.Windows.Forms.PictureBox pictureBox1;
 		private System.Windows.Forms.ToolTip toolTip1;
 		private System.Windows.Forms.DataGridView DataGridViewStrategies;
-		private System.Windows.Forms.DataGridViewTextBoxColumn StraName;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Type;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Param;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Instrument;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Interval;
-		private System.Windows.Forms.DataGridViewTextBoxColumn BeginDate;
-		private System.Windows.Forms.DataGridViewTextBoxColumn EndDate;
-		private System.Windows.Forms.DataGridViewButtonColumn Loaded;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn Order;
-		private System.Windows.Forms.DataGridViewTextBoxColumn UpdateTime;
-		private System.Windows.Forms.DataGridViewTextBoxColumn ExcStatus;
-		private System.Windows.Forms.DataGridViewButtonColumn report;
-		private System.Windows.Forms.DataGridViewButtonColumn Graphics;
 		private System.Windows.Forms.SplitContainer splitContainer1;
 		private System.Windows.Forms.Label label11;
 		private System.Windows.Forms.Button buttonOffline;
@@ -672,5 +690,21 @@
 		private System.Windows.Forms.TextBox textBoxPwd;
 		private System.Windows.Forms.ComboBox comboBoxServer;
 		private System.Windows.Forms.TextBox textBoxUser;
+		private System.Windows.Forms.ComboBox comboBoxInstOrder;
+		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.DataGridViewTextBoxColumn StraName;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Type;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Param;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Instrument;
+		private System.Windows.Forms.DataGridViewTextBoxColumn InstrumentOrder;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Interval;
+		private System.Windows.Forms.DataGridViewTextBoxColumn BeginDate;
+		private System.Windows.Forms.DataGridViewTextBoxColumn EndDate;
+		private System.Windows.Forms.DataGridViewButtonColumn Loaded;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn Order;
+		private System.Windows.Forms.DataGridViewTextBoxColumn UpdateTime;
+		private System.Windows.Forms.DataGridViewTextBoxColumn ExcStatus;
+		private System.Windows.Forms.DataGridViewButtonColumn report;
+		private System.Windows.Forms.DataGridViewButtonColumn Graphics;
 	}
 }

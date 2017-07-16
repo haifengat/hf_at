@@ -71,11 +71,7 @@ namespace HaiFeng
 		/// </summary>
 		public DataSeries A = new DataSeries();
 		#endregion
-
-		private string _instrument = string.Empty;
-		private int _interval = 15;
-		private EnumIntervalType _intervalType = EnumIntervalType.Min;
-
+		
 		/// <summary>
 		/// 	构造函数
 		/// </summary>
@@ -102,23 +98,25 @@ namespace HaiFeng
 		/// 	合约
 		/// </summary>
 		[Description("合约"), Category("配置")]
-		public string Instrument
-		{
-			get { return this._instrument; }
-			set { this._instrument = value; }
-		}
+		public string Instrument { get; set; } = string.Empty;
+
+		/// <summary>
+		/// 	委托合约
+		/// </summary>
+		[Description("合约"), Category("配置")]
+		public string InstrumentOrder { get; set; } = string.Empty;
 
 		/// <summary>
 		/// 	周期类型
 		/// </summary>
 		[Description("周期类型"), Category("配置")]
-		public EnumIntervalType IntervalType { get { return this._intervalType; } set { this._intervalType = value; } }
+		public EnumIntervalType IntervalType { get; set; } = EnumIntervalType.Min;
 
 		/// <summary>
 		/// 	周期数
 		/// </summary>
 		[Description("周期数"), Category("配置")]
-		public int Interval { get { return this._interval; } set { this._interval = value; } }
+		public int Interval { get; set; } = 5;
 
 		/// <summary>
 		/// 	当前K线索引(由左向右从0开始)

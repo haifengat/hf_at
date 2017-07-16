@@ -10,6 +10,10 @@ namespace HaiFeng
 	public partial class TradeExt : CTPTrade
 	{
 		int _custom = 100000;
+		
+		public string Broker { get; internal set; }
+		public string Investor { get; internal set; }
+		public string Password { get; internal set; }
 
 		public TradeExt()
 		{
@@ -186,11 +190,6 @@ namespace HaiFeng
 		#region 追单功能
 		public FollowConfig FloConfig = new FollowConfig();    //是否为null,处理多次调用
 		bool _initFlow = false;   //是否初始化过
-
-		public string Password { get; internal set; }
-		public string Broker { get; internal set; }
-		public string FrontAddr { get; internal set; }
-		public string FrontAddrQuote { get; internal set; }
 
 		/// <summary>
 		/// 启动追单
