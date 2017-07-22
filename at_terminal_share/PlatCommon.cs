@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 using DataCenter;
+using Newtonsoft.Json;
 using static HaiFeng.HFLog;
 using Numeric = System.Decimal;
 
@@ -19,6 +22,7 @@ namespace HaiFeng
 		private DateTime _logTime = DateTime.MinValue;
 		private TradeExt _t;
 		private QuoteExt _q;
+		private readonly ConcurrentDictionary<string, Tick> _dicTick000 = new ConcurrentDictionary<string, Tick>(); //用于处理000数据
 
 		public Plat()
 		{
@@ -85,15 +89,6 @@ namespace HaiFeng
 			}
 		}
 
-		string[] fs;
-
-		//登录
-		private void ButtonLogin_Click(object sender, EventArgs e)
-		{
-			fs = ((string)this.comboBoxServer.SelectedValue).Split('|');
-			LoginTrade(fs[2].Split(','), fs[1], this.textBoxUser.Text, this.textBoxPwd.Text);
-		}
-
 		void LoginQuote(string[] front, string _Broker, string _Investor, string _Password)
 		{
 			if (_q != null)
@@ -110,8 +105,15 @@ namespace HaiFeng
 			};
 			_q.OnFrontConnected += quote_OnFrontConnected;
 			_q.OnRspUserLogin += quote_OnRspUserLogin;
+			_q.OnRspUserLogout += _q_OnRspUserLogout;
 			_q.OnRtnTick += _q_OnRtnTick;
 			_q.ReqConnect(front);
+		}
+
+		private void _q_OnRspUserLogout(object sender, IntEventArgs e)
+		{
+			_dicTick000.Clear();
+			LogInfo("行情退出");
 		}
 
 		void quote_OnFrontConnected(object sender, EventArgs e)
@@ -180,7 +182,8 @@ namespace HaiFeng
 		{
 			Product instField;
 			Instrument inst;
-			if (!_dataProcess.InstrumentInfo.TryGetValue(e.Tick.InstrumentID, out inst) || !_dataProcess.ProductInfo.TryGetValue(inst.ProductID, out instField))
+			ExchangeStatusType excStatus;
+			if (!_dataProcess.InstrumentInfo.TryGetValue(e.Tick.InstrumentID, out inst) || !_dataProcess.ProductInfo.TryGetValue(inst.ProductID, out instField) || !_t.DicExcStatus.TryGetValue(instField._id, out excStatus) || excStatus != ExchangeStatusType.Trading)
 				return;
 
 			Tick tick = new Tick
@@ -200,10 +203,10 @@ namespace HaiFeng
 				Volume = e.Tick.Volume,
 			};
 			//20170720全处理,避免000的行情错误.if (_t.DicExcStatus.Count > 1) //非模拟才进行处理
-			{
-				if (!_dataProcess.FixTick(tick, _t.TradingDay, _t.DicInstrumentField[tick.InstrumentID].ProductID))    //修正tick时间格式:yyyMMdd HH:mm:ss
-					return;
-			}
+
+			if (!_dataProcess.FixTick(tick, _t.TradingDay, _t.DicInstrumentField[tick.InstrumentID].ProductID))    //修正tick时间格式:yyyMMdd HH:mm:ss
+				return;
+
 
 			foreach (var v in _dicStrategies)
 			{
@@ -220,10 +223,9 @@ namespace HaiFeng
 			if (_dicTick000.TryGetValue(instField._id + "000", out f000)) //yyyyMMdd HH:mm:ss格式比较
 			{
 				if (_dicTick000.TryAdd(tick.InstrumentID, tick)) return;//首个tick只保存不处理
-
-				if (tick.UpdateTime.CompareTo(f000.UpdateTime) <= 0) return;
-				if (string.IsNullOrEmpty(f000.UpdateTime)) //第2个tick再处理;增加稳定性
+				if (tick.UpdateTime.CompareTo(f000.UpdateTime) <= 0 || string.IsNullOrEmpty(f000.UpdateTime)) //第2个tick再处理;增加稳定性
 				{
+					_dicTick000[tick.InstrumentID] = tick; //注意f000的先后顺序
 					f000.UpdateTime = tick.UpdateTime;
 					return;
 				}
@@ -232,13 +234,14 @@ namespace HaiFeng
 				Numeric priceTick = (Numeric)instField.PriceTick;
 
 				int sumV = 0;
-				double sumI = 0;
-				List<MarketData> ts = new List<MarketData>();
+				Numeric sumI = 0;
+				List<Tick> ts = new List<Tick>();
 
 				foreach (var instInfo in _dataProcess.InstrumentInfo.Values.Where(n => n.ProductID == instField._id))
 				{
-					MarketData md;
-					if (!_q.DicTick.TryGetValue(instInfo._id, out md)) continue;
+					if (instInfo._id == f000.InstrumentID) continue;
+					Tick md;
+					if (!_dicTick000.TryGetValue(instInfo._id, out md)) continue;
 					if (md.OpenInterest <= 0) continue;
 					ts.Add(md);
 				}
@@ -252,7 +255,7 @@ namespace HaiFeng
 					}
 
 					f000.Volume = sumV;
-					f000.OpenInterest = (Numeric)sumI;
+					f000.OpenInterest = sumI;
 					f000.UpdateTime = tick.UpdateTime;
 
 					//数据初始化
@@ -265,7 +268,7 @@ namespace HaiFeng
 
 					foreach (var v in ts)
 					{
-						double rate = v.OpenInterest / sumI;
+						Numeric rate = v.OpenInterest / sumI;
 
 						f000.LastPrice += (Numeric)(v.LastPrice * rate);
 						f000.BidPrice += (Numeric)(v.BidPrice * rate);
@@ -284,28 +287,172 @@ namespace HaiFeng
 					{
 						if (_listOnTickStra.IndexOf(v.Value) >= 0 && v.Value.InstrumentID == f000.InstrumentID)
 						{
-							v.Value.Datas[0].OnTick(new Tick
-							{
-								AskPrice = f000.AskPrice,
-								AskVolume = f000.AskVolume,
-								AveragePrice = f000.AveragePrice,
-								BidPrice = f000.BidPrice,
-								BidVolume = f000.BidVolume,
-								InstrumentID = f000.InstrumentID,
-								LastPrice = f000.LastPrice,
-								LowerLimitPrice = f000.LowerLimitPrice,
-								OpenInterest = f000.OpenInterest,
-								UpdateMillisec = f000.UpdateMillisec,
-								UpdateTime = f000.UpdateTime,
-								UpperLimitPrice = f000.UpperLimitPrice,
-								Volume = f000.Volume,
-							});
+							v.Value.Datas[0].OnTick(f000);
 							v.Value.Update();
 						}
 					}
 				}
 				//更新合约数据
-				//_dicTick000[tick.InstrumentID] = tick; //注意f000的先后顺序
+				_dicTick000[tick.InstrumentID] = tick; //注意f000的先后顺序
+			}
+		}
+
+
+		//订阅合约
+		void SubscribeInstrument(string inst)
+		{
+			//000
+			if (inst.EndsWith("000"))
+			{
+				var insts = _dataProcess.InstrumentInfo.Where(n => n.Value.ProductID == inst.TrimEnd('0')).Select(n => n.Value._id).ToArray();
+				if (insts.Count() > 0)
+				{
+					_dicTick000.TryAdd(inst, new Tick
+					{
+						InstrumentID = inst,
+						UpdateTime = string.Empty,
+						UpdateMillisec = 0,
+					});
+					//_q.ReqSubscribeMarketData(insts);//不能订阅多个??
+					foreach (var v in insts)
+						_q.ReqSubscribeMarketData(v);
+					return;
+				}
+			}
+			_q.ReqSubscribeMarketData(inst);
+		}
+
+		//保存策略
+		void SaveStrategy()
+		{
+			List<StrategyConfig> list = new List<StrategyConfig>();
+			foreach (DataGridViewRow row in this.DataGridViewStrategies.Rows)
+			{//参数置于最后,避免参数中的','影响加载时分隔
+				Strategy stra;
+				if (!_dicStrategies.TryGetValue((string)row.Cells["StraName"].Value, out stra))
+					continue;
+				list.Add(new StrategyConfig
+				{
+					Name = stra.Name,
+					Type = stra.GetType(),
+					Instrument = (string)row.Cells["Instrument"].Value,
+					InstrumentOrder = (string)row.Cells["InstrumentOrder"].Value,
+					Interval = (string)row.Cells["Interval"].Value,
+					BeginDate = (DateTime)row.Cells["BeginDate"].Value,
+					EndDate = (DateTime?)row.Cells["EndDate"].Value,
+					Params = (string)row.Cells["Param"].Value,
+				});
+			}
+			File.WriteAllText("strategies.cfg", JsonConvert.SerializeObject(list));
+		}
+
+		//加载保存的策略到列表里
+		void LoadStrategy()
+		{
+			if (File.Exists("strategies.cfg"))
+			{
+				var list = JsonConvert.DeserializeObject<List<StrategyConfig>>(File.ReadAllText("strategies.cfg"));
+				foreach (var sc in list)
+				{
+					Type straType = null;
+					//类型是否存在
+					foreach (Type t in this.ComboBoxType.Items)
+					{
+						if (t == sc.Type)
+						{
+							straType = t;
+							break;
+						}
+					}
+					if (straType == null)
+						continue;
+					Strategy stra = (Strategy)Activator.CreateInstance(straType);
+					//参数赋值
+					foreach (var v in sc.Params.Trim('(', ')').Split(','))
+					{
+						stra.SetParameterValue(v.Split(':')[0], v.Split(':')[1]);
+					}
+
+					int rid = AddStra(stra, sc.Name, sc.Instrument, sc.InstrumentOrder, sc.Interval, sc.BeginDate, sc.EndDate);
+
+					LogInfo($"{stra.Name,8},读取策略 {(rid == -1 ? "出错" : "完成")}");
+				}
+			}
+		}
+
+		//选择不同策略:显示策略成交记录
+		private void DataGridViewStrategies_SelectionChanged(object sender, EventArgs e)
+		{
+			_dtOrders.Rows.Clear();
+			if (this.DataGridViewStrategies.SelectedRows.Count == 0)
+				return;
+
+			DataGridViewRow row = this.DataGridViewStrategies.SelectedRows[0];
+
+			if (_dicStrategies.TryGetValue((string)row.Cells["StraName"].Value, out _curStrategy))
+			{
+				if (_curStrategy.Datas.Count > 0)
+				{
+					foreach (var v in _curStrategy.Operations)
+					{
+						_dtOrders.Rows.Add(_dtOrders.Rows.Count + 1, v.Date, v.Dir, v.Offset, v.Price, v.Lots, v.Remark);
+					}
+				}
+			}
+		}
+
+		//加载/委托/报告/图显
+		private void DataGridViewStrategies_CellContentClick(object sender, DataGridViewCellEventArgs e)
+		{
+			if (e.ColumnIndex < 0 || e.RowIndex < 0)
+			{
+				return;
+			}
+
+			DataGridViewRow row = this.DataGridViewStrategies.Rows[e.RowIndex];
+			string name = (string)row.Cells["StraName"].Value;
+			Strategy stra;
+			if (_dicStrategies.TryGetValue(name, out stra))
+			{
+				var head = row.Cells[e.ColumnIndex].OwningColumn.Name;
+				this.DataGridViewStrategies.EndEdit();
+				if (head == "Order")
+				{
+					//勾选委托
+					if ((bool)this.DataGridViewStrategies[e.ColumnIndex, e.RowIndex].Value)
+						_listOrderStra.Add(stra); //可以发送委托
+					else
+						_listOrderStra.Remove(stra);
+				}
+				else if (head == "report") //报告
+				{
+					if (stra.Operations == null || stra.Operations.Count == 0)
+						MessageBox.Show("策略无交易");
+					else
+						new FormTest(stra).Show();
+				}
+				else if (head == "Graphics") //报告
+				{
+					new FormWorkSpace(_curStrategy).Show();
+				}
+				else if (head == "Loaded") //加载
+				{
+					LoadStraData(e.RowIndex, stra, (string)row.Cells["Interval"].Value, (string)row.Cells["Instrument"].Value, (string)row.Cells["InstrumentOrder"].Value, (DateTime)row.Cells["BeginDate"].Value, row.Cells["EndDate"].Value == null ? DateTime.MaxValue : (DateTime)row.Cells["EndDate"].Value);
+				}
+			}
+		}
+
+		//格式化时间字段
+		private void DataGridViewStrategies_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+		{
+			if (e.ColumnIndex < 0 || e.RowIndex < 0 || e.Value == null) return;
+
+			if (this.DataGridViewStrategies.Columns[e.ColumnIndex].HeaderText == "时间")
+			{
+				decimal val;
+				DateTime dt;
+				if (decimal.TryParse((string)e.Value, out val) && DateTime.TryParseExact(val.ToString("00000000.0000"), "yyyyMMdd.HHmm", null, DateTimeStyles.None, out dt))
+					e.Value = dt.ToString("yyyy/MM/dd HH:mm");
 			}
 		}
 	}

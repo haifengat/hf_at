@@ -41,16 +41,27 @@ namespace HaiFeng
 		private readonly List<Strategy> _listOrderStra = new List<Strategy>();
 		private readonly List<Strategy> _listOnTickStra = new List<Strategy>();
 
-		//脱机
-		private void Offline_Click(object sender, EventArgs e)
+		private string[] fs;
+
+		//策略产生的买卖信号表
+		private readonly DataTable _dtOrders = new DataTable();
+
+		//数据处理功能模块
+		private DataProcess _dataProcess = new DataProcess();
+
+		//平台相关配置
+		ConfigATP _cfg = null;
+
+		private readonly System.Windows.Forms.Timer _timer = new System.Windows.Forms.Timer
 		{
-			this.panelLogin.Enabled = false;
-			_offline = true;
-			this.toolTip1.SetToolTip(this.ComboBoxType, "策略文件(dll)放置在(./strategies)目录中.");
-			this.toolTip1.Show("策略文件(dll)放置在(./strategies)目录中.", this.ComboBoxType, 6000);
-			LogInfo("脱机模式启动平台");
-			InitControls();
-		}
+			Interval = 1000
+		};
+
+		private Strategy _curStrategy;
+
+		private List<string> _tradingDate;
+		private bool _offline = false; //是否为脱机模式登录
+
 
 		private void _t_OnRspUserLogout(object sender, IntEventArgs e)
 		{
@@ -91,53 +102,8 @@ namespace HaiFeng
 			}
 		}
 
-		void SubscribeInstrument(string inst)
-		{
-			//000
-			if (inst.EndsWith("000"))
-			{
-				var insts = _dataProcess.InstrumentInfo.Where(n => n.Value.ProductID == inst.TrimEnd('0')).Select(n => n.Value._id).ToArray();
-				if (insts.Count() > 0)
-				{
-					_dicTick000.TryAdd(inst, new Tick
-					{
-						InstrumentID = inst,
-						UpdateTime = string.Empty,
-						UpdateMillisec = 0,
-					});
-					//_q.ReqSubscribeMarketData(insts);//不能订阅多个??
-					foreach (var v in insts)
-						_q.ReqSubscribeMarketData(v);
-					//foreach (var g in insts)
-					//{
-					//	MarketData f;
-					//	if (_q.DicTick.TryGetValue(g, out f))
-					//		_dicTick000[g] = new Tick
-					//		{
-					//			AskPrice = (Numeric)f.AskPrice,
-					//			AskVolume = f.AskVolume,
-					//			AveragePrice = (Numeric)f.AveragePrice,
-					//			BidPrice = (Numeric)f.BidPrice,
-					//			BidVolume = f.BidVolume,
-					//			InstrumentID = f.InstrumentID,
-					//			LastPrice = (Numeric)f.LastPrice,
-					//			LowerLimitPrice = (Numeric)f.LowerLimitPrice,
-					//			OpenInterest = (Numeric)f.OpenInterest,
-					//			UpdateMillisec = f.UpdateMillisec,
-					//			UpdateTime = f.UpdateTime,
-					//			UpperLimitPrice = (Numeric)f.UpperLimitPrice,
-					//			Volume = f.Volume,
-					//		};
-					//}
-					return;
-				}
-			}
-			_q.ReqSubscribeMarketData(inst);
-		}
-
 		private void QuoteLogged()
 		{
-			_t.StartFollow(_q);
 			//未登录过(多次登录时不处理)
 			if (this.panelLogin.Enabled)
 			{
@@ -202,67 +168,6 @@ namespace HaiFeng
 			this.numericUpDownTimes.DataBindings.Add("Value", _cfg.FloConfig, "FollowTimes", false, DataSourceUpdateMode.OnPropertyChanged);
 		}
 
-		//策略产生的买卖信号表
-		private readonly DataTable _dtOrders = new DataTable();
-
-		//数据处理功能模块
-		private DataProcess _dataProcess = new DataProcess();
-
-		//平台相关配置
-		ConfigATP _cfg = null;
-
-		private readonly System.Windows.Forms.Timer _timer = new System.Windows.Forms.Timer
-		{
-			Interval = 1000
-		};
-
-		private Strategy _curStrategy;
-		private readonly ConcurrentDictionary<string, Tick> _dicTick000 = new ConcurrentDictionary<string, Tick>(); //用于处理000数据
-
-		private List<string> _tradingDate;
-		private bool _offline = false; //是否为脱机模式登录
-
-		//添加策略
-		void ButtonAdd_Click(object sender, EventArgs e)
-		{
-			if (this.ComboBoxType.SelectedIndex < 0) return;
-			if (string.IsNullOrEmpty(this.comboBoxInst.Text)) return;
-			if (this.comboBoxInterval.SelectedIndex < 0) return;
-
-			Strategy stra = (Strategy)Activator.CreateInstance((Type)this.ComboBoxType.SelectedItem);
-
-			//参数配置,20170307:弹出窗口
-			using (FormParams fp = new FormParams())
-			{
-				//参数配置
-				fp.propertyGrid1.SelectedObject = stra;
-				fp.StartPosition = FormStartPosition.CenterParent;
-				if (fp.ShowDialog(this) != DialogResult.OK) return;
-
-				int rid = AddStra(stra, _dicStrategies.Count == 0 ? "1" : (_dicStrategies.Select(n => int.Parse(n.Key)).Max() + 1).ToString(), this.comboBoxInst.Text, this.comboBoxInstOrder.Text, this.comboBoxInterval.Text, this.dateTimePickerBegin.Value.Date, this.dateTimePickerEnd.Checked ? this.dateTimePickerEnd.Value.Date : DateTime.MaxValue);
-
-				//数据加载
-				LoadStraData(rid, stra, this.comboBoxInterval.Text, this.comboBoxInst.Text, this.comboBoxInstOrder.Text, this.dateTimePickerBegin.Value.Date, this.dateTimePickerEnd.Checked ? this.dateTimePickerEnd.Value.Date : DateTime.MaxValue);
-			}
-		}
-
-		//删除按钮
-		private void ButtonDel_Click(object sender, EventArgs e)
-		{
-			if (this.DataGridViewStrategies.SelectedRows.Count == 0) return;
-
-			DataGridViewRow row = this.DataGridViewStrategies.SelectedRows[0];
-			string name = (string)row.Cells["StraName"].Value;
-			Strategy stra;
-			_dicStrategies.TryGetValue(name, out stra);
-			if (stra != null)
-			{
-				_listOnTickStra.Remove(stra);
-				//if ((bool)row.Cells["Order"].Value)
-				_listOrderStra.Remove(stra);
-			}
-			this.DataGridViewStrategies.Rows.Remove(row);
-		}
 
 		// 策略添加到表中,返回添加后的行号
 		private int AddStra(Strategy stra, string pName, string pInstrument, string pInstrumentOrder, string pInterval, DateTime pBegin, DateTime? pEnd)
@@ -413,82 +318,6 @@ namespace HaiFeng
 		}
 
 
-		//选择不同策略:显示策略成交记录
-		private void DataGridViewStrategies_SelectionChanged(object sender, EventArgs e)
-		{
-			_dtOrders.Rows.Clear();
-			if (this.DataGridViewStrategies.SelectedRows.Count == 0)
-				return;
-
-			DataGridViewRow row = this.DataGridViewStrategies.SelectedRows[0];
-
-			if (_dicStrategies.TryGetValue((string)row.Cells["StraName"].Value, out _curStrategy))
-			{
-				if (_curStrategy.Datas.Count > 0)
-				{
-					foreach (var v in _curStrategy.Operations)
-					{
-						_dtOrders.Rows.Add(_dtOrders.Rows.Count + 1, v.Date, v.Dir, v.Offset, v.Price, v.Lots, v.Remark);
-					}
-				}
-			}
-		}
-
-		//加载/委托/报告/图显
-		private void DataGridViewStrategies_CellContentClick(object sender, DataGridViewCellEventArgs e)
-		{
-			if (e.ColumnIndex < 0 || e.RowIndex < 0)
-			{
-				return;
-			}
-
-			DataGridViewRow row = this.DataGridViewStrategies.Rows[e.RowIndex];
-			string name = (string)row.Cells["StraName"].Value;
-			Strategy stra;
-			if (_dicStrategies.TryGetValue(name, out stra))
-			{
-				var head = row.Cells[e.ColumnIndex].OwningColumn.Name;
-				this.DataGridViewStrategies.EndEdit();
-				if (head == "Order")
-				{
-					//勾选委托
-					if ((bool)this.DataGridViewStrategies[e.ColumnIndex, e.RowIndex].Value)
-						_listOrderStra.Add(stra); //可以发送委托
-					else
-						_listOrderStra.Remove(stra);
-				}
-				else if (head == "report") //报告
-				{
-					if (stra.Operations == null || stra.Operations.Count == 0)
-						MessageBox.Show("策略无交易");
-					else
-						new FormTest(stra).Show();
-				}
-				else if (head == "Graphics") //报告
-				{
-					new FormWorkSpace(_curStrategy).Show();
-				}
-				else if (head == "Loaded") //加载
-				{
-					LoadStraData(e.RowIndex, stra, (string)row.Cells["Interval"].Value, (string)row.Cells["Instrument"].Value, (string)row.Cells["InstrumentOrder"].Value, (DateTime)row.Cells["BeginDate"].Value, row.Cells["EndDate"].Value == null ? DateTime.MaxValue : (DateTime)row.Cells["EndDate"].Value);
-				}
-			}
-		}
-
-		//格式化时间字段
-		private void DataGridViewStrategies_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
-		{
-			if (e.ColumnIndex < 0 || e.RowIndex < 0 || e.Value == null) return;
-
-			if (this.DataGridViewStrategies.Columns[e.ColumnIndex].HeaderText == "时间")
-			{
-				decimal val;
-				DateTime dt;
-				if (decimal.TryParse((string)e.Value, out val) && DateTime.TryParseExact(val.ToString("00000000.0000"), "yyyyMMdd.HHmm", null, DateTimeStyles.None, out dt))
-					e.Value = dt.ToString("yyyy/MM/dd HH:mm");
-			}
-		}
-
 		private void SaveConfig()
 		{
 			if (_cfg == null) return;
@@ -501,6 +330,9 @@ namespace HaiFeng
 				_cfg = JsonConvert.DeserializeObject<ConfigATP>(File.ReadAllText("config.json"));
 			else
 				_cfg = new ConfigATP();
+			//此处已完成接口启动
+			if (_t != null)
+				_t.StartFollow(_q, _cfg.FloConfig);
 
 			//foreach (var file in _cfg.StrategyFiles)
 			//20170307:读取指定目录策略文件
@@ -511,68 +343,6 @@ namespace HaiFeng
 			{
 				//if (File.Exists(file))
 				LoadStrategyFile(file.FullName);
-			}
-
-			if (_t != null)
-				_t.FloConfig = _cfg.FloConfig;
-		}
-
-		void SaveStrategy()
-		{
-			List<StrategyConfig> list = new List<StrategyConfig>();
-			//string str = "StraName,Type,Instrument,InstrumentOrder,Interval,BeginDate,EndDate,Param\r\n";
-			foreach (DataGridViewRow row in this.DataGridViewStrategies.Rows)
-			{//参数置于最后,避免参数中的','影响加载时分隔
-				Strategy stra;
-				if (!_dicStrategies.TryGetValue((string)row.Cells["StraName"].Value, out stra))
-					continue;
-				list.Add(new StrategyConfig
-				{
-					Name = stra.Name,
-					Type = stra.GetType(),
-					Instrument = (string)row.Cells["Instrument"].Value,
-					InstrumentOrder = (string)row.Cells["InstrumentOrder"].Value,
-					Interval = (string)row.Cells["Interval"].Value,
-					BeginDate = (DateTime)row.Cells["BeginDate"].Value,
-					EndDate = (DateTime?)row.Cells["EndDate"].Value,
-					Params = (string)row.Cells["Param"].Value,
-				});
-				//str += $"{stra.Name},{stra.GetType()},{row.Cells["Instrument"].Value},{row.Cells["InstrumentOrder"].Value},{row.Cells["Interval"].Value},{row.Cells["BeginDate"].Value},{row.Cells["EndDate"].Value},{row.Cells["Param"].Value}\r\n";
-			}
-			File.WriteAllText("strategies.cfg", JsonConvert.SerializeObject(list));
-		}
-
-		void LoadStrategy()
-		{
-			if (File.Exists("strategies.cfg"))
-			{
-				//string[] lines = File.ReadAllLines("strategies.txt");
-				var list = JsonConvert.DeserializeObject<List<StrategyConfig>>(File.ReadAllText("strategies.cfg"));
-				foreach (var sc in list)
-				{
-					Type straType = null;
-					//类型是否存在
-					foreach (Type t in this.ComboBoxType.Items)
-					{
-						if (t == sc.Type)
-						{
-							straType = t;
-							break;
-						}
-					}
-					if (straType == null)
-						continue;
-					Strategy stra = (Strategy)Activator.CreateInstance(straType);
-					//参数赋值
-					foreach (var v in sc.Params.Trim('(', ')').Split(','))
-					{
-						stra.SetParameterValue(v.Split(':')[0], v.Split(':')[1]);
-					}
-
-					int rid = AddStra(stra, sc.Name, sc.Instrument, sc.InstrumentOrder, sc.Interval, sc.BeginDate, sc.EndDate);
-
-					LogInfo($"{stra.Name,8},读取策略 {(rid == -1 ? "出错" : "完成")}");
-				}
 			}
 		}
 
@@ -791,6 +561,69 @@ namespace HaiFeng
 			{
 				MessageBox.Show(err.Message);
 			}
+		}
+
+
+
+
+		//登录
+		private void ButtonLogin_Click(object sender, EventArgs e)
+		{
+			fs = ((string)this.comboBoxServer.SelectedValue).Split('|');
+			LoginTrade(fs[2].Split(','), fs[1], this.textBoxUser.Text, this.textBoxPwd.Text);
+		}
+
+		//脱机
+		private void Offline_Click(object sender, EventArgs e)
+		{
+			this.panelLogin.Enabled = false;
+			_offline = true;
+			this.toolTip1.SetToolTip(this.ComboBoxType, "策略文件(dll)放置在(./strategies)目录中.");
+			this.toolTip1.Show("策略文件(dll)放置在(./strategies)目录中.", this.ComboBoxType, 6000);
+			LogInfo("脱机模式启动平台");
+			InitControls();
+		}
+
+		//添加策略
+		void ButtonAdd_Click(object sender, EventArgs e)
+		{
+			if (this.ComboBoxType.SelectedIndex < 0) return;
+			if (string.IsNullOrEmpty(this.comboBoxInst.Text)) return;
+			if (this.comboBoxInterval.SelectedIndex < 0) return;
+
+			Strategy stra = (Strategy)Activator.CreateInstance((Type)this.ComboBoxType.SelectedItem);
+
+			//参数配置,20170307:弹出窗口
+			using (FormParams fp = new FormParams())
+			{
+				//参数配置
+				fp.propertyGrid1.SelectedObject = stra;
+				fp.StartPosition = FormStartPosition.CenterParent;
+				if (fp.ShowDialog(this) != DialogResult.OK) return;
+
+				int rid = AddStra(stra, _dicStrategies.Count == 0 ? "1" : (_dicStrategies.Select(n => int.Parse(n.Key)).Max() + 1).ToString(), this.comboBoxInst.Text, this.comboBoxInstOrder.Text, this.comboBoxInterval.Text, this.dateTimePickerBegin.Value.Date, this.dateTimePickerEnd.Checked ? this.dateTimePickerEnd.Value.Date : DateTime.MaxValue);
+
+				//数据加载
+				LoadStraData(rid, stra, this.comboBoxInterval.Text, this.comboBoxInst.Text, this.comboBoxInstOrder.Text, this.dateTimePickerBegin.Value.Date, this.dateTimePickerEnd.Checked ? this.dateTimePickerEnd.Value.Date : DateTime.MaxValue);
+			}
+		}
+
+		//删除按钮
+		private void ButtonDel_Click(object sender, EventArgs e)
+		{
+			if (this.DataGridViewStrategies.SelectedRows.Count == 0) return;
+
+			DataGridViewRow row = this.DataGridViewStrategies.SelectedRows[0];
+			string name = (string)row.Cells["StraName"].Value;
+			Strategy stra;
+			_dicStrategies.TryGetValue(name, out stra);
+			if (stra != null)
+			{
+				_listOnTickStra.Remove(stra);
+				//if ((bool)row.Cells["Order"].Value)
+				_listOrderStra.Remove(stra);
+			}
+			this.DataGridViewStrategies.Rows.Remove(row);
 		}
 	}
 }

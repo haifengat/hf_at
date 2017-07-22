@@ -10,7 +10,7 @@ namespace HaiFeng
 	public partial class TradeExt : CTPTrade
 	{
 		int _custom = 100000;
-		
+
 		public string Broker { get; internal set; }
 		public string Investor { get; internal set; }
 		public string Password { get; internal set; }
@@ -160,7 +160,7 @@ namespace HaiFeng
 			if (DicInstrumentField.TryGetValue(pInstrument, out dif))
 			{
 				if (_initFlow)
-					pPrice += FloConfig.FirstAddTicks * (pDirection == DirectionType.Buy ? 1 : -1) * dif.PriceTick;
+					pPrice += _floConfig.FirstAddTicks * (pDirection == DirectionType.Buy ? 1 : -1) * dif.PriceTick;
 				//限定在涨跌板范围内
 				MarketData f;
 				if (_q == null || !_q.DicTick.TryGetValue(pInstrument, out f))
@@ -188,7 +188,7 @@ namespace HaiFeng
 		private Quote _q = null;
 
 		#region 追单功能
-		public FollowConfig FloConfig = new FollowConfig();    //是否为null,处理多次调用
+		private FollowConfig _floConfig = new FollowConfig();    //是否为null,处理多次调用
 		bool _initFlow = false;   //是否初始化过
 
 		/// <summary>
@@ -196,13 +196,13 @@ namespace HaiFeng
 		/// </summary>
 		/// <param name="q"></param>
 		/// <param name="cfg"></param>
-		public void StartFollow(Quote q)
+		public void StartFollow(Quote q, FollowConfig cfg)
 		{
 			_q = q;
-			//FloConfig = cfg;
 			ShowInfo("启动追单功能.");
 			if (!_initFlow)
 			{
+				_floConfig = cfg;
 				_initFlow = true;
 				this.OnRtnOrder += TradeExt_OnRtnOrder;
 				this.OnRtnTrade += TradeExt_OnRtnTrade;
@@ -225,10 +225,10 @@ namespace HaiFeng
 			if (!_q.DicTick.TryGetValue(e.Value.InstrumentID, out tick)) return;
 			var id = e.Value.Custom + 1;
 			var times = e.Value.Custom % 100;
-			if (times >= FloConfig.FollowTimes) //达到最大追单次数
+			if (times >= _floConfig.FollowTimes) //达到最大追单次数
 			{
 				var price = e.Value.Direction == DirectionType.Buy ? tick.UpperLimitPrice : tick.LowerLimitPrice;
-				ShowInfo($"[{e.Value.Custom}]达到最大追单次数({FloConfig.FollowTimes},板价追单[custom:{id}][{e.Value.InstrumentID},{e.Value.Direction},{ e.Value.Offset},{ e.Value.Direction},{price},{ e.Value.VolumeLeft}])");
+				ShowInfo($"[{e.Value.Custom}]达到最大追单次数({_floConfig.FollowTimes},板价追单[custom:{id}][{e.Value.InstrumentID},{e.Value.Direction},{ e.Value.Offset},{ e.Value.Direction},{price},{ e.Value.VolumeLeft}])");
 				ReqOrderInsert(e.Value.InstrumentID, e.Value.Direction, e.Value.Offset, price, e.Value.VolumeLeft, OrderType.Limit, id);
 			}
 			else
@@ -236,7 +236,7 @@ namespace HaiFeng
 				InstrumentField instField;
 				if (!DicInstrumentField.TryGetValue(e.Value.InstrumentID, out instField)) return;
 
-				var price = e.Value.Direction == DirectionType.Buy ? (tick.AskPrice + FloConfig.NotFirstAddticks * instField.PriceTick) : (tick.BidPrice - FloConfig.NotFirstAddticks * instField.PriceTick);
+				var price = e.Value.Direction == DirectionType.Buy ? (tick.AskPrice + _floConfig.NotFirstAddticks * instField.PriceTick) : (tick.BidPrice - _floConfig.NotFirstAddticks * instField.PriceTick);
 				ShowInfo($"[{e.Value.Custom}]第{times - 1}次追单[id:{id}][{e.Value.InstrumentID},{e.Value.Direction},{ e.Value.Offset},{ e.Value.Direction},{price},{ e.Value.VolumeLeft}]");
 				ReqOrderInsert(e.Value.InstrumentID, e.Value.Direction, e.Value.Offset, price, e.Value.VolumeLeft, OrderType.Limit, id);
 			}
@@ -246,10 +246,10 @@ namespace HaiFeng
 		{
 			if (!e.Value.IsLocal) return;
 
-			if (FloConfig.WaitSecondsAfterOrder == 0) return; //0:不追单
+			if (_floConfig.WaitSecondsAfterOrder == 0) return; //0:不追单
 			new Thread((id) =>
 			{
-				Thread.Sleep(FloConfig.WaitSecondsAfterOrder * 1000);
+				Thread.Sleep(_floConfig.WaitSecondsAfterOrder * 1000);
 				ReqOrderAction((string)id);  //直接撤单,如果成功则继续,否则报错则不处理
 			}).Start(e.Value.OrderID);
 		}
