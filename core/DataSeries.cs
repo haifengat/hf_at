@@ -71,6 +71,9 @@ namespace HaiFeng
 			}
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
 		public void New()
 		{
 			if (Count == 0)
@@ -186,78 +189,5 @@ namespace HaiFeng
 			return ds;
 		}
 	}
-
-
-	/// <summary>
-	/// 自定义集合变化事件
-	/// </summary>
-	/// <param name="pType"></param>
-	/// <param name="pNew"></param>
-	/// <param name="pOld"></param>
-	public delegate void CollectionChange(int pType, object pNew, object pOld);
-
-	/// <summary>
-	/// 	数据集合
-	/// </summary>
-	public class DataCollection : Collection<Data>
-	{
-		private CollectionChange _onChange;
-		/// <summary>
-		/// 数据变化:加1;减-1;更新0
-		/// </summary>
-		public event CollectionChange OnChanged
-		{
-			add
-			{
-				_onChange += value;
-			}
-			remove
-			{
-				_onChange -= value;
-			}
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="index"></param>
-		/// <param name="item"></param>
-		protected override void InsertItem(int index, Data item)
-		{
-			base.InsertItem(index, item);
-			if (_onChange != null)
-			{
-				_onChange(1, item, null);
-			}
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="index"></param>
-		/// <param name="item"></param>
-		protected override void SetItem(int index, Data item)
-		{
-			Data old = this[index];
-			base.SetItem(index, item);
-			if (_onChange != null)
-			{
-				_onChange(0, item, old);
-			}
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="index"></param>
-		protected override void RemoveItem(int index)
-		{
-			Data old = this[index];
-			base.RemoveItem(index);
-			if (_onChange != null)
-			{
-				_onChange(-1, old, old);
-			}
-		}
-	}
+	
 }
