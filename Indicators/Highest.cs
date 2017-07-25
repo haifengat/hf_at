@@ -46,7 +46,7 @@ namespace HaiFeng
 				this.runningMax = double.MinValue;
 				for (int barsBack = Math.Min(CurrentBar, Period - 1); barsBack > 0; barsBack--)
 				{
-					if (Input[barsBack] >= this.runningMax)
+					if (Input[barsBack].GreaterEqual(this.runningMax))
 					{
 						this.runningMax = Input[barsBack];
 						this.runningBar = CurrentBar - barsBack;
@@ -59,7 +59,7 @@ namespace HaiFeng
 				this.lastBar = this.runningBar;
 				this.thisBar = CurrentBar;
 			}
-			if (Input[0] >= this.lastMax)
+			if (Input[0].Greater(this.lastMax))
 			{
 				this.runningMax = Input[0];
 				this.runningBar = CurrentBar;
@@ -76,7 +76,7 @@ namespace HaiFeng
 		/// <summary>
 		/// 
 		/// </summary>
-		[Range(1, int.MaxValue), NinjaScriptProperty]
+		[Range(1, int.MaxValue)]
 		[Parameter("Period", "Parameters")]
 		public int Period { get; set; }
 		#endregion
@@ -96,7 +96,7 @@ namespace HaiFeng
 		{
 			if (cacheHighest != null)
 				for (int idx = 0; idx < cacheHighest.Length; idx++)
-					if (cacheHighest[idx] != null && cacheHighest[idx].Period == period && cacheHighest[idx].Input == input)
+					if (cacheHighest[idx] != null && cacheHighest[idx].Period == period && cacheHighest[idx].EqualsInput(input))
 						return cacheHighest[idx];
 			return CacheIndicator(new Highest { Period = period, Input = input }, ref cacheHighest);
 		}

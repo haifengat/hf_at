@@ -11,48 +11,54 @@ namespace HaiFeng
 	/// </summary>
 	public static class DoubleExtension
 	{
+		static double Epsilon = 0.000001;
 		/// <summary>
-		/// 
+		/// double 变量比较
+		/// 用法：double a; if(a.ApproxCompare(b)==0) ...
 		/// </summary>
 		/// <param name="x"></param>
 		/// <param name="y"></param>
 		/// <returns>Equel 0 Great 1 Less -1 </returns>
-		public static int ApproxCompare(this double x, double y)
-		{
-			return x - y < double.Epsilon ? 0 : (x > y ? 1 : -1);
-		}
+		public static int ApproxCompare(this double x, double y) { return Math.Abs(x - y) < Epsilon ? 0 : (x > y ? 1 : -1); }
 
 		/// <summary>
-		/// 判断两个double变量相等
+		/// 相等
 		/// </summary>
 		/// <param name="x"></param>
 		/// <param name="y"></param>
 		/// <returns></returns>
-		public static bool Equal(this double x, double y)
-		{
-			return x - y < Math.Abs(double.Epsilon);
-		}
+		public static bool Equal(this double x, double y) { return x.ApproxCompare(y) == 0; }
 
 		/// <summary>
-		/// 判断double变量x>y
+		/// 大于
 		/// </summary>
 		/// <param name="x"></param>
 		/// <param name="y"></param>
 		/// <returns></returns>
-		public static bool Great(this double x, double y)
-		{
-			return x - y > double.Epsilon;
-		}
+		public static bool Greater(this double x, double y) { return x.ApproxCompare(y) > 0; }
 
 		/// <summary>
-		/// 判断double变量<!--x<y-->
+		/// 小于
 		/// </summary>
 		/// <param name="x"></param>
 		/// <param name="y"></param>
 		/// <returns></returns>
-		public static bool Less(this double x, double y)
-		{
-			return x - y < double.Epsilon;
-		}
+		public static bool Less(this double x, double y) { return x.ApproxCompare(y) < 0; }
+
+		/// <summary>
+		/// 小于等于
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <returns></returns>
+		public static bool LessEqual(this double x, double y) { return x.ApproxCompare(y) <= 0; }
+
+		/// <summary>
+		/// 大于等于
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <returns></returns>
+		public static bool GreaterEqual(this double x, double y) { return x.ApproxCompare(y) >= 0; }
 	}
 }

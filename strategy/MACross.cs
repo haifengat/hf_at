@@ -29,13 +29,13 @@ namespace HaiFeng
 		{
 			if (CurrentBar <= Math.Max(MA1, MA2))
 				return;
-			if (PositionLong == 0 && ma1[2] < ma2[2] && ma1[1] >= ma2[1])
+			if (PositionLong == 0 && ma1[2].Less(ma2[2]) && ma1[1].GreaterEqual(ma2[1]))
 			{
 				if (PositionShort > 0)
 					BuyToCover(PositionShort, O[0], "开多前先平空");
 				Buy(Lots, O[0], "上穿开多,平开的时间差可能因资金不足而导致而失败!");
 			}
-			else if (PositionShort == 0 && ma1[2] > ma2[2] && ma1[1] <= ma2[1])
+			else if (PositionShort == 0 && ma1[2].Greater(ma2[2]) && ma1[1].LessEqual(ma2[1]))
 			{
 				if (PositionLong > 0)
 					Sell(PositionLong, O[0], "开空前先平多");

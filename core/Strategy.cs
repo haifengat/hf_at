@@ -566,26 +566,7 @@ namespace HaiFeng
 				indicator2False((Indicator)id.GetValue(pIdx));
 			}
 		}
-
-		//internal bool modified()
-		//{
-		//	bool rtn = this.Datas.Count == 0;
-		//	foreach (Property p in dicProperties.Values)
-		//	{
-		//		FieldInfo fi = this.GetType().GetField(p.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
-		//		if (fi == null)
-		//		{
-		//			throw new Exception("未发现变量名为" + p.Name + "的参数!!!");
-		//		}
-		//		if (!p.Value.Equals(fi.GetValue(this)))
-		//		{
-		//			rtn = true;
-		//			fi.SetValue(this, p.Value);
-		//		}
-		//	}
-		//	return rtn;
-		//}
-
+		
 		/// <summary>
 		/// 	初始化
 		/// </summary>

@@ -44,7 +44,7 @@ namespace HaiFeng
 				this.runningMin = double.MaxValue;
 				for (int barsBack = Math.Min(CurrentBar, Period - 1); barsBack > 0; barsBack--)
 				{
-					if (Input[barsBack] <= this.runningMin)
+					if (Input[barsBack].LessEqual(this.runningMin))
 					{
 						this.runningMin = Input[barsBack];
 						this.runningBar = CurrentBar - barsBack;
@@ -57,7 +57,7 @@ namespace HaiFeng
 				this.lastBar = this.runningBar;
 				this.thisBar = CurrentBar;
 			}
-			if (Input[0] <= this.lastMin)
+			if (Input[0].LessEqual(this.lastMin))
 			{
 				this.runningMin = Input[0];
 				this.runningBar = CurrentBar;

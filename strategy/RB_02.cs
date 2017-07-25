@@ -43,8 +43,8 @@ namespace HaiFeng
 			var UpValue = ht[1];
 			var DnValue = lt[1];
 
-			var UpBreak = H[0] >= UpValue;
-			var DnBreak = L[0] <= DnValue;
+			var UpBreak = H[0].GreaterEqual(UpValue);
+			var DnBreak = L[0].LessEqual(DnValue);
 
 			if (PositionLong == 0 && UpBreak)
 			{
@@ -75,7 +75,7 @@ namespace HaiFeng
 					stopLine = EntryPriceLong * (1 - StopLossLong / 100);
 					remark = "止损";
 				}
-				if (stopLine != 0 && L[0] <= stopLine)
+				if (stopLine != 0 && L[0].LessEqual(stopLine))
 					Sell(0, Min(O[0], stopLine), remark);
 			}
 			if (PositionShort > 0 && BarsSinceEntryShort > 0) //
@@ -93,7 +93,7 @@ namespace HaiFeng
 					stopLine = EntryPriceShort * (1 + StopLossShort / 100);
 					remark = "止损";
 				}
-				if (stopLine != 0 && H[0] >= stopLine)
+				if (stopLine != 0 && H[0].GreaterEqual(stopLine))
 					BuyToCover(0, Max(O[0], stopLine), remark);
 			}
 		}

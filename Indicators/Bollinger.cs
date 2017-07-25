@@ -70,7 +70,7 @@ namespace HaiFeng
 		/// <summary>
 		/// 
 		/// </summary>
-		[Range(1, int.MaxValue), NinjaScriptProperty]
+		[Range(1, int.MaxValue)]
 		[Parameter("Period", "Parameters")]
 		public int Period { get; set; }
 

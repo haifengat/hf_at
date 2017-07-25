@@ -34,8 +34,8 @@ namespace HaiFeng
 			var UpValue = ht[1];
 			var DnValue = lt[1];
 
-			var UpBreak = H[0] >= UpValue;
-			var DnBreak = L[0] <= DnValue;
+			var UpBreak = H[0].GreaterEqual(UpValue);
+			var DnBreak = L[0].LessEqual(DnValue);
 
 			if (PositionLong == 0 && UpBreak)
 			{

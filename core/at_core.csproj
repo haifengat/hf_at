@@ -102,7 +102,6 @@
     <Compile Include="Enum.cs" />
     <Compile Include="Indicator.cs" />
     <Compile Include="InstrumentInfo.cs" />
-    <Compile Include="NinjaScriptPropertyAttribute.cs" />
     <Compile Include="OrderItem.cs" />
     <Compile Include="ParameterAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
