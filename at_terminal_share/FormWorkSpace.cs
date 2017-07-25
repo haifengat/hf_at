@@ -9,7 +9,6 @@ using System.Collections.Concurrent;
 using System.Xml.Linq;
 using HaiFeng;
 using ToolTipEventArgs = System.Windows.Forms.DataVisualization.Charting.ToolTipEventArgs;
-using Numeric = System.Decimal;
 
 namespace HaiFeng
 {
@@ -62,12 +61,12 @@ namespace HaiFeng
 		{
 			//绑定
 			int cnt = Math.Min(this.maxShowCandleNum, _stra.D.Count);
-			Numeric[] h = new Numeric[cnt];
-			Numeric[] l = new Numeric[cnt];
-			Numeric[] o = new Numeric[cnt];
-			Numeric[] c = new Numeric[cnt];
-			Numeric[] v = new Numeric[cnt];
-			Numeric[] i = new Numeric[cnt];
+			double[] h = new double[cnt];
+			double[] l = new double[cnt];
+			double[] o = new double[cnt];
+			double[] c = new double[cnt];
+			double[] v = new double[cnt];
+			double[] i = new double[cnt];
 			DateTime[] d = new DateTime[cnt];
 			for (int j = 0; j < cnt; ++j)
 			{
@@ -95,11 +94,11 @@ namespace HaiFeng
 
 			//Y轴显示的小数位数
 			var fmt = "F" + (_stra.InstrumentInfo.PriceTick >= 1 ? 0 : _stra.InstrumentInfo.PriceTick.ToString().Split('.')[1].Length - 1);
-			var interval = 10 * (double)_stra.InstrumentInfo.PriceTick; //最小跳动
+			var interval = 10 * _stra.InstrumentInfo.PriceTick; //最小跳动
 			SetLoadParams(this.chart1, this.chart1.ChartAreas[0], fmt, interval, cnt + 1);
 			//foreach (ChartArea area in this.chart1.ChartAreas)
 			//	area.AxisY.LabelStyle.Format = "F" + (_stra.InstrumentInfo.PriceTick >= 1 ? 0 : _stra.InstrumentInfo.PriceTick.ToString().Split('.')[1].Length - 1);
-			//this.chart1.ChartAreas[0].AxisY.Interval = 100 * (double)_stra.InstrumentInfo.PriceTick; //最小跳动
+			//this.chart1.ChartAreas[0].AxisY.Interval = 100 * _stra.InstrumentInfo.PriceTick; //最小跳动
 
 			//调整显示K线
 			//this.chart1.ChartAreas[0].AxisX.Maximum = cnt + 1; //不加此项,重加载数据时显示有问题
@@ -194,7 +193,7 @@ namespace HaiFeng
 			{
 				DataPoint dp = (DataPoint)e.HitTestResult.Object;
 				DateTime dt = DateTime.FromOADate(dp.XValue);
-				int currentBar = _stra.D.Count - 1 - _stra.D.IndexOf(Numeric.Parse(dt.ToString("yyyyMMdd.HHmmss")));
+				int currentBar = _stra.D.Count - 1 - _stra.D.IndexOf(double.Parse(dt.ToString("yyyyMMdd.HHmmss")));
 				e.Text = dt.ToString("yyyy/MM/dd[") + dt.ToString("ddd").Substring(1, 1) + "]";
 				e.Text += "\r\n时间 = " + dt.TimeOfDay;
 				e.Text += "\r\n开 = " + _stra.O[currentBar];
@@ -209,35 +208,35 @@ namespace HaiFeng
 
 				//指标提示
 				//e.Text += "\r\n[指标]";
-				foreach (var a in _stra.Indicators)
-				{
-					string input = null;
-					if (a.Input == _stra.H)
-						input = "H";
-					else if (a.Input == _stra.L)
-						input = "L";
-					else if (a.Input == _stra.O)
-						input = "O";
-					else if (a.Input == _stra.C)
-						input = "C";
-					else if (a.Input == _stra.V)
-						input = "V";
-					else if (a.Input == _stra.I)
-						input = "I";
-					if (input != null)
-					{
-						e.Text += "\r\n" + a.GetType().Name + "<" + input + ">(";
-						foreach (int p in a.Periods)
-							e.Text += p + ",";
-						e.Text = e.Text.Remove(e.Text.Length - 1);
-						e.Text += ")";
-						if (a.CustomSeries.Count == 1)
-							e.Text += ":" + a.CustomSeries.ElementAt(0).Value[currentBar].ToString("F2");
-						else
-							foreach (var o in a.CustomSeries)
-								e.Text += "\r\n" + o.Key + " : " + o.Value[currentBar].ToString("F2");
-					}
-				}
+				//foreach (var a in _stra.Indicators)
+				//{
+				//	string input = null;
+				//	if (a.Input == _stra.H)
+				//		input = "H";
+				//	else if (a.Input == _stra.L)
+				//		input = "L";
+				//	else if (a.Input == _stra.O)
+				//		input = "O";
+				//	else if (a.Input == _stra.C)
+				//		input = "C";
+				//	else if (a.Input == _stra.V)
+				//		input = "V";
+				//	else if (a.Input == _stra.I)
+				//		input = "I";
+				//	if (input != null)
+				//	{
+				//		e.Text += "\r\n" + a.GetType().Name + "<" + input + ">(";
+				//		foreach (int p in a.Periods)
+				//			e.Text += p + ",";
+				//		e.Text = e.Text.Remove(e.Text.Length - 1);
+				//		e.Text += ")";
+				//		//if (a.CustomSeries.Count == 1)
+				//		//	e.Text += ":" + a.CustomSeries.ElementAt(0).Value[currentBar].ToString("F2");
+				//		//else
+				//		//	foreach (var o in a.CustomSeries)
+				//		//		e.Text += "\r\n" + o.Key + " : " + o.Value[currentBar].ToString("F2");
+				//	}
+				//}
 
 				//跨周期
 				//if (_stra.DicPeriodValue.Count > 0)
@@ -315,7 +314,7 @@ namespace HaiFeng
 		/// <param name="chart1"></param>
 		/// <param name="area"></param>
 		/// <param name="axisYFmt">area.AxisY.LabelStyle.Format (var fmt = "F" + (_stra.InstrumentInfo.PriceTick >= 1 ? 0 : _stra.InstrumentInfo.PriceTick.ToString().Split('.')[1].Length - 1);</param>
-		/// <param name="axisYInterval">area.AxisY.Interval (var interval = 100 * (double)_stra.InstrumentInfo.PriceTick; //最小跳动))</param>
+		/// <param name="axisYInterval">area.AxisY.Interval (var interval = 100 * _stra.InstrumentInfo.PriceTick; //最小跳动))</param>
 		/// <param name="axisXMax">area.AxisX.Maximum [最大数据量+1] (不加此项,重加载数据时显示有问题)</param>
 		public void SetLoadParams(Chart chart1, ChartArea area, string axisYFmt, double axisYInterval, int axisXMax)
 		{
@@ -587,7 +586,7 @@ namespace HaiFeng
 				arrow.ToolTip = _stra.Name + ":" +
 					(pOperation.Dir == Direction.Buy ? "买" : "卖") + (pOperation.Offset == Offset.Open ? "开" : "平") + pOperation.Lots + "@" + pOperation.Price.ToString("F2");
 
-				arrow.Y = (double)pOperation.Price;
+				arrow.Y = pOperation.Price;
 				if (pOperation.Dir == Direction.Sell)
 				{
 					arrow.Height = -3;// 6 * priceTick;									//在prepost中进行更改:但要保持符号一致
@@ -643,8 +642,8 @@ namespace HaiFeng
 																																										//line.EndCap = LineAnchorCapStyle.None;//.Arrow;
 							line.Width = idx - idxOpen;
 							line.X = idxOpen + 1;                       //坐标是从1开始的
-							line.Y = (double)open.Price;
-							line.Height = (double)(pOperation.Price - open.Price);
+							line.Y = open.Price;
+							line.Height = (pOperation.Price - open.Price);
 							//this.chart1.Annotations.Add(line);
 							listAnnotation.Add(line);
 

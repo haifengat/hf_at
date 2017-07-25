@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Numeric = System.Decimal;
 
 namespace HaiFeng
 {
-
 	///深度行情
 	[StructLayout(LayoutKind.Sequential)]
 	public class Tick
@@ -17,11 +15,11 @@ namespace HaiFeng
 		/// <summary>
 		/// 最新价
 		/// </summary>
-		public Numeric LastPrice;
+		public double LastPrice;
 		/// <summary>
 		///申买价一
 		/// </summary>
-		public Numeric BidPrice;
+		public double BidPrice;
 		/// <summary>
 		///申买量一
 		/// </summary>
@@ -29,7 +27,7 @@ namespace HaiFeng
 		/// <summary>
 		///申卖价一
 		/// </summary>
-		public Numeric AskPrice;
+		public double AskPrice;
 		/// <summary>
 		///申卖量一
 		/// </summary>
@@ -37,7 +35,7 @@ namespace HaiFeng
 		/// <summary>
 		///当日均价
 		/// </summary>
-		public Numeric AveragePrice;
+		public double AveragePrice;
 		/// <summary>
 		///数量
 		/// </summary>
@@ -45,7 +43,7 @@ namespace HaiFeng
 		/// <summary>
 		///持仓量
 		/// </summary>
-		public Numeric OpenInterest;
+		public double OpenInterest;
 		/// <summary>
 		///最后修改时间:yyyyMMdd HH:mm:ss(20141114:日期由主程序处理,因大商所取到的actionday==tradingday)
 		/// </summary>
@@ -58,10 +56,10 @@ namespace HaiFeng
 		/// <summary>
 		///涨停板价
 		/// </summary>
-		public Numeric UpperLimitPrice;
+		public double UpperLimitPrice;
 		/// <summary>
 		///跌停板价
 		/// </summary>
-		public Numeric LowerLimitPrice;
+		public double LowerLimitPrice;
 	}
 }

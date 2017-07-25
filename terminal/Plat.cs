@@ -18,7 +18,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using static System.Math;
 using static HaiFeng.HFLog;
-using Numeric = System.Decimal;
 using DataCenter;
 
 namespace HaiFeng
@@ -208,21 +207,20 @@ namespace HaiFeng
 			};
 
 			//需处理成按合约取品种(期权规则与期货不同)
-			string proc = new string(inst.TakeWhile(char.IsLetter).ToArray());
+			Instrument instInfo;
+			Product procInfo;
+			if (!_dataProcess.InstrumentInfo.TryGetValue(inst, out instInfo) || !_dataProcess.ProductInfo.TryGetValue(instInfo.ProductID, out procInfo))
+			{
+				LogError("无合约对应的品种信息");
+				return;
+			}
 			data.InstrumentInfo = new InstrumentInfo
 			{
 				InstrumentID = inst,
-				ProductID = proc,
-				PriceTick = 1,
-				VolumeMultiple = 10,    //默认值
+				ProductID = instInfo.ProductID,
+				PriceTick = procInfo.PriceTick,
+				VolumeMultiple = procInfo.VolumeTuple,
 			};
-
-			Product pi;
-			if (_dataProcess.ProductInfo.TryGetValue(proc, out pi))
-			{
-				data.InstrumentInfo.PriceTick = (decimal)pi.PriceTick;
-				data.InstrumentInfo.VolumeMultiple = (int)pi.VolumeTuple;
-			}
 
 			//20170504从表行中取数据,而非界面上的数据.否则在"行"中点"加载"处理有误.
 			//DateTime dtBegin = this.dateTimePickerBegin.Value;
@@ -240,12 +238,12 @@ namespace HaiFeng
 				bars = _dataProcess.QueryMin(inst, dtBegin.ToString("yyyyMMdd"), qryEndDate.ToString("yyyyMMdd")).Select(n => new Bar
 				{
 					D = DateTime.ParseExact(n._id, "yyyyMMdd HH:mm:ss", null),
-					O = (decimal)n.Open,
-					H = (decimal)n.High,
-					L = (decimal)n.Low,
-					C = (decimal)n.Close,
+					O = n.Open,
+					H = n.High,
+					L = n.Low,
+					C = n.Close,
 					V = n.Volume,
-					I = (decimal)n.OpenInterest
+					I = n.OpenInterest
 				}).ToList();
 				// 取当日数据
 				if (dtEnd == DateTime.MaxValue)
@@ -256,12 +254,12 @@ namespace HaiFeng
 						bars.AddRange(listReal.Select(n => new Bar
 						{
 							D = DateTime.ParseExact(n._id, "yyyyMMdd HH:mm:ss", null),
-							O = (decimal)n.Open,
-							H = (decimal)n.High,
-							L = (decimal)n.Low,
-							C = (decimal)n.Close,
+							O = n.Open,
+							H = n.High,
+							L = n.Low,
+							C = n.Close,
 							V = n.Volume,
-							I = (decimal)n.OpenInterest
+							I = n.OpenInterest
 						}).ToList());
 				}
 			}
@@ -269,12 +267,12 @@ namespace HaiFeng
 				bars = _dataProcess.QueryDay(inst, dtBegin.ToString("yyyyMMdd"), qryEndDate.ToString("yyyyMMdd")).Select(n => new Bar
 				{
 					D = DateTime.ParseExact(n._id, "yyyyMMdd", null),
-					O = (decimal)n.Open,
-					H = (decimal)n.High,
-					L = (decimal)n.Low,
-					C = (decimal)n.Close,
+					O = n.Open,
+					H = n.High,
+					L = n.Low,
+					C = n.Close,
 					V = n.Volume,
-					I = (decimal)n.OpenInterest
+					I = n.OpenInterest
 				}).ToList();
 
 
@@ -287,11 +285,12 @@ namespace HaiFeng
 			if (data.Interval > 1 || data.IntervalType != EnumIntervalType.Min)
 				bars = GetUpperPeriod(bars, data.Interval, data.IntervalType);
 
-			//加载与tick加载同时处理
-			foreach (Bar bar in bars)
-				data.Add(bar); //加入bar
-							   //=>初始化策略/回测
+			//=>初始化策略/回测
 			stra.Init(data);
+			//加载与tick加载同时处理
+			//foreach (Bar bar in bars)
+			//	data.Add(bar); //加入bar
+			stra.LoadHistory(Tuple.Create(data, bars));
 
 			DataGridViewStrategies_SelectionChanged(null, null); //刷新委托列表
 																 //是否有结束日期:只测试
@@ -419,10 +418,10 @@ namespace HaiFeng
 				if (pOrderItem.Offset == Offset.Close)
 				{
 					int lots = pOrderItem.Lots;
-					_t.ClosePosi(pData.InstrumentOrder, pOrderItem.Dir == Direction.Buy ? DirectionType.Sell : DirectionType.Buy, (double)pOrderItem.Price, pOrderItem.Lots, int.Parse(pStrategy.Name) * 100);
+					_t.ClosePosi(pData.InstrumentOrder, pOrderItem.Dir == Direction.Buy ? DirectionType.Sell : DirectionType.Buy, pOrderItem.Price, pOrderItem.Lots, int.Parse(pStrategy.Name) * 100);
 				}
 				else
-					_t.ReqOrderInsert(pData.InstrumentOrder, pOrderItem.Dir == Direction.Buy ? DirectionType.Buy : DirectionType.Sell, OffsetType.Open, (double)pOrderItem.Price, pOrderItem.Lots, pCustom: int.Parse(pStrategy.Name) * 100);
+					_t.ReqOrderInsert(pData.InstrumentOrder, pOrderItem.Dir == Direction.Buy ? DirectionType.Buy : DirectionType.Sell, OffsetType.Open, pOrderItem.Price, pOrderItem.Lots, pCustom: int.Parse(pStrategy.Name) * 100);
 			}
 		}
 

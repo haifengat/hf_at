@@ -26,14 +26,14 @@ namespace HaiFeng
 			dtOperation.Columns.Add("#", typeof(int));
 			dtOperation.Columns.Add("多空", typeof(string));
 			dtOperation.Columns.Add("开仓时间", typeof(DateTime));
-			dtOperation.Columns.Add("开仓价格", typeof(decimal));
+			dtOperation.Columns.Add("开仓价格", typeof(double));
 			dtOperation.Columns.Add("平仓时间", typeof(DateTime));
-			dtOperation.Columns.Add("平仓价格", typeof(decimal));
+			dtOperation.Columns.Add("平仓价格", typeof(double));
 			dtOperation.Columns.Add("手数", typeof(int));
-			dtOperation.Columns.Add("手续费", typeof(decimal));
-			dtOperation.Columns.Add("净利", typeof(decimal));
-			dtOperation.Columns.Add("净利合计", typeof(decimal));
-			dtOperation.Columns.Add("收益率", typeof(decimal));
+			dtOperation.Columns.Add("手续费", typeof(double));
+			dtOperation.Columns.Add("净利", typeof(double));
+			dtOperation.Columns.Add("净利合计", typeof(double));
+			dtOperation.Columns.Add("收益率", typeof(double));
 			this.dataGridViewDetail.DataSource = dtOperation;
 
 			this.dataGridViewDetail.Columns["#"].DefaultCellStyle.Format = "N0";
@@ -68,7 +68,7 @@ namespace HaiFeng
 		private DataTable dtOperation = new DataTable("交易记录");
 		//private DataGridViewRow ws = null;
 		private Strategy _stra = null;
-		List<decimal> equity = new List<decimal>();
+		List<double> equity = new List<double>();
 
 		/// <summary>
 		/// 已在最后增加平仓指令
@@ -78,7 +78,7 @@ namespace HaiFeng
 		/// <summary>
 		/// 品种,开费率,开费,平费率,平费,平今费率,平今费
 		/// </summary>
-		//internal Tuple<decimal, decimal, decimal, decimal, decimal, decimal> commissionRate = null;
+		//internal Tuple<double, double, double, double, double, double> commissionRate = null;
 
 		private void FormTest_Load(object sender, EventArgs e)
 		{
@@ -150,7 +150,7 @@ namespace HaiFeng
 			string product = new string(_stra.InstrumentID.TakeWhile(char.IsLetter).ToArray());
 			var procInfo = _stra.Datas[0].InstrumentInfo;
 			DataRow dr = dtRate.Rows.Find(product);
-			var crate = new Tuple<decimal, decimal, decimal, decimal, decimal>((decimal)dr[1], (decimal)dr[2], (decimal)dr[3], (decimal)dr[4], (decimal)dr[5]);// dicRate[product];
+			var crate = new Tuple<double, double, double, double, double>((double)dr[1], (double)dr[2], (double)dr[3], (double)dr[4], (double)dr[5]);// dicRate[product];
 
 			List<OrderItem> operationCopy = new List<OrderItem>();
 			//for (int i = 0; i < this.listCopy[this.toolStripComboBoxStrategy.SelectedIndex].Item2.Count; i++)
@@ -182,15 +182,15 @@ namespace HaiFeng
 			int p最大连续盈利次数 = 0, p最大连续亏损次数 = 0, p最大连续盈利次数多 = 0, p最大连续亏损次数多 = 0, p最大连续盈利次数空 = 0, p最大连续亏损次数空 = 0;
 
 			//生成动态盈亏
-			decimal avgLong = 0, avgShort = 0;
+			double avgLong = 0, avgShort = 0;
 			int pLong = 0, pShort = 0;
-			decimal maxMarginLong = 0, maxMarginShort = 0;
-			decimal eq = 0, maxEquity = 0, maxReturn = 0, maxRate = 0;
+			double maxMarginLong = 0, maxMarginShort = 0;
+			double eq = 0, maxEquity = 0, maxReturn = 0, maxRate = 0;
 			DateTime dtMaxReturn = DateTime.MinValue;
 			int idxOperation = 0;
 			for (int i = _stra.C.Count - 1; i >= 0; --i)
 			{
-				decimal eqLong = 0, eqShort = 0;
+				double eqLong = 0, eqShort = 0;
 				eqLong = (_stra.C[i] - avgLong) * pLong; //持有多仓浮盈
 				eqShort = (avgShort - _stra.C[i]) * pShort; //持仓空仓浮盈
 
@@ -226,7 +226,7 @@ namespace HaiFeng
 					++idxOperation;
 				}
 
-				decimal eqCur = eq + eqLong + eqShort;
+				double eqCur = eq + eqLong + eqShort;
 
 				maxMarginLong = Math.Max(maxMarginLong, _stra.H[i] * pLong * _stra.InstrumentInfo.VolumeMultiple * crate.Item4);
 				maxMarginShort = Math.Max(maxMarginShort, _stra.H[i] * pShort * _stra.InstrumentInfo.VolumeMultiple * crate.Item5);
@@ -264,15 +264,15 @@ namespace HaiFeng
 								drNew["平仓价格"] = operationCopy[i].Price;
 								drNew["手数"] = closeLots;
 								drNew["手续费"] = closeLots * ((crate.Item1 > 1 ? crate.Item1 : (operationCopy[iOpen].Price * crate.Item1)) + (crate.Item2 > 1 ? crate.Item2 : (operationCopy[i].Price * crate.Item2)));
-								drNew["净利"] = (operationCopy[i].Price - operationCopy[iOpen].Price) * closeLots * procInfo.VolumeMultiple - (decimal)drNew["手续费"];
+								drNew["净利"] = (operationCopy[i].Price - operationCopy[iOpen].Price) * closeLots * procInfo.VolumeMultiple - (double)drNew["手续费"];
 
 								DataRow drLast = this.dtOperation.AsEnumerable().LastOrDefault();
 								if (drLast == null)
 									drNew["净利合计"] = drNew["净利"];
 								else
-									drNew["净利合计"] = (decimal)drLast["净利合计"] + (decimal)drNew["净利"];
+									drNew["净利合计"] = (double)drLast["净利合计"] + (double)drNew["净利"];
 								this.dtOperation.Rows.Add(drNew);
-								if ((decimal)drNew["净利"] > 0)
+								if ((double)drNew["净利"] > 0)
 								{
 									p最大连续盈利次数++;
 									p最大连续盈利次数多++;
@@ -325,14 +325,14 @@ namespace HaiFeng
 								drNew["平仓价格"] = operationCopy[i].Price;
 								drNew["手数"] = closeLots;
 								drNew["手续费"] = closeLots * ((crate.Item1 > 1 ? crate.Item1 : (operationCopy[iOpen].Price * crate.Item1)) + (crate.Item2 > 1 ? crate.Item2 : (operationCopy[i].Price * crate.Item2)));
-								drNew["净利"] = -(operationCopy[i].Price - operationCopy[iOpen].Price) * closeLots * procInfo.VolumeMultiple - (decimal)drNew["手续费"];
+								drNew["净利"] = -(operationCopy[i].Price - operationCopy[iOpen].Price) * closeLots * procInfo.VolumeMultiple - (double)drNew["手续费"];
 								DataRow drLast = this.dtOperation.AsEnumerable().LastOrDefault();
 								if (drLast == null)
 									drNew["净利合计"] = drNew["净利"];
 								else
-									drNew["净利合计"] = (decimal)drLast["净利合计"] + (decimal)drNew["净利"];
+									drNew["净利合计"] = (double)drLast["净利合计"] + (double)drNew["净利"];
 								this.dtOperation.Rows.Add(drNew);
-								if ((decimal)drNew["净利"] > 0)
+								if ((double)drNew["净利"] > 0)
 								{
 									p最大连续盈利次数++;
 									p最大连续盈利次数空++;
@@ -388,30 +388,30 @@ namespace HaiFeng
 			int idx = this.dataGridViewdReport.Rows.Add();
 			DataGridViewRow row = this.dataGridViewdReport.Rows[idx];
 			row.Cells[0].Value = "净利润";
-			decimal 净利润 = (decimal)this.dtOperation.Rows[this.dtOperation.Rows.Count - 1]["净利合计"];
+			double 净利润 = (double)this.dtOperation.Rows[this.dtOperation.Rows.Count - 1]["净利合计"];
 			row.Cells[1].Value = 净利润;
-			decimal 净利润多 = drsLong.Count() == 0 ? 0 : drsLong.Sum(n => (decimal)n["净利"]);
+			double 净利润多 = drsLong.Count() == 0 ? 0 : drsLong.Sum(n => (double)n["净利"]);
 			row.Cells[2].Value = 净利润多;
-			decimal 净利润空 = drsShort.Count() == 0 ? 0 : drsShort.Sum(n => (decimal)n["净利"]);
+			double 净利润空 = drsShort.Count() == 0 ? 0 : drsShort.Sum(n => (double)n["净利"]);
 			row.Cells[3].Value = 净利润空;
 
 			idx = this.dataGridViewdReport.Rows.Add();
 			row = this.dataGridViewdReport.Rows[idx];
 			row.Cells[0].Value = "总盈利";
-			decimal 总盈利多 = drsLong.Count() == 0 ? 0 : drsLong.Where(n => (decimal)n["净利"] > 0).Sum(n => (decimal)n["净利"]);
+			double 总盈利多 = drsLong.Count() == 0 ? 0 : drsLong.Where(n => (double)n["净利"] > 0).Sum(n => (double)n["净利"]);
 			row.Cells[2].Value = 总盈利多;
-			decimal 总盈利空 = drsShort.Count() == 0 ? 0 : drsShort.Where(n => (decimal)n["净利"] > 0).Sum(n => (decimal)n["净利"]);
+			double 总盈利空 = drsShort.Count() == 0 ? 0 : drsShort.Where(n => (double)n["净利"] > 0).Sum(n => (double)n["净利"]);
 			row.Cells[3].Value = 总盈利空;
-			row.Cells[1].Value = (decimal)row.Cells[2].Value + (decimal)row.Cells[3].Value;
+			row.Cells[1].Value = (double)row.Cells[2].Value + (double)row.Cells[3].Value;
 
 			idx = this.dataGridViewdReport.Rows.Add();
 			row = this.dataGridViewdReport.Rows[idx];
 			row.Cells[0].Value = "总亏损";
-			decimal 总亏损多 = drsLong.Count() == 0 ? 0 : drsLong.Where(n => (decimal)n["净利"] < 0).Sum(n => (decimal)n["净利"]);
+			double 总亏损多 = drsLong.Count() == 0 ? 0 : drsLong.Where(n => (double)n["净利"] < 0).Sum(n => (double)n["净利"]);
 			row.Cells[2].Value = 总亏损多;
-			decimal 总亏损空 = drsShort.Count() == 0 ? 0 : drsShort.Where(n => (decimal)n["净利"] < 0).Sum(n => (decimal)n["净利"]);
+			double 总亏损空 = drsShort.Count() == 0 ? 0 : drsShort.Where(n => (double)n["净利"] < 0).Sum(n => (double)n["净利"]);
 			row.Cells[3].Value = 总亏损空;
-			row.Cells[1].Value = (decimal)row.Cells[2].Value + (decimal)row.Cells[3].Value;
+			row.Cells[1].Value = (double)row.Cells[2].Value + (double)row.Cells[3].Value;
 
 			idx = this.dataGridViewdReport.Rows.Add();
 			row = this.dataGridViewdReport.Rows[idx];
@@ -433,11 +433,11 @@ namespace HaiFeng
 			idx = this.dataGridViewdReport.Rows.Add();
 			row = this.dataGridViewdReport.Rows[idx];
 			row.Cells[0].Value = "盈利比率";
-			int 盈利手数多 = drsLong.Count() == 0 ? 0 : drsLong.Where(n => (decimal)n["净利"] > 0).Sum(n => (int)n["手数"]);
-			row.Cells[2].Value = 手数多 == 0 ? 0 : (decimal)盈利手数多 / 手数多;
-			int 盈利手数空 = drsShort.Count() == 0 ? 0 : drsShort.Where(n => (decimal)n["净利"] > 0).Sum(n => (int)n["手数"]);
-			row.Cells[3].Value = 手数空 == 0 ? 0 : (decimal)盈利手数空 / 手数空;
-			row.Cells[1].Value = (decimal)(盈利手数多 + 盈利手数空) / (手数多 + 手数空);
+			int 盈利手数多 = drsLong.Count() == 0 ? 0 : drsLong.Where(n => (double)n["净利"] > 0).Sum(n => (int)n["手数"]);
+			row.Cells[2].Value = 手数多 == 0 ? 0 : 盈利手数多 / 手数多;
+			int 盈利手数空 = drsShort.Count() == 0 ? 0 : drsShort.Where(n => (double)n["净利"] > 0).Sum(n => (int)n["手数"]);
+			row.Cells[3].Value = 手数空 == 0 ? 0 : 盈利手数空 / 手数空;
+			row.Cells[1].Value = (盈利手数多 + 盈利手数空) / (手数多 + 手数空);
 			row.Cells[1].Style.Format = row.Cells[2].Style.Format = row.Cells[3].Style.Format = "P2";
 
 			idx = this.dataGridViewdReport.Rows.Add();
@@ -451,9 +451,9 @@ namespace HaiFeng
 			idx = this.dataGridViewdReport.Rows.Add();
 			row = this.dataGridViewdReport.Rows[idx];
 			row.Cells[0].Value = "亏损手数";
-			int 亏损手数多 = drsLong.Count() == 0 ? 0 : drsLong.Where(n => (decimal)n["净利"] < 0).Sum(n => (int)n["手数"]);
+			int 亏损手数多 = drsLong.Count() == 0 ? 0 : drsLong.Where(n => (double)n["净利"] < 0).Sum(n => (int)n["手数"]);
 			row.Cells[2].Value = 亏损手数多;
-			int 亏损手数空 = drsShort.Count() == 0 ? 0 : drsShort.Where(n => (decimal)n["净利"] < 0).Sum(n => (int)n["手数"]);
+			int 亏损手数空 = drsShort.Count() == 0 ? 0 : drsShort.Where(n => (double)n["净利"] < 0).Sum(n => (int)n["手数"]);
 			row.Cells[3].Value = 亏损手数空;
 			row.Cells[1].Value = (int)row.Cells[2].Value + (int)row.Cells[3].Value;
 			row.Cells[1].Style.Format = row.Cells[2].Style.Format = row.Cells[3].Style.Format = "N0";
@@ -497,10 +497,10 @@ namespace HaiFeng
 			idx = this.dataGridViewdReport.Rows.Add();
 			row = this.dataGridViewdReport.Rows[idx];
 			row.Cells[0].Value = "最大盈利";
-			decimal 最大盈利多 = drsLong.Count() == 0 ? 0 : drsLong.Max(n => (decimal)n["净利"]);
+			double 最大盈利多 = drsLong.Count() == 0 ? 0 : drsLong.Max(n => (double)n["净利"]);
 			最大盈利多 = Math.Max(0, 最大盈利多);
 			row.Cells[2].Value = 最大盈利多;
-			decimal 最大盈利空 = drsShort.Count() == 0 ? 0 : drsShort.Max(n => (decimal)n["净利"]);
+			double 最大盈利空 = drsShort.Count() == 0 ? 0 : drsShort.Max(n => (double)n["净利"]);
 			最大盈利空 = Math.Max(0, 最大盈利空);
 			row.Cells[3].Value = 最大盈利空;
 			row.Cells[1].Value = Math.Max(最大盈利多, 最大盈利空);
@@ -508,9 +508,9 @@ namespace HaiFeng
 			idx = this.dataGridViewdReport.Rows.Add();
 			row = this.dataGridViewdReport.Rows[idx];
 			row.Cells[0].Value = "最大亏损";
-			decimal 最大亏损多 = drsLong.Count() == 0 ? 0 : drsLong.Min(n => (decimal)n["净利"]);
+			double 最大亏损多 = drsLong.Count() == 0 ? 0 : drsLong.Min(n => (double)n["净利"]);
 			row.Cells[2].Value = 最大亏损多;
-			decimal 最大亏损空 = drsShort.Count() == 0 ? 0 : drsShort.Min(n => (decimal)n["净利"]);
+			double 最大亏损空 = drsShort.Count() == 0 ? 0 : drsShort.Min(n => (double)n["净利"]);
 			row.Cells[3].Value = 最大亏损空;
 			row.Cells[1].Value = Math.Min(最大亏损多, 最大亏损空);
 
@@ -556,15 +556,15 @@ namespace HaiFeng
 			row.Cells[0].Value = "最大保证金占用";
 			row.Cells[2].Value = maxMarginLong;// 0;// _stra.MaxMarginLong * crate.Item4;
 			row.Cells[3].Value = maxMarginShort;// 0;// ws.DicStrategys[this.toolStripComboBoxStrategy.Text].MaxMarginShort * crate.Item5;
-			decimal 最大保证金占用 = Math.Max(maxMarginLong, maxMarginShort);// Math.Max(decimal.Parse(row.Cells[2].Value.ToString()), decimal.Parse(row.Cells[3].Value.ToString()));
+			double 最大保证金占用 = Math.Max(maxMarginLong, maxMarginShort);// Math.Max(double.Parse(row.Cells[2].Value.ToString()), double.Parse(row.Cells[3].Value.ToString()));
 			row.Cells[1].Value = 最大保证金占用;
 
 			idx = this.dataGridViewdReport.Rows.Add();
 			row = this.dataGridViewdReport.Rows[idx];
 			row.Cells[0].Value = "佣金合计";
-			row.Cells[2].Value = drsLong.Count() == 0 ? 0 : drsLong.Sum(n => (decimal)n["手续费"]);
-			row.Cells[3].Value = drsShort.Count() == 0 ? 0 : drsShort.Sum(n => (decimal)n["手续费"]);
-			row.Cells[1].Value = (decimal)row.Cells[2].Value + (decimal)row.Cells[3].Value;
+			row.Cells[2].Value = drsLong.Count() == 0 ? 0 : drsLong.Sum(n => (double)n["手续费"]);
+			row.Cells[3].Value = drsShort.Count() == 0 ? 0 : drsShort.Sum(n => (double)n["手续费"]);
+			row.Cells[1].Value = (double)row.Cells[2].Value + (double)row.Cells[3].Value;
 
 			TimeSpan diff = DateTime.ParseExact(_stra.D[0].ToString("00000000.000000"), "yyyyMMdd.HHmmss", null) - DateTime.ParseExact(_stra.D.First().ToString("00000000.000000"), "yyyyMMdd.HHmmss", null);// (ws.DicStrategys[this.toolStripComboBoxStrategy.Text].D[0] - ws.DicStrategys[this.toolStripComboBoxStrategy.Text].D[ws.DicStrategys[this.toolStripComboBoxStrategy.Text].CurrentBar]);
 			idx = this.dataGridViewdReport.Rows.Add();
@@ -626,12 +626,12 @@ namespace HaiFeng
 			//设置单元格格式
 			foreach (DataGridViewRow r in this.dataGridViewdReport.Rows)
 			{
-				decimal tmp = 0;
-				if (decimal.TryParse(r.Cells[1].Value.ToString(), out tmp) && tmp < 0)
+				double tmp = 0;
+				if (double.TryParse(r.Cells[1].Value.ToString(), out tmp) && tmp < 0)
 					r.Cells[1].Style.SelectionForeColor = r.Cells[1].Style.ForeColor = Color.Red;
-				if (decimal.TryParse(r.Cells[2].Value.ToString(), out tmp) && tmp < 0)
+				if (double.TryParse(r.Cells[2].Value.ToString(), out tmp) && tmp < 0)
 					r.Cells[2].Style.SelectionForeColor = r.Cells[2].Style.ForeColor = Color.Red;
-				if (decimal.TryParse(r.Cells[3].Value.ToString(), out tmp) && tmp < 0)
+				if (double.TryParse(r.Cells[3].Value.ToString(), out tmp) && tmp < 0)
 					r.Cells[3].Style.SelectionForeColor = r.Cells[3].Style.ForeColor = Color.Red;
 			}
 			#endregion
@@ -661,7 +661,7 @@ namespace HaiFeng
 				foreach (DataRow dr in dtOperation.Rows)
 				{
 					//DataRow dr = dtOperation.Rows[i];
-					this.chartDB1.Series[0].Points.AddXY((DateTime)dr["平仓时间"], (decimal)dr["净利合计"]);
+					this.chartDB1.Series[0].Points.AddXY((DateTime)dr["平仓时间"], dr["净利合计"]);
 				}
 			}
 			else if (this.comboBoxChartItem.Text == "动态权益")
@@ -681,9 +681,9 @@ namespace HaiFeng
 				//for (int i = 0; i < dtOperation.Rows.Count; i++)
 				//{
 				//DataRow dr = dtOperation.Rows[i];
-				//this.chartDB1.Series[0].Points.AddXY((DateTime)dr["平仓时间"], (decimal)dr["净利"]);
+				//this.chartDB1.Series[0].Points.AddXY((DateTime)dr["平仓时间"], dr["净利"]);
 				//}
-				List<decimal> y = new List<decimal>();
+				List<double> y = new List<double>();
 				List<DateTime> x = new List<DateTime>();
 				foreach (DataRow dr in dtOperation.Rows)
 				{
@@ -692,11 +692,11 @@ namespace HaiFeng
 					if (current < 0 || x[current].Month != dtTmp.Month)
 					{
 						x.Add(new DateTime(dtTmp.Year, dtTmp.Month, 1));
-						y.Add((decimal)dr["净利"]);
+						y.Add((double)dr["净利"]);
 					}
 					else
 					{
-						y[current] += (decimal)dr["净利"];
+						y[current] += (double)dr["净利"];
 					}
 				}
 				chartDB1.Series[0].Points.DataBindXY(x, y);
@@ -718,7 +718,7 @@ namespace HaiFeng
 				for (int i = 0; i < dtOperation.Rows.Count; i++)
 				{
 					DataRow dr = dtOperation.Rows[i];
-					this.chartDB1.Series[0].Points.AddXY((DateTime)dr["平仓时间"], (decimal)dr["净利"]);
+					this.chartDB1.Series[0].Points.AddXY((DateTime)dr["平仓时间"], dr["净利"]);
 				}
 				HorizontalLineAnnotation hl = new HorizontalLineAnnotation();
 				hl.Y = chartDB1.DataManipulator.Statistics.Mean(this.chartDB1.Series[0].Name);
@@ -758,11 +758,11 @@ namespace HaiFeng
 			if (dtRate.Columns.Count == 0)
 			{
 				dtRate.Columns.Add("品种", typeof(string));
-				dtRate.Columns.Add("开仓费率", typeof(decimal));
-				dtRate.Columns.Add("平仓费率", typeof(decimal));
-				dtRate.Columns.Add("平今费率", typeof(decimal));
-				dtRate.Columns.Add("保证金多", typeof(decimal));
-				dtRate.Columns.Add("保证金空", typeof(decimal));
+				dtRate.Columns.Add("开仓费率", typeof(double));
+				dtRate.Columns.Add("平仓费率", typeof(double));
+				dtRate.Columns.Add("平今费率", typeof(double));
+				dtRate.Columns.Add("保证金多", typeof(double));
+				dtRate.Columns.Add("保证金空", typeof(double));
 				dtRate.PrimaryKey = new[] { dtRate.Columns["品种"] };
 			}
 
@@ -772,7 +772,7 @@ namespace HaiFeng
 
 			if (dtRate.Rows.Find(_stra.InstrumentInfo.ProductID) == null)
 			{
-				decimal dFee = _stra.InstrumentInfo.PriceTick * _stra.InstrumentInfo.VolumeMultiple * 2;
+				double dFee = _stra.InstrumentInfo.PriceTick * _stra.InstrumentInfo.VolumeMultiple * 2;
 				dtRate.Rows.Add(_stra.InstrumentInfo.ProductID, dFee, dFee, 0, 0.15, 0.15);
 			}
 
@@ -781,22 +781,22 @@ namespace HaiFeng
 
 		}
 
-		ConcurrentDictionary<string, List<decimal>> dicEquity = new ConcurrentDictionary<string, List<decimal>>();
+		ConcurrentDictionary<string, List<double>> dicEquity = new ConcurrentDictionary<string, List<double>>();
 		//手续费改变后,调此函数即可刷新盈亏曲线
 		//void equityReset(Strategy model)
 		//{
 		//	//重新计算动态权益曲线
-		//	List<decimal> equity = new List<decimal>(); //未去除手续费
+		//	List<double> equity = new List<double>(); //未去除手续费
 		//	dicEquity.TryAdd(model.Name, equity);
 
-		//	Tuple<decimal, decimal, decimal, decimal, decimal> rate = dicRate[ws.InstrumentField.ProductID];
-		//	decimal feeOpen = rate.Item1;
-		//	decimal feeClose = rate.Item2;
-		//	decimal sumOpen = 0, sumClose = 0;
+		//	Tuple<double, double, double, double, double> rate = dicRate[ws.InstrumentField.ProductID];
+		//	double feeOpen = rate.Item1;
+		//	double feeClose = rate.Item2;
+		//	double sumOpen = 0, sumClose = 0;
 
 		//	//for (int i = 0; i < model.Series["@equity"].list.Count; i++)
 		//	int i = 0, iOperate = 0;
-		//	foreach (decimal d in model.Series["@equity"].list)
+		//	foreach (double d in model.Series["@equity"].list)
 		//	{
 		//		while (iOperate < model.Operations.Count)
 		//		{
@@ -840,19 +840,19 @@ namespace HaiFeng
 				this.chartDB1.Series["MA"].BorderWidth = 2;
 				this.chartDB1.Series["MA"].BorderColor = Color.LightGoldenrodYellow;
 				this.chartDB1.Series["MA"].IsXValueIndexed = true;
-				numericUpDownMALen_ValueChanged(null, null);
+				doubleUpDownMALen_ValueChanged(null, null);
 			}
 			else if (this.chartDB1.Series.Count > 1)
 				this.chartDB1.Series.RemoveAt(1);
-			this.numericUpDownMALen.Enabled = this.checkBoxMA.Checked;
+			this.doubleUpDownMALen.Enabled = this.checkBoxMA.Checked;
 		}
 
-		private void numericUpDownMALen_ValueChanged(object sender, EventArgs e)
+		private void doubleUpDownMALen_ValueChanged(object sender, EventArgs e)
 		{
-			int len = (int)this.numericUpDownMALen.Value;
+			int len = (int)this.doubleUpDownMALen.Value;
 			this.chartDB1.DataManipulator.FinancialFormula(FinancialFormula.MovingAverage, len.ToString(), this.chartDB1.Series[0].Name + ":Y", "MA:Y");
 			for (int i = 0; i < len - 1; i++)
-				this.chartDB1.Series[1].Points.InsertXY(i, this.chartDB1.Series[0].Points[i].XValue, 0);//decimal.NaN);
+				this.chartDB1.Series[1].Points.InsertXY(i, this.chartDB1.Series[0].Points[i].XValue, 0);//double.NaN);
 		}
 
 		private void buttonZoonOut_Click(object sender, EventArgs e)
@@ -874,7 +874,7 @@ namespace HaiFeng
 		/// <param name="chart1"></param>
 		/// <param name="area"></param>
 		/// <param name="axisYFmt">area.AxisY.LabelStyle.Format (var fmt = "F" + (_stra.InstrumentInfo.PriceTick >= 1 ? 0 : _stra.InstrumentInfo.PriceTick.ToString().Split('.')[1].Length - 1);</param>
-		/// <param name="axisYInterval">area.AxisY.Interval (var interval = 100 * (double)_stra.InstrumentInfo.PriceTick; //最小跳动))</param>
+		/// <param name="axisYInterval">area.AxisY.Interval (var interval = 100 * _stra.InstrumentInfo.PriceTick; //最小跳动))</param>
 		/// <param name="axisXMax">area.AxisX.Maximum [最大数据量+1] (不加此项,重加载数据时显示有问题)</param>
 		public void SetLoadParams(Chart chart1, ChartArea area, string axisYFmt, double axisYInterval, int axisXMax)
 		{

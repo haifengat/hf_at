@@ -152,7 +152,7 @@ namespace HaiFeng
 			return rtn;
 		}
 
-		public new int ReqOrderInsert(string pInstrument, DirectionType pDirection, OffsetType pOffset, double pPrice, int pVolume, OrderType pType = OrderType.Limit, int pCustom = 0, HedgeType pHedge = HedgeType.Speculation)
+		public int ReqOrderInsert(string pInstrument, DirectionType pDirection, OffsetType pOffset, double pPrice, int pVolume, OrderType pType = OrderType.Limit, int pCustom = 0, HedgeType pHedge = HedgeType.Speculation)
 		{
 			InstrumentField dif;
 			ExchangeStatusType es;

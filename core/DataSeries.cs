@@ -1,42 +1,41 @@
 ﻿#region
+using System;
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
-
 #endregion
 
-using Numeric = System.Decimal;
 
 namespace HaiFeng
 {
 	/// <summary>
 	/// 
 	/// </summary>
-	public class DataSeries : Collection<Numeric>
+	public class DataSeries : Collection<double>
 	{
-		internal string SeriesName
-		{
-			get { return _name; }
-		}
+		static ConcurrentDictionary<Tuple<DataSeries, DataSeries>, DataSeries> _dicOperateAdd = new ConcurrentDictionary<Tuple<DataSeries, DataSeries>, DataSeries>();
+		static ConcurrentDictionary<Tuple<DataSeries, DataSeries>, DataSeries> _dicOperateSub = new ConcurrentDictionary<Tuple<DataSeries, DataSeries>, DataSeries>();
+		static ConcurrentDictionary<Tuple<DataSeries, DataSeries>, DataSeries> _dicOperateMul = new ConcurrentDictionary<Tuple<DataSeries, DataSeries>, DataSeries>();
+		static ConcurrentDictionary<Tuple<DataSeries, DataSeries>, DataSeries> _dicOperateDiv = new ConcurrentDictionary<Tuple<DataSeries, DataSeries>, DataSeries>();
+		static ConcurrentDictionary<Tuple<DataSeries, DataSeries>, DataSeries> _dicOperateMod = new ConcurrentDictionary<Tuple<DataSeries, DataSeries>, DataSeries>();
 
-		/// <summary>
-		/// 	指标中的DataSeries在被取值时this[n]运算指标
-		/// </summary>
-		internal Indicator Idc = null;
-
-		private readonly string _name;
-
-		static ConcurrentDictionary<string, DataSeries> _dicOperateAdd = new ConcurrentDictionary<string, DataSeries>();
+		private DataSeries _base = null;
+		private CollectionChange _onChange;
 
 		/// <summary>
 		/// 构建函数(参数勿填)
 		/// </summary>
-		/// <param name="pSeriesName"></param>
-		public DataSeries([CallerMemberName] string pSeriesName = null)
+		/// <param name="baseSeries">同步序列</param>
+		public DataSeries(DataSeries baseSeries = null)
 		{
-			//根据变量名，赋值member
-			//this.SeriesName = new StackTrace(true).GetFrame(1).GetMethod().Name; // pSeriesName; .Net4下结果不正确(.cto)
-			_name = pSeriesName;
+			if (baseSeries == null) return;
+
+			_base = baseSeries;
+			//初始时同步
+			foreach (var v in _base)
+				this.Add(v);
+			_base.OnChanged += _base_OnChanged;
 		}
 
 		/// <summary>
@@ -44,17 +43,11 @@ namespace HaiFeng
 		/// </summary>
 		/// <param name="index"></param>
 		/// <returns></returns>
-		public new Numeric this[int index]
+		public new double this[int index]
 		{
 			get
 			{
-				Numeric rtn = 0; //Numeric.ZeroNaN;
-				if (this.Idc != null)// && !this.idc.IsOperated)
-				{
-					//在策略调用时处理:此处会导致循环调用
-					//this.idc.isUpdated = false;
-					this.Idc.update();// .OnBarUpdate();
-				}
+				double rtn = 0;
 				if (Count - 1 - index >= 0)
 				{
 					rtn = base[Count - 1 - index];
@@ -71,25 +64,71 @@ namespace HaiFeng
 			}
 		}
 
+		#region 函数
 		/// <summary>
-		/// 
+		/// 取指定范围的最大值
 		/// </summary>
-		public void New()
+		/// <param name="begin"></param>
+		/// <param name="end"></param>
+		/// <returns></returns>
+		public double Highest(int begin, int end) { return this.Where((n, idx) => idx >= begin && idx <= end).Max(); }
+		/// <summary>
+		/// 取指定范围的最小值
+		/// </summary>
+		/// <param name="begin"></param>
+		/// <param name="end"></param>
+		/// <returns></returns>
+		public double Lowest(int begin, int end) { return this.Where((n, idx) => idx >= begin && idx <= end).Min(); }
+		/// <summary>
+		/// 取指定范围的和
+		/// </summary>
+		/// <param name="begin"></param>
+		/// <param name="end"></param>
+		/// <returns></returns>
+		public double Sum(int begin, int end) { return this.Where((n, idx) => idx >= begin && idx <= end).Sum(); }
+		/// <summary>
+		/// 取指定范围的均值
+		/// </summary>
+		/// <param name="begin"></param>
+		/// <param name="end"></param>
+		/// <returns></returns>
+		public double Average(int begin, int end) { return this.Where((n, idx) => idx >= begin && idx <= end).Average(); }
+		#endregion
+
+		private void _base_OnChanged(int pType, object pNew, object pOld)
 		{
-			if (Count == 0)
-				base.Add(0);
-			else
-				base.Add(this[0]);
+			if (pType == 1) //增加
+			{
+				this.Add((double)pNew);
+			}
+		}
+
+		/// <summary>
+		/// 策略变化:加1;减-1;更新0
+		/// </summary>
+		public event CollectionChange OnChanged
+		{
+			add
+			{
+				_onChange += value;
+			}
+			remove
+			{
+				_onChange -= value;
+			}
 		}
 
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="p"></param>
-		public new void Add(Numeric p)
+		/// <param name="index"></param>
+		/// <param name="item"></param>
+		protected override void InsertItem(int index, double item)
 		{
-			base.Add(p);
+			base.InsertItem(index, item);
+			_onChange?.Invoke(1, item, null);
 		}
+
 
 		/// <summary>
 		/// 两个序列中各值相加(两序列数目必须相等)
@@ -100,8 +139,20 @@ namespace HaiFeng
 		public static DataSeries operator +(DataSeries s1, DataSeries s2)
 		{
 			if (s1.Count != s2.Count) return null;
-			string str = $"{s1._name}+{s2._name}";
-			var ds = _dicOperateAdd.GetOrAdd(str, new DataSeries());
+			DataSeries ds = null;
+			foreach (var v in _dicOperateAdd)
+			{
+				if (v.Key.Item1 == s1 && v.Key.Item2 == s2)
+				{
+					ds = v.Value;
+					break;
+				}
+			}
+			if (ds == null)
+			{
+				ds = new DataSeries();
+				_dicOperateAdd[new Tuple<DataSeries, DataSeries>(s1, s2)] = ds;
+			}
 			//更新
 			if (ds.Count == s1.Count)
 				ds[0] = s1[0] + s2[0];
@@ -120,8 +171,20 @@ namespace HaiFeng
 		public static DataSeries operator -(DataSeries s1, DataSeries s2)
 		{
 			if (s1.Count != s2.Count) return null;
-			string str = $"{s1._name}-{s2._name}";
-			var ds = _dicOperateAdd.GetOrAdd(str, new DataSeries());
+			DataSeries ds = null;
+			foreach (var v in _dicOperateAdd)
+			{
+				if (v.Key.Item1 == s1 && v.Key.Item2 == s2)
+				{
+					ds = v.Value;
+					break;
+				}
+			}
+			if (ds == null)
+			{
+				ds = new DataSeries();
+				_dicOperateSub[new Tuple<DataSeries, DataSeries>(s1, s2)] = ds;
+			}
 			//更新
 			if (ds.Count == s1.Count)
 				ds[0] = s1[0] - s2[0];
@@ -140,8 +203,20 @@ namespace HaiFeng
 		public static DataSeries operator *(DataSeries s1, DataSeries s2)
 		{
 			if (s1.Count != s2.Count) return null;
-			string str = $"{s1._name}*{s2._name}";
-			var ds = _dicOperateAdd.GetOrAdd(str, new DataSeries());
+			DataSeries ds = null;
+			foreach (var v in _dicOperateAdd)
+			{
+				if (v.Key.Item1 == s1 && v.Key.Item2 == s2)
+				{
+					ds = v.Value;
+					break;
+				}
+			}
+			if (ds == null)
+			{
+				ds = new DataSeries();
+				_dicOperateMul[new Tuple<DataSeries, DataSeries>(s1, s2)] = ds;
+			}
 			//更新
 			if (ds.Count == s1.Count)
 				ds[0] = s1[0] * s2[0];
@@ -159,8 +234,20 @@ namespace HaiFeng
 		public static DataSeries operator /(DataSeries s1, DataSeries s2)
 		{
 			if (s1.Count != s2.Count) return null;
-			string str = $"{s1._name}/{s2._name}";
-			var ds = _dicOperateAdd.GetOrAdd(str, new DataSeries());
+			DataSeries ds = null;
+			foreach (var v in _dicOperateAdd)
+			{
+				if (v.Key.Item1 == s1 && v.Key.Item2 == s2)
+				{
+					ds = v.Value;
+					break;
+				}
+			}
+			if (ds == null)
+			{
+				ds = new DataSeries();
+				_dicOperateDiv[new Tuple<DataSeries, DataSeries>(s1, s2)] = ds;
+			}
 			//更新
 			if (ds.Count == s1.Count)
 				ds[0] = s1[0] / s2[0];
@@ -178,8 +265,20 @@ namespace HaiFeng
 		public static DataSeries operator %(DataSeries s1, DataSeries s2)
 		{
 			if (s1.Count != s2.Count) return null;
-			string str = $"{s1._name}%{s2._name}";
-			var ds = _dicOperateAdd.GetOrAdd(str, new DataSeries());
+			DataSeries ds = null;
+			foreach (var v in _dicOperateAdd)
+			{
+				if (v.Key.Item1 == s1 && v.Key.Item2 == s2)
+				{
+					ds = v.Value;
+					break;
+				}
+			}
+			if (ds == null)
+			{
+				ds = new DataSeries();
+				_dicOperateMod[new Tuple<DataSeries, DataSeries>(s1, s2)] = ds;
+			}
 			//更新
 			if (ds.Count == s1.Count)
 				ds[0] = s1[0] % s2[0];
@@ -189,5 +288,5 @@ namespace HaiFeng
 			return ds;
 		}
 	}
-	
+
 }

@@ -52,7 +52,7 @@ namespace HaiFeng
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.buttonZoomIn = new System.Windows.Forms.Button();
 			this.buttonZoonOut = new System.Windows.Forms.Button();
-			this.numericUpDownMALen = new System.Windows.Forms.NumericUpDown();
+			this.doubleUpDownMALen = new System.Windows.Forms.NumericUpDown();
 			this.checkBoxMA = new System.Windows.Forms.CheckBox();
 			this.comboBoxChartItem = new System.Windows.Forms.ComboBox();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
@@ -69,7 +69,7 @@ namespace HaiFeng
 			this.tabPage2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.chartDB1)).BeginInit();
 			this.panel1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.numericUpDownMALen)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.doubleUpDownMALen)).BeginInit();
 			this.tabPage3.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridViewdRate)).BeginInit();
 			this.toolStrip1.SuspendLayout();
@@ -247,7 +247,7 @@ namespace HaiFeng
 			// 
 			this.panel1.Controls.Add(this.buttonZoomIn);
 			this.panel1.Controls.Add(this.buttonZoonOut);
-			this.panel1.Controls.Add(this.numericUpDownMALen);
+			this.panel1.Controls.Add(this.doubleUpDownMALen);
 			this.panel1.Controls.Add(this.checkBoxMA);
 			this.panel1.Controls.Add(this.comboBoxChartItem);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -278,20 +278,20 @@ namespace HaiFeng
 			this.buttonZoonOut.UseVisualStyleBackColor = true;
 			this.buttonZoonOut.Click += new System.EventHandler(this.buttonZoonOut_Click);
 			// 
-			// numericUpDownMALen
+			// doubleUpDownMALen
 			// 
-			this.numericUpDownMALen.Enabled = false;
-			this.numericUpDownMALen.Location = new System.Drawing.Point(178, -1);
-			this.numericUpDownMALen.Name = "numericUpDownMALen";
-			this.numericUpDownMALen.Size = new System.Drawing.Size(53, 21);
-			this.numericUpDownMALen.TabIndex = 2;
-			this.numericUpDownMALen.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.numericUpDownMALen.Value = new decimal(new int[] {
+			this.doubleUpDownMALen.Enabled = false;
+			this.doubleUpDownMALen.Location = new System.Drawing.Point(178, -1);
+			this.doubleUpDownMALen.Name = "doubleUpDownMALen";
+			this.doubleUpDownMALen.Size = new System.Drawing.Size(53, 21);
+			this.doubleUpDownMALen.TabIndex = 2;
+			this.doubleUpDownMALen.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.doubleUpDownMALen.Value = new decimal(new int[] {
             5,
             0,
             0,
             0});
-			this.numericUpDownMALen.ValueChanged += new System.EventHandler(this.numericUpDownMALen_ValueChanged);
+			this.doubleUpDownMALen.ValueChanged += new System.EventHandler(this.doubleUpDownMALen_ValueChanged);
 			// 
 			// checkBoxMA
 			// 
@@ -403,7 +403,7 @@ namespace HaiFeng
 			((System.ComponentModel.ISupportInitialize)(this.chartDB1)).EndInit();
 			this.panel1.ResumeLayout(false);
 			this.panel1.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.numericUpDownMALen)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.doubleUpDownMALen)).EndInit();
 			this.tabPage3.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dataGridViewdRate)).EndInit();
 			this.toolStrip1.ResumeLayout(false);
@@ -434,7 +434,7 @@ namespace HaiFeng
 		private System.Windows.Forms.DataGridViewTextBoxColumn 全部交易;
 		private System.Windows.Forms.DataGridViewTextBoxColumn 多头;
 		private System.Windows.Forms.DataGridViewTextBoxColumn 空头;
-		private System.Windows.Forms.NumericUpDown numericUpDownMALen;
+		private System.Windows.Forms.NumericUpDown doubleUpDownMALen;
 		private System.Windows.Forms.Button buttonZoomIn;
 		private System.Windows.Forms.Button buttonZoonOut;
 		private System.Windows.Forms.DataVisualization.Charting.Chart chartDB1;

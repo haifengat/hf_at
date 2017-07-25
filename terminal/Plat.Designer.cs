@@ -55,9 +55,11 @@
 			this.label5 = new System.Windows.Forms.Label();
 			this.comboBoxInterval = new System.Windows.Forms.ComboBox();
 			this.label6 = new System.Windows.Forms.Label();
+			this.comboBoxInstOrder = new System.Windows.Forms.ComboBox();
 			this.comboBoxInst = new System.Windows.Forms.ComboBox();
 			this.ComboBoxType = new System.Windows.Forms.ComboBox();
 			this.label4 = new System.Windows.Forms.Label();
+			this.label1 = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -72,8 +74,6 @@
 			this.label12 = new System.Windows.Forms.Label();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
 			this.DataGridViewStrategies = new System.Windows.Forms.DataGridView();
-			this.label1 = new System.Windows.Forms.Label();
-			this.comboBoxInstOrder = new System.Windows.Forms.ComboBox();
 			this.StraName = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Param = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -233,7 +233,7 @@
 			this.buttonAddStra.Location = new System.Drawing.Point(823, 10);
 			this.buttonAddStra.Name = "buttonAddStra";
 			this.buttonAddStra.Size = new System.Drawing.Size(40, 23);
-			this.buttonAddStra.TabIndex = 9;
+			this.buttonAddStra.TabIndex = 10;
 			this.buttonAddStra.Text = "添加";
 			this.buttonAddStra.UseVisualStyleBackColor = true;
 			// 
@@ -253,14 +253,14 @@
 			this.dateTimePickerEnd.Name = "dateTimePickerEnd";
 			this.dateTimePickerEnd.ShowCheckBox = true;
 			this.dateTimePickerEnd.Size = new System.Drawing.Size(126, 21);
-			this.dateTimePickerEnd.TabIndex = 8;
+			this.dateTimePickerEnd.TabIndex = 9;
 			// 
 			// dateTimePickerBegin
 			// 
 			this.dateTimePickerBegin.Location = new System.Drawing.Point(558, 11);
 			this.dateTimePickerBegin.Name = "dateTimePickerBegin";
 			this.dateTimePickerBegin.Size = new System.Drawing.Size(107, 21);
-			this.dateTimePickerBegin.TabIndex = 7;
+			this.dateTimePickerBegin.TabIndex = 8;
 			// 
 			// label5
 			// 
@@ -278,7 +278,7 @@
 			this.comboBoxInterval.Location = new System.Drawing.Point(467, 11);
 			this.comboBoxInterval.Name = "comboBoxInterval";
 			this.comboBoxInterval.Size = new System.Drawing.Size(60, 20);
-			this.comboBoxInterval.TabIndex = 6;
+			this.comboBoxInterval.TabIndex = 7;
 			// 
 			// label6
 			// 
@@ -289,6 +289,16 @@
 			this.label6.TabIndex = 38;
 			this.label6.Text = "结束";
 			this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			// 
+			// comboBoxInstOrder
+			// 
+			this.comboBoxInstOrder.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+			this.comboBoxInstOrder.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+			this.comboBoxInstOrder.FormattingEnabled = true;
+			this.comboBoxInstOrder.Location = new System.Drawing.Point(362, 11);
+			this.comboBoxInstOrder.Name = "comboBoxInstOrder";
+			this.comboBoxInstOrder.Size = new System.Drawing.Size(74, 20);
+			this.comboBoxInstOrder.TabIndex = 6;
 			// 
 			// comboBoxInst
 			// 
@@ -320,6 +330,16 @@
 			this.label4.TabIndex = 40;
 			this.label4.Text = "周期";
 			this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(308, 15);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(53, 12);
+			this.label1.TabIndex = 41;
+			this.label1.Text = "委托合约";
+			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			// 
 			// label3
 			// 
@@ -495,26 +515,6 @@
 			this.DataGridViewStrategies.ShowCellToolTips = false;
 			this.DataGridViewStrategies.Size = new System.Drawing.Size(1195, 451);
 			this.DataGridViewStrategies.TabIndex = 40;
-			// 
-			// label1
-			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(308, 15);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(53, 12);
-			this.label1.TabIndex = 41;
-			this.label1.Text = "委托合约";
-			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			// 
-			// comboBoxInstOrder
-			// 
-			this.comboBoxInstOrder.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-			this.comboBoxInstOrder.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-			this.comboBoxInstOrder.FormattingEnabled = true;
-			this.comboBoxInstOrder.Location = new System.Drawing.Point(362, 11);
-			this.comboBoxInstOrder.Name = "comboBoxInstOrder";
-			this.comboBoxInstOrder.Size = new System.Drawing.Size(74, 20);
-			this.comboBoxInstOrder.TabIndex = 5;
 			// 
 			// StraName
 			// 

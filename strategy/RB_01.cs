@@ -23,13 +23,13 @@ namespace HaiFeng
 
 		public override void Initialize()
 		{
-			ht = new Highest(H, UpLine);
-			lt = new Lowest(L, DnLine);
+			ht = Highest(H, UpLine);
+			lt = Lowest(L, DnLine);
 		}
 
 		public override void OnBarUpdate()
 		{
-			if (CurrentBar < Math.Max(UpLine, DnLine)) return;
+			if (CurrentBar < Max(UpLine, DnLine)) return;
 
 			var UpValue = ht[1];
 			var DnValue = lt[1];

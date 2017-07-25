@@ -16,12 +16,12 @@ namespace HaiFeng
 		[Parameter("手数")]
 		public int Lots = 1;
 
-		private SMA ma1, ma2;
+		SMA ma1, ma2;
 
 		public override void Initialize()
 		{
-			ma1 = new SMA(MA1);
-			ma2 = new SMA(MA2);
+			ma1 = SMA(C, MA1);
+			ma2 = SMA(C, MA2);
 		}
 
 
@@ -29,7 +29,6 @@ namespace HaiFeng
 		{
 			if (CurrentBar <= Math.Max(MA1, MA2))
 				return;
-
 			if (PositionLong == 0 && ma1[2] < ma2[2] && ma1[1] >= ma2[1])
 			{
 				if (PositionShort > 0)

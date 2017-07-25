@@ -11,7 +11,6 @@ using System.Xml;
 using DataCenter;
 using Newtonsoft.Json;
 using static HaiFeng.HFLog;
-using Numeric = System.Decimal;
 
 namespace HaiFeng
 {
@@ -188,13 +187,13 @@ namespace HaiFeng
 
 			Tick tick = new Tick
 			{
-				AskPrice = (decimal)e.Tick.AskPrice,
-				AveragePrice = (decimal)e.Tick.AveragePrice,
-				BidPrice = (decimal)e.Tick.BidPrice,
-				LastPrice = (decimal)e.Tick.LastPrice,
-				LowerLimitPrice = (decimal)e.Tick.LowerLimitPrice,
-				OpenInterest = (decimal)e.Tick.OpenInterest,
-				UpperLimitPrice = (decimal)e.Tick.UpperLimitPrice,
+				AskPrice = e.Tick.AskPrice,
+				AveragePrice = e.Tick.AveragePrice,
+				BidPrice = e.Tick.BidPrice,
+				LastPrice = e.Tick.LastPrice,
+				LowerLimitPrice = e.Tick.LowerLimitPrice,
+				OpenInterest = e.Tick.OpenInterest,
+				UpperLimitPrice = e.Tick.UpperLimitPrice,
 				AskVolume = e.Tick.AskVolume,
 				BidVolume = e.Tick.BidVolume,
 				InstrumentID = e.Tick.InstrumentID,
@@ -231,10 +230,10 @@ namespace HaiFeng
 				}
 				f000.UpdateTime = tick.UpdateTime;
 
-				Numeric priceTick = (Numeric)instField.PriceTick;
+				double priceTick = instField.PriceTick;
 
 				int sumV = 0;
-				Numeric sumI = 0;
+				double sumI = 0;
 				List<Tick> ts = new List<Tick>();
 
 				foreach (var instInfo in _dataProcess.InstrumentInfo.Values.Where(n => n.ProductID == instField._id))
@@ -268,14 +267,14 @@ namespace HaiFeng
 
 					foreach (var v in ts)
 					{
-						Numeric rate = v.OpenInterest / sumI;
+						double rate = v.OpenInterest / sumI;
 
-						f000.LastPrice += (Numeric)(v.LastPrice * rate);
-						f000.BidPrice += (Numeric)(v.BidPrice * rate);
+						f000.LastPrice += (v.LastPrice * rate);
+						f000.BidPrice += (v.BidPrice * rate);
 						f000.BidVolume += v.BidVolume;
-						f000.AskPrice += (Numeric)(v.AskPrice * rate);
+						f000.AskPrice += (v.AskPrice * rate);
 						f000.AskVolume += v.AskVolume;
-						f000.AveragePrice += (Numeric)(v.AveragePrice * rate);
+						f000.AveragePrice += (v.AveragePrice * rate);
 					}
 					//数据修正
 					f000.LastPrice = Math.Round(f000.LastPrice / priceTick, 0) * priceTick;
@@ -449,9 +448,9 @@ namespace HaiFeng
 
 			if (this.DataGridViewStrategies.Columns[e.ColumnIndex].HeaderText == "时间")
 			{
-				decimal val;
+				double val;
 				DateTime dt;
-				if (decimal.TryParse((string)e.Value, out val) && DateTime.TryParseExact(val.ToString("00000000.0000"), "yyyyMMdd.HHmm", null, DateTimeStyles.None, out dt))
+				if (double.TryParse((string)e.Value, out val) && DateTime.TryParseExact(val.ToString("00000000.0000"), "yyyyMMdd.HHmm", null, DateTimeStyles.None, out dt))
 					e.Value = dt.ToString("yyyy/MM/dd HH:mm");
 			}
 		}

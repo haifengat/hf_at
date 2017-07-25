@@ -7,16 +7,6 @@ namespace HaiFeng
 {
 	public class SMA : Indicator
 	{
-		public SMA(int period)
-			: base(null, period)
-		{
-		}
-
-		public SMA(DataSeries input, int period)
-			: base(input, period)
-		{
-		}
-
 		public override void OnBarUpdate()
 		{
 			if (CurrentBar == 0)

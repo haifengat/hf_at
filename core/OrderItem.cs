@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using Numeric = System.Decimal;
 
 namespace HaiFeng
 {
@@ -40,7 +39,7 @@ namespace HaiFeng
 		/// 	价格
 		/// </summary>
 		[Description("价格"), Category("字段"), ReadOnly(true)]
-		public Numeric Price { get; set; }
+		public double Price { get; set; }
 
 		/// <summary>
 		/// 	手数
@@ -55,37 +54,37 @@ namespace HaiFeng
 		public string Remark { get; set; }
 
 		
-		internal Numeric AvgEntryPriceShort { get; set; }
+		internal double AvgEntryPriceShort { get; set; }
 
-		internal Numeric AvgEntryPriceLong { get; set; }
+		internal double AvgEntryPriceLong { get; set; }
 		
 		internal int PositionLong { get; set; }
 
 		internal int PositionShort { get; set; }
 
-		internal Numeric EntryDateLong { get; set; }
+		internal double EntryDateLong { get; set; }
 
-		internal Numeric EntryPriceLong { get; set; }
+		internal double EntryPriceLong { get; set; }
 
-		internal Numeric ExitDateShort { get; set; }
+		internal double ExitDateShort { get; set; }
 
-		internal Numeric ExitPriceShort { get; set; }
+		internal double ExitPriceShort { get; set; }
 
-		internal Numeric EntryDateShort { get; set; }
+		internal double EntryDateShort { get; set; }
 
-		internal Numeric EntryPriceShort { get; set; }
+		internal double EntryPriceShort { get; set; }
 
-		internal Numeric ExitDateLong { get; set; }
+		internal double ExitDateLong { get; set; }
 
-		internal Numeric ExitPriceLong { get; set; }
+		internal double ExitPriceLong { get; set; }
 
-		internal Numeric LastEntryDateShort { get; set; }
+		internal double LastEntryDateShort { get; set; }
 
-		internal Numeric LastEntryPriceShort { get; set; }
+		internal double LastEntryPriceShort { get; set; }
 
-		internal Numeric LastEntryDateLong { get; set; }
+		internal double LastEntryDateLong { get; set; }
 
-		internal Numeric LastEntryPriceLong { get; set; }
+		internal double LastEntryPriceLong { get; set; }
 
 	}
 }

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Math;
-using static HaiFeng.Functions;
 
 namespace HaiFeng
 {
@@ -18,23 +17,24 @@ namespace HaiFeng
 		[Parameter("手数", "交易参数")]
 		public int Lots = 5;
 		[Parameter("开始止赢(%)", "交易参数")]
-		public decimal StopProfitStart = 5;
+		public double StopProfitStart = 5;
 		[Parameter("回落止赢(%)", "交易参数")]
-		public decimal StopProfit = 20;
+		public double StopProfit = 20;
 
 		[Parameter("止损-多(%)", "交易参数")]
-		public decimal StopLossLong = 3;
+		public double StopLossLong = 3;
 		[Parameter("止损-空(%)", "交易参数")]
-		public decimal StopLossShort = 3;
-
+		public double StopLossShort = 3;
 
 		Highest ht;
 		Lowest lt;
+
 		public override void Initialize()
 		{
-			ht = new Highest(H, UpLine);
-			lt = new Lowest(L, DnLine);
+			ht = Highest(H, UpLine);
+			lt = Lowest(L, DnLine);
 		}
+
 
 		public override void OnBarUpdate()
 		{
@@ -59,14 +59,11 @@ namespace HaiFeng
 				SellShort(Lots, Min(O[0], DnValue));
 			}
 
-			//止盈止损
-			if (BarsSinceEntryLong == 0 && BarsSinceEntryShort == 0) return;
-
-			decimal stopLine = 0;
-			if (PositionLong > 0)
+			double stopLine = 0;
+			if (PositionLong > 0 && BarsSinceEntryLong > 0)//BarsSinceEntryLong==0时取不到最高价
 			{
 				//止盈
-				var h1 = Highest(H, BarsSinceEntryLong, 1);
+				var h1 = H.Highest(1, BarsSinceEntryLong); //替代for之Highest
 				var remark = string.Empty;
 				if (h1 >= EntryPriceLong * (1 + StopProfitStart / 100))
 				{
@@ -81,10 +78,10 @@ namespace HaiFeng
 				if (stopLine != 0 && L[0] <= stopLine)
 					Sell(0, Min(O[0], stopLine), remark);
 			}
-			if (PositionShort > 0)
+			if (PositionShort > 0 && BarsSinceEntryShort > 0) //
 			{
 				//止盈
-				var L1 = Lowest(L, BarsSinceEntryShort, 1);
+				var L1 = L.Lowest(1, BarsSinceEntryShort);
 				var remark = string.Empty;
 				if (L1 <= EntryPriceShort * (1 - StopProfitStart / 100))
 				{
