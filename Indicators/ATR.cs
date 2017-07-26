@@ -88,9 +88,9 @@ namespace HaiFeng
 		/// <param name="close"></param>
 		/// <param name="period"></param>
 		/// <returns></returns>
-		public ATR ATR(DataSeries high, DataSeries low, DataSeries close, int period)
+		public ATR ATR(int period)
 		{
-			return indicator.ATR(high, low, close, period);
+			return indicator.ATR(H, L, C, period);
 		}
 	}
 }

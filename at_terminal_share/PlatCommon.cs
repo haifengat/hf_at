@@ -182,7 +182,7 @@ namespace HaiFeng
 			Product instField;
 			Instrument inst;
 			ExchangeStatusType excStatus;
-			if (!_dataProcess.InstrumentInfo.TryGetValue(e.Tick.InstrumentID, out inst) || !_dataProcess.ProductInfo.TryGetValue(inst.ProductID, out instField) || !_t.DicExcStatus.TryGetValue(instField._id, out excStatus) || excStatus != ExchangeStatusType.Trading)
+			if (!_dataProcess.InstrumentInfo.TryGetValue(e.Tick.InstrumentID, out inst) || !_dataProcess.ProductInfo.TryGetValue(inst.ProductID, out instField) || !_t.DicExcStatus.TryGetValue(instField._id, out excStatus))
 				return;
 
 			Tick tick = new Tick
@@ -222,6 +222,7 @@ namespace HaiFeng
 			if (_dicTick000.TryGetValue(instField._id + "000", out f000)) //yyyyMMdd HH:mm:ss格式比较
 			{
 				if (_dicTick000.TryAdd(tick.InstrumentID, tick)) return;//首个tick只保存不处理
+				if (excStatus != ExchangeStatusType.Trading) return;	//只在交易时段处理数据
 				if (tick.UpdateTime.CompareTo(f000.UpdateTime) <= 0 || string.IsNullOrEmpty(f000.UpdateTime)) //第2个tick再处理;增加稳定性
 				{
 					_dicTick000[tick.InstrumentID] = tick; //注意f000的先后顺序

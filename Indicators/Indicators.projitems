@@ -3,20 +3,28 @@
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <HasSharedItems>true</HasSharedItems>
-    <SharedGUID>097f2c20-524a-451e-a092-b4591d028db9</SharedGUID>
+    <SharedGUID>7b3cc254-3728-4dfb-9935-5387de6ab4a8</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>HaiFeng</Import_RootNamespace>
+    <Import_RootNamespace>Indicators</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ADL.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ADX.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ADXR.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Aroon.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AroonOscillator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ATR.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bollinger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BOP.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CCI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CMF.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EMA.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Highest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Lowest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MACD.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SMA.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StdDev.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SUM.cs" />
   </ItemGroup>
 </Project>

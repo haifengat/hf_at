@@ -76,9 +76,8 @@ namespace HaiFeng
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="input"></param>
 		/// <returns></returns>
-		public ADL ADL(DataSeries input)
+		public ADL ADL()
 		{
 			return indicator.ADL(H, L, C, V);
 		}
