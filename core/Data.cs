@@ -265,7 +265,7 @@ namespace HaiFeng
 						bar.I = f.OpenInterest;
 						bar.A = f.AveragePrice;
 
-						this[CurrentBar] = bar; //更新?是否会与271行连动?
+						this[CurrentBar] = bar; //更新会与 _onChange?.Invoke(0, old, item); 连动
 					}
 					else if (dtBegin > bar.D)
 					{

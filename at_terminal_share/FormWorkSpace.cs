@@ -70,7 +70,7 @@ namespace HaiFeng
 			DateTime[] d = new DateTime[cnt];
 			for (int j = 0; j < cnt; ++j)
 			{
-				d[j] = DateTime.ParseExact(_stra.D[cnt - 1 - j].ToString("00000000.000000"), "yyyyMMdd.HHmmss", null);
+				d[j] = DateTime.ParseExact((_stra.D[cnt - 1 - j] + _stra.T[cnt - 1 - j]).ToString("00000000.000000"), "yyyyMMdd.HHmmss", null);
 				h[j] = _stra.H[cnt - 1 - j];
 				l[j] = _stra.L[cnt - 1 - j];
 				o[j] = _stra.O[cnt - 1 - j];
@@ -140,7 +140,7 @@ namespace HaiFeng
 
 			foreach (var order in _stra.Operations)
 			{
-				if (order.Date < d[0]) continue;	//只处理显示范围内的信号
+				if (order.Date < d[0]) continue;    //只处理显示范围内的信号
 				_listOperateArrow.Add(order);
 			}
 		}

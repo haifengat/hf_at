@@ -212,7 +212,6 @@ namespace HaiFeng
 				if (_listOnTickStra.IndexOf(v.Value) >= 0 && v.Value.InstrumentID == tick.InstrumentID)
 				{
 					v.Value.Datas[0].OnTick(tick);
-					v.Value.Update();
 				}
 			}
 
@@ -288,7 +287,6 @@ namespace HaiFeng
 						if (_listOnTickStra.IndexOf(v.Value) >= 0 && v.Value.InstrumentID == f000.InstrumentID)
 						{
 							v.Value.Datas[0].OnTick(f000);
-							v.Value.Update();
 						}
 					}
 				}

@@ -12,6 +12,11 @@ namespace HaiFeng
 		int[] _periods = new int[255];
 
 		/// <summary>
+		/// 新K线
+		/// </summary>
+		public bool IsFirstTickOfBar = true;
+
+		/// <summary>
 		/// 
 		/// </summary>
 		public Indicator() { this.Init(); }
@@ -33,7 +38,7 @@ namespace HaiFeng
 				foreach (var ipt in _inputs)//输入序列有变化:执行OnBarUpdate
 				{
 					if (ipt == null) break;
-					ipt.OnChanged += input_OnChanged;
+					ipt.OnChanged += input_OnChanged; //每个输入序列变化都会被执行
 				}
 				//初始时调用
 				this.OnBarUpdate();
@@ -43,7 +48,10 @@ namespace HaiFeng
 		private void input_OnChanged(int pType, object pNew, object pOld)
 		{
 			if (pType == 0 || pType == 1)
+			{
+				IsFirstTickOfBar = pType == 1; //1-添加; 0-更新; -1移除
 				this.OnBarUpdate();
+			}
 		}
 
 		/// <summary>
@@ -79,12 +87,7 @@ namespace HaiFeng
 			get { return _values; }
 			set { _values = value; }
 		}
-
-		/// <summary>
-		/// 每个tick只处理一次; 策略中被调用
-		/// </summary>
-		internal bool IsUpdated = false;
-
+		
 		/// <summary>
 		/// 
 		/// </summary>
@@ -145,31 +148,5 @@ namespace HaiFeng
 		/// 	K线更新
 		/// </summary>
 		protected virtual void OnBarUpdate() { }
-
-		/// <summary>
-		/// 处理数据同步及执行(根据是否同步过,判断是否再次执行)
-		/// </summary>
-		internal void update()
-		{
-			//是否同步过?已经执行:未执行
-			//2013.10.6 移至Strategy.indicator2False
-			//if (this.Input.Count > Value.Count)
-			//{
-			//	foreach (var s in this.CustomSeries)
-			//	{
-			//		while (s.Count < Input.Count)
-			//		{
-			//			s.Add(Input[0]);
-			//		}
-			//	}
-			//	//isUpdated = true;
-			//	//OnBarUpdate();
-			//}
-			if (!this.IsUpdated)
-			{
-				this.IsUpdated = true;
-				OnBarUpdate();
-			}
-		}
 	}
 }

@@ -30,6 +30,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)EaseOfMovement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EMA.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FisherTransform.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FOSC.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Highest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Lowest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MACD.cs" />
@@ -38,5 +39,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)SMA.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StdDev.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SUM.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TSF.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WMA.cs" />
   </ItemGroup>
 </Project>

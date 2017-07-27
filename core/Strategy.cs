@@ -287,6 +287,11 @@ namespace HaiFeng
 		public DataSeries D { get => Datas.Count == 0 ? null : this.Datas[0].D; }
 
 		/// <summary>
+		/// 时间(0.HHmmss)
+		/// </summary>
+		public DataSeries T { get => Datas.Count == 0 ? null : this.Datas[0].T; }
+
+		/// <summary>
 		/// 	最高价
 		/// </summary>
 		[Browsable(false)]
@@ -386,10 +391,17 @@ namespace HaiFeng
 
 			//发单由plat层控制
 			foreach (Data data in this.Datas)
+			{
+				data.OnChanged += (t, n, o) => //type, new, old
+				 {
+					 if (t >= 0)
+						 this.OnBarUpdate();	//每个数据有变化都会调用策略
+				 };
 				data.OnRtnOrder += (o, d) =>
 				{
 					_rtnOrder?.Invoke(o, d, this);
 				};
+			}
 
 			//#region 初始化自身数据
 			////所有指标赋值
@@ -451,7 +463,6 @@ namespace HaiFeng
 			{
 				var f = barss.First(n => n.Item2.IndexOf(bar) >= 0);
 				f.Item1.Add(bar);
-				Update();
 			}
 		}
 
@@ -513,65 +524,7 @@ namespace HaiFeng
 		{
 			this.Datas[0].BuyToCover((int)pLots, pPrice, pRemark);
 		}
-
-		//调用指标前置false
-		//private void Indicator2False(Indicator pIdx)
-		//{
-		//	pIdx.IsOperated = false;
-		//	//数据补全:此处赋值待测试
-		//	foreach (var s in pIdx.CustomSeries)
-		//	{
-		//		while (s.Count < pIdx.Input.Count)
-		//		{
-		//			s.Add(pIdx.Input[0]);
-		//		}
-		//	}
-
-		//	foreach (var id in pIdx.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static).Where(n => n.FieldType.BaseType == typeof(Indicator)))
-		//	{
-		//		Indicator2False((Indicator)id.GetValue(pIdx));
-		//	}
-		//}
-
-		/// <summary>
-		/// 数据更新时调用:先更新指标数据,再调用通过继承实现的OnbarUpdate函数
-		/// </summary>
-		public void Update()
-		{
-			//	//就采用循环,对调用指标赋值
-			//	foreach (var i in this._indicators) //.Where(i => !i.IsOperated))
-			//	{
-			//		this.indicator2False(i);
-			//	}
-
-			//	foreach (var i in this._indicators)//.Where(i => !i.IsOperated))
-			//	{
-			//		//base data series run the indicator before strategy
-			//		if (new[] { i.IndA, i.IndC, i.IndD, i.IndH, i.IndI, i.IndL, i.IndO, i.IndV }.ToList().IndexOf(i.Input) >= 0)
-			//			//i.isUpdated = false;
-			//			i.update();// .OnBarUpdate();
-			//	}
-
-			this.OnBarUpdate();
-		}
-
-		private void indicator2False(Indicator pIdx)
-		{
-			pIdx.IsUpdated = false;
-			//foreach (var s in pIdx.CustomSeries.Values)
-			//{
-			//	while (s.Count < pIdx.Input.Count)
-			//	{
-			//		s.Add(pIdx.Input[0]);
-			//	}
-			//}
-
-			foreach (var id in pIdx.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static).Where(n => n.FieldType.BaseType == typeof(Indicator)))
-			{
-				indicator2False((Indicator)id.GetValue(pIdx));
-			}
-		}
-
+				
 		/// <summary>
 		/// 	初始化
 		/// </summary>
