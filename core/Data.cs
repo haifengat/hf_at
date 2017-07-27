@@ -18,7 +18,7 @@ namespace HaiFeng
 				return Operations.Count > 0 ? Operations.Last() : new OrderItem();
 			}
 		}
-		
+
 		/// <summary>
 		/// 
 		/// </summary>
@@ -44,98 +44,155 @@ namespace HaiFeng
 			}
 		}
 
+		DataSeries _date = new DataSeries(), _time = new DataSeries(), _high = new DataSeries(), _low = new DataSeries(), _open = new DataSeries(), _close = new DataSeries(), _volume = new DataSeries(), _openinterest = new DataSeries(), _average = new DataSeries();
+
 		#region 数据序列
+		/// <summary>
+		/// 日期(yyyyMMdd)
+		/// </summary>
+		public DataSeries D { get => _date; }
 
 		/// <summary>
-		/// 	时间(yyyyMMdd.HHmmss)
+		/// 时间(0.HHmmss)
 		/// </summary>
-		public DataSeries D = new DataSeries();
+		public DataSeries T { get => _time; }
 
 		/// <summary>
-		/// 	开盘价
+		/// 开盘价
 		/// </summary>
-		public DataSeries O = new DataSeries();
+		public DataSeries O { get => _open; }
 
 		/// <summary>
-		/// 	最高价
+		/// 最高价
 		/// </summary>
-		public DataSeries H = new DataSeries();
+		public DataSeries H { get => _high; }
 
 		/// <summary>
-		/// 	最低价
+		/// 最低价
 		/// </summary>
-		public DataSeries L = new DataSeries();
+		public DataSeries L { get => _low; }
 
 		/// <summary>
-		/// 	收盘价
+		/// 收盘价
 		/// </summary>
-		public DataSeries C = new DataSeries();
+		public DataSeries C { get => _close; }
 
 		/// <summary>
-		/// 	成交量
+		/// 成交量
 		/// </summary>
-		public DataSeries V = new DataSeries();
+		public DataSeries V { get => _volume; }
 
 		/// <summary>
-		/// 	持仓量
+		/// 持仓量
 		/// </summary>
-		public DataSeries I = new DataSeries();
+		public DataSeries I { get => _openinterest; }
 
 		/// <summary>
-		/// 	均价
+		/// 均价
 		/// </summary>
-		public DataSeries A = new DataSeries();
+		public DataSeries A { get => _average; }
+		
+		/// <summary>
+		/// 日期(yyyyMMdd)
+		/// </summary>
+		public DataSeries Date { get => _date; }
+
+		/// <summary>
+		/// 时间(0.HHmmss)
+		/// </summary>
+		public DataSeries Time { get => _time; }
+
+		/// <summary>
+		/// 开盘价
+		/// </summary>
+		public DataSeries Open { get => _open; }
+
+		/// <summary>
+		/// 最高价
+		/// </summary>
+		public DataSeries High { get => _high; }
+
+		/// <summary>
+		/// 最低价
+		/// </summary>
+		public DataSeries Low { get => _low; }
+
+		/// <summary>
+		/// 收盘价
+		/// </summary>
+		public DataSeries Close { get => _close; }
+
+		/// <summary>
+		/// 成交量
+		/// </summary>
+		public DataSeries Volume { get => _volume; }
+
+		/// <summary>
+		/// 持仓量
+		/// </summary>
+		public DataSeries OpenInterest { get => _openinterest; }
+
+		/// <summary>
+		/// 均价
+		/// </summary>
+		public DataSeries Average { get => _average; }
 		#endregion
 
 		#region Properties
 		/// <summary>
-		/// 	实际行情(无数据时为Instrument== null)
+		/// 实际行情(无数据时为Instrument== null)
 		/// </summary>
 		[Description("分笔数据"), Category("数据"), Browsable(false)]
 		public Tick Tick { get; set; }
 
 		/// <summary>
-		/// 	合约信息
+		/// 合约信息
 		/// </summary>
 		[Description("合约信息"), Category("数据"), Browsable(false)]
 		public InstrumentInfo InstrumentInfo { get; set; }
 
 		/// <summary>
-		/// 	合约
+		/// 最小变动
+		/// </summary>
+		[Description("最小变动"), Category("数据"), Browsable(false)]
+		public double PriceTick { get { return InstrumentInfo.PriceTick; } }
+
+		/// <summary>
+		/// 合约
 		/// </summary>
 		[Description("合约"), Category("配置")]
 		public string Instrument { get; set; } = string.Empty;
 
 		/// <summary>
-		/// 	委托合约
+		/// 委托合约
 		/// </summary>
 		[Description("合约"), Category("配置")]
 		public string InstrumentOrder { get; set; } = string.Empty;
 
 		/// <summary>
-		/// 	周期类型
+		/// 周期类型
 		/// </summary>
 		[Description("周期类型"), Category("配置")]
 		public EnumIntervalType IntervalType { get; set; } = EnumIntervalType.Min;
 
 		/// <summary>
-		/// 	周期数
+		/// 周期数
 		/// </summary>
 		[Description("周期数"), Category("配置")]
 		public int Interval { get; set; } = 5;
 
 		/// <summary>
-		/// 	当前K线索引(由左向右从0开始)
+		/// 当前K线索引(由左向右从0开始)
 		/// </summary>
 		[Description("当前K线索引"), Category("设计"), Browsable(false)]
-		public int CurrentBar { get { return Count == 0 ? 0 : (Count - 1); } }
+		public int CurrentBar { get => Count == 0 ? 0 : (Count - 1); }
 
 		#endregion
 
 		/// <summary>
 		/// 
 		/// </summary>
-		public string Name { get { return this.Instrument + "_" + this.Interval + "_" + this.IntervalType; } }
+		public string Name { get => this.Instrument + "_" + this.Interval + "_" + this.IntervalType; }
 
 		/// <summary>
 		/// 被tick行情调用
@@ -240,16 +297,17 @@ namespace HaiFeng
 		/// <param name="item"></param>
 		protected override void InsertItem(int index, Bar item)
 		{
-			D.Add(double.Parse(item.D.ToString("yyyyMMdd.HHmmss")));
-			O.Add(item.O);
-			H.Add(item.H);
-			L.Add(item.L);
-			C.Add(item.C);
-			V.Add(item.V);
-			I.Add(item.I);
-			A.Add(item.A);
+			_date.Add(double.Parse(item.D.ToString("yyyyMMdd")));
+			_time.Add(double.Parse(item.D.ToString("0.HHmmss")));
+			_open.Add(item.O);
+			_high.Add(item.H);
+			_low.Add(item.L);
+			_close.Add(item.C);
+			_volume.Add(item.V);
+			_openinterest.Add(item.I);
+			_average.Add(item.A);
 			base.InsertItem(index, item);
-			
+
 			_onChange?.Invoke(1, item, item);
 		}
 
@@ -261,12 +319,12 @@ namespace HaiFeng
 		protected override void SetItem(int index, Bar item)
 		{
 			Bar old = this[index];
-			H[CurrentBar - index] = item.H;
-			L[CurrentBar - index] = item.L;
-			C[CurrentBar - index] = item.C;
-			V[CurrentBar - index] = item.V;
-			I[CurrentBar - index] = item.I;
-			A[CurrentBar - index] = item.A;
+			_high[CurrentBar - index] = item.H;
+			_low[CurrentBar - index] = item.L;
+			_close[CurrentBar - index] = item.C;
+			_volume[CurrentBar - index] = item.V;
+			_openinterest[CurrentBar - index] = item.I;
+			_average[CurrentBar - index] = item.A;
 			base.SetItem(index, item);
 			_onChange?.Invoke(0, old, item);
 		}
@@ -278,46 +336,48 @@ namespace HaiFeng
 		protected override void RemoveItem(int index)
 		{
 			Bar old = this[index];
-			if (D.Count == Count)
+			if (_date.Count == Count)
 			{
-				D.RemoveAt(index);
-				O.RemoveAt(index);
-				H.RemoveAt(index);
-				L.RemoveAt(index);
-				C.RemoveAt(index);
-				V.RemoveAt(index);
-				I.RemoveAt(index);
-				A.RemoveAt(index);
+				_date.RemoveAt(index);
+				_time.RemoveAt(index);
+				_open.RemoveAt(index);
+				_high.RemoveAt(index);
+				_low.RemoveAt(index);
+				_close.RemoveAt(index);
+				_volume.RemoveAt(index);
+				_openinterest.RemoveAt(index);
+				_average.RemoveAt(index);
 			}
 			base.RemoveItem(index);
 			_onChange?.Invoke(-1, old, old);
 		}
-		
+
 		/// <summary>
 		/// 
 		/// </summary>
 		protected override void ClearItems()
 		{
-			D.Clear();
-			O.Clear();
-			H.Clear();
-			L.Clear();
-			C.Clear();
-			V.Clear();
-			I.Clear();
-			A.Clear();
+			_date.Clear();
+			_time.Clear();
+			_open.Clear();
+			_high.Clear();
+			_low.Clear();
+			_close.Clear();
+			_volume.Clear();
+			_openinterest.Clear();
+			_average.Clear();
 			base.ClearItems();
 		}
-		
+
 
 		/// <summary>
-		/// 	报单操作
+		/// 报单操作
 		/// </summary>
 		[Description("报单操作列表"), Category("交易")]
 		public List<OrderItem> Operations { get; private set; }
 
 		/// <summary>
-		/// 	开多仓：买开
+		/// 开多仓：买开
 		/// </summary>
 		/// <param name="pLots"> </param>
 		/// <param name="pPrice"> </param>
@@ -328,7 +388,7 @@ namespace HaiFeng
 		}
 
 		/// <summary>
-		/// 	平空仓：卖平
+		/// 平空仓：卖平
 		/// </summary>
 		/// <param name="pLots"> </param>
 		/// <param name="pPrice"> </param>
@@ -339,7 +399,7 @@ namespace HaiFeng
 		}
 
 		/// <summary>
-		/// 	开空仓：卖开
+		/// 开空仓：卖开
 		/// </summary>
 		/// <param name="pLots"> </param>
 		/// <param name="pPrice"> </param>
@@ -350,7 +410,7 @@ namespace HaiFeng
 		}
 
 		/// <summary>
-		/// 	平多仓：买平
+		/// 平多仓：买平
 		/// </summary>
 		/// <param name="pLots"> </param>
 		/// <param name="pPrice"> </param>
@@ -361,7 +421,7 @@ namespace HaiFeng
 		}
 
 		/// <summary>
-		/// 	报单
+		/// 报单
 		/// </summary>
 		/// <param name="pDirector"> </param>
 		/// <param name="pOffset"> </param>
@@ -406,7 +466,7 @@ namespace HaiFeng
 					AvgEntryPriceShort = this.lastOrder.AvgEntryPriceShort,
 					PositionLong = this.lastOrder.PositionLong,
 					PositionShort = this.lastOrder.PositionShort,
-					EntryDateLong = this.lastOrder.EntryDateLong,
+					EntryTimeLong = this.lastOrder.EntryTimeLong,
 					EntryDateShort = this.lastOrder.EntryDateShort,
 					EntryPriceLong = this.lastOrder.EntryPriceLong,
 					EntryPriceShort = this.lastOrder.EntryPriceShort,
@@ -430,11 +490,13 @@ namespace HaiFeng
 					if (this.lastOrder.PositionLong == 0)
 					{
 						order.IndexEntryLong = this.CurrentBar;
-						order.EntryDateLong = this.D[0];
+						order.EntryTimeLong = this._date[0];
+						order.EntryTimeLong = this._time[0];
 						order.EntryPriceLong = pPrice;
 					}
 					order.IndexLastEntryLong = this.CurrentBar;
-					order.LastEntryDateLong = this.D[0];
+					order.LastEntryDateLong = this._date[0];
+					order.LastEntryTimeLong = this._time[0];
 					order.LastEntryPriceLong = pPrice;
 					break;
 				case "SellOpen":
@@ -444,11 +506,13 @@ namespace HaiFeng
 					if (this.lastOrder.PositionShort == 0)
 					{
 						order.IndexEntryShort = this.CurrentBar;
-						order.EntryDateShort = this.D[0];
+						order.EntryDateShort = this._date[0];
+						order.EntryTimeShort = this._time[0];
 						order.EntryPriceShort = pPrice;
 					}
 					order.IndexLastEntryShort = this.CurrentBar;
-					order.LastEntryDateShort = this.D[0];
+					order.LastEntryDateShort = this._date[0];
+					order.LastEntryTimeShort = this._time[0];
 					order.LastEntryPriceShort = pPrice;
 					break;
 				case "BuyClose":
@@ -458,7 +522,8 @@ namespace HaiFeng
 					order.PositionShort -= pLots;
 
 					order.IndexExitShort = this.CurrentBar;
-					order.ExitDateShort = this.D[0];
+					order.ExitDateShort = this._date[0];
+					order.ExitTimeShort = this._time[0];
 					order.ExitPriceShort = pPrice;
 					break;
 				case "SellClose":
@@ -468,7 +533,8 @@ namespace HaiFeng
 					order.PositionLong -= pLots;
 
 					order.IndexExitLong = this.CurrentBar;
-					order.ExitDateLong = this.D[0];
+					order.ExitDateLong = this._date[0];
+					order.ExitTimeLong = this._time[0];
 					order.ExitPriceLong = pPrice;
 					break;
 			}
@@ -500,164 +566,164 @@ namespace HaiFeng
 		#region 策略状态信息
 
 		/// <summary>
-		/// 	当前持仓手数:多
+		/// 当前持仓手数:多
 		/// </summary>
 		[Description("当前持仓手数:多"), Category("状态"), ReadOnly(true), Browsable(false)]
-		public int PositionLong { get { return this.lastOrder.PositionLong; } }
+		public int PositionLong { get => this.lastOrder.PositionLong; }
 
 		/// <summary>
-		/// 	当前持仓手数:空
+		/// 当前持仓手数:空
 		/// </summary>
 		[Description("当前持仓手数:空"), Category("状态"), ReadOnly(true), Browsable(false)]
-		public int PositionShort { get { return this.lastOrder.PositionShort; } }
+		public int PositionShort { get => this.lastOrder.PositionShort; }
 
 		/// <summary>
-		/// 	当前持仓手数:净
+		/// 当前持仓手数:净
 		/// </summary>
 		[Description("当前持仓手数:净"), Category("状态"), ReadOnly(true), Browsable(false)]
-		public int PositionNet { get { return this.lastOrder.PositionLong - this.lastOrder.PositionShort; } }
+		public int PositionNet { get => this.lastOrder.PositionLong - this.lastOrder.PositionShort; }
 
 		/// <summary>
-		/// 	当前持仓首个建仓时间:多(yyyyMMdd.HHmmss)
+		/// 当前持仓首个建仓时间:多(yyyyMMdd.HHmmss)
 		/// </summary>
 		[Description("当前持仓首个建仓时间:多(yyyyMMdd.HHmmss)"), Category("状态"), ReadOnly(true), Browsable(false)]
-		public double EntryDateLong { get { return this.lastOrder.EntryDateLong; } }
+		public double EntryDateLong { get => this.lastOrder.EntryTimeLong; }
 
 		/// <summary>
-		/// 	当前持仓首个建仓时间:空(yyyyMMdd.HHmmss)
+		/// 当前持仓首个建仓时间:空(yyyyMMdd.HHmmss)
 		/// </summary>
 		[Description("当前持仓首个建仓时间:空(yyyyMMdd.HHmmss)"), Category("状态"), ReadOnly(true), Browsable(false)]
-		public double EntryDateShort { get { return this.lastOrder.EntryDateShort; } }
+		public double EntryDateShort { get => this.lastOrder.EntryDateShort; }
 
 		/// <summary>
-		/// 	当前持仓最后建仓时间:多(yyyyMMdd.HHmmss)
+		/// 当前持仓最后建仓时间:多(yyyyMMdd.HHmmss)
 		/// </summary>
 		[Description("当前持仓最后建仓时间:多(yyyyMMdd.HHmmss)"), Category("状态"), ReadOnly(true), Browsable(false)]
-		public double LastEntryDateLong { get { return this.lastOrder.LastEntryDateLong; } }
+		public double LastEntryDateLong { get => this.lastOrder.LastEntryDateLong; }
 
 		/// <summary>
-		/// 	当前持仓最后建仓时间:空(yyyyMMdd.HHmmss)
+		/// 当前持仓最后建仓时间:空(yyyyMMdd.HHmmss)
 		/// </summary>
 		[Description("当前持仓最后建仓时间:空(yyyyMMdd.HHmmss)"), Category("状态"), ReadOnly(true), Browsable(false)]
-		public double LastEntryDateShort { get { return this.lastOrder.LastEntryDateShort; } }
+		public double LastEntryDateShort { get => this.lastOrder.LastEntryDateShort; }
 
 		/// <summary>
-		/// 	当前持仓首个建仓价格:多
+		/// 当前持仓首个建仓价格:多
 		/// </summary>
 		[Description("当前持仓首个建仓价格:多"), Category("状态"), ReadOnly(true), Browsable(false)]
-		public double EntryPriceLong { get { return this.lastOrder.EntryPriceLong; } }
+		public double EntryPriceLong { get => this.lastOrder.EntryPriceLong; }
 
 		/// <summary>
-		/// 	当前持仓首个建仓价格:空
+		/// 当前持仓首个建仓价格:空
 		/// </summary>
 		[Description("当前持仓首个建仓价格:空"), Category("状态"), ReadOnly(true), Browsable(false)]
-		public double EntryPriceShort { get { return this.lastOrder.EntryPriceShort; } }
+		public double EntryPriceShort { get => this.lastOrder.EntryPriceShort; }
 
 		/// <summary>
-		/// 	当前持仓最后建仓价格:多
+		/// 当前持仓最后建仓价格:多
 		/// </summary>
 		[Description("当前持仓最后建仓价格:多"), Category("状态"), ReadOnly(true), Browsable(false)]
-		public double LastEntryPriceLong { get { return this.lastOrder.LastEntryPriceLong; } }
+		public double LastEntryPriceLong { get => this.lastOrder.LastEntryPriceLong; }
 
 		/// <summary>
-		/// 	当前持仓最后建仓价格:空
+		/// 当前持仓最后建仓价格:空
 		/// </summary>
 		[Description("当前持仓最后建仓价格:空"), Category("状态"), ReadOnly(true), Browsable(false)]
-		public double LastEntryPriceShort { get { return this.lastOrder.LastEntryPriceShort; } }
+		public double LastEntryPriceShort { get => this.lastOrder.LastEntryPriceShort; }
 
 		/// <summary>
-		/// 	当前持仓平均建仓价格:多
+		/// 当前持仓平均建仓价格:多
 		/// </summary>
 		[Description("当前持仓平均建仓价格:多"), Category("状态"), ReadOnly(true), Browsable(false)]
-		public double AvgEntryPriceLong { get { return this.lastOrder.AvgEntryPriceLong; } }
+		public double AvgEntryPriceLong { get => this.lastOrder.AvgEntryPriceLong; }
 
 		/// <summary>
-		/// 	当前持仓平均建仓价格:空
+		/// 当前持仓平均建仓价格:空
 		/// </summary>
 		[Description("当前持仓平均建仓价格:空"), Category("状态"), ReadOnly(true), Browsable(false)]
-		public double AvgEntryPriceShort { get { return this.lastOrder.AvgEntryPriceShort; } }
+		public double AvgEntryPriceShort { get => this.lastOrder.AvgEntryPriceShort; }
 
 		/// <summary>
-		/// 	当前持仓首个建仓到当前位置的Bar数:多(从0开始计数)
+		/// 当前持仓首个建仓到当前位置的Bar数:多(从0开始计数)
 		/// </summary>
 		[Description("当前持仓首个建仓到当前位置的Bar数:多(从0开始计数)"), Category("状态"), ReadOnly(true), Browsable(false)]
-		public int BarsSinceEntryLong { get { return this.CurrentBar - this.lastOrder.IndexEntryLong; } }
+		public int BarsSinceEntryLong { get => this.CurrentBar - this.lastOrder.IndexEntryLong; }
 
 		/// <summary>
-		/// 	当前持仓首个建仓到当前位置的Bar数:空(从0开始计数)
+		/// 当前持仓首个建仓到当前位置的Bar数:空(从0开始计数)
 		/// </summary>
 		[Description("当前持仓首个建仓到当前位置的Bar数:空(从0开始计数)"), Category("状态"), ReadOnly(true), Browsable(false)]
-		public int BarsSinceEntryShort { get { return this.CurrentBar - this.lastOrder.IndexEntryShort; } }
+		public int BarsSinceEntryShort { get => this.CurrentBar - this.lastOrder.IndexEntryShort; }
 
 		/// <summary>
-		/// 	当前持仓的最后建仓到当前位置的Bar计数:多(从0开始计数)
+		/// 当前持仓的最后建仓到当前位置的Bar计数:多(从0开始计数)
 		/// </summary>
 		[Description("当前持仓的最后建仓到当前位置的Bar计数:多(从0开始计数)"), Category("状态"), ReadOnly(true), Browsable(false)]
-		public int BarsSinceLastEntryLong { get { return this.CurrentBar - this.lastOrder.IndexLastEntryLong; } }
+		public int BarsSinceLastEntryLong { get => this.CurrentBar - this.lastOrder.IndexLastEntryLong; }
 
 		/// <summary>
-		/// 	当前持仓的最后建仓到当前位置的Bar计数:空(从0开始计数)
+		/// 当前持仓的最后建仓到当前位置的Bar计数:空(从0开始计数)
 		/// </summary>
 		[Description("当前持仓的最后建仓到当前位置的Bar计数:空(从0开始计数)"), Category("状态"), ReadOnly(true), Browsable(false)]
-		public int BarsSinceLastEntryShort { get { return this.CurrentBar - this.lastOrder.IndexLastEntryShort; } }
+		public int BarsSinceLastEntryShort { get => this.CurrentBar - this.lastOrder.IndexLastEntryShort; }
 
 		/// <summary>
-		/// 	最近平仓位置到当前位置的Bar计数:多(从0开始计数)
+		/// 最近平仓位置到当前位置的Bar计数:多(从0开始计数)
 		/// </summary>
 		[Description("最近平仓位置到当前位置的Bar计数:多(从0开始计数)"), Category("状态"), ReadOnly(true), Browsable(false)]
-		public int BarsSinceExitLong { get { return this.CurrentBar - this.lastOrder.IndexExitLong; } }
+		public int BarsSinceExitLong { get => this.CurrentBar - this.lastOrder.IndexExitLong; }
 
 		/// <summary>
-		/// 	最近平仓位置到当前位置的Bar计数:空(从0开始计数)
+		/// 最近平仓位置到当前位置的Bar计数:空(从0开始计数)
 		/// </summary>
 		[Description("最近平仓位置到当前位置的Bar计数:空(从0开始计数)"), Category("状态"), ReadOnly(true), Browsable(false)]
-		public int BarsSinceExitShort { get { return this.CurrentBar - this.lastOrder.IndexExitShort; } }
+		public int BarsSinceExitShort { get => this.CurrentBar - this.lastOrder.IndexExitShort; }
 
 		/// <summary>
-		/// 	最近平仓时间:多(yyyyMMdd.HHmmss)
+		/// 最近平仓时间:多(yyyyMMdd.HHmmss)
 		/// </summary>
 		[Description("平仓时间:多(yyyyMMdd.HHmmss)"), Category("状态"), ReadOnly(true), Browsable(false)]
-		public double ExitDateLong { get { return this.lastOrder.ExitDateLong; } }
+		public double ExitDateLong { get => this.lastOrder.ExitDateLong; }
 
 		///<summary>
 		///	最近平仓时间:空(yyyyMMdd.HHmmss)
 		///</summary>
 		[Description("平仓时间:空(yyyyMMdd.HHmmss)"), Category("状态"), ReadOnly(true), Browsable(false)]
-		public double ExitDateShort { get { return this.lastOrder.ExitDateShort; } }
+		public double ExitDateShort { get => this.lastOrder.ExitDateShort; }
 
 		/// <summary>
-		/// 	最近平仓价格:多
+		/// 最近平仓价格:多
 		/// </summary>
 		[Description("平仓价格:多"), Category("状态"), ReadOnly(true), Browsable(false)]
-		public double ExitPriceLong { get { return this.lastOrder.ExitPriceLong; } }
+		public double ExitPriceLong { get => this.lastOrder.ExitPriceLong; }
 
 		/// <summary>
-		/// 	最近平仓价格:空
+		/// 最近平仓价格:空
 		/// </summary>
 		[Description("平仓价格:空"), Category("状态"), ReadOnly(true), Browsable(false)]
-		public double ExitPriceShort { get { return this.lastOrder.ExitPriceShort; } }
+		public double ExitPriceShort { get => this.lastOrder.ExitPriceShort; }
 
 		/// <summary>
-		/// 	当前持仓浮动盈亏:多
+		/// 当前持仓浮动盈亏:多
 		/// </summary>
 		[Description("浮动盈亏:多"), Category("状态"), ReadOnly(true), Browsable(false)]
-		public double PositionProfitLong { get { return this.Count == 0 ? 0 : ((this.C[0] - this.lastOrder.AvgEntryPriceLong) * this.lastOrder.PositionLong); } }
+		public double PositionProfitLong { get => this.Count == 0 ? 0 : ((this._close[0] - this.lastOrder.AvgEntryPriceLong) * this.lastOrder.PositionLong); }
 
 		/// <summary>
-		/// 	当前持仓浮动盈亏:空
+		/// 当前持仓浮动盈亏:空
 		/// </summary>
 		[Description("浮动盈亏:空"), Category("状态"), ReadOnly(true), Browsable(false)]
-		public double PositionProfitShort { get { return this.Count == 0 ? 0 : ((this.lastOrder.AvgEntryPriceShort - this.C[0]) * this.lastOrder.PositionShort); } }
+		public double PositionProfitShort { get => this.Count == 0 ? 0 : ((this.lastOrder.AvgEntryPriceShort - this._close[0]) * this.lastOrder.PositionShort); }
 
 		/// <summary>
-		/// 	当前持仓浮动盈亏:净
+		/// 当前持仓浮动盈亏:净
 		/// </summary>
 		[Description("浮动盈亏:净"), Category("状态"), ReadOnly(true), Browsable(false)]
-		public double PositionProfit { get { return this.PositionProfitLong + this.PositionProfitShort; } }
+		public double PositionProfit { get => this.PositionProfitLong + this.PositionProfitShort; }
 
 		//double _maxMarginLong = 0, _maxMarginShort = 0;
 		//private int _currentBar;
-		//public double MaxMarginShort { get { return this._maxMarginShort * this.InstrumentField.VolumeMultiple; } }
+		//public double MaxMarginShort { get =>this._maxMarginShort * this.InstrumentField.VolumeMultiple;}
 
 		//public double ContractProfit//: 获得当前持仓位置的每手浮动盈亏。
 		//{

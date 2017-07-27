@@ -53,7 +53,16 @@ namespace HaiFeng
 		[Description("说明"), Category("字段"), ReadOnly(true)]
 		public string Remark { get; set; }
 
-		
+		internal double ExitTimeLong { get; set; }
+
+		internal double ExitTimeShort { get; set; }
+
+		internal double LastEntryTimeShort { get; set; }
+
+		internal double EntryTimeShort { get; set; }
+
+		internal double LastEntryTimeLong { get; set; }
+
 		internal double AvgEntryPriceShort { get; set; }
 
 		internal double AvgEntryPriceLong { get; set; }
@@ -62,7 +71,7 @@ namespace HaiFeng
 
 		internal int PositionShort { get; set; }
 
-		internal double EntryDateLong { get; set; }
+		internal double EntryTimeLong { get; set; }
 
 		internal double EntryPriceLong { get; set; }
 
