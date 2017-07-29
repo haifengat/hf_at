@@ -105,7 +105,7 @@ namespace HaiFeng
 	}
 
 	/// <summary>
-	/// 	自定义属性类
+	/// 自定义属性类
 	/// </summary>
 	internal class Property
 	{
@@ -166,7 +166,7 @@ namespace HaiFeng
 	}
 
 	/// <summary>
-	/// 	自定义属性描述
+	/// 自定义属性描述
 	/// </summary>
 	internal class CustomPropertyDescriptor : PropertyDescriptor
 	{

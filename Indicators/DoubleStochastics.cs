@@ -97,7 +97,11 @@ namespace HaiFeng
 	{
 		public DoubleStochastics DoubleStochastics(int period)
 		{
-			return indicator.DoubleStochastics(H, L, C, period);
+			return DoubleStochastics(Datas[0], period);
+		}
+		public DoubleStochastics DoubleStochastics(Data data,int period)
+		{
+			return indicator.DoubleStochastics(data.H, data.L, data.C, period);
 		}
 	}
 }

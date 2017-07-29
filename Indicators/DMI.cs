@@ -97,7 +97,11 @@ namespace HaiFeng
 	{
 		public DMI DMI(int period)
 		{
-			return indicator.DMI(H, L, C, period);
+			return DMI(Datas[0], period);
+		}
+		public DMI DMI(Data data,int period)
+		{
+			return indicator.DMI(data.H, data.L, data.C, period);
 		}
 	}
 }

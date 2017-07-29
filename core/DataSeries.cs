@@ -129,6 +129,17 @@ namespace HaiFeng
 			_onChange?.Invoke(1, item, null);
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="index"></param>
+		/// <param name="item"></param>
+		protected override void SetItem(int index, double item)
+		{
+			base.SetItem(index, item);
+			_onChange?.Invoke(0, item, null);
+		}
+
 
 		/// <summary>
 		/// 两个序列中各值相加(两序列数目必须相等)

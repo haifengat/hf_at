@@ -66,7 +66,11 @@ namespace HaiFeng
 	{
 		public ADXR ADXR(int interval, int period)
 		{
-			return indicator.ADXR(H, L, C, interval, period);
+			return ADXR(Datas[0], interval, period);
+		}
+		public ADXR ADXR(Data data, int interval, int period)
+		{
+			return indicator.ADXR(data.H, data.L, data.C, interval, period);
 		}
 	}
 }

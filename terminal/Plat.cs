@@ -238,12 +238,13 @@ namespace HaiFeng
 				bars = _dataProcess.QueryMin(inst, dtBegin.ToString("yyyyMMdd"), qryEndDate.ToString("yyyyMMdd")).Select(n => new Bar
 				{
 					D = DateTime.ParseExact(n._id, "yyyyMMdd HH:mm:ss", null),
+					TradingDay = int.Parse(n.TradingDay),
 					O = n.Open,
 					H = n.High,
 					L = n.Low,
 					C = n.Close,
 					V = n.Volume,
-					I = n.OpenInterest
+					I = n.OpenInterest,
 				}).ToList();
 				// 取当日数据
 				if (dtEnd == DateTime.MaxValue)
@@ -282,9 +283,7 @@ namespace HaiFeng
 				return;
 			}
 
-			if (data.Interval > 1 || data.IntervalType != EnumIntervalType.Min)
-				bars = GetUpperPeriod(bars, data.Interval, data.IntervalType);
-
+			
 			//=>初始化策略/回测
 			stra.Init(data);
 			//加载与tick加载同时处理
@@ -424,126 +423,7 @@ namespace HaiFeng
 					_t.ReqOrderInsert(pData.InstrumentOrder, pOrderItem.Dir == Direction.Buy ? DirectionType.Buy : DirectionType.Sell, OffsetType.Open, pOrderItem.Price, pOrderItem.Lots, pCustom: int.Parse(pStrategy.Name) * 100);
 			}
 		}
-
-		private List<Bar> GetUpperPeriod(IList<Bar> datasOfMinute, int pInterval, EnumIntervalType pIntervalType)
-		{
-			DateTime dtBegin = datasOfMinute[0].D;
-			//取首K时间
-			switch (pIntervalType)
-			{
-				case EnumIntervalType.Min:
-					dtBegin = dtBegin.Date.AddHours(dtBegin.Hour).AddMinutes(dtBegin.Minute / pInterval * pInterval);
-					break;
-				case EnumIntervalType.Hour:
-					dtBegin = dtBegin.Date.AddHours(dtBegin.Hour / pInterval * pInterval);
-					break;
-				case EnumIntervalType.Day:
-					dtBegin = dtBegin.Date.Date;
-					break;
-				case EnumIntervalType.Week:
-					dtBegin = dtBegin.Date.AddDays(1 - (byte)dtBegin.DayOfWeek);
-					break;
-				case EnumIntervalType.Month:
-					dtBegin = new DateTime(dtBegin.Year, dtBegin.Month, 1);
-					break;
-				case EnumIntervalType.Year:
-					dtBegin = new DateTime(dtBegin.Year, 1, 1);
-					break;
-				default:
-					throw new Exception("参数错误");
-			}
-			List<Bar> tmp = new List<Bar>();
-			Bar item = new Bar
-			{
-				D = dtBegin,
-				O = datasOfMinute[0].O,
-				H = datasOfMinute[0].H,
-				L = datasOfMinute[0].L,
-				C = datasOfMinute[0].C
-			};
-			//item.Volume = datas[0].Volume;
-			//item.Value = datas[0].Value;
-			//item.Avg = datas[0].Avg;
-			tmp.Add(item);
-			DateTime dtNext = DateTime.MinValue;
-			switch (pIntervalType)
-			{
-				case EnumIntervalType.Min:
-					dtNext = dtBegin.AddMinutes(pInterval);
-					break;
-				case EnumIntervalType.Hour:
-					dtNext = dtBegin.AddHours(pInterval);
-					break;
-				case EnumIntervalType.Day:
-					dtNext = dtBegin.AddDays(pInterval);
-					break;
-				case EnumIntervalType.Week:
-					dtNext = dtBegin.AddDays(7 * pInterval);
-					break;
-				case EnumIntervalType.Month:
-					dtNext = dtBegin.AddMonths(pInterval);
-					break;
-				case EnumIntervalType.Year:
-					dtNext = dtBegin.AddYears(pInterval);
-					break;
-			}
-			foreach (Bar v in datasOfMinute)
-			{
-				//在当前K线范围内:更新
-				if (v.D >= dtBegin && v.D < dtNext)
-				{
-					item.H = Math.Max(item.H, v.H);
-					item.L = Math.Min(item.L, v.L);
-					item.C = v.C;
-					item.V += v.V;
-					item.I = v.I;
-					item.A = v.A;
-				}
-				else
-				{
-					//超出当前K线范围
-					while (v.D >= dtNext)
-					{
-						dtBegin = dtNext;
-						switch (pIntervalType)
-						{
-							case EnumIntervalType.Min:
-								dtNext = dtBegin.AddMinutes(pInterval);
-								break;
-							case EnumIntervalType.Hour:
-								dtNext = dtBegin.AddHours(pInterval);
-								break;
-							case EnumIntervalType.Day:
-								dtNext = dtBegin.AddDays(pInterval);
-								break;
-							case EnumIntervalType.Week:
-								dtNext = dtBegin.AddDays(7 * pInterval);
-								break;
-							case EnumIntervalType.Month:
-								dtNext = dtBegin.AddMonths(pInterval);
-								break;
-							case EnumIntervalType.Year:
-								dtNext = dtBegin.AddYears(pInterval);
-								break;
-						}
-					}
-					item = new Bar
-					{
-						D = dtBegin,
-						O = v.O,
-						H = v.H,
-						L = v.L,
-						C = v.C,
-						V = v.V,
-						I = v.I,
-						A = v.A
-					};
-					tmp.Add(item);
-				}
-			}
-			return tmp;
-		}
-
+		
 		private void LoadStrategyFile(string file)
 		{
 			try

@@ -80,7 +80,12 @@ namespace HaiFeng
 	{
 		public AroonOscillator AroonOscillator(int period)
 		{
-			return indicator.AroonOscillator(H, L, period);
+			return AroonOscillator(Datas[0], period);
+		}
+
+		public AroonOscillator AroonOscillator(Data data,int period)
+		{
+			return indicator.AroonOscillator(data.H, data.L, period);
 		}
 	}
 }

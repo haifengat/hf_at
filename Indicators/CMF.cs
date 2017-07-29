@@ -70,7 +70,11 @@ namespace HaiFeng
 	{
 		public ChaikinMoneyFlow ChaikinMoneyFlow(int period)
 		{
-			return indicator.ChaikinMoneyFlow(H, L, C, V, period);
+			return ChaikinMoneyFlow(Datas[0], period);
+		}
+		public ChaikinMoneyFlow ChaikinMoneyFlow(Data data, int period)
+		{
+			return indicator.ChaikinMoneyFlow(data.H, data.L, data.C, data.V, period);
 		}
 	}
 }

@@ -5,40 +5,45 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 #endregion
 
-//This namespace holds indicators in this folder and is required. Do not change it.
+// This namespace holds indicators in this folder and is required. Do not change it.
 namespace HaiFeng
 {
 	/// <summary>
-	/// The VWMA (Volume-Weighted Moving Average) returns the volume-weighted moving average
-	/// for the specified price series and period. VWMA is similar to a Simple Moving Average
-	/// (SMA), but each bar of data is weighted by the bar's Volume. VWMA places more significance 
-	/// on the days with the largest volume and the least for the days with lowest volume for the period specified.
+	/// The WMA (Weighted Moving Average) is a Moving Average indicator that shows the average 
+	/// value of a security's price over a period of time with special emphasis on the more recent 
+	/// portions of the time period under analysis as opposed to the earlier.
 	/// </summary>
-	public class VWMA : Indicator
+	public class WMA : Indicator
 	{
-		private double priorVolPriceSum;
-		private double volPriceSum;
-		private DataSeries volSum;
-		DataSeries Volume;
+		private int myPeriod;
+		private double priorSum;
+		private double priorWsum;
+		private double sum;
+		private double wsum;
 
 		protected override void Init()
 		{
 			Period = 14;
-			Volume = Inputs[1];
 
-			volSum = new DataSeries(Input);
+			priorSum = 0;
+			priorWsum = 0;
+			sum = 0;
+			wsum = 0;
 		}
 
 		protected override void OnBarUpdate()
 		{
-			if (IsFirstTickOfBar)
-				priorVolPriceSum = volPriceSum;
 
-			double volume0 = Volume[0];
-			double volumePeriod = Volume[Math.Min(Period, CurrentBar)];
-			volPriceSum = priorVolPriceSum + Input[0] * volume0 - (CurrentBar >= Period ? Input[Period] * volumePeriod : 0);
-			volSum[0] = volume0 + (CurrentBar > 0 ? volSum[1] : 0) - (CurrentBar >= Period ? volumePeriod : 0);
-			Value[0] = volSum[0].ApproxCompare(0) == 0 ? volPriceSum : volPriceSum / volSum[0];
+			if (IsFirstTickOfBar)
+			{
+				priorWsum = wsum;
+				priorSum = sum;
+				myPeriod = Math.Min(CurrentBar + 1, Period);
+			}
+
+			wsum = priorWsum - (CurrentBar >= Period ? priorSum : 0) + myPeriod * Input[0];
+			sum = priorSum + Input[0] - (CurrentBar >= Period ? Input[Period] : 0);
+			Value[0] = wsum / (0.5 * myPeriod * (myPeriod + 1));
 		}
 
 		#region Properties
@@ -52,23 +57,23 @@ namespace HaiFeng
 
 	public partial class Indicator
 	{
-		private VWMA[] cacheVWMA;
+		private WMA[] cacheWMA;
 
-		public VWMA VWMA(DataSeries volume, DataSeries input, int period)
+		public WMA WMA(DataSeries input, int period)
 		{
-			if (cacheVWMA != null)
-				for (int idx = 0; idx < cacheVWMA.Length; idx++)
-					if (cacheVWMA[idx] != null && cacheVWMA[idx].Period == period && cacheVWMA[idx].EqualsInput(input))
-						return cacheVWMA[idx];
-			return CacheIndicator<VWMA>(new VWMA() { Period = period, Inputs = new[] { volume, input } }, ref cacheVWMA);
+			if (cacheWMA != null)
+				for (int idx = 0; idx < cacheWMA.Length; idx++)
+					if (cacheWMA[idx] != null && cacheWMA[idx].Period == period && cacheWMA[idx].EqualsInput(input))
+						return cacheWMA[idx];
+			return CacheIndicator<WMA>(new WMA() { Period = period, Input = input }, ref cacheWMA);
 		}
 	}
 
 	public partial class Strategy
 	{
-		public VWMA VWMA(DataSeries input, int period)
+		public WMA WMA(DataSeries input, int period)
 		{
-			return indicator.VWMA(V, input, period);
+			return indicator.WMA(input, period);
 		}
 	}
 }

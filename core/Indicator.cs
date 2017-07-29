@@ -22,7 +22,7 @@ namespace HaiFeng
 		public Indicator() { this.Init(); }
 
 		/// <summary>
-		/// 	输入序列
+		/// 输入序列
 		/// </summary>
 		public DataSeries Input
 		{
@@ -41,7 +41,7 @@ namespace HaiFeng
 					ipt.OnChanged += input_OnChanged; //每个输入序列变化都会被执行
 				}
 				//初始时调用
-				this.OnBarUpdate();
+				//20170729 此时原始数据序列为空不可以调用 this.OnBarUpdate();
 			}
 		}
 
@@ -97,12 +97,12 @@ namespace HaiFeng
 
 
 		/// <summary>
-		/// 	当前bar索引(0开始)
+		/// 当前bar索引(0开始)
 		/// </summary>
 		protected int CurrentBar { get { return Math.Max(Input.Count - 1, 0); } }
 
 		/// <summary>
-		/// 	输入序列数据点数量
+		/// 输入序列数据点数量
 		/// </summary>
 		protected int Count { get { return Input.Count; } }
 
@@ -145,7 +145,7 @@ namespace HaiFeng
 		protected virtual void Init() { }
 
 		/// <summary>
-		/// 	K线更新
+		/// K线更新
 		/// </summary>
 		protected virtual void OnBarUpdate() { }
 	}

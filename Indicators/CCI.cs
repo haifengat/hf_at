@@ -71,7 +71,11 @@ namespace HaiFeng
 	{
 		public CCI CCI(int period)
 		{
-			return indicator.CCI(H, L, C, period);
+			return CCI(Datas[0], period);
+		}
+		public CCI CCI(Data data, int period)
+		{
+			return indicator.CCI(data.H, data.L, data.C, period);
 		}
 	}
 }

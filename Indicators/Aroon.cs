@@ -125,7 +125,11 @@ namespace HaiFeng
 	{
 		public Aroon Aroon(int period)
 		{
-			return indicator.Aroon(H, L, period);
+			return Aroon(Datas[0], period);
+		}
+		public Aroon Aroon(Data data,int period)
+		{
+			return indicator.Aroon(data.H, data.L, period);
 		}
 	}
 }

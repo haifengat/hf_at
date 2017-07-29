@@ -134,7 +134,11 @@ namespace HaiFeng
 	{
 		public DM DM(int period)
 		{
-			return indicator.DM(H, L, C, period);
+			return DM(Datas[0], period);
+		}
+		public DM DM(Data data, int period)
+		{
+			return indicator.DM(data.H, data.L, data.C, period);
 		}
 	}
 }

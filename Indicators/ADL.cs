@@ -73,13 +73,13 @@ namespace HaiFeng
 	}
 	public partial class Strategy
 	{
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <returns></returns>
 		public ADL ADL()
 		{
-			return indicator.ADL(H, L, C, V);
+			return ADL(Datas[0]);
+		}
+		public ADL ADL(Data data)
+		{
+			return indicator.ADL(data.H, data.L, data.C, data.V);
 		}
 	}
 }

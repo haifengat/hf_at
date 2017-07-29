@@ -6,7 +6,7 @@
     <SharedGUID>7b3cc254-3728-4dfb-9935-5387de6ab4a8</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>Indicators</Import_RootNamespace>
+    <Import_RootNamespace>HaiFeng</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ADL.cs" />
@@ -32,14 +32,19 @@
     <Compile Include="$(MSBuildThisFileDirectory)FisherTransform.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FOSC.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Highest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)HMA.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KeltnerChannel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Lowest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MACD.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MFI.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Range.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RSI.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SMA.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StdDev.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SUM.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TSF.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UpperPeriod.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)VWMA.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WMA.cs" />
   </ItemGroup>
 </Project>

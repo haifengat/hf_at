@@ -5,7 +5,7 @@ namespace HaiFeng
 {
 
 	/// <summary>
-	/// 	交易报单
+	/// 交易报单
 	/// </summary>
 	public class OrderItem
 	{
@@ -18,31 +18,31 @@ namespace HaiFeng
 		internal int IndexLastEntryShort;
 
 		/// <summary>
-		/// 	时间
+		/// 时间
 		/// </summary>
 		[Description("时间:yyyyMMdd.HHmmss"), Category("字段"), ReadOnly(true)]
 		public DateTime Date { get; set; }
 
 		/// <summary>
-		/// 	买卖
+		/// 买卖
 		/// </summary>
 		[Description("买卖"), Category("字段"), ReadOnly(true)]
 		public Direction Dir { get; set; }
 
 		/// <summary>
-		/// 	开平
+		/// 开平
 		/// </summary>
 		[Description("开平"), Category("字段"), ReadOnly(true)]
 		public Offset Offset { get; set; }
 
 		/// <summary>
-		/// 	价格
+		/// 价格
 		/// </summary>
 		[Description("价格"), Category("字段"), ReadOnly(true)]
 		public double Price { get; set; }
 
 		/// <summary>
-		/// 	手数
+		/// 手数
 		/// </summary>
 		[Description("手数"), Category("字段"), ReadOnly(true)]
 		public int Lots { get; set; }

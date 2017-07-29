@@ -6,11 +6,13 @@ using System.Linq;
 
 namespace HaiFeng
 {
-
 	/// <summary>
+	/// 
 	/// </summary>
 	public class Data : Collection<Bar>
 	{
+		private Bar _oneMinBar = new Bar();
+
 		internal OrderItem lastOrder
 		{
 			get
@@ -44,7 +46,7 @@ namespace HaiFeng
 			}
 		}
 
-		DataSeries _date = new DataSeries(), _time = new DataSeries(), _high = new DataSeries(), _low = new DataSeries(), _open = new DataSeries(), _close = new DataSeries(), _volume = new DataSeries(), _openinterest = new DataSeries(), _average = new DataSeries();
+		DataSeries _date = new DataSeries(), _time = new DataSeries(), _high = new DataSeries(), _low = new DataSeries(), _open = new DataSeries(), _close = new DataSeries(), _volume = new DataSeries(), _openinterest = new DataSeries();
 
 		#region 数据序列
 		/// <summary>
@@ -88,54 +90,44 @@ namespace HaiFeng
 		public DataSeries I { get => _openinterest; }
 
 		/// <summary>
-		/// 均价
-		/// </summary>
-		public DataSeries A { get => _average; }
-		
-		/// <summary>
 		/// 日期(yyyyMMdd)
 		/// </summary>
-		public DataSeries Date { get => _date; }
+		public DataSeries Date { get => D; }
 
 		/// <summary>
 		/// 时间(0.HHmmss)
 		/// </summary>
-		public DataSeries Time { get => _time; }
+		public DataSeries Time { get => T; }
 
 		/// <summary>
 		/// 开盘价
 		/// </summary>
-		public DataSeries Open { get => _open; }
+		public DataSeries Open { get => O; }
 
 		/// <summary>
 		/// 最高价
 		/// </summary>
-		public DataSeries High { get => _high; }
+		public DataSeries High { get => H; }
 
 		/// <summary>
 		/// 最低价
 		/// </summary>
-		public DataSeries Low { get => _low; }
+		public DataSeries Low { get => L; }
 
 		/// <summary>
 		/// 收盘价
 		/// </summary>
-		public DataSeries Close { get => _close; }
+		public DataSeries Close { get => C; }
 
 		/// <summary>
 		/// 成交量
 		/// </summary>
-		public DataSeries Volume { get => _volume; }
+		public DataSeries Volume { get => V; }
 
 		/// <summary>
 		/// 持仓量
 		/// </summary>
-		public DataSeries OpenInterest { get => _openinterest; }
-
-		/// <summary>
-		/// 均价
-		/// </summary>
-		public DataSeries Average { get => _average; }
+		public DataSeries OpenInterest { get => I; }
 		#endregion
 
 		#region Properties
@@ -187,12 +179,11 @@ namespace HaiFeng
 		[Description("当前K线索引"), Category("设计"), Browsable(false)]
 		public int CurrentBar { get => Count == 0 ? 0 : (Count - 1); }
 
-		#endregion
-
 		/// <summary>
-		/// 
+		/// 当前的1分钟K线
 		/// </summary>
-		public string Name { get => this.Instrument + "_" + this.Interval + "_" + this.IntervalType; }
+		public Bar CurrentMinBar { get => _oneMinBar; }
+		#endregion
 
 		/// <summary>
 		/// 被tick行情调用
@@ -203,91 +194,200 @@ namespace HaiFeng
 		{
 			if (this.Instrument != f.InstrumentID)
 				return;
+
 			#region 生成or更新K线
 			DateTime dt = DateTime.ParseExact(f.UpdateTime, "yyyyMMdd HH:mm:ss", null);
 			DateTime dtBegin = dt.Date;
-			//foreach (var data in this.Datas.Where(n => n.Instrument == f.InstrumentID))
+			switch (IntervalType)
 			{
-				switch (IntervalType)
+				case EnumIntervalType.Sec:
+					dtBegin = dtBegin.Date.AddHours(dt.Hour).AddMinutes(dt.Minute).AddSeconds(dt.Second / Interval * Interval);
+					break;
+				case EnumIntervalType.Min:
+					dtBegin = dtBegin.Date.AddHours(dt.Hour).AddMinutes(dt.Minute / Interval * Interval);
+					break;
+				case EnumIntervalType.Hour:
+					dtBegin = dtBegin.Date.AddHours(dt.Hour / Interval * Interval);
+					break;
+				case EnumIntervalType.Day:
+					dtBegin = dtBegin.Date;
+					break;
+				case EnumIntervalType.Week:
+					dtBegin = dtBegin.Date.AddDays(1 - (byte)dtBegin.DayOfWeek);
+					break;
+				case EnumIntervalType.Month:
+					dtBegin = new DateTime(dtBegin.Year, dtBegin.Month, 1);
+					break;
+				case EnumIntervalType.Year:
+					dtBegin = new DateTime(dtBegin.Year, 1, 1);
+					break;
+				default:
+					throw new Exception("参数错误");
+			}
+			if (_oneMinBar == null)
+			{
+				_oneMinBar = new Bar
 				{
-					case EnumIntervalType.Sec:
-						dtBegin = dtBegin.Date.AddHours(dt.Hour).AddMinutes(dt.Minute).AddSeconds(dt.Second / Interval * Interval);
-						break;
-					case EnumIntervalType.Min:
-						dtBegin = dtBegin.Date.AddHours(dt.Hour).AddMinutes(dt.Minute / Interval * Interval);
-						break;
-					case EnumIntervalType.Hour:
-						dtBegin = dtBegin.Date.AddHours(dt.Hour / Interval * Interval);
-						break;
-					case EnumIntervalType.Day:
-						dtBegin = dtBegin.Date;
-						break;
-					case EnumIntervalType.Week:
-						dtBegin = dtBegin.Date.AddDays(1 - (byte)dtBegin.DayOfWeek);
-						break;
-					case EnumIntervalType.Month:
-						dtBegin = new DateTime(dtBegin.Year, dtBegin.Month, 1);
-						break;
-					case EnumIntervalType.Year:
-						dtBegin = new DateTime(dtBegin.Year, 1, 1);
-						break;
-					default:
-						throw new Exception("参数错误");
-				}
-				if (Count == 0) //无数据
+					D = DateTime.ParseExact(f.UpdateTime.Substring(0, f.UpdateTime.Length - 3), "yyyyMMdd HH:mm", null),
+					PreVol = f.Volume,
+					I = f.OpenInterest,
+					V = 0
+				};
+				_oneMinBar.H = _oneMinBar.L = _oneMinBar.O = _oneMinBar.C = f.LastPrice;
+			}
+			else
+			{
+				if (_oneMinBar.D - dt < TimeSpan.FromMinutes(1))
 				{
-					Bar bar = new Bar
-					{
-						D = dtBegin,
-						PreVol = f.Volume,
-						I = f.OpenInterest,
-						A = f.AveragePrice,
-						V = 0 // kOld.preVol == 0 ? 0 : _tick.Volume - kOld.preVol;
-					};
-					bar.H = bar.L = bar.O = bar.C = f.LastPrice;
-					Add(bar);
+					_oneMinBar.H = Math.Max(_oneMinBar.H, f.LastPrice);
+					_oneMinBar.L = Math.Min(_oneMinBar.L, f.LastPrice);
+					_oneMinBar.C = f.LastPrice;
+					_oneMinBar.V = _oneMinBar.V + f.Volume - _oneMinBar.PreVol;
+					_oneMinBar.PreVol = f.Volume;       //逐个tick累加
+					_oneMinBar.I = f.OpenInterest;
 				}
 				else
 				{
-					Bar bar = this[CurrentBar];
-					//if (bar == null)	//特殊处理,未找到为null的原因
-					//{
-					//	RemoveLast();
-					//}
-					//bar = this[CurrentBar];
-					if (bar.D == dtBegin) //在当前K线范围内
-					{
-						bar.H = Math.Max(bar.H, f.LastPrice);
-						bar.L = Math.Min(bar.L, f.LastPrice);
-						bar.C = f.LastPrice;
-						bar.V = bar.V + f.Volume - bar.PreVol; //此处可能有问题
-						bar.PreVol = f.Volume;
-						bar.I = f.OpenInterest;
-						bar.A = f.AveragePrice;
-
-						this[CurrentBar] = bar; //更新会与 _onChange?.Invoke(0, old, item); 连动
-					}
-					else if (dtBegin > bar.D)
-					{
-						Bar di = new Bar
-						{
-							D = dtBegin,
-							//V = Math.Abs(bar.PreVol - 0) < 1E-06 ? 0 : f.Volume - bar.PreVol,
-							V = f.Volume - bar.PreVol,
-							PreVol = f.Volume,
-							I = f.OpenInterest,
-							A = f.AveragePrice,
-							O = f.LastPrice,
-							H = f.LastPrice,
-							L = f.LastPrice,
-							C = f.LastPrice
-						};
-						Add(di);
-					}
+					_oneMinBar.D = DateTime.ParseExact(f.UpdateTime.Substring(0, f.UpdateTime.Length - 3), "yyyyMMdd HH:mm", null);
+					_oneMinBar.I = f.OpenInterest;
+					_oneMinBar.V = f.Volume - _oneMinBar.PreVol;
+					_oneMinBar.PreVol = f.Volume;
+					_oneMinBar.H = _oneMinBar.L = _oneMinBar.O = _oneMinBar.C = f.LastPrice;
 				}
-				Tick = f; //更新最后的tick
 			}
+			if (Count == 0) //无数据
+			{
+				Bar bar = new Bar
+				{
+					D = dtBegin,
+					PreVol = f.Volume,
+					I = f.OpenInterest,
+					V = 0 // kOld.preVol == 0 ? 0 : _tick.Volume - kOld.preVol;
+				};
+				bar.H = bar.L = bar.O = bar.C = f.LastPrice;
+				Add(bar);
+			}
+			else
+			{
+				Bar bar = this[CurrentBar];
+				if (bar.D == dtBegin) //在当前K线范围内
+				{
+					bar.H = Math.Max(bar.H, f.LastPrice);
+					bar.L = Math.Min(bar.L, f.LastPrice);
+					bar.C = f.LastPrice;
+					bar.V = bar.V + f.Volume - bar.PreVol;
+					bar.PreVol = f.Volume;      //逐个tick累加
+					bar.I = f.OpenInterest;
+
+					this[CurrentBar] = bar; //更新会与 _onChange?.Invoke(0, old, item); 连动
+				}
+				else if (dtBegin > bar.D)
+				{
+					Bar di = new Bar
+					{
+						D = dtBegin,
+						//V = Math.Abs(bar.PreVol - 0) < 1E-06 ? 0 : f.Volume - bar.PreVol,
+						V = f.Volume - bar.PreVol,
+						PreVol = f.Volume,
+						I = f.OpenInterest,
+						O = f.LastPrice,
+						H = f.LastPrice,
+						L = f.LastPrice,
+						C = f.LastPrice
+					};
+					Add(di);
+				}
+			}
+			Tick = f; //更新最后的tick
 			#endregion
+		}
+
+		/// <summary>
+		/// 接收分钟测试数据
+		/// </summary>
+		/// <param name="min"></param>
+		internal void OnUpdatePerMin(Bar min)
+		{
+			_oneMinBar.D = min.D;
+			_oneMinBar.C = min.C;
+			_oneMinBar.H = min.H;
+			_oneMinBar.I = min.I;
+			_oneMinBar.L = min.L;
+			_oneMinBar.O = min.O;
+			_oneMinBar.TradingDay = min.TradingDay;
+			_oneMinBar.V = min.V;
+
+			DateTime dt = min.D;// DateTime.ParseExact(f.UpdateTime, "yyyyMMdd HH:mm:ss", null);
+			DateTime dtBegin = dt.Date;
+			switch (IntervalType)
+			{
+				case EnumIntervalType.Sec:
+					dtBegin = dtBegin.Date.AddHours(dt.Hour).AddMinutes(dt.Minute).AddSeconds(dt.Second / Interval * Interval);
+					break;
+				case EnumIntervalType.Min:
+					dtBegin = dtBegin.Date.AddHours(dt.Hour).AddMinutes(dt.Minute / Interval * Interval);
+					break;
+				case EnumIntervalType.Hour:
+					dtBegin = dtBegin.Date.AddHours(dt.Hour / Interval * Interval);
+					break;
+				case EnumIntervalType.Day:
+					dtBegin = dtBegin.Date;
+					break;
+				case EnumIntervalType.Week:
+					dtBegin = dtBegin.Date.AddDays(1 - (byte)dtBegin.DayOfWeek);
+					break;
+				case EnumIntervalType.Month:
+					dtBegin = new DateTime(dtBegin.Year, dtBegin.Month, 1);
+					break;
+				case EnumIntervalType.Year:
+					dtBegin = new DateTime(dtBegin.Year, 1, 1);
+					break;
+				default:
+					throw new Exception("参数错误");
+			}
+			if (Count == 0) //无数据
+			{
+				Bar bar = new Bar
+				{
+					D = dtBegin,
+					PreVol = min.V,
+					I = min.I,
+					V = min.V, // kOld.preVol == 0 ? 0 : _tick.Volume - kOld.preVol;
+				};
+				bar.H = min.H;
+				bar.L = min.L;
+				bar.O = min.O;
+				bar.C = min.C;
+				Add(bar);
+			}
+			else
+			{
+				Bar bar = this[CurrentBar];
+				if (bar.D == dtBegin) //在当前K线范围内
+				{
+					bar.H = Math.Max(bar.H, min.H);
+					bar.L = Math.Min(bar.L, min.L);
+					bar.V = bar.V + min.V;
+					bar.I = min.I;
+					bar.C = min.C;
+
+					this[CurrentBar] = bar; //更新会与 _onChange?.Invoke(0, old, item); 连动
+				}
+				else if (dtBegin > bar.D)
+				{
+					Bar di = new Bar
+					{
+						D = dtBegin,
+						V = min.V,
+						I = min.I,
+						O = min.O,
+						H = min.H,
+						L = min.L,
+						C = min.C,
+					};
+					Add(di);
+				}
+			}
 		}
 
 		/// <summary>
@@ -302,10 +402,9 @@ namespace HaiFeng
 			_open.Add(item.O);
 			_high.Add(item.H);
 			_low.Add(item.L);
-			_close.Add(item.C);
 			_volume.Add(item.V);
 			_openinterest.Add(item.I);
-			_average.Add(item.A);
+			_close.Add(item.C); //最后一项更新:用于触发指标相关执行
 			base.InsertItem(index, item);
 
 			_onChange?.Invoke(1, item, item);
@@ -321,10 +420,9 @@ namespace HaiFeng
 			Bar old = this[index];
 			_high[CurrentBar - index] = item.H;
 			_low[CurrentBar - index] = item.L;
-			_close[CurrentBar - index] = item.C;
 			_volume[CurrentBar - index] = item.V;
 			_openinterest[CurrentBar - index] = item.I;
-			_average[CurrentBar - index] = item.A;
+			_close[CurrentBar - index] = item.C; //最后一项更新:用于触发指标相关执行
 			base.SetItem(index, item);
 			_onChange?.Invoke(0, old, item);
 		}
@@ -346,7 +444,6 @@ namespace HaiFeng
 				_close.RemoveAt(index);
 				_volume.RemoveAt(index);
 				_openinterest.RemoveAt(index);
-				_average.RemoveAt(index);
 			}
 			base.RemoveItem(index);
 			_onChange?.Invoke(-1, old, old);
@@ -365,7 +462,6 @@ namespace HaiFeng
 			_close.Clear();
 			_volume.Clear();
 			_openinterest.Clear();
-			_average.Clear();
 			base.ClearItems();
 		}
 

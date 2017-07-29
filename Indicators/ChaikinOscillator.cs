@@ -98,7 +98,11 @@ namespace HaiFeng
 	{
 		public ChaikinOscillator ChaikinOscillator(int fast, int slow)
 		{
-			return indicator.ChaikinOscillator(H, L, C, V, fast, slow);
+			return ChaikinOscillator(Datas[0], fast, slow);
+		}
+		public ChaikinOscillator ChaikinOscillator(Data data,int fast, int slow)
+		{
+			return indicator.ChaikinOscillator(data.H, data.L, data.C, data.V, fast, slow);
 		}
 	}
 }

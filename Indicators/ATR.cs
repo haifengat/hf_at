@@ -80,17 +80,13 @@ namespace HaiFeng
 	}
 	public partial class Strategy
 	{
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="high"></param>
-		/// <param name="low"></param>
-		/// <param name="close"></param>
-		/// <param name="period"></param>
-		/// <returns></returns>
 		public ATR ATR(int period)
 		{
-			return indicator.ATR(H, L, C, period);
+			return ATR(Datas[0], period);
+		}
+		public ATR ATR(Data data, int period)
+		{
+			return indicator.ATR(data.H, data.L, data.C, period);
 		}
 	}
 }
