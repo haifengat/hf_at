@@ -277,11 +277,11 @@ namespace HaiFeng
 				}).ToList();
 
 
-			if (bars == null)
-			{
-				LogInfo($"{stra.Name,8},未取到历史数据.");
-				return;
-			}
+			//if (bars.Count == 0)
+			//{
+			//	LogInfo($"{stra.Name,8},未取到历史数据.");
+			//	return;
+			//}
 
 			
 			//=>初始化策略/回测

@@ -326,7 +326,7 @@ namespace HaiFeng
 		/// </summary>
 		[Browsable(false)]
 		public DataSeries I { get => Datas.Count == 0 ? null : this.Datas[0].I; }
-		
+
 
 		/// <summary>
 		/// 
@@ -408,7 +408,6 @@ namespace HaiFeng
 		{
 			//处理Bar相关
 			this.Datas.Clear();
-			this.Datas.Clear();
 
 			//此时数据为空
 			foreach (Data data in pDatas)
@@ -420,33 +419,21 @@ namespace HaiFeng
 			//发单由plat层控制
 			foreach (Data data in this.Datas)
 			{
-				data.OnChanged += (t, n, o) => //type, new, old
-				{
-					 if (t >= 0)
-						 this.OnBarUpdate();    //每个数据有变化都会调用策略
-				 };
-				data.OnRtnOrder += (o, d) =>
-				{
-					_rtnOrder?.Invoke(o, d, this);
-				};
+				data.OnChanged += Data_OnChanged; //少用匿名函数
+				data.OnRtnOrder += Data_OnRtnOrder;
 			}
+		}
 
-			//#region 初始化自身数据
-			////所有指标赋值
-			//this._indicators.Clear();
-			//foreach (var idx in GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static).Where(n => n.FieldType.BaseType == typeof(Indicator)))
-			//{
-			//	Indicator i = (Indicator)idx.GetValue(this);
-			//	if (i == null)
-			//	{
-			//		throw new Exception("指标未初始化!");
-			//	}
-			//	this._indicators.Add(i);
-			//}
-			//#endregion
+		private void Data_OnRtnOrder(OrderItem pOrderItem, Data pData)
+		{
+			_rtnOrder?.Invoke(pOrderItem, pData, this);
+		}
 
+		private void Data_OnChanged(int pType, object pNew, object pOld)
+		{ //type, new, old
 
-			//this.Initialize(); //再次调用客户初始化函数: 首次调用时,数据源不正确
+			if (pType >= 0)
+				this.OnBarUpdate();    //每个数据有变化都会调用策略
 		}
 
 		/// <summary>

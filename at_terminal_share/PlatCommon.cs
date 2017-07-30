@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
 using DataCenter;
@@ -201,8 +202,8 @@ namespace HaiFeng
 				UpdateTime = e.Tick.UpdateTime,
 				Volume = e.Tick.Volume,
 			};
-			//20170720全处理,避免000的行情错误.if (_t.DicExcStatus.Count > 1) //非模拟才进行处理
-
+			//20170720全处理,避免000的行情错误.
+			//if (_t.DicExcStatus.Count > 1) //非模拟才进行处理
 			if (!_dataProcess.FixTick(tick, _t.TradingDay, _t.DicInstrumentField[tick.InstrumentID].ProductID))    //修正tick时间格式:yyyMMdd HH:mm:ss
 				return;
 
@@ -211,7 +212,7 @@ namespace HaiFeng
 			{
 				if (_listOnTickStra.IndexOf(v.Value) >= 0 && v.Value.InstrumentID == tick.InstrumentID)
 				{
-					v.Value.Datas[0].OnTick(tick);
+					ThreadPool.QueueUserWorkItem((state) => v.Value.Datas[0].OnTick(tick));
 				}
 			}
 
@@ -221,7 +222,7 @@ namespace HaiFeng
 			if (_dicTick000.TryGetValue(instField._id + "000", out f000)) //yyyyMMdd HH:mm:ss格式比较
 			{
 				if (_dicTick000.TryAdd(tick.InstrumentID, tick)) return;//首个tick只保存不处理
-				if (excStatus != ExchangeStatusType.Trading) return;	//只在交易时段处理数据
+				if (excStatus != ExchangeStatusType.Trading) return;    //只在交易时段处理数据
 				if (tick.UpdateTime.CompareTo(f000.UpdateTime) <= 0 || string.IsNullOrEmpty(f000.UpdateTime)) //第2个tick再处理;增加稳定性
 				{
 					_dicTick000[tick.InstrumentID] = tick; //注意f000的先后顺序
@@ -366,10 +367,11 @@ namespace HaiFeng
 						continue;
 					Strategy stra = (Strategy)Activator.CreateInstance(straType);
 					//参数赋值
-					foreach (var v in sc.Params.Trim('(', ')').Split(','))
-					{
-						stra.SetParameterValue(v.Split(':')[0], v.Split(':')[1]);
-					}
+					if (!string.IsNullOrEmpty(sc.Params.Trim('(', ')')))
+						foreach (var v in sc.Params.Trim('(', ')').Split(','))
+						{
+							stra.SetParameterValue(v.Split(':')[0], v.Split(':')[1]);
+						}
 
 					int rid = AddStra(stra, sc.Name, sc.Instrument, sc.InstrumentOrder, sc.Interval, sc.BeginDate, sc.EndDate);
 

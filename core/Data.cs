@@ -177,7 +177,7 @@ namespace HaiFeng
 		/// 当前K线索引(由左向右从0开始)
 		/// </summary>
 		[Description("当前K线索引"), Category("设计"), Browsable(false)]
-		public int CurrentBar { get => Count == 0 ? 0 : (Count - 1); }
+		public int CurrentBar { get => Count == 0 ? -1 : (Count - 1); }
 
 		/// <summary>
 		/// 当前的1分钟K线

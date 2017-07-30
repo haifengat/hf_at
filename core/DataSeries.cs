@@ -39,15 +39,15 @@ namespace HaiFeng
 		}
 
 		/// <summary>
-		/// 
+		/// 无效时返回Nan
 		/// </summary>
-		/// <param name="index"></param>
-		/// <returns></returns>
+		/// <param name="index">从0开始计数</param>
+		/// <returns>无效时返回Nan</returns>
 		public new double this[int index]
 		{
 			get
 			{
-				double rtn = 0;
+				double rtn = double.NaN;
 				if (Count - 1 - index >= 0)
 				{
 					rtn = base[Count - 1 - index];
