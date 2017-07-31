@@ -19,7 +19,7 @@ namespace HaiFeng
 		/// <summary>
 		/// 
 		/// </summary>
-		public Indicator() { this.Init(); }
+		public Indicator() { }
 
 		/// <summary>
 		/// 输入序列
@@ -40,6 +40,8 @@ namespace HaiFeng
 					if (ipt == null) break;
 					ipt.OnChanged += input_OnChanged; //每个输入序列变化都会被执行
 				}
+				this.Init(); //在生成后再调用，否则会导致Input为null
+
 				//初始时调用
 				//20170729 此时原始数据序列为空不可以调用 this.OnBarUpdate();
 			}
@@ -87,7 +89,7 @@ namespace HaiFeng
 			get { return _values; }
 			set { _values = value; }
 		}
-		
+
 		/// <summary>
 		/// 
 		/// </summary>
