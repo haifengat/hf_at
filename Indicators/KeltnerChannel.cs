@@ -19,15 +19,16 @@ namespace HaiFeng
 		private DataSeries diff;
 		private SMA smaDiff;
 		private SMA smaTypical;
-		DataSeries High, Low, Close, Typical;
+		DataSeries Typical;
+
+		internal DataSeries High, Low;
+		DataSeries Close;   //只在Close被修改时才会触发指标计算,以避免多个input造成指标计算多次的性能问题.
 
 		protected override void Init()
 		{
 			Period = 10;
 			OffsetMultiplier = 1.5;
-			High = Inputs[0];
-			Low = Inputs[1];
-			Close = Inputs[2];
+			Close = Input;
 
 			Typical = new DataSeries(Input);
 
@@ -94,7 +95,7 @@ namespace HaiFeng
 				for (int idx = 0; idx < cacheKeltnerChannel.Length; idx++)
 					if (cacheKeltnerChannel[idx] != null && cacheKeltnerChannel[idx].OffsetMultiplier == offsetMultiplier && cacheKeltnerChannel[idx].Period == period && cacheKeltnerChannel[idx].EqualsInput(high, low, close))
 						return cacheKeltnerChannel[idx];
-			return CacheIndicator<KeltnerChannel>(new KeltnerChannel() { OffsetMultiplier = offsetMultiplier, Period = period, Inputs = new[] { high, low, close } }, ref cacheKeltnerChannel);
+			return CacheIndicator<KeltnerChannel>(new KeltnerChannel() { OffsetMultiplier = offsetMultiplier, Period = period, High = high, Low = low, Input = close }, ref cacheKeltnerChannel);
 		}
 	}
 

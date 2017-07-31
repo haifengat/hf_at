@@ -17,13 +17,12 @@ namespace HaiFeng
 	{
 		private Highest max;
 		private Lowest min;
-		DataSeries High, Low;
+		internal DataSeries High, Low;
+		//DataSeries Close;   //只在Close被修改时才会触发指标计算,以避免多个input造成指标计算多次的性能问题.
 
 		protected override void Init()
 		{
 			Period = 14;
-			High = Inputs[0];
-			Low = Inputs[1];
 
 			max = Highest(High, Period);
 			min = Lowest(Low, Period);
@@ -61,13 +60,13 @@ namespace HaiFeng
 	{
 		private DonchianChannel[] cacheDonchianChannel;
 
-		public DonchianChannel DonchianChannel(DataSeries high, DataSeries low, int period)
+		public DonchianChannel DonchianChannel(DataSeries high, DataSeries low, DataSeries close, int period)
 		{
 			if (cacheDonchianChannel != null)
 				for (int idx = 0; idx < cacheDonchianChannel.Length; idx++)
 					if (cacheDonchianChannel[idx] != null && cacheDonchianChannel[idx].Period == period && cacheDonchianChannel[idx].EqualsInput(high, low))
 						return cacheDonchianChannel[idx];
-			return CacheIndicator<DonchianChannel>(new DonchianChannel() { Period = period, Inputs = new[] { high, low } }, ref cacheDonchianChannel);
+			return CacheIndicator<DonchianChannel>(new DonchianChannel() { Period = period, High = high, Low = low, Input = close }, ref cacheDonchianChannel);
 		}
 	}
 
@@ -79,7 +78,7 @@ namespace HaiFeng
 		}
 		public DonchianChannel DonchianChannel(Data data, int period)
 		{
-			return indicator.DonchianChannel(data.H, data.L, period);
+			return indicator.DonchianChannel(data.H, data.L, data.C, period);
 		}
 	}
 }

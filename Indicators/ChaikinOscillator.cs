@@ -39,17 +39,17 @@ namespace HaiFeng
 		private DataSeries cummulative;
 		private EMA emaFast;
 		private EMA emaSlow;
-		private DataSeries moneyFlow, High, Low, Close, Volume;
+		DataSeries moneyFlow;
+
+		internal DataSeries High, Low, Volume;
+		DataSeries Close;   //只在Close被修改时才会触发指标计算,以避免多个input造成指标计算多次的性能问题.
 
 		protected override void Init()
 		{
 			Fast = 3;
 			Slow = 10;
 
-			High = Inputs[0];
-			Low = Inputs[1];
-			Close = Inputs[2];
-			Volume = Inputs[3];
+			Close = Input;
 
 			cummulative = new DataSeries(this.Input);
 			moneyFlow = new DataSeries(this.Input);
@@ -90,7 +90,7 @@ namespace HaiFeng
 				for (int idx = 0; idx < cacheChaikinOscillator.Length; idx++)
 					if (cacheChaikinOscillator[idx] != null && cacheChaikinOscillator[idx].Fast == fast && cacheChaikinOscillator[idx].Slow == slow && cacheChaikinOscillator[idx].EqualsInput(high, low, close, volume))
 						return cacheChaikinOscillator[idx];
-			return CacheIndicator<ChaikinOscillator>(new ChaikinOscillator() { Fast = fast, Slow = slow, Inputs = new[] { high, low, close, volume } }, ref cacheChaikinOscillator);
+			return CacheIndicator<ChaikinOscillator>(new ChaikinOscillator() { Fast = fast, Slow = slow, High = high, Low = low, Volume = volume, Input = close }, ref cacheChaikinOscillator);
 		}
 	}
 
@@ -100,7 +100,7 @@ namespace HaiFeng
 		{
 			return ChaikinOscillator(Datas[0], fast, slow);
 		}
-		public ChaikinOscillator ChaikinOscillator(Data data,int fast, int slow)
+		public ChaikinOscillator ChaikinOscillator(Data data, int fast, int slow)
 		{
 			return indicator.ChaikinOscillator(data.H, data.L, data.C, data.V, fast, slow);
 		}

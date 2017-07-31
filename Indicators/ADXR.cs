@@ -18,13 +18,14 @@ namespace HaiFeng
 	{
 		private ADX adx;
 
+		internal DataSeries High, Low;
+		DataSeries Close;   //只在Close被修改时才会触发指标计算,以避免多个input造成指标计算多次的性能问题.
+
 		protected override void Init()
 		{
 			Period = 14;
 			Interval = 10;
-			High = Inputs[0];
-			Low = Inputs[1];
-			Close = Inputs[2];
+			Close = Input;
 			adx = ADX(High, Low, Close, Period);
 		}
 
@@ -32,8 +33,6 @@ namespace HaiFeng
 		{
 			Value[0] = CurrentBar < Interval ? ((adx[0] + adx[CurrentBar]) / 2) : ((adx[0] + adx[Interval]) / 2);
 		}
-
-		DataSeries High, Low, Close;
 
 		#region Properties
 		[Range(1, int.MaxValue)]
@@ -58,7 +57,7 @@ namespace HaiFeng
 				for (int idx = 0; idx < cacheADXR.Length; idx++)
 					if (cacheADXR[idx] != null && cacheADXR[idx].Interval == interval && cacheADXR[idx].Period == period && cacheADXR[idx].EqualsInput(high, low, close))
 						return cacheADXR[idx];
-			return CacheIndicator<ADXR>(new ADXR() { Interval = interval, Period = period, Inputs = new[] { high, low, close } }, ref cacheADXR);
+			return CacheIndicator<ADXR>(new ADXR() { Interval = interval, Period = period,High=high,Low=low, Input=close }, ref cacheADXR);
 		}
 	}
 

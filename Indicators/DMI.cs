@@ -21,14 +21,14 @@ namespace HaiFeng
 		private SMA smaTr;
 		private SMA smaDmPlus;
 		private SMA smaDmMinus;
-		DataSeries High, Low, Close;
+
+		internal DataSeries High, Low;
+		DataSeries Close;   //只在Close被修改时才会触发指标计算,以避免多个input造成指标计算多次的性能问题.
 
 		protected override void Init()
 		{
 			Period = 14;
-			High = Inputs[0];
-			Low = Inputs[1];
-			Close = Inputs[2];
+			Close = Input;
 
 			dmMinus = new DataSeries(this.Input);
 			dmPlus = new DataSeries(this.Input);
@@ -89,7 +89,7 @@ namespace HaiFeng
 				for (int idx = 0; idx < cacheDMI.Length; idx++)
 					if (cacheDMI[idx] != null && cacheDMI[idx].Period == period && cacheDMI[idx].EqualsInput(high, low, close))
 						return cacheDMI[idx];
-			return CacheIndicator<DMI>(new DMI() { Period = period, Inputs = new[] { high, low, close } }, ref cacheDMI);
+			return CacheIndicator<DMI>(new DMI() { Period = period, High = high, Low = low, Input = close }, ref cacheDMI);
 		}
 	}
 
@@ -99,7 +99,7 @@ namespace HaiFeng
 		{
 			return DMI(Datas[0], period);
 		}
-		public DMI DMI(Data data,int period)
+		public DMI DMI(Data data, int period)
 		{
 			return indicator.DMI(data.H, data.L, data.C, period);
 		}

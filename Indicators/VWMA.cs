@@ -60,7 +60,7 @@ namespace HaiFeng
 				for (int idx = 0; idx < cacheVWMA.Length; idx++)
 					if (cacheVWMA[idx] != null && cacheVWMA[idx].Period == period && cacheVWMA[idx].EqualsInput(input))
 						return cacheVWMA[idx];
-			return CacheIndicator<VWMA>(new VWMA() { Period = period, Inputs = new[] { volume, input } }, ref cacheVWMA);
+			return CacheIndicator<VWMA>(new VWMA() { Period = period, Inputs = new[] { input, volume } }, ref cacheVWMA);
 		}
 	}
 
@@ -68,7 +68,11 @@ namespace HaiFeng
 	{
 		public VWMA VWMA(DataSeries input, int period)
 		{
-			return indicator.VWMA(V, input, period);
+			return VWMA(Datas[0], input, period);
+		}
+		public VWMA VWMA(Data data, DataSeries input, int period)
+		{
+			return indicator.VWMA(data.V, input, period);
 		}
 	}
 }

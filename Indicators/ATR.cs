@@ -14,15 +14,16 @@ namespace HaiFeng
 	/// </summary>
 	public class ATR : Indicator
 	{
+		internal DataSeries High, Low;
+		DataSeries Close;   //只在Close被修改时才会触发指标计算,以避免多个input造成指标计算多次的性能问题.
+
 		/// <summary>
 		/// 
 		/// </summary>
 		protected override void Init()
 		{
 			Period = 14;
-			High = Inputs[0];
-			Low = Inputs[1];
-			Close = Inputs[2];
+			Close = Input;
 		}
 
 		/// <summary>
@@ -43,14 +44,12 @@ namespace HaiFeng
 			}
 		}
 
-		DataSeries High, Low, Close;
-
 		#region Properties
 		/// <summary>
 		/// 参数
 		/// </summary>
 		[Range(1, int.MaxValue)]
-		[Parameter("Period", "NinjaScriptParameters")]		
+		[Parameter("Period", "NinjaScriptParameters")]
 		public int Period { get; set; }
 		#endregion
 	}
@@ -75,7 +74,7 @@ namespace HaiFeng
 				for (int idx = 0; idx < cacheATR.Length; idx++)
 					if (cacheATR[idx] != null && cacheATR[idx].Period == period && cacheATR[idx].EqualsInput(high, low, close))
 						return cacheATR[idx];
-			return CacheIndicator<ATR>(new ATR() { Period = period, Inputs = new[] { high, low, close } }, ref cacheATR);
+			return CacheIndicator<ATR>(new ATR() { Period = period, High = high, Low = low, Input = close }, ref cacheATR);
 		}
 	}
 	public partial class Strategy

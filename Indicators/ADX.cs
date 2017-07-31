@@ -23,11 +23,12 @@ namespace HaiFeng
 		private DataSeries sumTr;
 		private DataSeries tr;
 
+		internal DataSeries High, Low;
+		DataSeries Close;   //只在Close被修改时才会触发指标计算,以避免多个input造成指标计算多次的性能问题.
+
 		protected override void Init()
 		{
-			High = Inputs[0];
-			Low = Inputs[1];
-			Close = Inputs[2];
+			Close = Input;
 
 			Period = 14;
 			dmPlus = new DataSeries(this.Input);
@@ -90,8 +91,6 @@ namespace HaiFeng
 			}
 		}
 
-		private DataSeries High, Low, Close;
-
 		#region Properties
 		[Range(1, int.MaxValue)]
 		[Parameter("Period", "Parameters")]
@@ -111,7 +110,7 @@ namespace HaiFeng
 				for (int idx = 0; idx < cacheADX.Length; idx++)
 					if (cacheADX[idx] != null && cacheADX[idx].Period == period && cacheADX[idx].EqualsInput(high, low, close))
 						return cacheADX[idx];
-			return CacheIndicator<ADX>(new ADX() { Period = period, Inputs = new[] { high, low, close } }, ref cacheADX);
+			return CacheIndicator<ADX>(new ADX() { Period = period, High = high, Low = low, Input = close }, ref cacheADX);
 		}
 	}
 	public partial class Strategy
@@ -120,7 +119,7 @@ namespace HaiFeng
 		{
 			return ADX(Datas[0], period);
 		}
-		public ADX ADX(Data data,int period)
+		public ADX ADX(Data data, int period)
 		{
 			return indicator.ADX(data.H, data.L, data.C, period);
 		}

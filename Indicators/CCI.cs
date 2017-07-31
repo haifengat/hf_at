@@ -16,14 +16,14 @@ namespace HaiFeng
 	public class CCI : Indicator
 	{
 		private SMA sma;
-		DataSeries Typical, High, Low, Close;
+		internal DataSeries High, Low;
+		DataSeries Typical;
+		DataSeries Close;   //只在Close被修改时才会触发指标计算,以避免多个input造成指标计算多次的性能问题.
 
 		protected override void Init()
 		{
 			Period = 14;
-			High = Inputs[0];
-			Low = Inputs[1];
-			Close = Inputs[2];
+			Close = Input;
 			Typical = new DataSeries(this.Input);
 			sma = SMA(Typical, Period);
 		}
@@ -63,7 +63,7 @@ namespace HaiFeng
 				for (int idx = 0; idx < cacheCCI.Length; idx++)
 					if (cacheCCI[idx] != null && cacheCCI[idx].Period == period && cacheCCI[idx].EqualsInput(high, low, close))
 						return cacheCCI[idx];
-			return CacheIndicator<CCI>(new CCI() { Period = period, Inputs = new[] { high, low, close } }, ref cacheCCI);
+			return CacheIndicator<CCI>(new CCI() { Period = period, High = high, Low = low, Input = close }, ref cacheCCI);
 		}
 	}
 

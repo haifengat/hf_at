@@ -23,15 +23,15 @@ namespace HaiFeng
 		private DataSeries sumDmMinus;
 		private DataSeries sumTr;
 		private DataSeries tr;
-		private DataSeries High, Low, Close;
+
+		internal DataSeries High, Low;
+		DataSeries Close;   //只在Close被修改时才会触发指标计算,以避免多个input造成指标计算多次的性能问题.
 
 		protected override void Init()
 		{
 			Period = 14;
 
-			High = Inputs[0];
-			Low = Inputs[1];
-			Close = Inputs[2];
+			Close = Input;
 
 			dmPlus = new DataSeries(this.Input);
 			dmMinus = new DataSeries(this.Input);
@@ -126,7 +126,7 @@ namespace HaiFeng
 				for (int idx = 0; idx < cacheDM.Length; idx++)
 					if (cacheDM[idx] != null && cacheDM[idx].Period == period && cacheDM[idx].EqualsInput(high, low, close))
 						return cacheDM[idx];
-			return CacheIndicator<DM>(new DM() { Period = period, Inputs = new[] { high, low, close } }, ref cacheDM);
+			return CacheIndicator<DM>(new DM() { Period = period, High = high, Low = low, Input = close }, ref cacheDM);
 		}
 	}
 

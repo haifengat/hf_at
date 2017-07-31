@@ -15,14 +15,18 @@ namespace HaiFeng
 	public class ChaikinVolatility : Indicator
 	{
 		private EMA ema;
-		private DataSeries High, Low;
 		private Range range;
+
+		internal DataSeries High, Low;
+		DataSeries Close;   //只在Close被修改时才会触发指标计算,以避免多个input造成指标计算多次的性能问题.
 
 		protected override void Init()
 		{
 			MAPeriod = 10;
 			ROCPeriod = 10;
-			range = Range(High, Low);
+			Close = Input;
+
+			range = Range(High, Low, Close);
 			ema = EMA(range.Value, MAPeriod);
 		}
 
@@ -48,13 +52,22 @@ namespace HaiFeng
 	{
 		private ChaikinVolatility[] cacheChaikinVolatility;
 
-		public ChaikinVolatility ChaikinVolatility(DataSeries high, DataSeries low, int mAPeriod, int rOCPeriod)
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="high"></param>
+		/// <param name="low"></param>
+		/// <param name="close">用于触发指标的计算</param>
+		/// <param name="mAPeriod"></param>
+		/// <param name="rOCPeriod"></param>
+		/// <returns></returns>
+		public ChaikinVolatility ChaikinVolatility(DataSeries high, DataSeries low, DataSeries close, int mAPeriod, int rOCPeriod)
 		{
 			if (cacheChaikinVolatility != null)
 				for (int idx = 0; idx < cacheChaikinVolatility.Length; idx++)
 					if (cacheChaikinVolatility[idx] != null && cacheChaikinVolatility[idx].MAPeriod == mAPeriod && cacheChaikinVolatility[idx].ROCPeriod == rOCPeriod && cacheChaikinVolatility[idx].EqualsInput(high, low))
 						return cacheChaikinVolatility[idx];
-			return CacheIndicator<ChaikinVolatility>(new ChaikinVolatility() { MAPeriod = mAPeriod, ROCPeriod = rOCPeriod, Inputs = new[] { high, low } }, ref cacheChaikinVolatility);
+			return CacheIndicator<ChaikinVolatility>(new ChaikinVolatility() { MAPeriod = mAPeriod, ROCPeriod = rOCPeriod, High = high, Low = low, Input = close }, ref cacheChaikinVolatility);
 		}
 	}
 
@@ -64,9 +77,9 @@ namespace HaiFeng
 		{
 			return ChaikinVolatility(Datas[0], mAPeriod, rOCPeriod);
 		}
-		public ChaikinVolatility ChaikinVolatility(Data data,int mAPeriod, int rOCPeriod)
+		public ChaikinVolatility ChaikinVolatility(Data data, int mAPeriod, int rOCPeriod)
 		{
-			return indicator.ChaikinVolatility(data.H, data.L, mAPeriod, rOCPeriod);
+			return indicator.ChaikinVolatility(data.H, data.L, data.C, mAPeriod, rOCPeriod);
 		}
 	}
 }

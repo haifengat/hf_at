@@ -14,15 +14,15 @@ namespace HaiFeng
 	/// </summary>
 	public class ADL : Indicator
 	{
+		internal DataSeries High, Low, Volume;
+		DataSeries Close;	//只在Close被修改时才会触发指标计算,以避免多个input造成指标计算多次的性能问题.
+
 		/// <summary>
 		/// 
 		/// </summary>
 		protected override void Init()
 		{
-			High = Inputs[0];
-			Low = Inputs[1];
-			Close = Inputs[2];
-			Volume = Inputs[3];
+			Close = Input;
 		}
 		/// <summary>
 		/// 
@@ -35,8 +35,6 @@ namespace HaiFeng
 
 			AD[0] = ((CurrentBar == 0 ? 0 : AD[1]) + (high0.ApproxCompare(low0) != 0 ? (((close0 - low0) - (high0 - close0)) / (high0 - low0)) * Volume[0] : 0));
 		}
-
-		DataSeries High, Low, Close, Volume;
 
 		#region Properties
 		/// <summary>
@@ -68,7 +66,7 @@ namespace HaiFeng
 				for (int idx = 0; idx < cacheADL.Length; idx++)
 					if (cacheADL[idx] != null && cacheADL[idx].EqualsInput(high, low, close, volume))
 						return cacheADL[idx];
-			return CacheIndicator<ADL>(new ADL { Inputs = new[] { high, low, close, volume } }, ref cacheADL);
+			return CacheIndicator<ADL>(new ADL { High = high, Low = low, Volume = volume, Input = close }, ref cacheADL);
 		}
 	}
 	public partial class Strategy

@@ -1,8 +1,4 @@
-﻿// 
-// Copyright (C) 2017, NinjaTrader LLC <www.ninjatrader.com>.
-// NinjaTrader reserves the right to modify or overwrite this NinjaScript component with each release.
-//
-#region Using declarations
+﻿#region Using declarations
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,17 +13,17 @@ namespace HaiFeng
 	/// </summary>
 	public class ChaikinMoneyFlow : Indicator
 	{
-		private DataSeries moneyFlow, High, Low, Close, Volume;
+		DataSeries moneyFlow;
 		private SUM sumMoneyFlow;
 		private SUM sumVolume;
+
+		internal DataSeries High, Low, Volume;
+		DataSeries Close;
 
 		protected override void Init()
 		{
 			Period = 21;
-			High = Inputs[0];
-			Low = Inputs[1];
-			Close = Inputs[2];
-			Volume = Inputs[3];
+			Close = Input;
 
 			moneyFlow = new DataSeries(this.Input);
 			sumMoneyFlow = SUM(moneyFlow, Period);
@@ -62,7 +58,7 @@ namespace HaiFeng
 				for (int idx = 0; idx < cacheChaikinMoneyFlow.Length; idx++)
 					if (cacheChaikinMoneyFlow[idx] != null && cacheChaikinMoneyFlow[idx].Period == period && cacheChaikinMoneyFlow[idx].EqualsInput(high, low, close, volume))
 						return cacheChaikinMoneyFlow[idx];
-			return CacheIndicator<ChaikinMoneyFlow>(new ChaikinMoneyFlow() { Period = period, Inputs = new[] { high, low, close, volume } }, ref cacheChaikinMoneyFlow);
+			return CacheIndicator<ChaikinMoneyFlow>(new ChaikinMoneyFlow() { Period = period, High = high, Low = low, Volume = volume, Input = close }, ref cacheChaikinMoneyFlow);
 		}
 	}
 

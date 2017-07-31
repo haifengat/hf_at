@@ -17,15 +17,15 @@ namespace HaiFeng
 		private DataSeries positive;
 		private SUM sumNegative;
 		private SUM sumPositive;
-		DataSeries High, Low, Close, Volume, Typical;
+		DataSeries Typical;
+
+		internal DataSeries High, Low, Volume;
+		DataSeries Close;   //只在Close被修改时才会触发指标计算,以避免多个input造成指标计算多次的性能问题.
 
 		protected override void Init()
 		{
 			Period = 14;
-			High = Inputs[0];
-			Low = Inputs[1];
-			Close = Inputs[2];
-			Volume = Inputs[3];
+			Close = Input;
 			Typical = new DataSeries(Input);
 
 			negative = new DataSeries(Input);
@@ -71,7 +71,7 @@ namespace HaiFeng
 				for (int idx = 0; idx < cacheMFI.Length; idx++)
 					if (cacheMFI[idx] != null && cacheMFI[idx].Period == period && cacheMFI[idx].EqualsInput(high, low, close, volume))
 						return cacheMFI[idx];
-			return CacheIndicator<MFI>(new MFI() { Period = period, Inputs = new[] { high, low, close, volume } }, ref cacheMFI);
+			return CacheIndicator<MFI>(new MFI() { Period = period, High = high, Low = low, Volume = volume, Input = close }, ref cacheMFI);
 		}
 	}
 	#endregion
@@ -82,7 +82,7 @@ namespace HaiFeng
 		{
 			return MFI(Datas[0], period);
 		}
-		public MFI MFI(Data data,int period)
+		public MFI MFI(Data data, int period)
 		{
 			return indicator.MFI(data.H, data.L, data.C, data.V, period);
 		}

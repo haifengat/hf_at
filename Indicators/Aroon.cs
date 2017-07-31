@@ -24,7 +24,8 @@ namespace HaiFeng
 		private double runningMin;
 		private int runningMinBar;
 
-		DataSeries High, Low;
+		internal DataSeries High, Low;
+		//DataSeries Close;   //只在Close被修改时才会触发指标计算,以避免多个input造成指标计算多次的性能问题.
 
 		protected override void Init()
 		{
@@ -34,9 +35,6 @@ namespace HaiFeng
 			runningMaxBar = 0;
 			runningMin = 0;
 			runningMinBar = 0;
-
-			High = Inputs[0];
-			Low = Inputs[1];
 		}
 
 		protected override void OnBarUpdate()
@@ -112,13 +110,21 @@ namespace HaiFeng
 	{
 		private Aroon[] cacheAroon;
 
-		public Aroon Aroon(DataSeries high, DataSeries low, int period)
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="high"></param>
+		/// <param name="low"></param>
+		/// <param name="close">作为指标执行的触发器</param>
+		/// <param name="period"></param>
+		/// <returns></returns>
+		public Aroon Aroon(DataSeries high, DataSeries low, DataSeries close, int period)
 		{
 			if (cacheAroon != null)
 				for (int idx = 0; idx < cacheAroon.Length; idx++)
 					if (cacheAroon[idx] != null && cacheAroon[idx].Period == period && cacheAroon[idx].EqualsInput(high, low))
 						return cacheAroon[idx];
-			return CacheIndicator<Aroon>(new Aroon() { Period = period, Inputs = new[] { high, low } }, ref cacheAroon);
+			return CacheIndicator<Aroon>(new Aroon() { Period = period, High = high, Low = low, Input = close }, ref cacheAroon);
 		}
 	}
 	public partial class Strategy
@@ -127,9 +133,9 @@ namespace HaiFeng
 		{
 			return Aroon(Datas[0], period);
 		}
-		public Aroon Aroon(Data data,int period)
+		public Aroon Aroon(Data data, int period)
 		{
-			return indicator.Aroon(data.H, data.L, period);
+			return indicator.Aroon(data.H, data.L, data.C, period);
 		}
 	}
 }

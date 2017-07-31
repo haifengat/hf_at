@@ -7,12 +7,11 @@ namespace HaiFeng
 	/// </summary>
 	public class Range : Indicator
 	{
-		DataSeries High, Low;
+		internal DataSeries High, Low;
+		//DataSeries Close;   //只在Close被修改时才会触发指标计算,以避免多个input造成指标计算多次的性能问题.
 
 		protected override void Init()
 		{
-			High = Inputs[0];
-			Low = Inputs[1];
 		}
 
 		protected override void OnBarUpdate()
@@ -27,13 +26,13 @@ namespace HaiFeng
 	{
 		private Range[] cacheRange;
 
-		public Range Range(DataSeries high, DataSeries low)
+		public Range Range(DataSeries high, DataSeries low, DataSeries close)
 		{
 			if (cacheRange != null)
 				for (int idx = 0; idx < cacheRange.Length; idx++)
 					if (cacheRange[idx] != null && cacheRange[idx].EqualsInput(high, low))
 						return cacheRange[idx];
-			return CacheIndicator<Range>(new Range { Inputs = new[] { high, low } }, ref cacheRange);
+			return CacheIndicator<Range>(new Range { High = high, Low = low, Input = close }, ref cacheRange);
 		}
 	}
 
@@ -45,7 +44,7 @@ namespace HaiFeng
 		}
 		public Range Range(Data data)
 		{
-			return indicator.Range(data.H, data.L);
+			return indicator.Range(data.H, data.L, data.C);
 		}
 	}
 }

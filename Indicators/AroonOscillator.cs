@@ -14,14 +14,13 @@ namespace HaiFeng
 	/// </summary>
 	public class AroonOscillator : Indicator
 	{
+		internal DataSeries High, Low;
+		//DataSeries Close;   //只在Close被修改时才会触发指标计算,以避免多个input造成指标计算多次的性能问题.
+
 		protected override void Init()
 		{
 			Period = 14;
-			High = Inputs[0];
-			Low = Inputs[1];
 		}
-
-		DataSeries High, Low;
 
 		protected override void OnBarUpdate()
 		{
@@ -66,13 +65,21 @@ namespace HaiFeng
 	{
 		private AroonOscillator[] cacheAroonOscillator;
 
-		public AroonOscillator AroonOscillator(DataSeries high, DataSeries low, int period)
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="high"></param>
+		/// <param name="low"></param>
+		/// <param name="close">用于触发指标的计算</param>
+		/// <param name="period"></param>
+		/// <returns></returns>
+		public AroonOscillator AroonOscillator(DataSeries high, DataSeries low, DataSeries close, int period)
 		{
 			if (cacheAroonOscillator != null)
 				for (int idx = 0; idx < cacheAroonOscillator.Length; idx++)
 					if (cacheAroonOscillator[idx] != null && cacheAroonOscillator[idx].Period == period && cacheAroonOscillator[idx].EqualsInput(high, low))
 						return cacheAroonOscillator[idx];
-			return CacheIndicator<AroonOscillator>(new AroonOscillator() { Period = period, Inputs = new[] { high, low } }, ref cacheAroonOscillator);
+			return CacheIndicator<AroonOscillator>(new AroonOscillator() { Period = period, High = high, Low = low, Input = close }, ref cacheAroonOscillator);
 		}
 	}
 
@@ -83,9 +90,9 @@ namespace HaiFeng
 			return AroonOscillator(Datas[0], period);
 		}
 
-		public AroonOscillator AroonOscillator(Data data,int period)
+		public AroonOscillator AroonOscillator(Data data, int period)
 		{
-			return indicator.AroonOscillator(data.H, data.L, period);
+			return indicator.AroonOscillator(data.H, data.L, data.C, period);
 		}
 	}
 }

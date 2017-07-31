@@ -37,14 +37,32 @@
     <Compile Include="$(MSBuildThisFileDirectory)Lowest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MACD.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MFI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OBV.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parabolic SAR.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PFE.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PPO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PriceOscillator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Range.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RegressionChannel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RIND.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ROC.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RSI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RSquared.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RSS.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RVI.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SMA.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StdDev.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Stochastics.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StochasticsFast.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StochRSI.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SUM.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TEMA.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TSF.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TSI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UltimateOscillator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UpperPeriod.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VWMA.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WilliamsR.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WMA.cs" />
   </ItemGroup>
 </Project>

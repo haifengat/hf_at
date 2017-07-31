@@ -16,15 +16,13 @@ namespace HaiFeng
 	{
 		private DataSeries bop;
 		private SMA sma;
-		DataSeries Open, High, Low, Close;
+		internal DataSeries Open, High, Low;
+		DataSeries Close;   //只在Close被修改时才会触发指标计算,以避免多个input造成指标计算多次的性能问题.
 
 		protected override void Init()
 		{
 			Smooth = 14;
-			Open = Inputs[0];
-			High = Inputs[1];
-			Low = Inputs[1];
-			Close = Inputs[2];
+			Close = Input;
 			bop = new DataSeries(this.Input);
 			sma = SMA(bop, Smooth);
 		}
@@ -60,7 +58,7 @@ namespace HaiFeng
 				for (int idx = 0; idx < cacheBOP.Length; idx++)
 					if (cacheBOP[idx] != null && cacheBOP[idx].Smooth == smooth && cacheBOP[idx].EqualsInput(open, high, low, close))
 						return cacheBOP[idx];
-			return CacheIndicator<BOP>(new BOP() { Smooth = smooth, Inputs = new[] { open, high, low, close } }, ref cacheBOP);
+			return CacheIndicator<BOP>(new BOP() { Smooth = smooth, Open = open, High = high, Low = low, Input = close }, ref cacheBOP);
 		}
 	}
 

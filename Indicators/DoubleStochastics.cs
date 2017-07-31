@@ -22,14 +22,14 @@ namespace HaiFeng
 		private DataSeries p1;
 		private DataSeries p2;
 		private DataSeries p3;
-		DataSeries High, Low, Close;
+
+		internal DataSeries High, Low;
+		DataSeries Close;   //只在Close被修改时才会触发指标计算,以避免多个input造成指标计算多次的性能问题.
 
 		protected override void Init()
 		{
 			Period = 10;
-			High = Inputs[0];
-			Low = Inputs[1];
-			Close = Inputs[2];
+			Close = Input;
 
 			p1 = new DataSeries(Input);
 			p2 = new DataSeries(Input);
@@ -89,7 +89,7 @@ namespace HaiFeng
 				for (int idx = 0; idx < cacheDoubleStochastics.Length; idx++)
 					if (cacheDoubleStochastics[idx] != null && cacheDoubleStochastics[idx].Period == period && cacheDoubleStochastics[idx].EqualsInput(high, low, close))
 						return cacheDoubleStochastics[idx];
-			return CacheIndicator<DoubleStochastics>(new DoubleStochastics() { Period = period, Inputs = new[] { high, low, close } }, ref cacheDoubleStochastics);
+			return CacheIndicator<DoubleStochastics>(new DoubleStochastics() { Period = period, High = high, Low = low, Input = close }, ref cacheDoubleStochastics);
 		}
 	}
 
@@ -99,7 +99,7 @@ namespace HaiFeng
 		{
 			return DoubleStochastics(Datas[0], period);
 		}
-		public DoubleStochastics DoubleStochastics(Data data,int period)
+		public DoubleStochastics DoubleStochastics(Data data, int period)
 		{
 			return indicator.DoubleStochastics(data.H, data.L, data.C, period);
 		}

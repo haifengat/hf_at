@@ -20,15 +20,13 @@ namespace HaiFeng
 	{
 		private EMA ema;
 		private DataSeries emv, Median;
-		DataSeries High, Low, Volume;
+		internal DataSeries High, Low, Volume;
+		//DataSeries Close;   //只在Close被修改时才会触发指标计算,以避免多个input造成指标计算多次的性能问题.
 
 		protected override void Init()
 		{
 			Smoothing = 14;
 			VolumeDivisor = 10000;
-			High = Inputs[0];
-			Low = Inputs[1];
-			Volume = Inputs[2];
 
 			Median = new DataSeries(Input);
 
@@ -66,13 +64,13 @@ namespace HaiFeng
 	{
 		private EaseOfMovement[] cacheEaseOfMovement;
 
-		public EaseOfMovement EaseOfMovement(DataSeries high, DataSeries low, DataSeries volume, int smoothing, int volumeDivisor)
+		public EaseOfMovement EaseOfMovement(DataSeries high, DataSeries low, DataSeries volume, DataSeries close, int smoothing, int volumeDivisor)
 		{
 			if (cacheEaseOfMovement != null)
 				for (int idx = 0; idx < cacheEaseOfMovement.Length; idx++)
 					if (cacheEaseOfMovement[idx] != null && cacheEaseOfMovement[idx].Smoothing == smoothing && cacheEaseOfMovement[idx].VolumeDivisor == volumeDivisor && cacheEaseOfMovement[idx].EqualsInput(high, low, volume))
 						return cacheEaseOfMovement[idx];
-			return CacheIndicator<EaseOfMovement>(new EaseOfMovement() { Smoothing = smoothing, VolumeDivisor = volumeDivisor, Inputs = new[] { high, low, volume } }, ref cacheEaseOfMovement);
+			return CacheIndicator<EaseOfMovement>(new EaseOfMovement() { Smoothing = smoothing, VolumeDivisor = volumeDivisor, High = high, Low = low, Volume = volume, Input = close }, ref cacheEaseOfMovement);
 		}
 	}
 
@@ -84,7 +82,7 @@ namespace HaiFeng
 		}
 		public EaseOfMovement EaseOfMovement(Data data, int smoothing, int volumeDivisor)
 		{
-			return indicator.EaseOfMovement(data.H, data.L, data.V, smoothing, volumeDivisor);
+			return indicator.EaseOfMovement(data.H, data.L, data.V, data.C, smoothing, volumeDivisor);
 		}
 	}
 }
