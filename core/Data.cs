@@ -317,29 +317,32 @@ namespace HaiFeng
 			_oneMinBar.TradingDay = min.TradingDay;
 			_oneMinBar.V = min.V;
 
-			DateTime dt = min.D;// DateTime.ParseExact(f.UpdateTime, "yyyyMMdd HH:mm:ss", null);
-			DateTime dtBegin = dt.Date;
+
+			DateTime dtBegin = DateTime.MaxValue;
 			switch (IntervalType)
 			{
 				case EnumIntervalType.Sec:
-					dtBegin = dtBegin.Date.AddHours(dt.Hour).AddMinutes(dt.Minute).AddSeconds(dt.Second / Interval * Interval);
+					dtBegin = dtBegin.Date.AddHours(min.D.Hour).AddMinutes(min.D.Minute).AddSeconds(min.D.Second / Interval * Interval);
 					break;
 				case EnumIntervalType.Min:
-					dtBegin = dtBegin.Date.AddHours(dt.Hour).AddMinutes(dt.Minute / Interval * Interval);
+					dtBegin = dtBegin.Date.AddHours(min.D.Hour).AddMinutes(min.D.Minute / Interval * Interval);
 					break;
 				case EnumIntervalType.Hour:
-					dtBegin = dtBegin.Date.AddHours(dt.Hour / Interval * Interval);
+					dtBegin = dtBegin.Date.AddHours(min.D.Hour / Interval * Interval);
 					break;
 				case EnumIntervalType.Day:
-					dtBegin = dtBegin.Date;
+					dtBegin = DateTime.ParseExact(min.TradingDay.ToString(), "yyyyMMdd", null);
 					break;
 				case EnumIntervalType.Week:
+					dtBegin = DateTime.ParseExact(min.TradingDay.ToString(), "yyyyMMdd", null);
 					dtBegin = dtBegin.Date.AddDays(1 - (byte)dtBegin.DayOfWeek);
 					break;
 				case EnumIntervalType.Month:
+					dtBegin = DateTime.ParseExact(min.TradingDay.ToString(), "yyyyMMdd", null);
 					dtBegin = new DateTime(dtBegin.Year, dtBegin.Month, 1);
 					break;
 				case EnumIntervalType.Year:
+					dtBegin = DateTime.ParseExact(min.TradingDay.ToString(), "yyyyMMdd", null);
 					dtBegin = new DateTime(dtBegin.Year, 1, 1);
 					break;
 				default:
@@ -399,6 +402,7 @@ namespace HaiFeng
 		{
 			_date.Add(double.Parse(item.D.ToString("yyyyMMdd")));
 			_time.Add(double.Parse(item.D.ToString("0.HHmmss")));
+
 			_open.Add(item.O);
 			_high.Add(item.H);
 			_low.Add(item.L);

@@ -18,29 +18,31 @@ namespace HaiFeng
 
 		protected override void OnBarUpdate()
 		{
-			DateTime dt = MinBar.D;
-			DateTime dtBegin = dt.Date;
+			DateTime dtBegin = DateTime.MaxValue;
 			switch (IntervalType)
 			{
 				case EnumIntervalType.Sec:
-					dtBegin = dtBegin.Date.AddHours(dt.Hour).AddMinutes(dt.Minute).AddSeconds(dt.Second / Interval * Interval);
+					dtBegin = dtBegin.Date.AddHours(MinBar.D.Hour).AddMinutes(MinBar.D.Minute).AddSeconds(MinBar.D.Second / Interval * Interval);
 					break;
 				case EnumIntervalType.Min:
-					dtBegin = dtBegin.Date.AddHours(dt.Hour).AddMinutes(dt.Minute / Interval * Interval);
+					dtBegin = dtBegin.Date.AddHours(MinBar.D.Hour).AddMinutes(MinBar.D.Minute / Interval * Interval);
 					break;
 				case EnumIntervalType.Hour:
-					dtBegin = dtBegin.Date.AddHours(dt.Hour / Interval * Interval);
+					dtBegin = dtBegin.Date.AddHours(MinBar.D.Hour / Interval * Interval);
 					break;
 				case EnumIntervalType.Day:
-					dtBegin = dtBegin.Date;
+					dtBegin = DateTime.ParseExact(MinBar.TradingDay.ToString(), "yyyyMMdd", null);
 					break;
 				case EnumIntervalType.Week:
+					dtBegin = DateTime.ParseExact(MinBar.TradingDay.ToString(), "yyyyMMdd", null);
 					dtBegin = dtBegin.Date.AddDays(1 - (byte)dtBegin.DayOfWeek);
 					break;
 				case EnumIntervalType.Month:
+					dtBegin = DateTime.ParseExact(MinBar.TradingDay.ToString(), "yyyyMMdd", null);
 					dtBegin = new DateTime(dtBegin.Year, dtBegin.Month, 1);
 					break;
 				case EnumIntervalType.Year:
+					dtBegin = DateTime.ParseExact(MinBar.TradingDay.ToString(), "yyyyMMdd", null);
 					dtBegin = new DateTime(dtBegin.Year, 1, 1);
 					break;
 				default:
