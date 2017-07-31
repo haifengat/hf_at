@@ -22,13 +22,13 @@ namespace HaiFeng
 			switch (IntervalType)
 			{
 				case EnumIntervalType.Sec:
-					dtBegin = dtBegin.Date.AddHours(MinBar.D.Hour).AddMinutes(MinBar.D.Minute).AddSeconds(MinBar.D.Second / Interval * Interval);
+					dtBegin = MinBar.D.Date.AddHours(MinBar.D.Hour).AddMinutes(MinBar.D.Minute).AddSeconds(MinBar.D.Second / Interval * Interval);
 					break;
 				case EnumIntervalType.Min:
-					dtBegin = dtBegin.Date.AddHours(MinBar.D.Hour).AddMinutes(MinBar.D.Minute / Interval * Interval);
+					dtBegin = MinBar.D.Date.AddHours(MinBar.D.Hour).AddMinutes(MinBar.D.Minute / Interval * Interval);
 					break;
 				case EnumIntervalType.Hour:
-					dtBegin = dtBegin.Date.AddHours(MinBar.D.Hour / Interval * Interval);
+					dtBegin = MinBar.D.Date.AddHours(MinBar.D.Hour / Interval * Interval);
 					break;
 				case EnumIntervalType.Day:
 					dtBegin = DateTime.ParseExact(MinBar.TradingDay.ToString(), "yyyyMMdd", null);
