@@ -404,6 +404,7 @@ namespace HaiFeng
 		/// <param name="item"></param>
 		protected override void InsertItem(int index, Bar item)
 		{
+			base.InsertItem(index, item);
 			_date.Add(double.Parse(item.D.ToString("yyyyMMdd")));
 			_time.Add(double.Parse(item.D.ToString("0.HHmmss")));
 
@@ -413,7 +414,6 @@ namespace HaiFeng
 			_volume.Add(item.V);
 			_openinterest.Add(item.I);
 			_close.Add(item.C); //最后一项更新:用于触发指标相关执行
-			base.InsertItem(index, item);
 
 			_onChange?.Invoke(1, item, item);
 		}
@@ -425,13 +425,14 @@ namespace HaiFeng
 		/// <param name="item"></param>
 		protected override void SetItem(int index, Bar item)
 		{
+			base.SetItem(index, item);
 			Bar old = this[index];
 			_high[CurrentBar - index] = item.H;
 			_low[CurrentBar - index] = item.L;
 			_volume[CurrentBar - index] = item.V;
 			_openinterest[CurrentBar - index] = item.I;
 			_close[CurrentBar - index] = item.C; //最后一项更新:用于触发指标相关执行
-			base.SetItem(index, item);
+
 			_onChange?.Invoke(0, old, item);
 		}
 

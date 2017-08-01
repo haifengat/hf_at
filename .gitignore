@@ -14,7 +14,7 @@ x64/
 build/
 [Bb]in/
 [Oo]bj/
-
+.vs/
 # Enable "build/" folder in the NuGet Packages folder since NuGet packages use it for MSBuild targets
 !packages/*/build/
 
@@ -164,3 +164,9 @@ obj/
 [Tt]est[Rr]esult*
 packages*/
 .vs/haifeng_at/v15/sqlite3/storage.ide
+
+#Ignore thumbnails created by Windows
+#Ignore files built by Visual Studio
+.vs/
+#Nuget packages folder
+packages/

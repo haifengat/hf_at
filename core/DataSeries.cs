@@ -21,7 +21,8 @@ namespace HaiFeng
 		static ConcurrentDictionary<Tuple<DataSeries, DataSeries>, DataSeries> _dicOperateMod = new ConcurrentDictionary<Tuple<DataSeries, DataSeries>, DataSeries>();
 
 		private DataSeries _base = null;
-		private CollectionChange _onChange;
+		private CollectionChange _onChanging;
+		private CollectionChange _onChanged;
 
 		/// <summary>
 		/// 构建函数(参数勿填)
@@ -35,7 +36,7 @@ namespace HaiFeng
 			//初始时同步
 			foreach (var v in _base)
 				this.Add(v);
-			_base.OnChanged += _base_OnChanged;
+			_base.OnChanging += _base_OnChanged;
 		}
 
 		/// <summary>
@@ -106,15 +107,30 @@ namespace HaiFeng
 		/// <summary>
 		/// 策略变化:加1;减-1;更新0
 		/// </summary>
+		public event CollectionChange OnChanging
+		{
+			add
+			{
+				_onChanging += value;
+			}
+			remove
+			{
+				_onChanging -= value;
+			}
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
 		public event CollectionChange OnChanged
 		{
 			add
 			{
-				_onChange += value;
+				_onChanged += value;
 			}
 			remove
 			{
-				_onChange -= value;
+				_onChanged -= value;
 			}
 		}
 
@@ -126,7 +142,8 @@ namespace HaiFeng
 		protected override void InsertItem(int index, double item)
 		{
 			base.InsertItem(index, item);
-			_onChange?.Invoke(1, item, null);
+			_onChanging?.Invoke(1, item, null);
+			_onChanged?.Invoke(1, item, null);
 		}
 
 		/// <summary>
@@ -137,7 +154,8 @@ namespace HaiFeng
 		protected override void SetItem(int index, double item)
 		{
 			base.SetItem(index, item);
-			_onChange?.Invoke(0, item, null);
+			_onChanging?.Invoke(0, item, base[index]);
+			_onChanged?.Invoke(0, item, base[index]);
 		}
 
 
