@@ -198,6 +198,7 @@ namespace HaiFeng
 				AskVolume = e.Tick.AskVolume,
 				BidVolume = e.Tick.BidVolume,
 				InstrumentID = e.Tick.InstrumentID,
+				TradingDay = int.Parse(_tradingDay),
 				UpdateMillisec = e.Tick.UpdateMillisec,
 				UpdateTime = e.Tick.UpdateTime,
 				Volume = e.Tick.Volume,

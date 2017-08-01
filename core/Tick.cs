@@ -45,6 +45,10 @@ namespace HaiFeng
 		/// </summary>
 		public double OpenInterest;
 		/// <summary>
+		/// 交易日
+		/// </summary>
+		public int TradingDay;
+		/// <summary>
 		///最后修改时间:yyyyMMdd HH:mm:ss(20141114:日期由主程序处理,因大商所取到的actionday==tradingday)
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]

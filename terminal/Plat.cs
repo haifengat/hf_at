@@ -60,7 +60,7 @@ namespace HaiFeng
 
 		private List<string> _tradingDate;
 		private bool _offline = false; //是否为脱机模式登录
-
+		private string _tradingDay;
 
 		private void _t_OnRspUserLogout(object sender, IntEventArgs e)
 		{
@@ -78,6 +78,7 @@ namespace HaiFeng
 			if (e.Value == 0)
 			{
 				LogWarn("登录成功.");
+				_tradingDay = ((Trade)sender).TradingDay;
 
 				if (!string.IsNullOrEmpty(fs[3]))
 					LoginQuote(fs[3].Split(','), fs[1], this.textBoxUser.Text, this.textBoxPwd.Text);
@@ -255,6 +256,7 @@ namespace HaiFeng
 						bars.AddRange(listReal.Select(n => new Bar
 						{
 							D = DateTime.ParseExact(n._id, "yyyyMMdd HH:mm:ss", null),
+							TradingDay = int.Parse(n.TradingDay),
 							O = n.Open,
 							H = n.High,
 							L = n.Low,

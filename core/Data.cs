@@ -229,6 +229,7 @@ namespace HaiFeng
 				_oneMinBar = new Bar
 				{
 					D = DateTime.ParseExact(f.UpdateTime.Substring(0, f.UpdateTime.Length - 3), "yyyyMMdd HH:mm", null),
+					TradingDay = f.TradingDay,
 					PreVol = f.Volume,
 					I = f.OpenInterest,
 					V = 0
@@ -249,6 +250,7 @@ namespace HaiFeng
 				else
 				{
 					_oneMinBar.D = DateTime.ParseExact(f.UpdateTime.Substring(0, f.UpdateTime.Length - 3), "yyyyMMdd HH:mm", null);
+					_oneMinBar.TradingDay = f.TradingDay;
 					_oneMinBar.I = f.OpenInterest;
 					_oneMinBar.V = f.Volume - _oneMinBar.PreVol;
 					_oneMinBar.PreVol = f.Volume;
@@ -260,6 +262,7 @@ namespace HaiFeng
 				Bar bar = new Bar
 				{
 					D = dtBegin,
+					TradingDay = f.TradingDay,
 					PreVol = f.Volume,
 					I = f.OpenInterest,
 					V = 0 // kOld.preVol == 0 ? 0 : _tick.Volume - kOld.preVol;
@@ -286,6 +289,7 @@ namespace HaiFeng
 					Bar di = new Bar
 					{
 						D = dtBegin,
+						TradingDay = f.TradingDay,
 						//V = Math.Abs(bar.PreVol - 0) < 1E-06 ? 0 : f.Volume - bar.PreVol,
 						V = f.Volume - bar.PreVol,
 						PreVol = f.Volume,
