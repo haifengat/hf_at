@@ -68,7 +68,7 @@ namespace HaiFeng
 	{
 		public FOSC FOSC(DataSeries input, int period)
 		{
-			return indicator.FOSC(input, period);
+			return Indicator.FOSC(input, period);
 		}
 	}
 }

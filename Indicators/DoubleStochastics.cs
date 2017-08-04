@@ -102,7 +102,7 @@ namespace HaiFeng
 		}
 		public DoubleStochastics DoubleStochastics(Data data, int period)
 		{
-			return indicator.DoubleStochastics(data.H, data.L, data.C, period);
+			return Indicator.DoubleStochastics(data.H, data.L, data.C, period);
 		}
 	}
 }

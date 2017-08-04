@@ -62,7 +62,7 @@ namespace HaiFeng
 
 		public OBV OBV(Data data)
 		{
-			return indicator.OBV(data.C, data.V);
+			return Indicator.OBV(data.C, data.V);
 		}
 	}
 }

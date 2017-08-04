@@ -45,7 +45,7 @@ namespace HaiFeng
 		}
 		public Range Range(Data data)
 		{
-			return indicator.Range(data.H, data.L, data.C);
+			return Indicator.Range(data.H, data.L, data.C);
 		}
 	}
 }

@@ -76,7 +76,7 @@ namespace HaiFeng
 		/// <returns></returns>
 		public EMA EMA(DataSeries input, int period)
 		{
-			return indicator.EMA(input, period);
+			return Indicator.EMA(input, period);
 		}
 	}
 }

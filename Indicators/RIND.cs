@@ -108,7 +108,7 @@ namespace HaiFeng
 
 		public RIND RIND(Data data, int periodQ, int smooth)
 		{
-			return indicator.RIND(data.H, data.L, data.C, periodQ, smooth);
+			return Indicator.RIND(data.H, data.L, data.C, periodQ, smooth);
 		}
 	}
 }

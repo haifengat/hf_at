@@ -102,7 +102,7 @@ namespace HaiFeng
 		}
 		public ChaikinOscillator ChaikinOscillator(Data data, int fast, int slow)
 		{
-			return indicator.ChaikinOscillator(data.H, data.L, data.C, data.V, fast, slow);
+			return Indicator.ChaikinOscillator(data.H, data.L, data.C, data.V, fast, slow);
 		}
 	}
 }

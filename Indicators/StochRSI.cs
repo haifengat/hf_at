@@ -72,7 +72,7 @@ namespace HaiFeng
 	{
 		public StochRSI StochRSI(DataSeries input, int period)
 		{
-			return indicator.StochRSI(input, period);
+			return Indicator.StochRSI(input, period);
 		}
 	}
 }

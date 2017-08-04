@@ -70,7 +70,7 @@ namespace HaiFeng
 		}
 		public ADXR ADXR(Data data, int interval, int period)
 		{
-			return indicator.ADXR(data.H, data.L, data.C, interval, period);
+			return Indicator.ADXR(data.H, data.L, data.C, interval, period);
 		}
 	}
 }

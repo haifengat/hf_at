@@ -127,7 +127,7 @@ namespace HaiFeng
 	{
 		public RegressionChannel RegressionChannel(DataSeries input, int period, double width)
 		{
-			return indicator.RegressionChannel(input, period, width);
+			return Indicator.RegressionChannel(input, period, width);
 		}
 	}
 }

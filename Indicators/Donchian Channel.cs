@@ -79,7 +79,7 @@ namespace HaiFeng
 		}
 		public DonchianChannel DonchianChannel(Data data, int period)
 		{
-			return indicator.DonchianChannel(data.H, data.L, data.C, period);
+			return Indicator.DonchianChannel(data.H, data.L, data.C, period);
 		}
 	}
 }

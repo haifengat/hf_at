@@ -114,7 +114,7 @@ namespace HaiFeng
 		/// <returns></returns>
 		public Bollinger Bollinger(DataSeries input, double numStdDev, int period)
 		{
-			return indicator.Bollinger(input, numStdDev, period);
+			return Indicator.Bollinger(input, numStdDev, period);
 		}
 	}
 }

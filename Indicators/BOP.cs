@@ -71,7 +71,7 @@ namespace HaiFeng
 		}
 		public BOP BOP(Data data, int smooth)
 		{
-			return indicator.BOP(data.O, data.H, data.L, data.C, smooth);
+			return Indicator.BOP(data.O, data.H, data.L, data.C, smooth);
 		}
 	}
 }

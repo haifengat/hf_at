@@ -89,7 +89,7 @@ namespace HaiFeng
 		/// <returns></returns>
 		public StdDev StdDev(DataSeries input, int period)
 		{
-			return indicator.StdDev(input, period);
+			return Indicator.StdDev(input, period);
 		}
 	}
 }

@@ -30,13 +30,14 @@
 		{
 			this.components = new System.ComponentModel.Container();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.panelLogin = new System.Windows.Forms.Panel();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.label11 = new System.Windows.Forms.Label();
@@ -48,6 +49,7 @@
 			this.comboBoxServer = new System.Windows.Forms.ComboBox();
 			this.textBoxUser = new System.Windows.Forms.TextBox();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.buttonTick = new System.Windows.Forms.Button();
 			this.buttonAddStra = new System.Windows.Forms.Button();
 			this.buttonDel = new System.Windows.Forms.Button();
 			this.dateTimePickerEnd = new System.Windows.Forms.DateTimePicker();
@@ -83,6 +85,7 @@
 			this.BeginDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.EndDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Loaded = new System.Windows.Forms.DataGridViewButtonColumn();
+			this.TickLoad = new System.Windows.Forms.DataGridViewButtonColumn();
 			this.Order = new System.Windows.Forms.DataGridViewCheckBoxColumn();
 			this.UpdateTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.ExcStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -207,6 +210,7 @@
 			// 
 			// groupBox1
 			// 
+			this.groupBox1.Controls.Add(this.buttonTick);
 			this.groupBox1.Controls.Add(this.buttonAddStra);
 			this.groupBox1.Controls.Add(this.buttonDel);
 			this.groupBox1.Controls.Add(this.dateTimePickerEnd);
@@ -227,6 +231,16 @@
 			this.groupBox1.Size = new System.Drawing.Size(1195, 35);
 			this.groupBox1.TabIndex = 37;
 			this.groupBox1.TabStop = false;
+			// 
+			// buttonTick
+			// 
+			this.buttonTick.Location = new System.Drawing.Point(910, 10);
+			this.buttonTick.Name = "buttonTick";
+			this.buttonTick.Size = new System.Drawing.Size(40, 23);
+			this.buttonTick.TabIndex = 10;
+			this.buttonTick.Text = "Tick回测";
+			this.buttonTick.UseVisualStyleBackColor = true;
+			this.buttonTick.Visible = false;
 			// 
 			// buttonAddStra
 			// 
@@ -294,6 +308,7 @@
 			// 
 			this.comboBoxInstOrder.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
 			this.comboBoxInstOrder.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+			this.comboBoxInstOrder.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.comboBoxInstOrder.FormattingEnabled = true;
 			this.comboBoxInstOrder.Location = new System.Drawing.Point(362, 11);
 			this.comboBoxInstOrder.Name = "comboBoxInstOrder";
@@ -304,6 +319,7 @@
 			// 
 			this.comboBoxInst.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
 			this.comboBoxInst.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+			this.comboBoxInst.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.comboBoxInst.FormattingEnabled = true;
 			this.comboBoxInst.Location = new System.Drawing.Point(233, 11);
 			this.comboBoxInst.Name = "comboBoxInst";
@@ -496,6 +512,7 @@
             this.BeginDate,
             this.EndDate,
             this.Loaded,
+            this.TickLoad,
             this.Order,
             this.UpdateTime,
             this.ExcStatus,
@@ -507,8 +524,8 @@
 			this.DataGridViewStrategies.MultiSelect = false;
 			this.DataGridViewStrategies.Name = "DataGridViewStrategies";
 			this.DataGridViewStrategies.RowHeadersWidth = 6;
-			dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			this.DataGridViewStrategies.RowsDefaultCellStyle = dataGridViewCellStyle8;
+			dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			this.DataGridViewStrategies.RowsDefaultCellStyle = dataGridViewCellStyle9;
 			this.DataGridViewStrategies.RowTemplate.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
 			this.DataGridViewStrategies.RowTemplate.Height = 27;
 			this.DataGridViewStrategies.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -520,28 +537,24 @@
 			// 
 			this.StraName.HeaderText = "编号";
 			this.StraName.Name = "StraName";
-			this.StraName.ReadOnly = true;
 			this.StraName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
 			// 
 			// Type
 			// 
 			this.Type.HeaderText = "类型";
 			this.Type.Name = "Type";
-			this.Type.ReadOnly = true;
 			this.Type.Resizable = System.Windows.Forms.DataGridViewTriState.True;
 			// 
 			// Param
 			// 
 			this.Param.HeaderText = "参数";
 			this.Param.Name = "Param";
-			this.Param.ReadOnly = true;
 			this.Param.Resizable = System.Windows.Forms.DataGridViewTriState.True;
 			// 
 			// Instrument
 			// 
 			this.Instrument.HeaderText = "合约";
 			this.Instrument.Name = "Instrument";
-			this.Instrument.ReadOnly = true;
 			this.Instrument.Resizable = System.Windows.Forms.DataGridViewTriState.True;
 			// 
 			// InstrumentOrder
@@ -553,7 +566,6 @@
 			// 
 			this.Interval.HeaderText = "周期";
 			this.Interval.Name = "Interval";
-			this.Interval.ReadOnly = true;
 			this.Interval.Resizable = System.Windows.Forms.DataGridViewTriState.True;
 			this.Interval.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			// 
@@ -564,7 +576,6 @@
 			this.BeginDate.DefaultCellStyle = dataGridViewCellStyle2;
 			this.BeginDate.HeaderText = "开始";
 			this.BeginDate.Name = "BeginDate";
-			this.BeginDate.ReadOnly = true;
 			// 
 			// EndDate
 			// 
@@ -573,7 +584,6 @@
 			this.EndDate.DefaultCellStyle = dataGridViewCellStyle3;
 			this.EndDate.HeaderText = "结束";
 			this.EndDate.Name = "EndDate";
-			this.EndDate.ReadOnly = true;
 			// 
 			// Loaded
 			// 
@@ -582,10 +592,19 @@
 			this.Loaded.DefaultCellStyle = dataGridViewCellStyle4;
 			this.Loaded.HeaderText = "状态";
 			this.Loaded.Name = "Loaded";
-			this.Loaded.ReadOnly = true;
 			this.Loaded.Resizable = System.Windows.Forms.DataGridViewTriState.True;
 			this.Loaded.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
 			this.Loaded.Text = "未加载";
+			// 
+			// TickLoad
+			// 
+			dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle5.NullValue = "未加载";
+			this.TickLoad.DefaultCellStyle = dataGridViewCellStyle5;
+			this.TickLoad.HeaderText = "Tick";
+			this.TickLoad.Name = "TickLoad";
+			this.TickLoad.Text = "未加载";
+			this.TickLoad.Visible = false;
 			// 
 			// Order
 			// 
@@ -597,31 +616,29 @@
 			// 
 			this.UpdateTime.HeaderText = "时间";
 			this.UpdateTime.Name = "UpdateTime";
-			this.UpdateTime.ReadOnly = true;
 			// 
 			// ExcStatus
 			// 
-			dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle5.NullValue = "Normal";
-			dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.ExcStatus.DefaultCellStyle = dataGridViewCellStyle5;
+			dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle6.NullValue = "Normal";
+			dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.ExcStatus.DefaultCellStyle = dataGridViewCellStyle6;
 			this.ExcStatus.HeaderText = "交易";
 			this.ExcStatus.Name = "ExcStatus";
-			this.ExcStatus.ReadOnly = true;
 			// 
 			// report
 			// 
-			dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle6.NullValue = "报告";
-			this.report.DefaultCellStyle = dataGridViewCellStyle6;
+			dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle7.NullValue = "报告";
+			this.report.DefaultCellStyle = dataGridViewCellStyle7;
 			this.report.HeaderText = "测试报告";
 			this.report.Name = "report";
 			// 
 			// Graphics
 			// 
-			dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle7.NullValue = "显示";
-			this.Graphics.DefaultCellStyle = dataGridViewCellStyle7;
+			dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle8.NullValue = "显示";
+			this.Graphics.DefaultCellStyle = dataGridViewCellStyle8;
 			this.Graphics.HeaderText = "图形显示";
 			this.Graphics.Name = "Graphics";
 			// 
@@ -692,6 +709,7 @@
 		private System.Windows.Forms.TextBox textBoxUser;
 		private System.Windows.Forms.ComboBox comboBoxInstOrder;
 		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Button buttonTick;
 		private System.Windows.Forms.DataGridViewTextBoxColumn StraName;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Type;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Param;
@@ -701,6 +719,7 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn BeginDate;
 		private System.Windows.Forms.DataGridViewTextBoxColumn EndDate;
 		private System.Windows.Forms.DataGridViewButtonColumn Loaded;
+		private System.Windows.Forms.DataGridViewButtonColumn TickLoad;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn Order;
 		private System.Windows.Forms.DataGridViewTextBoxColumn UpdateTime;
 		private System.Windows.Forms.DataGridViewTextBoxColumn ExcStatus;

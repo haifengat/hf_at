@@ -123,7 +123,7 @@ namespace HaiFeng
 
 		public UltimateOscillator UltimateOscillator(Data data, int fast, int intermediate, int slow)
 		{
-			return indicator.UltimateOscillator(data.H, data.L, data.C, fast, intermediate, slow);
+			return Indicator.UltimateOscillator(data.H, data.L, data.C, fast, intermediate, slow);
 		}
 	}
 }

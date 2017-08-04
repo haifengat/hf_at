@@ -80,7 +80,7 @@ namespace HaiFeng
 		}
 		public ChaikinVolatility ChaikinVolatility(Data data, int mAPeriod, int rOCPeriod)
 		{
-			return indicator.ChaikinVolatility(data.H, data.L, data.C, mAPeriod, rOCPeriod);
+			return Indicator.ChaikinVolatility(data.H, data.L, data.C, mAPeriod, rOCPeriod);
 		}
 	}
 }

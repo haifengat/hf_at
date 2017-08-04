@@ -84,7 +84,7 @@ namespace HaiFeng
 
 		public PPO PPO(DataSeries input, int fast, int slow, int smooth)
 		{
-			return indicator.PPO(input, fast, slow, smooth);
+			return Indicator.PPO(input, fast, slow, smooth);
 		}
 	}
 }

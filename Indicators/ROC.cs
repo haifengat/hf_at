@@ -52,7 +52,7 @@ namespace HaiFeng
 	{
 		public ROC ROC(DataSeries input, int period)
 		{
-			return indicator.ROC(input, period);
+			return Indicator.ROC(input, period);
 		}
 	}
 }

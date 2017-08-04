@@ -158,7 +158,7 @@ namespace HaiFeng
 
 		public UpperPeriod UpperPeriod(Data data, int inteval, EnumIntervalType type)
 		{
-			return indicator.UpperPeriod(data.C, data.CurrentMinBar, inteval, type);
+			return Indicator.UpperPeriod(data.C, data.CurrentMinBar, inteval, type);
 		}
 	}
 }

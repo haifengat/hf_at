@@ -108,7 +108,7 @@ namespace HaiFeng
 		}
 		public KeltnerChannel KeltnerChannel(Data data, double offsetMultiplier, int period)
 		{
-			return indicator.KeltnerChannel(data.H, data.L, data.C, offsetMultiplier, period);
+			return Indicator.KeltnerChannel(data.H, data.L, data.C, offsetMultiplier, period);
 		}
 	}
 }

@@ -73,7 +73,7 @@ namespace HaiFeng
 	{
 		public WMA WMA(DataSeries input, int period)
 		{
-			return indicator.WMA(input, period);
+			return Indicator.WMA(input, period);
 		}
 	}
 }

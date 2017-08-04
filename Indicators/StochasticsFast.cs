@@ -103,7 +103,7 @@ namespace HaiFeng
 
 		public StochasticsFast StochasticsFast(Data data, int periodD, int periodK)
 		{
-			return indicator.StochasticsFast(data.H, data.L, data.C, periodD, periodK);
+			return Indicator.StochasticsFast(data.H, data.L, data.C, periodD, periodK);
 		}
 		public StochasticsFast KDFast(int periodD, int periodK)
 		{
@@ -112,7 +112,7 @@ namespace HaiFeng
 
 		public StochasticsFast KDFast(Data data, int periodD, int periodK)
 		{
-			return indicator.StochasticsFast(data.H, data.L, data.C, periodD, periodK);
+			return Indicator.StochasticsFast(data.H, data.L, data.C, periodD, periodK);
 		}
 	}
 }

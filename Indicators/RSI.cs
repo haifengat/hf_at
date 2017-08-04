@@ -127,7 +127,7 @@ namespace HaiFeng
 	{
 		public RSI RSI(DataSeries input, int period, int smooth)
 		{
-			return indicator.RSI(input, period, smooth);
+			return Indicator.RSI(input, period, smooth);
 		}
 	}
 }

@@ -86,7 +86,7 @@ namespace HaiFeng
 	{
 		public FisherTransform FisherTransform(DataSeries input, int period)
 		{
-			return indicator.FisherTransform(input, period, PriceTick);
+			return Indicator.FisherTransform(input, period, PriceTick);
 		}
 	}
 }

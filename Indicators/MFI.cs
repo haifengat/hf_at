@@ -85,7 +85,7 @@ namespace HaiFeng
 		}
 		public MFI MFI(Data data, int period)
 		{
-			return indicator.MFI(data.H, data.L, data.C, data.V, period);
+			return Indicator.MFI(data.H, data.L, data.C, data.V, period);
 		}
 	}
 }

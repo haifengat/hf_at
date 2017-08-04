@@ -64,7 +64,7 @@ namespace HaiFeng
 	{
 		public HMA HMA(DataSeries input, int period)
 		{
-			return indicator.HMA(input, period);
+			return Indicator.HMA(input, period);
 		}
 	}
 }

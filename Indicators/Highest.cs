@@ -112,7 +112,7 @@ namespace HaiFeng
 		/// <returns></returns>
 		public Highest Highest(DataSeries input, int period)
 		{
-			return indicator.Highest(input, period);
+			return Indicator.Highest(input, period);
 		}
 	}
 }

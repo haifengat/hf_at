@@ -49,7 +49,7 @@ namespace HaiFeng
 	{
 		public SUM SUM(DataSeries input, int period)
 		{
-			return indicator.SUM(input, period);
+			return Indicator.SUM(input, period);
 		}
 	}
 }

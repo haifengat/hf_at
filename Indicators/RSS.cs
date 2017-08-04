@@ -76,7 +76,7 @@ namespace HaiFeng
 	{
 		public RSS RSS(DataSeries input, int eMA1, int eMA2, int length)
 		{
-			return indicator.RSS(input, eMA1, eMA2, length);
+			return Indicator.RSS(input, eMA1, eMA2, length);
 		}
 	}
 }

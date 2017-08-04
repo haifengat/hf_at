@@ -16,16 +16,12 @@ namespace HaiFeng
 	[DefaultProperty("Name")]
 	public abstract partial class Strategy : CustomTypeDescriptor
 	{
-		public Indicator indicator = new Indicator();
-
 		private string _name = string.Empty;
 
 		/// <summary>
 		/// </summary>
 		protected Strategy()
 		{
-			Datas = new List<Data>();
-
 			//处理参数
 			DicProperties.Clear();
 			foreach (var v in GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static))
@@ -42,10 +38,15 @@ namespace HaiFeng
 		}
 
 		/// <summary>
+		/// 
+		/// </summary>
+		public Indicator Indicator { get; } = new Indicator();
+
+		/// <summary>
 		/// 策略所用的数据序列
 		/// </summary>
 		[Browsable(false)]
-		public List<Data> Datas { get; private set; }
+		public List<Data> Datas { get; private set; } = new List<Data>();
 
 		/// <summary>
 		/// 报单操作
@@ -219,7 +220,8 @@ namespace HaiFeng
 		/// <summary>
 		/// 策略名称
 		/// </summary>
-		[Description("名称"), Category("设计"), Browsable(false)]
+		[Description("名称"), Category("设计")]
+		[Browsable(false)]
 		public string Name
 		{
 			get
@@ -255,6 +257,16 @@ namespace HaiFeng
 		[Description("周期类型"), Category("设计")]
 		[Browsable(false)]
 		public EnumIntervalType IntervalType { get => Datas.Count == 0 ? EnumIntervalType.Min : this.Datas[0].IntervalType; }
+
+		/// <summary>
+		/// 是否发送实际委托
+		/// </summary>
+		public bool EnableOrder { get; set; } = false;
+
+		/// <summary>
+		/// 是否接收实时行情
+		/// </summary>
+		public bool EnableTick { get; set; } = false;
 
 		/// <summary>
 		/// 合约信息
@@ -326,7 +338,6 @@ namespace HaiFeng
 		/// </summary>
 		[Browsable(false)]
 		public DataSeries I { get => Datas.Count == 0 ? null : this.Datas[0].I; }
-
 
 		/// <summary>
 		/// 

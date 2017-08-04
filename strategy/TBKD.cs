@@ -76,7 +76,7 @@ namespace HaiFeng
 
 		public static TBKD TBKD(this Strategy stra, int length, int slow, int smooth)
 		{
-			return stra.indicator.TBKD(stra.H, stra.L, stra.C, length, slow, smooth);
+			return stra.Indicator.TBKD(stra.H, stra.L, stra.C, length, slow, smooth);
 		}
 	}
 }

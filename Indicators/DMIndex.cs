@@ -64,7 +64,7 @@ namespace HaiFeng
 	{
 		public DMIndex DMIndex(DataSeries input, int smooth)
 		{
-			return indicator.DMIndex(input, smooth);
+			return Indicator.DMIndex(input, smooth);
 		}
 	}
 }

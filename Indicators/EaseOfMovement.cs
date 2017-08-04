@@ -85,7 +85,7 @@ namespace HaiFeng
 		}
 		public EaseOfMovement EaseOfMovement(Data data, int smoothing, int volumeDivisor)
 		{
-			return indicator.EaseOfMovement(data.H, data.L, data.V, data.C, smoothing, volumeDivisor);
+			return Indicator.EaseOfMovement(data.H, data.L, data.V, data.C, smoothing, volumeDivisor);
 		}
 	}
 }

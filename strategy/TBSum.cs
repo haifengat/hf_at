@@ -70,7 +70,7 @@ namespace HaiFeng
 
 		public static TBSum TBSum(this Strategy stra, DataSeries input, int period)
 		{
-			return stra.indicator.TBSum(input, period);
+			return stra.Indicator.TBSum(input, period);
 		}
 	}
 }

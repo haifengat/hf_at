@@ -86,7 +86,7 @@ namespace HaiFeng
 		}
 		public ATR ATR(Data data, int period)
 		{
-			return indicator.ATR(data.H, data.L, data.C, period);
+			return Indicator.ATR(data.H, data.L, data.C, period);
 		}
 	}
 }

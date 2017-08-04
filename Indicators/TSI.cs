@@ -94,7 +94,7 @@ namespace HaiFeng
 	{
 		public TSI TSI(DataSeries input, int fast, int slow)
 		{
-			return indicator.TSI(input, fast, slow);
+			return Indicator.TSI(input, fast, slow);
 		}
 	}
 }

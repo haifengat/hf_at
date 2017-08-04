@@ -110,7 +110,7 @@ namespace HaiFeng
 		/// <returns></returns>
 		public Lowest Lowest(DataSeries input, int period)
 		{
-			return indicator.Lowest(input, period);
+			return Indicator.Lowest(input, period);
 		}
 	}
 }

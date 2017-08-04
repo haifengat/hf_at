@@ -71,7 +71,7 @@ namespace HaiFeng
 		}
 		public ChaikinMoneyFlow ChaikinMoneyFlow(Data data, int period)
 		{
-			return indicator.ChaikinMoneyFlow(data.H, data.L, data.C, data.V, period);
+			return Indicator.ChaikinMoneyFlow(data.H, data.L, data.C, data.V, period);
 		}
 	}
 }

@@ -70,7 +70,7 @@ namespace HaiFeng
 		}
 		public VWMA VWMA(Data data, DataSeries input, int period)
 		{
-			return indicator.VWMA(data.V, input, period);
+			return Indicator.VWMA(data.V, input, period);
 		}
 	}
 }

@@ -55,7 +55,7 @@ namespace HaiFeng
 	{
 		public DEMA DEMA(DataSeries input, int period)
 		{
-			return indicator.DEMA(input, period);
+			return Indicator.DEMA(input, period);
 		}
 	}
 }

@@ -77,7 +77,7 @@ End*/
 
 		public static TBMACD TBMACD(this Strategy stra, int fast, int slow, int length)
 		{
-			return stra.indicator.TBMACD(stra.C, fast, slow, length);
+			return stra.Indicator.TBMACD(stra.C, fast, slow, length);
 		}
 	}
 }

@@ -239,7 +239,7 @@ namespace HaiFeng
 
 		public ParabolicSAR ParabolicSAR(Data data, double acceleration, double accelerationMax, double accelerationStep)
 		{
-			return indicator.ParabolicSAR(data.H, data.L, data.C, acceleration, accelerationMax, accelerationStep);
+			return Indicator.ParabolicSAR(data.H, data.L, data.C, acceleration, accelerationMax, accelerationStep);
 		}
 	}
 }

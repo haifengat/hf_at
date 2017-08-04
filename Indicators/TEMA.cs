@@ -59,7 +59,7 @@ namespace HaiFeng
 	{
 		public TEMA TEMA(DataSeries input, int period)
 		{
-			return indicator.TEMA(input, period);
+			return Indicator.TEMA(input, period);
 		}
 	}
 }

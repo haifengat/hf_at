@@ -113,7 +113,7 @@ namespace HaiFeng
 
 		public Stochastics Stochastics(Data data, int periodD, int periodK, int smooth)
 		{
-			return indicator.Stochastics(data.H, data.L, data.C, periodD, periodK, smooth);
+			return Indicator.Stochastics(data.H, data.L, data.C, periodD, periodK, smooth);
 		}
 
 		public Stochastics KD(int periodD, int periodK, int smooth)
@@ -123,7 +123,7 @@ namespace HaiFeng
 
 		public Stochastics KD(Data data, int periodD, int periodK, int smooth)
 		{
-			return indicator.Stochastics(data.H, data.L, data.C, periodD, periodK, smooth);
+			return Indicator.Stochastics(data.H, data.L, data.C, periodD, periodK, smooth);
 		}
 	}
 }

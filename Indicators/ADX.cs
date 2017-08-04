@@ -121,7 +121,7 @@ namespace HaiFeng
 		}
 		public ADX ADX(Data data, int period)
 		{
-			return indicator.ADX(data.H, data.L, data.C, period);
+			return Indicator.ADX(data.H, data.L, data.C, period);
 		}
 	}
 }

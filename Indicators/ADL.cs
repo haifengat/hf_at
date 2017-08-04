@@ -78,7 +78,7 @@ namespace HaiFeng
 		}
 		public ADL ADL(Data data)
 		{
-			return indicator.ADL(data.H, data.L, data.C, data.V);
+			return Indicator.ADL(data.H, data.L, data.C, data.V);
 		}
 	}
 }

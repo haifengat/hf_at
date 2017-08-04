@@ -94,7 +94,7 @@ namespace HaiFeng
 	{
 		public TSF TSF(DataSeries input, int forecast, int period)
 		{
-			return indicator.TSF(input, forecast, period);
+			return Indicator.TSF(input, forecast, period);
 		}
 	}
 }

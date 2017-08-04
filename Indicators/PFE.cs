@@ -83,7 +83,7 @@ namespace HaiFeng
 
 		public PFE PFE(DataSeries input, int period, int smooth)
 		{
-			return indicator.PFE(input, period, smooth);
+			return Indicator.PFE(input, period, smooth);
 		}
 	}
 }

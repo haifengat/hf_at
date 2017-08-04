@@ -69,7 +69,7 @@ namespace HaiFeng
 
 		public WilliamsR WilliamsR(Data data, int period)
 		{
-			return indicator.WilliamsR(data.H, data.L, data.C, period);
+			return Indicator.WilliamsR(data.H, data.L, data.C, period);
 		}
 	}
 }

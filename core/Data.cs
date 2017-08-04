@@ -26,8 +26,6 @@ namespace HaiFeng
 		/// </summary>
 		public Data()
 		{
-			this.Tick = new Tick();
-			Operations = new List<OrderItem>();
 		}
 
 		private CollectionChange _onChange;
@@ -135,7 +133,7 @@ namespace HaiFeng
 		/// 实际行情(无数据时为Instrument== null)
 		/// </summary>
 		[Description("分笔数据"), Category("数据"), Browsable(false)]
-		public Tick Tick { get; set; }
+		public Tick Tick { get; set; } = new Tick();
 
 		/// <summary>
 		/// 合约信息
@@ -158,7 +156,7 @@ namespace HaiFeng
 		/// <summary>
 		/// 委托合约
 		/// </summary>
-		[Description("合约"), Category("配置")]
+		[Description("委托合约"), Category("配置")]
 		public string InstrumentOrder { get; set; } = string.Empty;
 
 		/// <summary>
@@ -479,7 +477,7 @@ namespace HaiFeng
 		/// 报单操作
 		/// </summary>
 		[Description("报单操作列表"), Category("交易")]
-		public List<OrderItem> Operations { get; private set; }
+		public List<OrderItem> Operations { get; private set; } = new List<OrderItem>();
 
 		/// <summary>
 		/// 开多仓：买开
@@ -536,6 +534,7 @@ namespace HaiFeng
 		private void Order(Direction pDirector, Offset pOffset, int pLots, double pPrice, string pRemark)
 		{
 			OrderItem order;
+			pPrice = (int)(pPrice / PriceTick) * PriceTick;
 
 			if (this.Operations.Count == 0)
 			{

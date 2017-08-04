@@ -126,7 +126,7 @@ namespace HaiFeng
 
 		public RVI RVI(Data data, int period)
 		{
-			return indicator.RVI(data.H, data.L, data.C, period);
+			return Indicator.RVI(data.H, data.L, data.C, period);
 		}
 	}
 }

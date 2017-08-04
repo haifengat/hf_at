@@ -125,10 +125,14 @@ namespace HaiFeng
 		void quote_OnRspUserLogin(object sender, IntEventArgs e)
 		{
 			//隔夜处理,夜盘开始后需重新订阅.
-			foreach (var v in _listOnTickStra)
+			foreach (var stra in _dicStrategies.Values)
 			{
-				SubscribeInstrument(v.InstrumentID);
-				SubscribeInstrument(v.Datas[0].InstrumentOrder);
+				if (!stra.EnableTick) continue;
+				foreach (var data in stra.Datas)
+				{
+					SubscribeInstrument(data.Instrument);
+					SubscribeInstrument(data.InstrumentOrder);
+				}
 			}
 			QuoteLogged();
 		}
@@ -182,8 +186,8 @@ namespace HaiFeng
 		{
 			Product instField;
 			Instrument inst;
-			ExchangeStatusType excStatus;
-			if (!_dataProcess.InstrumentInfo.TryGetValue(e.Tick.InstrumentID, out inst) || !_dataProcess.ProductInfo.TryGetValue(inst.ProductID, out instField) || !_t.DicExcStatus.TryGetValue(instField._id, out excStatus))
+			ExchangeStatusType excStatus = ExchangeStatusType.Trading;
+			if (!_dataProcess.InstrumentInfo.TryGetValue(e.Tick.InstrumentID, out inst) || !_dataProcess.ProductInfo.TryGetValue(inst.ProductID, out instField) || (_t != null && !_t.DicExcStatus.TryGetValue(instField._id, out excStatus)))
 				return;
 
 			Tick tick = new Tick
@@ -205,18 +209,17 @@ namespace HaiFeng
 			};
 			//20170720全处理,避免000的行情错误.
 			//if (_t.DicExcStatus.Count > 1) //非模拟才进行处理
-			if (!_dataProcess.FixTick(tick, _t.TradingDay, _t.DicInstrumentField[tick.InstrumentID].ProductID))    //修正tick时间格式:yyyMMdd HH:mm:ss
+			if (!_dataProcess.FixTick(tick, _tradingDay, _dataProcess.InstrumentInfo[tick.InstrumentID].ProductID))    //修正tick时间格式:yyyMMdd HH:mm:ss
 				return;
 
-
-			foreach (var v in _dicStrategies)
-			{
-				if (_listOnTickStra.IndexOf(v.Value) >= 0 && v.Value.InstrumentID == tick.InstrumentID)
-				{
-					ThreadPool.QueueUserWorkItem((state) => v.Value.Datas[0].OnTick(tick));
-				}
-			}
-
+			foreach (var stra in _dicStrategies.Values)
+				if (stra.EnableTick)
+					foreach (var data in stra.Datas)
+						if (data.Instrument == tick.InstrumentID)
+							if (sender == null)//tick回测
+								data.OnTick(tick);
+							else
+								ThreadPool.QueueUserWorkItem((state) => data.OnTick(tick));
 
 			//处理000数据;20170719增加状态判断，非交易时段会收到脏数据！=>fixtick处理
 			Tick f000;
@@ -284,13 +287,14 @@ namespace HaiFeng
 					f000.AskPrice = Math.Round(f000.AskPrice / priceTick, 0) * priceTick;
 					f000.AveragePrice = Math.Round(f000.AveragePrice / priceTick, 0) * priceTick;
 
-					foreach (var v in _dicStrategies)
-					{
-						if (_listOnTickStra.IndexOf(v.Value) >= 0 && v.Value.InstrumentID == f000.InstrumentID)
-						{
-							v.Value.Datas[0].OnTick(f000);
-						}
-					}
+					foreach (var stra in _dicStrategies.Values)
+						if (stra.EnableTick)
+							foreach (var data in stra.Datas)
+								if (data.Instrument == f000.InstrumentID)
+									if (sender == null)//tick回测
+										data.OnTick(tick);
+									else
+										ThreadPool.QueueUserWorkItem((state) => data.OnTick(f000));
 				}
 				//更新合约数据
 				_dicTick000[tick.InstrumentID] = tick; //注意f000的先后顺序
@@ -381,27 +385,6 @@ namespace HaiFeng
 			}
 		}
 
-		//选择不同策略:显示策略成交记录
-		private void DataGridViewStrategies_SelectionChanged(object sender, EventArgs e)
-		{
-			_dtOrders.Rows.Clear();
-			if (this.DataGridViewStrategies.SelectedRows.Count == 0)
-				return;
-
-			DataGridViewRow row = this.DataGridViewStrategies.SelectedRows[0];
-
-			if (_dicStrategies.TryGetValue((string)row.Cells["StraName"].Value, out _curStrategy))
-			{
-				if (_curStrategy.Datas.Count > 0)
-				{
-					foreach (var v in _curStrategy.Operations)
-					{
-						_dtOrders.Rows.Add(_dtOrders.Rows.Count + 1, v.Date, v.Dir, v.Offset, v.Price, v.Lots, v.Remark);
-					}
-				}
-			}
-		}
-
 		//加载/委托/报告/图显
 		private void DataGridViewStrategies_CellContentClick(object sender, DataGridViewCellEventArgs e)
 		{
@@ -421,9 +404,9 @@ namespace HaiFeng
 				{
 					//勾选委托
 					if ((bool)this.DataGridViewStrategies[e.ColumnIndex, e.RowIndex].Value)
-						_listOrderStra.Add(stra); //可以发送委托
+						stra.EnableOrder = true; //可以发送委托
 					else
-						_listOrderStra.Remove(stra);
+						stra.EnableOrder = false;
 				}
 				else if (head == "report") //报告
 				{
@@ -434,11 +417,17 @@ namespace HaiFeng
 				}
 				else if (head == "Graphics") //报告
 				{
-					new FormWorkSpace(_curStrategy).Show();
+					new FormWorkSpace(stra).Show();
 				}
 				else if (head == "Loaded") //加载
 				{
-					LoadStraData(e.RowIndex, stra, (string)row.Cells["Interval"].Value, (string)row.Cells["Instrument"].Value, (string)row.Cells["InstrumentOrder"].Value, (DateTime)row.Cells["BeginDate"].Value, row.Cells["EndDate"].Value == null ? DateTime.MaxValue : (DateTime)row.Cells["EndDate"].Value);
+					if (this.DataGridViewStrategies[e.ColumnIndex, e.RowIndex].Value == null || !this.DataGridViewStrategies[e.ColumnIndex, e.RowIndex].Value.Equals("已加载"))
+						LoadDataBar(e.RowIndex);
+				}
+				else if (head == "TickLoad")
+				{
+					if (this.DataGridViewStrategies[e.ColumnIndex, e.RowIndex].Value == null || !this.DataGridViewStrategies[e.ColumnIndex, e.RowIndex].Value.Equals("已加载"))
+						this.LoadDataTick(e.RowIndex);
 				}
 			}
 		}

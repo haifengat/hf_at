@@ -102,7 +102,7 @@ namespace HaiFeng
 		}
 		public DMI DMI(Data data, int period)
 		{
-			return indicator.DMI(data.H, data.L, data.C, period);
+			return Indicator.DMI(data.H, data.L, data.C, period);
 		}
 	}
 }

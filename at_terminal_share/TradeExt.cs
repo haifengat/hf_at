@@ -172,6 +172,8 @@ namespace HaiFeng
 					ShowInfo($"合约{pInstrument}无行情");
 				else
 					pPrice = Math.Max(f.LowerLimitPrice, Math.Min(f.UpperLimitPrice, pPrice));
+				//下单前修正价格为最小变动的倍数
+				pPrice = (int)(pPrice / dif.PriceTick) * dif.PriceTick;
 
 				if (DicExcStatus.TryGetValue(dif.ProductID, out es) || DicExcStatus.TryGetValue(dif.InstrumentID, out es) || DicExcStatus.TryGetValue(dif.ExchangeID.ToString(), out es))
 					if (es == ExchangeStatusType.NoTrading)//小节收盘中:待处理

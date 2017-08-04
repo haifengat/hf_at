@@ -72,7 +72,7 @@ namespace HaiFeng
 	{
 		public PriceOscillator PriceOscillator(DataSeries input, int fast, int slow, int smooth)
 		{
-			return indicator.PriceOscillator(input, fast, slow, smooth);
+			return Indicator.PriceOscillator(input, fast, slow, smooth);
 		}
 	}
 }

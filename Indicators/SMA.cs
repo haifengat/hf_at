@@ -79,7 +79,7 @@ namespace HaiFeng
 		/// <returns></returns>
 		public SMA SMA(DataSeries input, int period)
 		{
-			return indicator.SMA(input, period);
+			return Indicator.SMA(input, period);
 		}
 	}
 }

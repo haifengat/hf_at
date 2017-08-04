@@ -39,7 +39,7 @@ namespace HaiFeng
 		public override void OnBarUpdate()
 		{
 			if (CurrentBar < Max(UpLine, DnLine)) return;
-			
+
 			var UpValue = ht[1];
 			var DnValue = lt[1];
 
@@ -49,13 +49,19 @@ namespace HaiFeng
 			if (PositionLong == 0 && UpBreak)
 			{
 				if (PositionShort > 0)
-					BuyToCover(Lots, Max(O[0], UpValue));
+					if (BarsSinceEntryShort == 0) //不在开空的Bar上操作(tick测试时重复开平
+						return;
+					else
+						BuyToCover(Lots, Max(O[0], UpValue));
 				Buy(Lots, Max(O[0], UpValue));
 			}
 			else if (PositionShort == 0 && DnBreak)
 			{
 				if (PositionLong > 0)
-					Sell(Lots, Min(O[0], DnValue));
+					if (BarsSinceEntryLong == 0) //不在开空的Bar上操作(tick测试时重复开平
+						return;
+					else
+						Sell(Lots, Min(O[0], DnValue));
 				SellShort(Lots, Min(O[0], DnValue));
 			}
 

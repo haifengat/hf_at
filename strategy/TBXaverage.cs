@@ -62,7 +62,7 @@ namespace HaiFeng
 
 		public static TBXaverage TBXAverage(this Strategy stra, DataSeries input, int period)
 		{
-			return stra.indicator.TBXAverage(input, period);
+			return stra.Indicator.TBXAverage(input, period);
 		}
 	}
 }

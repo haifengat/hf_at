@@ -83,7 +83,7 @@ namespace HaiFeng
 
 		public RSquared RSquared(DataSeries input, int period)
 		{
-			return indicator.RSquared(input, period);
+			return Indicator.RSquared(input, period);
 		}
 	}
 }

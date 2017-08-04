@@ -151,7 +151,7 @@ namespace HaiFeng
 		/// <returns></returns>
 		public MACD MACD(DataSeries input, int fast, int slow, int smooth)
 		{
-			return indicator.MACD(input, fast, slow, smooth);
+			return Indicator.MACD(input, fast, slow, smooth);
 		}
 	}
 
