@@ -90,9 +90,10 @@ namespace HaiFeng
 
 		public RIND RIND(DataSeries high, DataSeries low, DataSeries close, int periodQ, int smooth)
 		{
+			var cat = cacheRIND;
 			if (cacheRIND != null)
 				for (int idx = 0; idx < cacheRIND.Length; idx++)
-					if (cacheRIND[idx] != null && cacheRIND[idx].PeriodQ == periodQ && cacheRIND[idx].Smooth == smooth && cacheRIND[idx].EqualsInput(high, low, close))
+					if (cacheRIND[idx] != null && cacheRIND[idx].PeriodQ == periodQ && cacheRIND[idx].Smooth == smooth && cat[idx].High == high && cat[idx].Low == low && cacheRIND[idx].EqualsInput(close))
 						return cacheRIND[idx];
 			return CacheIndicator<RIND>(new RIND() { PeriodQ = periodQ, Smooth = smooth, High = high, Low = low, Input = close }, ref cacheRIND);
 		}

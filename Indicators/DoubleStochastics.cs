@@ -85,9 +85,10 @@ namespace HaiFeng
 
 		public DoubleStochastics DoubleStochastics(DataSeries high, DataSeries low, DataSeries close, int period)
 		{
+			var cat = cacheDoubleStochastics;
 			if (cacheDoubleStochastics != null)
 				for (int idx = 0; idx < cacheDoubleStochastics.Length; idx++)
-					if (cacheDoubleStochastics[idx] != null && cacheDoubleStochastics[idx].Period == period && cacheDoubleStochastics[idx].EqualsInput(high, low, close))
+					if (cacheDoubleStochastics[idx] != null && cacheDoubleStochastics[idx].Period == period && cat[idx].High == high && cat[idx].Low == low && cacheDoubleStochastics[idx].EqualsInput(close))
 						return cacheDoubleStochastics[idx];
 			return CacheIndicator<DoubleStochastics>(new DoubleStochastics() { Period = period, High = high, Low = low, Input = close }, ref cacheDoubleStochastics);
 		}

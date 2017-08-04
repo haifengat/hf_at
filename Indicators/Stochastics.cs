@@ -95,11 +95,12 @@ namespace HaiFeng
 
 		public Stochastics Stochastics(DataSeries high, DataSeries low, DataSeries close, int periodD, int periodK, int smooth)
 		{
+			var cat = cacheStochastics;
 			if (cacheStochastics != null)
 				for (int idx = 0; idx < cacheStochastics.Length; idx++)
-					if (cacheStochastics[idx] != null && cacheStochastics[idx].PeriodD == periodD && cacheStochastics[idx].PeriodK == periodK && cacheStochastics[idx].Smooth == smooth && cacheStochastics[idx].EqualsInput(high, low, close))
+					if (cacheStochastics[idx] != null && cacheStochastics[idx].PeriodD == periodD && cacheStochastics[idx].PeriodK == periodK && cacheStochastics[idx].Smooth == smooth &&cat[idx].High==high&&cat[idx].Low==low && cacheStochastics[idx].EqualsInput(close))
 						return cacheStochastics[idx];
-			return CacheIndicator<Stochastics>(new Stochastics() { PeriodD = periodD, PeriodK = periodK, Smooth = smooth, High = high, Low = low, Input = close }, ref cacheStochastics);
+			return CacheIndicator(new Stochastics() { PeriodD = periodD, PeriodK = periodK, Smooth = smooth, High = high, Low = low, Input = close }, ref cacheStochastics);
 		}
 	}
 

@@ -67,9 +67,10 @@ namespace HaiFeng
 
 		public MFI MFI(DataSeries high, DataSeries low, DataSeries close, DataSeries volume, int period)
 		{
+			var cat = cacheMFI;
 			if (cacheMFI != null)
 				for (int idx = 0; idx < cacheMFI.Length; idx++)
-					if (cacheMFI[idx] != null && cacheMFI[idx].Period == period && cacheMFI[idx].EqualsInput(high, low, close, volume))
+					if (cacheMFI[idx] != null && cacheMFI[idx].Period == period && cat[idx].High == high && cat[idx].Low == low&&cat[idx].Volume==volume && cacheMFI[idx].EqualsInput(close))
 						return cacheMFI[idx];
 			return CacheIndicator<MFI>(new MFI() { Period = period, High = high, Low = low, Volume = volume, Input = close }, ref cacheMFI);
 		}

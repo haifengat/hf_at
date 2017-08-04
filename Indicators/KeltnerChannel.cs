@@ -91,9 +91,10 @@ namespace HaiFeng
 
 		public KeltnerChannel KeltnerChannel(DataSeries high, DataSeries low, DataSeries close, double offsetMultiplier, int period)
 		{
+			var cat = cacheKeltnerChannel;
 			if (cacheKeltnerChannel != null)
 				for (int idx = 0; idx < cacheKeltnerChannel.Length; idx++)
-					if (cacheKeltnerChannel[idx] != null && cacheKeltnerChannel[idx].OffsetMultiplier == offsetMultiplier && cacheKeltnerChannel[idx].Period == period && cacheKeltnerChannel[idx].EqualsInput(high, low, close))
+					if (cacheKeltnerChannel[idx] != null && cacheKeltnerChannel[idx].OffsetMultiplier == offsetMultiplier && cacheKeltnerChannel[idx].Period == period && cat[idx].High == high && cat[idx].Low == low && cacheKeltnerChannel[idx].EqualsInput(close))
 						return cacheKeltnerChannel[idx];
 			return CacheIndicator<KeltnerChannel>(new KeltnerChannel() { OffsetMultiplier = offsetMultiplier, Period = period, High = high, Low = low, Input = close }, ref cacheKeltnerChannel);
 		}

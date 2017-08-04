@@ -16,7 +16,7 @@ namespace HaiFeng
 	[DefaultProperty("Name")]
 	public abstract partial class Strategy : CustomTypeDescriptor
 	{
-		private Indicator indicator = new Indicator();
+		public Indicator indicator = new Indicator();
 
 		private string _name = string.Empty;
 
@@ -426,6 +426,7 @@ namespace HaiFeng
 
 		private void Data_OnRtnOrder(OrderItem pOrderItem, Data pData)
 		{
+			if (_loading) return;
 			_rtnOrder?.Invoke(pOrderItem, pData, this);
 		}
 
@@ -445,6 +446,7 @@ namespace HaiFeng
 		public delegate void RtnOrder(OrderItem pOrderItem, Data pData, Strategy pStrategy);
 
 		private RtnOrder _rtnOrder;
+		private bool _loading; //历史测试:控制_rtnorder调用
 
 		/// <summary>
 		/// 
@@ -468,7 +470,7 @@ namespace HaiFeng
 		public void LoadHistory(params Tuple<Data, List<Bar>>[] barss)
 		{
 			if (barss.Sum(n => n.Item2.Count) == 0) return;
-
+			_loading = true;
 			var barseries = new List<Bar>();
 			foreach (var v in barss)
 				barseries.AddRange(v.Item2);
@@ -480,6 +482,7 @@ namespace HaiFeng
 				//f.Item1.Add(bar);
 				f.Item1.OnUpdatePerMin(bar);
 			}
+			_loading = false;
 		}
 
 		/// <summary>

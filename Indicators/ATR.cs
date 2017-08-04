@@ -70,9 +70,10 @@ namespace HaiFeng
 		/// <returns></returns>
 		public ATR ATR(DataSeries high, DataSeries low, DataSeries close, int period)
 		{
+			var cat = cacheATR;
 			if (cacheATR != null)
 				for (int idx = 0; idx < cacheATR.Length; idx++)
-					if (cacheATR[idx] != null && cacheATR[idx].Period == period && cacheATR[idx].EqualsInput(high, low, close))
+					if (cacheATR[idx] != null && cacheATR[idx].Period == period && cat[idx].High == high && cat[idx].Low == low && cacheATR[idx].EqualsInput(close))
 						return cacheATR[idx];
 			return CacheIndicator<ATR>(new ATR() { Period = period, High = high, Low = low, Input = close }, ref cacheATR);
 		}

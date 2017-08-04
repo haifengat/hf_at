@@ -28,9 +28,10 @@ namespace HaiFeng
 
 		public Range Range(DataSeries high, DataSeries low, DataSeries close)
 		{
+			var cat = cacheRange;
 			if (cacheRange != null)
 				for (int idx = 0; idx < cacheRange.Length; idx++)
-					if (cacheRange[idx] != null && cacheRange[idx].EqualsInput(high, low))
+					if (cacheRange[idx] != null && cat[idx].High == high && cat[idx].Low == low && cacheRange[idx].EqualsInput(close))
 						return cacheRange[idx];
 			return CacheIndicator<Range>(new Range { High = high, Low = low, Input = close }, ref cacheRange);
 		}

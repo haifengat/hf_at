@@ -88,9 +88,9 @@ namespace HaiFeng
 		{
 			if (cacheChaikinOscillator != null)
 				for (int idx = 0; idx < cacheChaikinOscillator.Length; idx++)
-					if (cacheChaikinOscillator[idx] != null && cacheChaikinOscillator[idx].Fast == fast && cacheChaikinOscillator[idx].Slow == slow && cacheChaikinOscillator[idx].EqualsInput(high, low, close, volume))
+					if (cacheChaikinOscillator[idx] != null && cacheChaikinOscillator[idx].Fast == fast && cacheChaikinOscillator[idx].Slow == slow && cacheChaikinOscillator[idx].High == high && cacheChaikinOscillator[idx].Low == low && cacheChaikinOscillator[idx].EqualsInput(volume))
 						return cacheChaikinOscillator[idx];
-			return CacheIndicator<ChaikinOscillator>(new ChaikinOscillator() { Fast = fast, Slow = slow, High = high, Low = low, Volume = volume, Input = close }, ref cacheChaikinOscillator);
+			return CacheIndicator(new ChaikinOscillator() { Fast = fast, Slow = slow, High = high, Low = low, Volume = volume, Input = close }, ref cacheChaikinOscillator);
 		}
 	}
 

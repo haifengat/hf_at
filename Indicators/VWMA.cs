@@ -19,13 +19,11 @@ namespace HaiFeng
 		private double priorVolPriceSum;
 		private double volPriceSum;
 		private DataSeries volSum;
-		DataSeries Volume;
+		internal DataSeries Volume;
 
 		protected override void Init()
 		{
 			Period = 14;
-			Volume = Inputs[1];
-
 			volSum = new DataSeries(Input);
 		}
 
@@ -58,9 +56,9 @@ namespace HaiFeng
 		{
 			if (cacheVWMA != null)
 				for (int idx = 0; idx < cacheVWMA.Length; idx++)
-					if (cacheVWMA[idx] != null && cacheVWMA[idx].Period == period && cacheVWMA[idx].EqualsInput(input))
+					if (cacheVWMA[idx] != null && cacheVWMA[idx].Period == period && cacheVWMA[idx].Volume == volume && cacheVWMA[idx].EqualsInput(input))
 						return cacheVWMA[idx];
-			return CacheIndicator<VWMA>(new VWMA() { Period = period, Inputs = new[] { input, volume } }, ref cacheVWMA);
+			return CacheIndicator<VWMA>(new VWMA() { Period = period, Volume = volume, Input = input }, ref cacheVWMA);
 		}
 	}
 

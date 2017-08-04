@@ -85,9 +85,10 @@ namespace HaiFeng
 
 		public DMI DMI(DataSeries high, DataSeries low, DataSeries close, int period)
 		{
+			var cat = cacheDMI;
 			if (cacheDMI != null)
 				for (int idx = 0; idx < cacheDMI.Length; idx++)
-					if (cacheDMI[idx] != null && cacheDMI[idx].Period == period && cacheDMI[idx].EqualsInput(high, low, close))
+					if (cacheDMI[idx] != null && cacheDMI[idx].Period == period && cat[idx].High == high && cat[idx].Low == low && cacheDMI[idx].EqualsInput(close))
 						return cacheDMI[idx];
 			return CacheIndicator<DMI>(new DMI() { Period = period, High = high, Low = low, Input = close }, ref cacheDMI);
 		}

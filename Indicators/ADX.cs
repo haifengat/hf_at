@@ -108,7 +108,7 @@ namespace HaiFeng
 		{
 			if (cacheADX != null)
 				for (int idx = 0; idx < cacheADX.Length; idx++)
-					if (cacheADX[idx] != null && cacheADX[idx].Period == period && cacheADX[idx].EqualsInput(high, low, close))
+					if (cacheADX[idx] != null && cacheADX[idx].Period == period && cacheADX[idx].High == high && cacheADX[idx].Low == low && cacheADX[idx].EqualsInput(close))
 						return cacheADX[idx];
 			return CacheIndicator<ADX>(new ADX() { Period = period, High = high, Low = low, Input = close }, ref cacheADX);
 		}

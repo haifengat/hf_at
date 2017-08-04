@@ -26,8 +26,8 @@ namespace HaiFeng
 			Period = 14;
 
 			diffSeries = new DataSeries(Input);
-			wma1 = WMA(Inputs[0], (Period / 2));
-			wma2 = WMA(Inputs[0], Period);
+			wma1 = WMA(Input, (Period / 2));
+			wma2 = WMA(Input, Period);
 			wmaDiffSeries = WMA(diffSeries, (int)Math.Sqrt(Period));
 		}
 

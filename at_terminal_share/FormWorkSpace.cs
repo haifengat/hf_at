@@ -192,8 +192,9 @@ namespace HaiFeng
 			if (e.HitTestResult.ChartElementType == ChartElementType.DataPoint && e.HitTestResult.Series == this.chart1.Series[0])
 			{
 				DataPoint dp = (DataPoint)e.HitTestResult.Object;
+				int currentBar = _stra.D.Count - 1 - e.HitTestResult.PointIndex;
 				DateTime dt = DateTime.FromOADate(dp.XValue);
-				int currentBar = _stra.D.Count - 1 - _stra.D.IndexOf(double.Parse(dt.ToString("yyyyMMdd.HHmmss")));
+				//int currentBar = _stra.D.Count - 1 - _stra.D.IndexOf(double.Parse(dt.ToString("yyyyMMdd.HHmmss")));
 				e.Text = dt.ToString("yyyy/MM/dd[") + dt.ToString("ddd").Substring(1, 1) + "]";
 				e.Text += "\r\n时间 = " + dt.TimeOfDay;
 				e.Text += "\r\n开 = " + _stra.O[currentBar];

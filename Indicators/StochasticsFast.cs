@@ -85,9 +85,10 @@ namespace HaiFeng
 
 		public StochasticsFast StochasticsFast(DataSeries high, DataSeries low, DataSeries close, int periodD, int periodK)
 		{
+			var cat = cacheStochasticsFast;
 			if (cacheStochasticsFast != null)
 				for (int idx = 0; idx < cacheStochasticsFast.Length; idx++)
-					if (cacheStochasticsFast[idx] != null && cacheStochasticsFast[idx].PeriodD == periodD && cacheStochasticsFast[idx].PeriodK == periodK && cacheStochasticsFast[idx].EqualsInput(high, low, close))
+					if (cacheStochasticsFast[idx] != null && cacheStochasticsFast[idx].PeriodD == periodD && cacheStochasticsFast[idx].PeriodK == periodK && cat[idx].High == high && cat[idx].Low == low && cacheStochasticsFast[idx].EqualsInput(close))
 						return cacheStochasticsFast[idx];
 			return CacheIndicator<StochasticsFast>(new StochasticsFast() { PeriodD = periodD, PeriodK = periodK, High = high, Low = low, Input = close }, ref cacheStochasticsFast);
 		}

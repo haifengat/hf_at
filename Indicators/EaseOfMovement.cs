@@ -67,9 +67,12 @@ namespace HaiFeng
 		public EaseOfMovement EaseOfMovement(DataSeries high, DataSeries low, DataSeries volume, DataSeries close, int smoothing, int volumeDivisor)
 		{
 			if (cacheEaseOfMovement != null)
+			{
+				var cat = cacheEaseOfMovement;
 				for (int idx = 0; idx < cacheEaseOfMovement.Length; idx++)
-					if (cacheEaseOfMovement[idx] != null && cacheEaseOfMovement[idx].Smoothing == smoothing && cacheEaseOfMovement[idx].VolumeDivisor == volumeDivisor && cacheEaseOfMovement[idx].EqualsInput(high, low, volume))
+					if (cacheEaseOfMovement[idx] != null && cacheEaseOfMovement[idx].Smoothing == smoothing && cacheEaseOfMovement[idx].VolumeDivisor == volumeDivisor && cat[idx].High == high && cat[idx].Low == low && cat[idx].Volume == volume && cacheEaseOfMovement[idx].EqualsInput(close))
 						return cacheEaseOfMovement[idx];
+			}
 			return CacheIndicator<EaseOfMovement>(new EaseOfMovement() { Smoothing = smoothing, VolumeDivisor = volumeDivisor, High = high, Low = low, Volume = volume, Input = close }, ref cacheEaseOfMovement);
 		}
 	}

@@ -28,7 +28,7 @@ namespace HaiFeng
 		{
 			Period = 14;
 
-			rsi = RSI(Inputs[0], Period, 1);
+			rsi = RSI(Input, Period, 1);
 			min = Lowest(rsi.Value, Period);
 			max = Highest(rsi.Value, Period);
 		}

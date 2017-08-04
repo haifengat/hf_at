@@ -54,9 +54,10 @@ namespace HaiFeng
 
 		public BOP BOP(DataSeries open, DataSeries high, DataSeries low, DataSeries close, int smooth)
 		{
+			var cat = cacheBOP;
 			if (cacheBOP != null)
 				for (int idx = 0; idx < cacheBOP.Length; idx++)
-					if (cacheBOP[idx] != null && cacheBOP[idx].Smooth == smooth && cacheBOP[idx].EqualsInput(open, high, low, close))
+					if (cacheBOP[idx] != null && cacheBOP[idx].Smooth == smooth && cat[idx].High == high && cat[idx].Low == low && cat[idx].Open == open && cacheBOP[idx].EqualsInput(close))
 						return cacheBOP[idx];
 			return CacheIndicator<BOP>(new BOP() { Smooth = smooth, Open = open, High = high, Low = low, Input = close }, ref cacheBOP);
 		}

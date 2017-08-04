@@ -51,9 +51,10 @@ namespace HaiFeng
 
 		public WilliamsR WilliamsR(DataSeries high, DataSeries low, DataSeries close, int period)
 		{
+			var cat = cacheWilliamsR;
 			if (cacheWilliamsR != null)
 				for (int idx = 0; idx < cacheWilliamsR.Length; idx++)
-					if (cacheWilliamsR[idx] != null && cacheWilliamsR[idx].Period == period && cacheWilliamsR[idx].EqualsInput(high, low, close))
+					if (cacheWilliamsR[idx] != null && cacheWilliamsR[idx].Period == period && cat[idx].High == high && cat[idx].Low == low && cacheWilliamsR[idx].EqualsInput(close))
 						return cacheWilliamsR[idx];
 			return CacheIndicator<WilliamsR>(new WilliamsR() { Period = period, High = high, Low = low, Input = close }, ref cacheWilliamsR);
 		}

@@ -53,11 +53,12 @@ namespace HaiFeng
 
 		public ADXR ADXR(DataSeries high, DataSeries low, DataSeries close, int interval, int period)
 		{
+			var cat = cacheADXR;
 			if (cacheADXR != null)
 				for (int idx = 0; idx < cacheADXR.Length; idx++)
-					if (cacheADXR[idx] != null && cacheADXR[idx].Interval == interval && cacheADXR[idx].Period == period && cacheADXR[idx].EqualsInput(high, low, close))
+					if (cacheADXR[idx] != null && cacheADXR[idx].Interval == interval && cacheADXR[idx].Period == period && cat[idx].High == high && cat[idx].Low == low && cacheADXR[idx].EqualsInput(close))
 						return cacheADXR[idx];
-			return CacheIndicator<ADXR>(new ADXR() { Interval = interval, Period = period,High=high,Low=low, Input=close }, ref cacheADXR);
+			return CacheIndicator<ADXR>(new ADXR() { Interval = interval, Period = period, High = high, Low = low, Input = close }, ref cacheADXR);
 		}
 	}
 

@@ -13,7 +13,7 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			close = Inputs[0];
+			close = Input;
 		}
 
 		protected override void OnBarUpdate()
@@ -144,7 +144,7 @@ namespace HaiFeng
 				for (int idx = 0; idx < cacheUpperPeriod.Length; idx++)
 					if (cacheUpperPeriod[idx] != null && cacheUpperPeriod[idx].Interval == interval && cacheUpperPeriod[idx].IntervalType == type && cacheUpperPeriod[idx].EqualsInput(close))
 						return cacheUpperPeriod[idx];
-			return CacheIndicator<UpperPeriod>(new UpperPeriod() { Interval = interval, IntervalType = type, MinBar = curMinBar, Inputs = new[] { close } }, ref cacheUpperPeriod);
+			return CacheIndicator(new UpperPeriod() { Interval = interval, IntervalType = type, MinBar = curMinBar, Input = close }, ref cacheUpperPeriod);
 		}
 	}
 	#endregion

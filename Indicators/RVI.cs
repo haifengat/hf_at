@@ -108,9 +108,10 @@ namespace HaiFeng
 
 		public RVI RVI(DataSeries high, DataSeries low, DataSeries close, int period)
 		{
+			var cat = cacheRVI;
 			if (cacheRVI != null)
 				for (int idx = 0; idx < cacheRVI.Length; idx++)
-					if (cacheRVI[idx] != null && cacheRVI[idx].Period == period && cacheRVI[idx].EqualsInput(high, low, close))
+					if (cacheRVI[idx] != null && cacheRVI[idx].Period == period && cat[idx].High == high && cat[idx].Low == low && cacheRVI[idx].EqualsInput(close))
 						return cacheRVI[idx];
 			return CacheIndicator<RVI>(new RVI() { Period = period, High = high, Low = low, Input = close }, ref cacheRVI);
 		}

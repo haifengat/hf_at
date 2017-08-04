@@ -59,9 +59,10 @@ namespace HaiFeng
 
 		public CCI CCI(DataSeries high, DataSeries low, DataSeries close, int period)
 		{
+			var cat = cacheCCI;
 			if (cacheCCI != null)
 				for (int idx = 0; idx < cacheCCI.Length; idx++)
-					if (cacheCCI[idx] != null && cacheCCI[idx].Period == period && cacheCCI[idx].EqualsInput(high, low, close))
+					if (cacheCCI[idx] != null && cacheCCI[idx].Period == period && cat[idx].High == high && cat[idx].Low == low && cacheCCI[idx].EqualsInput(close))
 						return cacheCCI[idx];
 			return CacheIndicator<CCI>(new CCI() { Period = period, High = high, Low = low, Input = close }, ref cacheCCI);
 		}

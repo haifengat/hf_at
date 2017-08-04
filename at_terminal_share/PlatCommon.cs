@@ -334,7 +334,7 @@ namespace HaiFeng
 				list.Add(new StrategyConfig
 				{
 					Name = stra.Name,
-					Type = stra.GetType(),
+					TypeFullName = stra.GetType().FullName,
 					Instrument = (string)row.Cells["Instrument"].Value,
 					InstrumentOrder = (string)row.Cells["InstrumentOrder"].Value,
 					Interval = (string)row.Cells["Interval"].Value,
@@ -358,7 +358,7 @@ namespace HaiFeng
 					//类型是否存在
 					foreach (Type t in this.ComboBoxType.Items)
 					{
-						if (t == sc.Type)
+						if (t.FullName == sc.TypeFullName)
 						{
 							straType = t;
 							break;

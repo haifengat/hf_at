@@ -62,11 +62,12 @@ namespace HaiFeng
 
 		public DonchianChannel DonchianChannel(DataSeries high, DataSeries low, DataSeries close, int period)
 		{
+			var cat = cacheDonchianChannel;
 			if (cacheDonchianChannel != null)
-				for (int idx = 0; idx < cacheDonchianChannel.Length; idx++)
-					if (cacheDonchianChannel[idx] != null && cacheDonchianChannel[idx].Period == period && cacheDonchianChannel[idx].EqualsInput(high, low))
-						return cacheDonchianChannel[idx];
-			return CacheIndicator<DonchianChannel>(new DonchianChannel() { Period = period, High = high, Low = low, Input = close }, ref cacheDonchianChannel);
+				for (int idx = 0; idx < cat.Length; idx++)
+					if (cat[idx] != null && cat[idx].Period == period && cat[idx].High == high && cat[idx].Low == low && cat[idx].EqualsInput(close))
+						return cat[idx];
+			return CacheIndicator(new DonchianChannel() { Period = period, High = high, Low = low, Input = close }, ref cacheDonchianChannel);
 		}
 	}
 

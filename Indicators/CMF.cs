@@ -54,9 +54,10 @@ namespace HaiFeng
 
 		public ChaikinMoneyFlow ChaikinMoneyFlow(DataSeries high, DataSeries low, DataSeries close, DataSeries volume, int period)
 		{
+			var cat = cacheChaikinMoneyFlow;
 			if (cacheChaikinMoneyFlow != null)
 				for (int idx = 0; idx < cacheChaikinMoneyFlow.Length; idx++)
-					if (cacheChaikinMoneyFlow[idx] != null && cacheChaikinMoneyFlow[idx].Period == period && cacheChaikinMoneyFlow[idx].EqualsInput(high, low, close, volume))
+					if (cacheChaikinMoneyFlow[idx] != null && cacheChaikinMoneyFlow[idx].Period == period && cat[idx].High == high && cat[idx].Low == low&&cat[idx].Volume==volume && cacheChaikinMoneyFlow[idx].EqualsInput(close))
 						return cacheChaikinMoneyFlow[idx];
 			return CacheIndicator<ChaikinMoneyFlow>(new ChaikinMoneyFlow() { Period = period, High = high, Low = low, Volume = volume, Input = close }, ref cacheChaikinMoneyFlow);
 		}

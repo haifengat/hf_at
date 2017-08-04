@@ -77,9 +77,9 @@ namespace HaiFeng
 		{
 			if (cacheAroonOscillator != null)
 				for (int idx = 0; idx < cacheAroonOscillator.Length; idx++)
-					if (cacheAroonOscillator[idx] != null && cacheAroonOscillator[idx].Period == period && cacheAroonOscillator[idx].EqualsInput(high, low))
+					if (cacheAroonOscillator[idx] != null && cacheAroonOscillator[idx].Period == period && cacheAroonOscillator[idx].High == high && cacheAroonOscillator[idx].Low == low && cacheAroonOscillator[idx].EqualsInput(close))
 						return cacheAroonOscillator[idx];
-			return CacheIndicator<AroonOscillator>(new AroonOscillator() { Period = period, High = high, Low = low, Input = close }, ref cacheAroonOscillator);
+			return CacheIndicator(new AroonOscillator() { Period = period, High = high, Low = low, Input = close }, ref cacheAroonOscillator);
 		}
 	}
 

@@ -20,7 +20,7 @@ namespace HaiFeng
 		{
 			Period = 14;
 
-			ema = EMA(Inputs[0], Period);
+			ema = EMA(Input, Period);
 			emaEma = EMA(ema.Value, Period);
 		}
 

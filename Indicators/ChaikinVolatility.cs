@@ -63,9 +63,10 @@ namespace HaiFeng
 		/// <returns></returns>
 		public ChaikinVolatility ChaikinVolatility(DataSeries high, DataSeries low, DataSeries close, int mAPeriod, int rOCPeriod)
 		{
+			var cat = cacheChaikinVolatility;
 			if (cacheChaikinVolatility != null)
 				for (int idx = 0; idx < cacheChaikinVolatility.Length; idx++)
-					if (cacheChaikinVolatility[idx] != null && cacheChaikinVolatility[idx].MAPeriod == mAPeriod && cacheChaikinVolatility[idx].ROCPeriod == rOCPeriod && cacheChaikinVolatility[idx].EqualsInput(high, low))
+					if (cacheChaikinVolatility[idx] != null && cacheChaikinVolatility[idx].MAPeriod == mAPeriod && cacheChaikinVolatility[idx].ROCPeriod == rOCPeriod && cat[idx].High == high && cat[idx].Low == low && cacheChaikinVolatility[idx].EqualsInput(close))
 						return cacheChaikinVolatility[idx];
 			return CacheIndicator<ChaikinVolatility>(new ChaikinVolatility() { MAPeriod = mAPeriod, ROCPeriod = rOCPeriod, High = high, Low = low, Input = close }, ref cacheChaikinVolatility);
 		}

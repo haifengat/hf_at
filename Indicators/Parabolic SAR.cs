@@ -221,9 +221,10 @@ namespace HaiFeng
 
 		public ParabolicSAR ParabolicSAR(DataSeries high, DataSeries low, DataSeries close, double acceleration, double accelerationMax, double accelerationStep)
 		{
+			var cat = cacheParabolicSAR;
 			if (cacheParabolicSAR != null)
 				for (int idx = 0; idx < cacheParabolicSAR.Length; idx++)
-					if (cacheParabolicSAR[idx] != null && cacheParabolicSAR[idx].Acceleration == acceleration && cacheParabolicSAR[idx].AccelerationMax == accelerationMax && cacheParabolicSAR[idx].AccelerationStep == accelerationStep && cacheParabolicSAR[idx].EqualsInput(high, low))
+					if (cacheParabolicSAR[idx] != null && cacheParabolicSAR[idx].Acceleration == acceleration && cacheParabolicSAR[idx].AccelerationMax == accelerationMax&& cat[idx].High==high&&cat[idx].Low==low && cacheParabolicSAR[idx].AccelerationStep == accelerationStep && cat[idx].High == high && cat[idx].Low == low && cacheParabolicSAR[idx].EqualsInput(close))
 						return cacheParabolicSAR[idx];
 			return CacheIndicator<ParabolicSAR>(new ParabolicSAR() { Acceleration = acceleration, AccelerationMax = accelerationMax, AccelerationStep = accelerationStep, High = high, Low = low, Input = close }, ref cacheParabolicSAR);
 		}

@@ -10,11 +10,11 @@ namespace HaiFeng
 	/// </summary>
 	public class OBV : Indicator
 	{
-		DataSeries Close, Volume;
+		DataSeries Close;
+		internal DataSeries Volume;
 		protected override void Init()
 		{
-			Close = Inputs[0];
-			Volume = Inputs[1];
+			Close = Input;
 		}
 
 		protected override void OnBarUpdate()
@@ -44,11 +44,12 @@ namespace HaiFeng
 
 		public OBV OBV(DataSeries close, DataSeries volume)
 		{
+			var cat = cacheOBV;
 			if (cacheOBV != null)
 				for (int idx = 0; idx < cacheOBV.Length; idx++)
-					if (cacheOBV[idx] != null && cacheOBV[idx].EqualsInput(close, volume))
+					if (cacheOBV[idx] != null && cat[idx].Volume==volume&& cacheOBV[idx].EqualsInput(close))
 						return cacheOBV[idx];
-			return CacheIndicator<OBV>(new OBV { Inputs = new[] { close, volume } }, ref cacheOBV);
+			return CacheIndicator<OBV>(new OBV {Volume=volume, Input=close}, ref cacheOBV);
 		}
 	}
 

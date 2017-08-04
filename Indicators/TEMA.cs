@@ -21,7 +21,7 @@ namespace HaiFeng
 		{
 			Period = 14;
 
-			ema1 = EMA(Inputs[0], Period);
+			ema1 = EMA(Input, Period);
 			ema2 = EMA(ema1.Value, Period);
 			ema3 = EMA(ema2.Value, Period);
 		}

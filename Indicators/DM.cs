@@ -122,9 +122,10 @@ namespace HaiFeng
 
 		public DM DM(DataSeries high, DataSeries low, DataSeries close, int period)
 		{
+			var cat = cacheDM;
 			if (cacheDM != null)
 				for (int idx = 0; idx < cacheDM.Length; idx++)
-					if (cacheDM[idx] != null && cacheDM[idx].Period == period && cacheDM[idx].EqualsInput(high, low, close))
+					if (cacheDM[idx] != null && cacheDM[idx].Period == period && cat[idx].High == high && cat[idx].Low == low && cacheDM[idx].EqualsInput(close))
 						return cacheDM[idx];
 			return CacheIndicator<DM>(new DM() { Period = period, High = high, Low = low, Input = close }, ref cacheDM);
 		}

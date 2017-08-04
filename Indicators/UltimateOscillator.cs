@@ -105,11 +105,12 @@ namespace HaiFeng
 
 		public UltimateOscillator UltimateOscillator(DataSeries high, DataSeries low, DataSeries close, int fast, int intermediate, int slow)
 		{
+			var cat = cacheUltimateOscillator;
 			if (cacheUltimateOscillator != null)
 				for (int idx = 0; idx < cacheUltimateOscillator.Length; idx++)
-					if (cacheUltimateOscillator[idx] != null && cacheUltimateOscillator[idx].Fast == fast && cacheUltimateOscillator[idx].Intermediate == intermediate && cacheUltimateOscillator[idx].Slow == slow && cacheUltimateOscillator[idx].EqualsInput(high, low, close))
+					if (cacheUltimateOscillator[idx] != null && cacheUltimateOscillator[idx].Fast == fast && cacheUltimateOscillator[idx].Intermediate == intermediate && cacheUltimateOscillator[idx].Slow == slow && cat[idx].High == high && cat[idx].Low == low && cacheUltimateOscillator[idx].EqualsInput(close))
 						return cacheUltimateOscillator[idx];
-			return CacheIndicator<UltimateOscillator>(new UltimateOscillator() { Fast = fast, Intermediate = intermediate, Slow = slow, High = high, Low = low, Input = close }, ref cacheUltimateOscillator);
+			return CacheIndicator(new UltimateOscillator() { Fast = fast, Intermediate = intermediate, Slow = slow, High = high, Low = low, Input = close }, ref cacheUltimateOscillator);
 		}
 	}
 

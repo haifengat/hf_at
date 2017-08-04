@@ -62,9 +62,10 @@ namespace HaiFeng
 		/// <returns></returns>
 		public ADL ADL(DataSeries high, DataSeries low, DataSeries close, DataSeries volume)
 		{
+			var cat = cacheADL;
 			if (cacheADL != null)
 				for (int idx = 0; idx < cacheADL.Length; idx++)
-					if (cacheADL[idx] != null && cacheADL[idx].EqualsInput(high, low, close, volume))
+					if (cacheADL[idx] != null && cat[idx].High == high && cat[idx].Low == low&&cat[idx].Volume==volume && cacheADL[idx].EqualsInput(close))
 						return cacheADL[idx];
 			return CacheIndicator<ADL>(new ADL { High = high, Low = low, Volume = volume, Input = close }, ref cacheADL);
 		}

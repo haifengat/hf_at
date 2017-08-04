@@ -120,9 +120,10 @@ namespace HaiFeng
 		/// <returns></returns>
 		public Aroon Aroon(DataSeries high, DataSeries low, DataSeries close, int period)
 		{
+			var cat = cacheAroon;
 			if (cacheAroon != null)
 				for (int idx = 0; idx < cacheAroon.Length; idx++)
-					if (cacheAroon[idx] != null && cacheAroon[idx].Period == period && cacheAroon[idx].EqualsInput(high, low))
+					if (cacheAroon[idx] != null && cacheAroon[idx].Period == period && cat[idx].High == high && cat[idx].Low == low && cacheAroon[idx].EqualsInput(close))
 						return cacheAroon[idx];
 			return CacheIndicator<Aroon>(new Aroon() { Period = period, High = high, Low = low, Input = close }, ref cacheAroon);
 		}

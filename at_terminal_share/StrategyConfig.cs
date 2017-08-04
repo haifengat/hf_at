@@ -7,7 +7,7 @@ namespace HaiFeng
     class StrategyConfig
     {
 		public string Name { get; set; }
-		public Type Type { get; set; }
+		public string TypeFullName { get; set; }
 		public string Instrument { get; set; }
 		public string InstrumentOrder { get; set; }
 		public string Interval { get; set; }
