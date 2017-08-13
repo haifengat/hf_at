@@ -30,8 +30,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			Period = 14;
-
 			tsf = TSF(Input, 0, Period);
 		}
 

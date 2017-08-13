@@ -23,8 +23,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			Period = 14;
-
 			priorSum = 0;
 			priorWsum = 0;
 			sum = 0;

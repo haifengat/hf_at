@@ -24,7 +24,6 @@ namespace HaiFeng
 		/// </summary>
 		protected override void Init()
 		{
-			Period = 14;
 		}
 
 		/// <summary>

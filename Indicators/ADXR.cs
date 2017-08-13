@@ -23,8 +23,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			Period = 14;
-			Interval = 10;
 			Close = Input;
 			adx = ADX(High, Low, Close, Period);
 		}

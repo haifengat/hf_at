@@ -39,7 +39,7 @@ namespace HaiFeng
 		public override void OnBarUpdate()
 		{
 			if (CurrentBar < Max(UpLine, DnLine)) return;
-
+			
 			var UpValue = ht[1];
 			var DnValue = lt[1];
 

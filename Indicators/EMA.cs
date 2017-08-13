@@ -22,7 +22,6 @@ namespace HaiFeng
 		/// </summary>
 		protected override void Init()
 		{
-			Period = 14;
 			constant1 = 2.0 / (1 + Period);
 			constant2 = 1 - (2.0 / (1 + Period));
 		}

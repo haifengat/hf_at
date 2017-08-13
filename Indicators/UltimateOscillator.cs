@@ -33,9 +33,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			Fast = 7;
-			Intermediate = 14;
-			Slow = 28;
 			Close = Input;
 
 			constant1 = Slow / Fast;

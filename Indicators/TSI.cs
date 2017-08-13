@@ -26,9 +26,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			Fast = 3;
-			Slow = 14;
-
 			constant1 = (2.0 / (1 + Slow));
 			constant2 = (1 - (2.0 / (1 + Slow)));
 			constant3 = (2.0 / (1 + Fast));

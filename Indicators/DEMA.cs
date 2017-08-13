@@ -18,8 +18,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			Period = 14;
-
 			ema = EMA(Input, Period);
 			emaEma = EMA(ema.Value, Period);
 		}

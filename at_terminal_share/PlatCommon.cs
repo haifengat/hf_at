@@ -113,7 +113,7 @@ namespace HaiFeng
 		private void _q_OnRspUserLogout(object sender, IntEventArgs e)
 		{
 			_dicTick000.Clear();
-			LogInfo("行情退出");
+			LogError($"行情断开,{e.Value,4}");
 		}
 
 		void quote_OnFrontConnected(object sender, EventArgs e)
@@ -150,7 +150,7 @@ namespace HaiFeng
 			}
 
 			_logTime = DateTime.Now;
-			LogInfo("connecting ...");
+			LogWarn("connecting ...");
 
 			_t = new TradeExt
 			{
@@ -162,12 +162,20 @@ namespace HaiFeng
 			_t.OnRspUserLogin += trade_OnRspUserLogin;
 			_t.OnRtnExchangeStatus += trade_OnRtnExchangeStatus;
 			//接口相关信息
-			_t.OnInfo += (msg) => LogInfo(msg);
-			_t.OnRspUserLogout += _t_OnRspUserLogout;
-			_t.OnRtnNotice += (snd, ea) => LogWarn($"重要提示: {ea.Value}");
+			_t.OnInfo += _t_OnInfo;
+			_t.OnRspUserLogout += trade_OnRspUserLogout;
+			_t.OnRtnNotice += _t_OnRtnNotice;
 
 			_t.ReqConnect(front);
 		}
+
+		private void _t_OnRtnNotice(object sender, StringEventArgs e)
+		{
+			LogWarn($"重要提示信息:\n{e.Value}");
+		}
+
+		private void _t_OnInfo(string msg) { LogWarn(msg); }
+
 
 		void trade_OnRtnExchangeStatus(object sender, StatusEventArgs e)
 		{
@@ -176,10 +184,9 @@ namespace HaiFeng
 
 		void trade_OnFrontConnected(object sender, EventArgs e)
 		{
-			LogDebug("连接成功");
 			var t = (TradeExt)sender;
 			t.ReqUserLogin(t.Investor, t.Password, t.Broker);
-			LogInfo("登录中 ...");
+			LogWarn("登录中 ...");
 		}
 
 		void _q_OnRtnTick(object sender, TickEventArgs e)

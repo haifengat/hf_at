@@ -27,7 +27,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			Period = 14;
 			Close = Input;
 
 			dmMinus = new DataSeries(this.Input);

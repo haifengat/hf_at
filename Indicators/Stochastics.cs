@@ -30,9 +30,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			PeriodD = 7;
-			PeriodK = 14;
-			Smooth = 3;
 			Close = Input;
 
 			den = new DataSeries(Input);

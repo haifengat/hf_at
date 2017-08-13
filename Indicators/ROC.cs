@@ -15,7 +15,6 @@ namespace HaiFeng
 	{
 		protected override void Init()
 		{
-			Period = 14;
 		}
 
 		protected override void OnBarUpdate()

@@ -28,8 +28,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			PeriodD = 3;
-			PeriodK = 14;
 			Close = Input;
 
 			den = new DataSeries(Input);

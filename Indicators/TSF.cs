@@ -32,9 +32,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			Period = 14;
-			Forecast = 3;
-
 			avg = divisor = intercept = myPeriod = priorSumXY = priorSumY = slope = sumX = sumX2 = sumY = sumXY = 0;
 
 			sum = SUM(Input, Period);

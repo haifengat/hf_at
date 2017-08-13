@@ -25,9 +25,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			Smoothing = 14;
-			VolumeDivisor = 10000;
-
 			Median = new DataSeries(Input);
 
 			emv = new DataSeries(Input);

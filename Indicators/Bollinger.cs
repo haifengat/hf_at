@@ -23,7 +23,6 @@ namespace HaiFeng
 		protected override void Init()
 		{
 			NumStdDev = 2;
-			Period = 14;
 			sma = SMA(Input, Period);
 			stdDev = StdDev(Input, Period);
 		}

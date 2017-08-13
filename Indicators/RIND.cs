@@ -29,8 +29,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			PeriodQ = 3;
-			Smooth = 10;
 			Close = Input;
 
 			stochRange = new DataSeries(Input);

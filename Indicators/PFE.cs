@@ -22,9 +22,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			Period = 14;
-			Smooth = 10;
-
 			div = new DataSeries(Input);
 			pfeSeries = new DataSeries(Input);
 			singlePfeSeries = new DataSeries(Input);

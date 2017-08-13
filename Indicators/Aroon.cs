@@ -29,8 +29,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			Period = 14;
-
 			runningMax = 0;
 			runningMaxBar = 0;
 			runningMin = 0;

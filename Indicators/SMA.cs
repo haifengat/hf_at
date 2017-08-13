@@ -17,7 +17,6 @@ namespace HaiFeng
 		/// </summary>
 		protected override void Init()
 		{
-			Period = 14;
 		}
 
 		/// <summary>
@@ -45,7 +44,7 @@ namespace HaiFeng
 		/// </summary>
 		[Range(1, int.MaxValue)]
 		[Parameter("Period", "Parameters")]
-		public int Period { get; set; }
+		public int Period { get; set; } = 14;
 		#endregion
 	}
 

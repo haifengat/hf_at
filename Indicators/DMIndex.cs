@@ -21,7 +21,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			Smooth = 3;
 			stdDev = StdDev(this.Input, 5);
 			sma = SMA(stdDev.Value, 10);
 		}

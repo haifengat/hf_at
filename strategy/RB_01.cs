@@ -27,6 +27,9 @@ namespace HaiFeng
 			lt = Lowest(L, DnLine);
 		}
 
+		/* 这是一个
+		  多行注释的
+		  例子	 */
 		public override void OnBarUpdate()
 		{
 			if (CurrentBar < Max(UpLine, DnLine)) return;

@@ -21,7 +21,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			Smooth = 14;
 			Close = Input;
 			bop = new DataSeries(this.Input);
 			sma = SMA(bop, Smooth);

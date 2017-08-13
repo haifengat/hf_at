@@ -22,7 +22,6 @@ namespace HaiFeng
 		/// </summary>
 		protected override void Init()
 		{
-			Period = 14;
 			sumSeries = new DataSeries(this.Input);
 		}
 

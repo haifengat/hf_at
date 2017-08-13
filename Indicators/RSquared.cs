@@ -27,8 +27,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			Period = 8;
-
 			priorSumXY = priorSumY = priorSumY2 = sumX = sumXY = sumX2 = sumY2 = denominator = 0;
 		}
 

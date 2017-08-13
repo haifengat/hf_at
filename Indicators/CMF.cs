@@ -22,7 +22,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			Period = 21;
 			Close = Input;
 
 			moneyFlow = new DataSeries(this.Input);

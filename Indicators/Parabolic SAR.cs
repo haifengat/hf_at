@@ -33,10 +33,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			Acceleration = 0.02;
-			AccelerationStep = 0.02;
-			AccelerationMax = 0.2;
-
 			xp = 0.0;
 			af = 0;
 			todaySAR = 0;

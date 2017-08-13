@@ -20,8 +20,10 @@ namespace DataCenter
 		public List<string> TradeDates = new List<string>();
 		public ConcurrentDictionary<string, Product> ProductInfo = new ConcurrentDictionary<string, Product>();
 		public ConcurrentDictionary<string, Instrument> InstrumentInfo = new ConcurrentDictionary<string, Instrument>();
+		public ConcurrentDictionary<string, string> Instrument888 = new ConcurrentDictionary<string, string>();
+
 		private ConcurrentDictionary<string, WorkingTime> _workingTimes = new ConcurrentDictionary<string, WorkingTime>();
-		ConcurrentDictionary<string, MinList> _dicProcMinList = new ConcurrentDictionary<string, MinList>();
+		private ConcurrentDictionary<string, MinList> _dicProcMinList = new ConcurrentDictionary<string, MinList>();
 		string _host;
 		int _port;
 
@@ -55,14 +57,21 @@ namespace DataCenter
 
 		public void UpdateInfo()
 		{
-			foreach (var g in QueryTime().GroupBy(n => n.GroupId))
-				_workingTimes[g.Key] = g.OrderByDescending(n => n.OpenDate).First();
-			foreach (var v in QueryProduct())
-				ProductInfo[v._id] = v;
-			foreach (var v in QueryInstrumentInfo())
-				InstrumentInfo[v._id] = v;
 			TradeDates = QueryDate();
 
+			foreach (var g in QueryTime().GroupBy(n => n.GroupId))
+				_workingTimes[g.Key] = g.OrderByDescending(n => n.OpenDate).First();
+
+			foreach (var v in QueryProduct())
+				ProductInfo[v._id] = v;
+
+			foreach (var v in QueryInstrumentInfo())
+				InstrumentInfo[v._id] = v;
+
+			foreach (var v in QueryInstrument888())
+				Instrument888[v._id.TrimEnd('8')] = v.value;
+
+			//最后再处理minlist
 			foreach (var item in ProductInfo)
 			{
 				WorkingTime wt;
@@ -82,6 +91,7 @@ namespace DataCenter
 		{
 			return (List<Min>)Request(true, pInstrument, pBegin, pEnd);
 		}
+
 		public List<Min> QueryReal(string pInstrument)
 		{
 			return (List<Min>)Request(true, pInstrument, null, null);
@@ -154,6 +164,7 @@ namespace DataCenter
 			});
 			return JsonConvert.DeserializeObject<List<Product>>(msg);
 		}
+
 		/// <summary>
 		/// 查合约信息
 		/// </summary>
@@ -195,18 +206,13 @@ namespace DataCenter
 			return list;
 		}
 
-		/// <summary>
-		/// 查合约
-		/// </summary>
-		/// <returns></returns>
-		List<string> QueryInstrument()
+		List<Instrument888> QueryInstrument888()
 		{
 			var msg = SendAndReceive(new ReqPackage
 			{
-				Type = BarType.Instrument,
+				Type = BarType.Instrumet888,
 			});
-			var list = JsonConvert.DeserializeObject<List<string>>(msg);
-			list.Sort();
+			var list = JsonConvert.DeserializeObject<List<Instrument888>>(msg);
 			return list;
 		}
 

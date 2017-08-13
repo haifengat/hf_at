@@ -25,9 +25,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			Period = 14;
-			Smooth = 3;
-
 			constant1 = 2.0 / (1 + Smooth);
 			constant2 = (1 - (2.0 / (1 + Smooth)));
 			constant3 = (Period - 1);

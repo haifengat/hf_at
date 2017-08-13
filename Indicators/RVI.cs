@@ -30,7 +30,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			Period = 14;
 			savedCurrentBar = -1;
 			dnAvgH = dnAvgL = upAvgH = upAvgL = lastDnAvgH
 							= lastDnAvgL = lastUpAvgH = lastUpAvgL = 0;

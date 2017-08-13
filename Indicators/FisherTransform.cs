@@ -20,9 +20,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			Period = 10;
-			PriceTick = 1;
-
 			max = Highest(Input, Period);
 			min = Lowest(Input, Period);
 			tmpSeries = new DataSeries(Input);

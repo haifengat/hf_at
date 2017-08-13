@@ -55,9 +55,9 @@ namespace HaiFeng
 		private bool _offline = false; //是否为脱机模式登录
 		private string _tradingDay;
 
-		private void _t_OnRspUserLogout(object sender, IntEventArgs e)
+		private void trade_OnRspUserLogout(object sender, IntEventArgs e)
 		{
-			LogDebug($"断开,{e.Value,4}");
+			LogError($"交易接口断开,{e.Value,4}");
 			this.Invoke(new Action(() =>
 			{
 				this.pictureBox1.Image = Properties.Resources.Close;
@@ -111,6 +111,7 @@ namespace HaiFeng
 					File.WriteAllText("login.ini", _t.Investor + "@" + this.comboBoxServer.Text);
 					InitControls();
 				}));
+				LogWarn("行情登录成功");
 			}
 		}
 
@@ -122,8 +123,18 @@ namespace HaiFeng
 			var listInst = _dataProcess.InstrumentInfo.Select(n => n.Key).ToList();
 			listInst.Sort();
 			this.comboBoxInst.Items.AddRange(listInst.ToArray());
+
 			this.comboBoxInst.SelectedIndexChanged += ComboBoxInst_SelectedIndexChanged;
-			this.comboBoxInstOrder.Items.AddRange(listInst.ToArray());
+			for (int i = 0; i < listInst.Count; i++)
+			{
+				if (listInst[i].EndsWith("000"))
+				{
+					listInst.RemoveAt(i);
+					i--;
+				}
+			}
+			this.comboBoxInstOrder.Items.AddRange(listInst.ToArray());//添加没有000结尾的合约
+
 			foreach (DataGridViewColumn col in this.DataGridViewStrategies.Columns)
 				if (col.Name != "Order")
 					col.ReadOnly = true;
@@ -134,6 +145,18 @@ namespace HaiFeng
 
 			LoadConfig();
 			LoadStrategy();
+
+			//非主力合约作为委托合约,提醒
+			string instpass = "";
+			foreach (DataGridViewRow row in this.DataGridViewStrategies.Rows)
+			{
+				var instord = (string)row.Cells["InstrumentOrder"].Value;
+				var list888 = _dataProcess.Instrument888.Values.ToList();
+				if (list888.IndexOf(instord) < 0)
+					instpass += instord + ",";
+			}
+			if (!string.IsNullOrEmpty(instpass))
+				MessageBox.Show($"{instpass.TrimEnd(',')} 非主力合约,请确认是否进行合约迁移.");
 
 			if (!_offline)
 			{
@@ -155,11 +178,18 @@ namespace HaiFeng
 			this.numericUpDownReorder.DataBindings.Add("Value", _cfg.FloConfig, "NotFirstAddticks", false, DataSourceUpdateMode.OnPropertyChanged);
 			this.numericUpDownTimes.DataBindings.Add("Value", _cfg.FloConfig, "FollowTimes", false, DataSourceUpdateMode.OnPropertyChanged);
 		}
-		
+
 		private void ComboBoxInst_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (string.IsNullOrEmpty(this.comboBoxInstOrder.Text))
-				this.comboBoxInstOrder.Text = ((ComboBox)sender).Text;
+			var inst = ((ComboBox)sender).Text;
+			if (inst.EndsWith("000"))
+			{
+				string inst888;
+				if (_dataProcess.Instrument888.TryGetValue(inst.TrimEnd('0'), out inst888))
+					this.comboBoxInstOrder.Text = inst888;
+			}
+			else
+				this.comboBoxInstOrder.Text = inst;
 		}
 
 		//登录
@@ -179,7 +209,7 @@ namespace HaiFeng
 			_offline = true;
 			this.toolTip1.SetToolTip(this.ComboBoxType, "策略文件(dll)放置在(./strategies)目录中.");
 			this.toolTip1.Show("策略文件(dll)放置在(./strategies)目录中.", this.ComboBoxType, 6000);
-			LogInfo("脱机模式启动平台");
+			LogWarn("脱机模式启动平台");
 			InitControls();
 		}
 
@@ -193,7 +223,7 @@ namespace HaiFeng
 			Strategy stra = (Strategy)Activator.CreateInstance((Type)this.ComboBoxType.SelectedItem);
 
 			//参数配置,20170307:弹出窗口
-			if (stra.GetParams().Split(',').Length > 1)
+			if (stra.GetParams().Trim('(', ')').Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Length >= 1)
 				using (FormParams fp = new FormParams())
 				{
 					//参数配置
@@ -376,7 +406,7 @@ namespace HaiFeng
 			var end = row.Cells["EndDate"].Value == null ? DateTime.Today.AddDays(7).ToString("yyyyMMdd") : ((DateTime)row.Cells["EndDate"].Value).AddDays(1).ToString("yyyyMMdd");
 
 			this.DataGridViewStrategies.Rows[rid].Cells["Loaded"].Value = "加载中...";
-			
+
 			Data data = new Data
 			{
 				Interval = int.Parse(interval.Split(' ')[1]),
@@ -464,7 +494,7 @@ namespace HaiFeng
 				}
 			}
 			LogInfo($"{stra.Name,8},策略加载数据完成.");
-			
+
 			this.DataGridViewStrategies.Rows[rid].Cells["Loaded"].Value = "已加载";
 			this.DataGridViewStrategies.Rows[rid].Cells["TickLoad"].Value = "已加载";
 

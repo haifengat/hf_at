@@ -46,9 +46,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			Fast = 3;
-			Slow = 10;
-
 			Close = Input;
 
 			cummulative = new DataSeries(this.Input);

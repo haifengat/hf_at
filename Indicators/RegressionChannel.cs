@@ -22,9 +22,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			Period = 35;
-			Width = 2;
-
 			interceptSeries = new DataSeries(Input);
 			slopeSeries = new DataSeries(Input);
 			stdDeviationSeries = new DataSeries(Input);

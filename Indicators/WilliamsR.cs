@@ -21,7 +21,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			Period = 14;
 			Close = Input;
 
 			max = Highest(High, Period);

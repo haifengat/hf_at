@@ -30,7 +30,6 @@ namespace HaiFeng
 		{
 			Close = Input;
 
-			Period = 14;
 			dmPlus = new DataSeries(this.Input);
 			dmMinus = new DataSeries(this.Input);
 			sumDmPlus = new DataSeries(this.Input);
@@ -94,7 +93,7 @@ namespace HaiFeng
 		#region Properties
 		[Range(1, int.MaxValue)]
 		[Parameter("Period", "Parameters")]
-		public int Period { get; set; }
+		public int Period { get; set; } = 14;
 		#endregion
 	}
 

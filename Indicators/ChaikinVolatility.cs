@@ -22,8 +22,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			MAPeriod = 10;
-			ROCPeriod = 10;
 			Close = Input;
 
 			range = Range(High, Low, Close);

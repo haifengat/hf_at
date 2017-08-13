@@ -26,8 +26,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			Period = 10;
-			OffsetMultiplier = 1.5;
 			Close = Input;
 
 			Typical = new DataSeries(Input);

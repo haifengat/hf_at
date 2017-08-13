@@ -23,8 +23,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			Period = 14;
-
 			diffSeries = new DataSeries(Input);
 			wma1 = WMA(Input, (Period / 2));
 			wma2 = WMA(Input, Period);

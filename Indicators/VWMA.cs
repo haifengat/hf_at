@@ -23,7 +23,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			Period = 14;
 			volSum = new DataSeries(Input);
 		}
 

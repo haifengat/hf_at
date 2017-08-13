@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 
 namespace DataCenter
 {
-	enum BarType { Min, Day, Real, Time, Product, TradeDate, Instrument, InstrumentInfo }
+	enum BarType
+	{
+		Min, Day, Real, Time, Product, TradeDate, InstrumentInfo, Instrumet888
+	}
 
 
 	class ReqPackage
@@ -113,5 +116,16 @@ namespace DataCenter
 	{
 		public string _id;
 		public string ProductID;
+	}
+	/// <summary>
+	/// 主力合约信息
+	/// </summary>
+	public class Instrument888
+	{
+		/// <summary>
+		/// xx888
+		/// </summary>
+		public string _id;
+		public string value;
 	}
 }

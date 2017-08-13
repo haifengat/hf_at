@@ -163,12 +163,17 @@ namespace HaiFeng
 					pPrice += _floConfig.FirstAddTicks * (pDirection == DirectionType.Buy ? 1 : -1) * dif.PriceTick;
 				//限定在涨跌板范围内
 				MarketData f;
-				if (_q == null || !_q.DicTick.TryGetValue(pInstrument, out f))
+				if (_q == null)
+				{
+					ShowInfo("行情接口异常");
+					return -1;
+				}
+				if (!_q.DicTick.TryGetValue(pInstrument, out f))
 				{
 					_q.ReqSubscribeMarketData(pInstrument);
 					Thread.Sleep(200);
 				}
-				if (_q == null || !_q.DicTick.TryGetValue(pInstrument, out f))
+				if (_q.DicTick.TryGetValue(pInstrument, out f))
 					ShowInfo($"合约{pInstrument}无行情");
 				else
 					pPrice = Math.Max(f.LowerLimitPrice, Math.Min(f.UpperLimitPrice, pPrice));

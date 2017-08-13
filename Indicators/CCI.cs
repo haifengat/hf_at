@@ -22,7 +22,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			Period = 14;
 			Close = Input;
 			Typical = new DataSeries(this.Input);
 			sma = SMA(Typical, Period);

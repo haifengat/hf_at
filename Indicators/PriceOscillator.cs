@@ -21,10 +21,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			Fast = 12;
-			Slow = 26;
-			Smooth = 9;
-
 			smoothEma = new DataSeries(Input);
 			emaFast = EMA(Input, Fast);
 			emaSlow = EMA(Input, Slow);

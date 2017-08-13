@@ -22,10 +22,6 @@ namespace HaiFeng
 
 		protected override void Init()
 		{
-			EMA1 = 10;
-			EMA2 = 40;
-			Length = 5;
-
 			spread = new DataSeries(Input);
 			rs = new DataSeries(Input);
 			ema1 = EMA(Input, EMA1);
