@@ -72,28 +72,52 @@ namespace HaiFeng
 		/// <param name="begin"></param>
 		/// <param name="length"></param>
 		/// <returns></returns>
-		public double Highest(int begin, int length) { return this.Where((n, idx) => idx <= Count - 1 - begin && idx > Count - 1 - begin - length).Max(); }
+		public double Highest(int begin, int length)
+		{
+			double rtn = double.MinValue;
+			for (int i = begin; i < begin + length && i < Count; i++)
+				rtn = Math.Max(rtn, this[i]);
+			return rtn;
+		}
 		/// <summary>
 		/// 取指定范围的最小值
 		/// </summary>
 		/// <param name="begin"></param>
 		/// <param name="length"></param>
 		/// <returns></returns>
-		public double Lowest(int begin, int length) { return this.Where((n, idx) => idx <= Count - 1 - begin && idx > Count - 1 - begin - length).Min(); }
+		public double Lowest(int begin, int length)
+		{
+			double rtn = double.MaxValue;
+			for (int i = begin; i < begin + length && i < Count; i++)
+				rtn = Math.Min(rtn, this[i]);
+			return rtn;
+		}
 		/// <summary>
 		/// 取指定范围的和
 		/// </summary>
 		/// <param name="begin"></param>
 		/// <param name="length"></param>
 		/// <returns></returns>
-		public double Sum(int begin, int length) { return this.Where((n, idx) => idx <= Count - 1 - begin && idx > Count - 1 - begin - length).Sum(); }
+		public double Sum(int begin, int length)
+		{
+			double rtn = 0;
+			for (int i = begin; i < begin + length && i < Count; i++)
+				rtn += this[i];
+			return rtn;
+		}
 		/// <summary>
 		/// 取指定范围的均值
 		/// </summary>
 		/// <param name="begin"></param>
 		/// <param name="length"></param>
 		/// <returns></returns>
-		public double Average(int begin, int length) { return this.Where((n, idx) => idx <= Count - 1 - begin && idx > Count - 1 - begin - length).Average(); }
+		public double Average(int begin, int length)
+		{
+			double rtn = 0;
+			for (int i = begin; i < begin + length && i < Count; i++)
+				rtn += this[i];
+			return rtn / length;
+		}
 		#endregion
 
 		private void _base_OnChanged(int pType, object pNew, object pOld)

@@ -21,6 +21,7 @@ namespace DataCenter
 		public ConcurrentDictionary<string, Product> ProductInfo = new ConcurrentDictionary<string, Product>();
 		public ConcurrentDictionary<string, Instrument> InstrumentInfo = new ConcurrentDictionary<string, Instrument>();
 		public ConcurrentDictionary<string, string> Instrument888 = new ConcurrentDictionary<string, string>();
+		public ConcurrentDictionary<string, double> Rate000 = new ConcurrentDictionary<string, double>();
 
 		private ConcurrentDictionary<string, WorkingTime> _workingTimes = new ConcurrentDictionary<string, WorkingTime>();
 		private ConcurrentDictionary<string, MinList> _dicProcMinList = new ConcurrentDictionary<string, MinList>();
@@ -58,7 +59,7 @@ namespace DataCenter
 		public void UpdateInfo()
 		{
 			TradeDates = QueryDate();
-
+			Rate000 = QueryRate000();//合约在000中的占比
 			foreach (var g in QueryTime().GroupBy(n => n.GroupId))
 				_workingTimes[g.Key] = g.OrderByDescending(n => n.OpenDate).First();
 
@@ -214,6 +215,15 @@ namespace DataCenter
 			});
 			var list = JsonConvert.DeserializeObject<List<Instrument888>>(msg);
 			return list;
+		}
+
+		ConcurrentDictionary<string, double> QueryRate000()
+		{
+			var msg = SendAndReceive(new ReqPackage
+			{
+				Type = BarType.Rate000
+			});
+			return JsonConvert.DeserializeObject<ConcurrentDictionary<string, double>>(msg);
 		}
 
 		//品种对应的交易时段内的分钟序列

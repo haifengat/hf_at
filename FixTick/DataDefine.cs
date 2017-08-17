@@ -9,7 +9,7 @@ namespace DataCenter
 {
 	enum BarType
 	{
-		Min, Day, Real, Time, Product, TradeDate, InstrumentInfo, Instrumet888
+		Min, Day, Real, Time, Product, TradeDate, InstrumentInfo, Instrumet888, Rate000
 	}
 
 

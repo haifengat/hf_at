@@ -263,7 +263,7 @@ namespace HaiFeng
 								drNew["平仓时间"] = operationCopy[i].Date;
 								drNew["平仓价格"] = operationCopy[i].Price;
 								drNew["手数"] = closeLots;
-								drNew["手续费"] = closeLots * ((crate.Item1 > 1 ? crate.Item1 : (operationCopy[iOpen].Price * crate.Item1)) + (crate.Item2 > 1 ? crate.Item2 : (operationCopy[i].Price * crate.Item2)));
+								drNew["手续费"] = closeLots * ((crate.Item1 > 1 ? crate.Item1 : (operationCopy[iOpen].Price * crate.Item1) * procInfo.VolumeMultiple) + (crate.Item2 > 1 ? crate.Item2 : (operationCopy[i].Price * crate.Item2) * procInfo.VolumeMultiple));
 								drNew["净利"] = (operationCopy[i].Price - operationCopy[iOpen].Price) * closeLots * procInfo.VolumeMultiple - (double)drNew["手续费"];
 
 								DataRow drLast = this.dtOperation.AsEnumerable().LastOrDefault();
@@ -324,7 +324,7 @@ namespace HaiFeng
 								drNew["平仓时间"] = operationCopy[i].Date;
 								drNew["平仓价格"] = operationCopy[i].Price;
 								drNew["手数"] = closeLots;
-								drNew["手续费"] = closeLots * ((crate.Item1 > 1 ? crate.Item1 : (operationCopy[iOpen].Price * crate.Item1)) + (crate.Item2 > 1 ? crate.Item2 : (operationCopy[i].Price * crate.Item2)));
+								drNew["手续费"] = closeLots * ((crate.Item1 > 1 ? crate.Item1 : (operationCopy[iOpen].Price * crate.Item1 * procInfo.VolumeMultiple)) + (crate.Item2 > 1 ? crate.Item2 : (operationCopy[i].Price * crate.Item2 * procInfo.VolumeMultiple)));
 								drNew["净利"] = -(operationCopy[i].Price - operationCopy[iOpen].Price) * closeLots * procInfo.VolumeMultiple - (double)drNew["手续费"];
 								DataRow drLast = this.dtOperation.AsEnumerable().LastOrDefault();
 								if (drLast == null)

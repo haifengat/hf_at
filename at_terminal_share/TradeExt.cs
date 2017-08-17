@@ -17,9 +17,6 @@ namespace HaiFeng
 
 		public TradeExt()
 		{
-			this.OnFrontConnected += TradeExt_OnFrontConnected;
-			this.OnRspUserLogout += TradeExt_OnRspUserLogout;
-
 			this.OnRtnOrder += TradeExt_OnRtnOrder1;
 			this.OnRtnCancel += TradeExt_OnRtnCancel1;
 			//this.OnRtnTrade += (snd, e) =>
@@ -29,16 +26,6 @@ namespace HaiFeng
 			this.OnRtnErrOrder += TradeExt_OnRtnErrOrder1;
 
 			this.OnRtnExchangeStatus += TradeExt_OnRtnExchangeStatus;
-		}
-
-		private void TradeExt_OnRspUserLogout(object sender, IntEventArgs e)
-		{
-			ShowInfo($"logout:{e.Value}");
-		}
-
-		private void TradeExt_OnFrontConnected(object sender, EventArgs e)
-		{
-			ShowInfo("connected.");
 		}
 
 		private void TradeExt_OnRtnExchangeStatus(object sender, StatusEventArgs e)
@@ -173,10 +160,13 @@ namespace HaiFeng
 					_q.ReqSubscribeMarketData(pInstrument);
 					Thread.Sleep(200);
 				}
-				if (_q.DicTick.TryGetValue(pInstrument, out f))
+				if (!_q.DicTick.TryGetValue(pInstrument, out f))
+				{
 					ShowInfo($"合约{pInstrument}无行情");
-				else
-					pPrice = Math.Max(f.LowerLimitPrice, Math.Min(f.UpperLimitPrice, pPrice));
+					return -1;
+				}
+
+				pPrice = Math.Max(f.LowerLimitPrice, Math.Min(f.UpperLimitPrice, pPrice));
 				//下单前修正价格为最小变动的倍数
 				pPrice = (int)(pPrice / dif.PriceTick) * dif.PriceTick;
 
@@ -190,7 +180,6 @@ namespace HaiFeng
 			}
 			return base.ReqOrderInsert(pInstrument, pDirection, pOffset, pPrice, pVolume, pCustom, pType, pHedge);
 		}
-
 
 		private Quote _q = null;
 

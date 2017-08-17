@@ -32,7 +32,7 @@ namespace HaiFeng
 			//解除事件绑定及现场清理
 			_timer.Stop();
 			if (_q != null)
-				_q.OnRtnTick -= _q_OnRtnTick;
+				_q.OnRtnTick -= quote_OnRtnTick;
 			base.OnHandleDestroyed(e);
 		}
 
@@ -54,66 +54,7 @@ namespace HaiFeng
 		private List<string> _tradingDate;
 		private bool _offline = false; //是否为脱机模式登录
 		private string _tradingDay;
-
-		private void trade_OnRspUserLogout(object sender, IntEventArgs e)
-		{
-			LogError($"交易接口断开,{e.Value,4}");
-			this.Invoke(new Action(() =>
-			{
-				this.pictureBox1.Image = Properties.Resources.Close;
-				this.toolTip1.SetToolTip(this.pictureBox1, "停止");
-				this.toolTip1.Show("停止.", this.pictureBox1, 6000);
-			}));
-		}
-
-		void trade_OnRspUserLogin(object sender, IntEventArgs e)
-		{
-			if (e.Value == 0)
-			{
-				LogWarn("登录成功.");
-				_tradingDay = ((Trade)sender).TradingDay;
-
-				if (!string.IsNullOrEmpty(fs[3]))
-					LoginQuote(fs[3].Split(','), fs[1], this.textBoxUser.Text, this.textBoxPwd.Text);
-
-				this.Invoke(new Action(() =>
-				{
-					this.pictureBox1.Image = Properties.Resources.Open;
-					this.toolTip1.SetToolTip(this.pictureBox1, "已连接");
-					//this.toolTip1.Show("已连接.", this.pictureBox1, 6000);
-
-					this.toolTip1.SetToolTip(this.ComboBoxType, "策略文件(dll)放置在(./strategies)目录中.");
-					this.toolTip1.Show("策略文件(dll)放置在(./strategies)目录中.", this.ComboBoxType, 6000);
-				}));
-			}
-			else
-			{
-				LogError("login error:" + e.Value);
-				_t.ReqUserLogout();
-				_t = null;
-				_q = null;
-			}
-		}
-
-		private void QuoteLogged()
-		{
-			//未登录过(多次登录时不处理)
-			if (this.panelLogin.Enabled)
-			{
-				//交易日历,需每年更新
-				_dataProcess.UpdateInfo();
-				_tradingDate = _dataProcess.TradeDates;
-				this.Invoke(new Action(() =>
-				{
-					this.panelLogin.Enabled = false;
-					Console.Title += $" ({textBoxUser.Text}@{comboBoxServer.Text})";
-					this.ParentForm.Text = Console.Title;
-					File.WriteAllText("login.ini", _t.Investor + "@" + this.comboBoxServer.Text);
-					InitControls();
-				}));
-				LogWarn("行情登录成功");
-			}
-		}
+		private List<string> _inst888 = null;
 
 		// 初始化控件&绑定
 		void InitControls()
@@ -147,12 +88,12 @@ namespace HaiFeng
 			LoadStrategy();
 
 			//非主力合约作为委托合约,提醒
+			_inst888 = _dataProcess.Instrument888.Values.ToList();
 			string instpass = "";
 			foreach (DataGridViewRow row in this.DataGridViewStrategies.Rows)
 			{
 				var instord = (string)row.Cells["InstrumentOrder"].Value;
-				var list888 = _dataProcess.Instrument888.Values.ToList();
-				if (list888.IndexOf(instord) < 0)
+				if (_inst888.IndexOf(instord) < 0)
 					instpass += instord + ",";
 			}
 			if (!string.IsNullOrEmpty(instpass))
@@ -276,6 +217,129 @@ namespace HaiFeng
 			LoadDataTick(rid);
 		}
 
+		//保存策略
+		void SaveStrategy()
+		{
+			List<StrategyConfig> list = new List<StrategyConfig>();
+			foreach (DataGridViewRow row in this.DataGridViewStrategies.Rows)
+			{//参数置于最后,避免参数中的','影响加载时分隔
+				Strategy stra;
+				if (!_dicStrategies.TryGetValue((string)row.Cells["StraName"].Value, out stra))
+					continue;
+				list.Add(new StrategyConfig
+				{
+					Name = stra.Name,
+					TypeFullName = stra.GetType().FullName,
+					Instrument = (string)row.Cells["Instrument"].Value,
+					InstrumentOrder = (string)row.Cells["InstrumentOrder"].Value,
+					Interval = (string)row.Cells["Interval"].Value,
+					BeginDate = (DateTime)row.Cells["BeginDate"].Value,
+					EndDate = (DateTime?)row.Cells["EndDate"].Value,
+					Params = (string)row.Cells["Param"].Value,
+				});
+			}
+			File.WriteAllText("strategies.cfg", JsonConvert.SerializeObject(list));
+		}
+
+		//加载保存的策略到列表里
+		void LoadStrategy()
+		{
+			if (File.Exists("strategies.cfg"))
+			{
+				var list = JsonConvert.DeserializeObject<List<StrategyConfig>>(File.ReadAllText("strategies.cfg"));
+				foreach (var sc in list)
+				{
+					Type straType = null;
+					//类型是否存在
+					foreach (Type t in this.ComboBoxType.Items)
+					{
+						if (t.FullName == sc.TypeFullName)
+						{
+							straType = t;
+							break;
+						}
+					}
+					if (straType == null)
+						continue;
+					Strategy stra = (Strategy)Activator.CreateInstance(straType);
+					//参数赋值
+					if (!string.IsNullOrEmpty(sc.Params.Trim('(', ')')))
+						foreach (var v in sc.Params.Trim('(', ')').Split(','))
+						{
+							stra.SetParameterValue(v.Split(':')[0], v.Split(':')[1]);
+						}
+
+					int rid = AddStra(stra, sc.Name, sc.Instrument, sc.InstrumentOrder, sc.Interval, sc.BeginDate, sc.EndDate);
+
+					LogInfo($"{stra.Name,8},读取策略 {(rid == -1 ? "出错" : "完成")}");
+				}
+			}
+		}
+
+		//加载/委托/报告/图显
+		private void DataGridViewStrategies_CellContentClick(object sender, DataGridViewCellEventArgs e)
+		{
+			if (e.ColumnIndex < 0 || e.RowIndex < 0)
+			{
+				return;
+			}
+
+			DataGridViewRow row = this.DataGridViewStrategies.Rows[e.RowIndex];
+			string name = (string)row.Cells["StraName"].Value;
+			Strategy stra;
+			if (_dicStrategies.TryGetValue(name, out stra))
+			{
+				var head = row.Cells[e.ColumnIndex].OwningColumn.Name;
+				this.DataGridViewStrategies.EndEdit();
+				if (head == "Order")
+				{
+					//勾选委托
+					if ((bool)this.DataGridViewStrategies[e.ColumnIndex, e.RowIndex].Value)
+						stra.EnableOrder = true; //可以发送委托
+					else
+						stra.EnableOrder = false;
+				}
+				else if (head == "report") //报告
+				{
+					if (stra.Operations == null || stra.Operations.Count == 0)
+						MessageBox.Show("策略无交易");
+					else
+						new FormTest(stra).Show();
+				}
+				else if (head == "Graphics") //报告
+				{
+					if (stra.Datas.Count == 0)
+						MessageBox.Show("策略无数据");
+					else
+						new FormWorkSpace(stra).Show();
+				}
+				else if (head == "Loaded") //加载
+				{
+					if (this.DataGridViewStrategies[e.ColumnIndex, e.RowIndex].Value == null || !this.DataGridViewStrategies[e.ColumnIndex, e.RowIndex].Value.Equals("已加载"))
+						LoadDataBar(e.RowIndex);
+				}
+				else if (head == "TickLoad")
+				{
+					if (this.DataGridViewStrategies[e.ColumnIndex, e.RowIndex].Value == null || !this.DataGridViewStrategies[e.ColumnIndex, e.RowIndex].Value.Equals("已加载"))
+						this.LoadDataTick(e.RowIndex);
+				}
+			}
+		}
+
+		//格式化时间字段
+		private void DataGridViewStrategies_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+		{
+			if (e.ColumnIndex < 0 || e.RowIndex < 0 || e.Value == null) return;
+
+			if (this.DataGridViewStrategies.Columns[e.ColumnIndex].HeaderText == "时间")
+			{
+				double val;
+				DateTime dt;
+				if (double.TryParse((string)e.Value, out val) && DateTime.TryParseExact(val.ToString("00000000.0000"), "yyyyMMdd.HHmm", null, DateTimeStyles.None, out dt))
+					e.Value = dt.ToString("yyyy/MM/dd HH:mm");
+			}
+		}
+
 		// 策略添加到表中,返回添加后的行号
 		private int AddStra(Strategy stra, string pName, string pInstrument, string pInstrumentOrder, string pInterval, DateTime pBegin, DateTime? pEnd)
 		{
@@ -342,7 +406,7 @@ namespace HaiFeng
 				List<string> insts = new List<string>();    //需要处理的合约
 				if (data.Instrument.EndsWith("000"))
 				{
-					_dicTick000[data.Instrument] = new Tick { InstrumentID = data.Instrument };//对于xx000需要先有数据保存
+					//_dicTick000[data.Instrument] = new Tick { InstrumentID = data.Instrument };//对于xx000需要先有数据保存
 					insts.AddRange(_dataProcess.InstrumentInfo.Where(n => n.Value.ProductID == _dataProcess.InstrumentInfo[data.Instrument].ProductID).Select(n => n.Key).ToArray());
 				}
 				else
@@ -381,7 +445,7 @@ namespace HaiFeng
 					foreach (var tick in list)
 					{
 						tick.UpdateTime = tick.UpdateTime.Split(' ')[1];
-						_q_OnRtnTick(null, new TickEventArgs { Tick = tick });
+						quote_OnRtnTick(null, new TickEventArgs { Tick = tick });
 						row.Cells["TickLoad"].Value = $"{++i}/{list.Count}";
 						Thread.Sleep(1);   //行情太快时由于多线程处理,造成bug
 					}
@@ -489,6 +553,7 @@ namespace HaiFeng
 				stra.EnableTick = true;
 				foreach (var v in stra.Datas)
 				{
+					LogInfo($"行情订阅:{v.Instrument}");
 					SubscribeInstrument(v.Instrument);
 					SubscribeInstrument(v.InstrumentOrder);
 				}
