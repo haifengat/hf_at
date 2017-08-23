@@ -600,6 +600,8 @@ namespace HaiFeng
 				//if (File.Exists(file))
 				LoadStrategyFile(file.FullName);
 			}
+			//本执行文件中的策略
+			LoadStrategyFile(Application.ExecutablePath);
 		}
 
 		void _timer_Tick(object sender, EventArgs e)

@@ -143,7 +143,7 @@ namespace HaiFeng
 
 				if (!string.IsNullOrEmpty(fs[3]))
 					LoginQuote(fs[3].Split(','), fs[1], this.textBoxUser.Text, this.textBoxPwd.Text);
-
+				
 				this.Invoke(new Action(() =>
 				{
 					this.pictureBox1.Image = Properties.Resources.Open;
@@ -170,9 +170,15 @@ namespace HaiFeng
 
 		private void trade_OnInfo(string msg) { LogWarn(msg); }
 
-
 		private void trade_OnRtnExchangeStatus(object sender, StatusEventArgs e)
 		{
+			//小节收盘时清除对应的指数000数据
+			if (e.Status == ExchangeStatusType.NoTrading)
+			{
+				var list = _dicTick000.Keys.Where(n => _t.DicInstrumentField.TryGetValue(n, out InstrumentField instinfo) && instinfo.ProductID == e.Exchange);
+				foreach (var inst in list)
+					_dicTick000.TryRemove(inst, out Tick tmp);
+			}
 			//ShowMsg(e.Exchange + "=>" + e.Status);
 		}
 
@@ -237,7 +243,6 @@ namespace HaiFeng
 			QuoteLogged();
 		}
 
-
 		private void QuoteLogged()
 		{
 			//未登录过(多次登录时不处理)
@@ -301,16 +306,16 @@ namespace HaiFeng
 			if (_inst888.IndexOf(tick.InstrumentID) >= 0)
 				if (Make000Double(tick, out Tick tick000))
 				{
-					foreach (var stra in _dicStrategies.Values)
-						if (stra.EnableTick)
-							foreach (var data in stra.Datas)
-								if (data.Instrument == tick000.InstrumentID)
-								{
-									if (sender == null)//tick回测
-										data.OnTick(tick000);
-									else
-										ThreadPool.QueueUserWorkItem((state) => data.OnTick(tick000));
-								}
+					Tick TickTmp = (Tick)tick000.Clone();//传递复制体,保证不会因数据修改造成bug
+					foreach (var stra in _dicStrategies.Values.Where(n => n.EnableTick))
+						foreach (var data in stra.Datas)
+							if (data.Instrument == TickTmp.InstrumentID)
+							{
+								if (sender == null)//tick回测
+									data.OnTick(TickTmp);
+								else
+									ThreadPool.QueueUserWorkItem((state) => data.OnTick(TickTmp));
+							}
 					tick000.UpdateTime = tick.UpdateTime;
 					tick000.UpdateMillisec = tick.UpdateMillisec;
 				}
@@ -328,10 +333,6 @@ namespace HaiFeng
 				UpdateTime = tick.UpdateTime,
 				UpdateMillisec = tick.UpdateMillisec,
 			});
-
-			//小节开盘=>旧数据不处理
-			if ((DateTime.ParseExact(tick.UpdateTime, "yyyyMMdd HH:mm:ss", null) - DateTime.ParseExact(tick000.UpdateTime, "yyyyMMdd HH:mm:ss", null)).TotalMinutes > 10)
-				_dicTick000.Clear();
 
 			//只处理rate中的合约
 			var ticks = _dicTick000.Where(n => _dataProcess.InstrumentInfo[n.Key].ProductID == proc && _dataProcess.Rate000.Keys.FirstOrDefault(m => m == n.Key) != null);

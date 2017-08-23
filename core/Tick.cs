@@ -5,16 +5,16 @@ namespace HaiFeng
 {
 	///深度行情
 	[StructLayout(LayoutKind.Sequential)]
-	public class Tick
+	public class Tick : ICloneable
 	{
 		/// <summary>
 		/// 合约代码
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-		public string InstrumentID;	//31
-		/// <summary>
-		/// 最新价
-		/// </summary>
+		public string InstrumentID; //31
+									/// <summary>
+									/// 最新价
+									/// </summary>
 		public double LastPrice;
 		/// <summary>
 		///申买价一
@@ -65,5 +65,30 @@ namespace HaiFeng
 		///跌停板价
 		/// </summary>
 		public double LowerLimitPrice;
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		public object Clone()
+		{
+			return new Tick
+			{
+				AskPrice = this.AskPrice,
+				AskVolume = this.AskVolume,
+				AveragePrice = this.AveragePrice,
+				BidPrice = this.BidPrice,
+				BidVolume = this.BidVolume,
+				InstrumentID = this.InstrumentID,
+				LastPrice = this.LastPrice,
+				LowerLimitPrice = this.LowerLimitPrice,
+				OpenInterest = this.OpenInterest,
+				TradingDay = this.TradingDay,
+				UpdateMillisec = this.UpdateMillisec,
+				UpdateTime = this.UpdateTime,
+				UpperLimitPrice = this.UpperLimitPrice,
+				Volume = this.Volume,
+			};
+		}
 	}
 }
