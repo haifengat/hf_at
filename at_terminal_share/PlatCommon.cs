@@ -143,7 +143,9 @@ namespace HaiFeng
 
 				if (!string.IsNullOrEmpty(fs[3]))
 					LoginQuote(fs[3].Split(','), fs[1], this.textBoxUser.Text, this.textBoxPwd.Text);
-				
+
+				A_.Trade = _t;	//赋值处理策略的A函数
+
 				this.Invoke(new Action(() =>
 				{
 					this.pictureBox1.Image = Properties.Resources.Open;
