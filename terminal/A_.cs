@@ -111,6 +111,8 @@ namespace HaiFeng
 		public static int A_SendOrder(this Strategy stra, DirectionType dire, OffsetType offset, double price, int lots)
 		{
 			if (Trade == null) return -1;
+			if (offset == OffsetType.Close && Trade.DicInstrumentField[stra.InstrumentID].ExchangeID == Exchange.SHFE)
+				return Trade.ClosePosi(stra.InstrumentID, dire == DirectionType.Buy ? DirectionType.Sell : DirectionType.Buy, price, lots);
 			return Trade.ReqOrderInsert(stra.InstrumentID, dire, offset, price, lots, int.Parse(stra.Name) * 100);
 		}
 
