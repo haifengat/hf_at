@@ -37,7 +37,11 @@ namespace HaiFeng
 		/// <returns></returns>
 		public static PositionField A_BuyPosition(this Strategy stra)
 		{
-			return Trade != null & Trade.DicPositionField.TryGetValue($"{stra.InstrumentID}_Buy", out PositionField posi) ? posi : null;
+			return Trade != null & Trade.DicPositionField.TryGetValue($"{stra.InstrumentID}_Buy", out PositionField posi) ? posi : new PositionField
+			{
+				Direction = DirectionType.Buy,
+				InstrumentID = stra.InstrumentID,
+			};
 		}
 
 		/// <summary>
@@ -47,7 +51,11 @@ namespace HaiFeng
 		/// <returns></returns>
 		public static PositionField A_SellPosition(this Strategy stra)
 		{
-			return Trade != null & Trade.DicPositionField.TryGetValue($"{stra.InstrumentID}_Sell", out PositionField posi) ? posi : null;
+			return Trade != null & Trade.DicPositionField.TryGetValue($"{stra.InstrumentID}_Sell", out PositionField posi) ? posi : new PositionField
+			{
+				Direction = DirectionType.Sell,
+				InstrumentID = stra.InstrumentID,
+			};
 		}
 
 		/// <summary>
