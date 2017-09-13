@@ -499,7 +499,7 @@ namespace HaiFeng
 			this.DataGridViewStrategies.Refresh();
 
 			List<Bar> bars = null;
-			if (data.IntervalType == EnumIntervalType.Min || data.IntervalType == EnumIntervalType.Hour)
+			if (data.IntervalType != EnumIntervalType.Sec)// == EnumIntervalType.Min || data.IntervalType == EnumIntervalType.Hour)
 			{
 				bars = _dataProcess.QueryMin(inst, begin, end).Select(n => new Bar
 				{
@@ -531,17 +531,17 @@ namespace HaiFeng
 						}).ToList());
 				}
 			}
-			else //取日线数据
-				bars = _dataProcess.QueryDay(inst, begin, end).Select(n => new Bar
-				{
-					D = DateTime.ParseExact(n._id, "yyyyMMdd", null),
-					O = n.Open,
-					H = n.High,
-					L = n.Low,
-					C = n.Close,
-					V = n.Volume,
-					I = n.OpenInterest
-				}).ToList();
+			//else //取日线数据
+			//	bars = _dataProcess.QueryDay(inst, begin, end).Select(n => new Bar
+			//	{
+			//		D = DateTime.ParseExact(n._id, "yyyyMMdd", null),
+			//		O = n.Open,
+			//		H = n.High,
+			//		L = n.Low,
+			//		C = n.Close,
+			//		V = n.Volume,
+			//		I = n.OpenInterest
+			//	}).ToList();
 
 			//=>初始化策略/回测
 			stra.Init(data);

@@ -36,7 +36,7 @@ namespace HaiFeng
 			//初始时同步
 			foreach (var v in _base)
 				this.Add(v);
-			_base.OnChanging += _base_OnChanged;
+			_base.OnChanging += _base_OnChanging;
 		}
 
 		/// <summary>
@@ -120,7 +120,7 @@ namespace HaiFeng
 		}
 		#endregion
 
-		private void _base_OnChanged(int pType, object pNew, object pOld)
+		private void _base_OnChanging(int pType, object pNew, object pOld)
 		{
 			if (pType == 1) //增加
 			{
