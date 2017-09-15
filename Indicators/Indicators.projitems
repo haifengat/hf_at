@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>7b3cc254-3728-4dfb-9935-5387de6ab4a8</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>HaiFeng</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ADL.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ADX.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ADXR.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Aroon.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AroonOscillator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ATR.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bollinger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BOP.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CCI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ChaikinVolatility.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CMF.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ChaikinOscillator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DEMA.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DM.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DMI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DMIndex.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Donchian Channel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DoubleStochastics.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EaseOfMovement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EMA.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FisherTransform.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FOSC.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Highest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)HMA.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KeltnerChannel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Lowest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MACD.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MFI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Range.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RSI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SMA.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StdDev.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SUM.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TSF.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UpperPeriod.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)VWMA.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WMA.cs" />
+  </ItemGroup>
+</Project>

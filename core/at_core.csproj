@@ -88,6 +88,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Microsoft.CSharp" />
@@ -96,7 +97,8 @@
   <ItemGroup>
     <Compile Include="Bar.cs" />
     <Compile Include="CustomTypeDescriptor.cs" />
-    <Compile Include="Data.cs" />
+    <Compile Include="Dele.cs" />
+    <Compile Include="DoubleExtension.cs" />
     <Compile Include="Enum.cs" />
     <Compile Include="Indicator.cs" />
     <Compile Include="InstrumentInfo.cs" />
@@ -104,11 +106,11 @@
     <Compile Include="ParameterAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Strategy.cs" />
-    <Compile Include="StrategyData.cs" />
-    <Compile Include="StrategyExtTB.cs" />
+    <Compile Include="Data.cs" />
     <Compile Include="Tick.cs" />
     <Compile Include="DataSeries.cs" />
   </ItemGroup>
+  <Import Project="..\Indicators\Indicators.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>

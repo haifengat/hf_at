@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="GB2312" ?>
+<root>
+	<broker BrokerID="9999" BrokerName="模拟">
+		<Servers>
+			<Server>
+				<Name>sim</Name>
+				<Trading>
+                    			<item>180.168.146.187:10000</item>
+                		</Trading>
+                		<MarketData>
+                    			<item>180.168.146.187:10010</item>
+                		</MarketData>
+			</Server>
+		</Servers>
+	</broker>
+</root>

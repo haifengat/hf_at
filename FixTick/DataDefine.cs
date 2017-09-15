@@ -5,9 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HaiFeng
+namespace DataCenter
 {
-	enum BarType { Min, Day, Real, Time, Product, TradeDate }
+	enum BarType { Min, Day, Real, Time, Product, TradeDate, Instrument, InstrumentInfo }
+
 
 	class ReqPackage
 	{
@@ -104,5 +105,13 @@ namespace HaiFeng
 		{
 			return (TimeRange)MemberwiseClone();
 		}
+	}
+	/// <summary>
+	/// 合约信息
+	/// </summary>
+	public class Instrument
+	{
+		public string _id;
+		public string ProductID;
 	}
 }

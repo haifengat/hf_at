@@ -32,7 +32,7 @@
 	}
 
 	/// <summary>
-	/// 	时间类型
+	/// 时间类型
 	/// </summary>
 	public enum EnumIntervalType
 	{
@@ -42,32 +42,32 @@
 		Sec,
 
 		/// <summary>
-		/// 	分
+		/// 分
 		/// </summary>
 		Min,
 
 		/// <summary>
-		/// 	时
+		/// 时
 		/// </summary>
 		Hour,
 
 		/// <summary>
-		/// 	日
+		/// 日
 		/// </summary>
 		Day,
 
 		/// <summary>
-		/// 	周
+		/// 周
 		/// </summary>
 		Week,
 
 		/// <summary>
-		/// 	月
+		/// 月
 		/// </summary>
 		Month,
 
 		/// <summary>
-		/// 	年
+		/// 年
 		/// </summary>
 		Year,
 	}

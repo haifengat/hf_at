@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("ATTERMINAL")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Galaxy")]
+[assembly: AssemblyCompany("HaiFeng")]
 [assembly: AssemblyProduct("AtTerminal")]
-[assembly: AssemblyCopyright("Copyright © Galaxy 2015")]
+[assembly: AssemblyCopyright("Copyright © Galaxy 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

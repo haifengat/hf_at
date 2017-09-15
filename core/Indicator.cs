@@ -1,161 +1,152 @@
-﻿using System.Collections.Concurrent;
-
-#region
-
+﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
-#endregion
 
-using Numeric = System.Decimal;
 namespace HaiFeng
 {
 	/// <summary>
 	/// </summary>
-	public abstract class Indicator
+	public partial class Indicator
 	{
-		/// <summary>
-		/// 自定义指标中声明的 DataSeries
-		/// </summary>
-		public ConcurrentDictionary<string, DataSeries> CustomSeries = new ConcurrentDictionary<string, DataSeries>();
-
-		//K线数据:由Strategy赋值
-		internal DataSeries IndD,
-						   IndO,
-						   IndH,
-						   IndL,
-						   IndC,
-						   IndV,
-						   IndI,
-						   IndA;
+		DataSeries[] _inputs = new DataSeries[255];
+		DataSeries[] _values = new DataSeries[255];
+		int[] _periods = new int[255];
 
 		/// <summary>
-		/// 	输入序列
+		/// 新K线
 		/// </summary>
-		public DataSeries Input = null;
-
-
-		/// <summary>
-		/// 	参数数组
-		/// </summary>
-		public Numeric[] Periods = null;
+		public bool IsFirstTickOfBar = true;
 
 		/// <summary>
+		/// 
 		/// </summary>
-		public DataSeries Value = new DataSeries();
+		public Indicator() { this.Init(); }
 
 		/// <summary>
-		/// 每个tick只处理一次; 策略中被调用
+		/// 输入序列
 		/// </summary>
-		internal bool IsUpdated = false;
-
-		/// <summary>
-		/// </summary>
-		/// <param name="input"> </param>
-		/// <param name="periods"> </param>
-		protected Indicator(DataSeries input, params Numeric[] periods)
+		public DataSeries Input
 		{
-			this.Input = input;
-			this.Periods = periods;
-			foreach (var fieldInfo in GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static))
+			get
 			{
-				if (fieldInfo.FieldType != typeof(DataSeries) || new List<string>(new[] { "d", "o", "h", "l", "c", "v", "i", "a", "input", "Input" }).IndexOf(fieldInfo.Name) >= 0)
+				return _inputs[0];
+			}
+			set
+			{
+				_inputs[0] = value;
+				for (int i = 0; i < _values.Length; i++)
+					_values[i] = new DataSeries(value);     //所有输出序列与values[0]同步,如需更改可在指标中用dataseries(xxx)
+				foreach (var ipt in _inputs)//输入序列有变化:执行OnBarUpdate
 				{
-					continue;
+					if (ipt == null) break;
+					ipt.OnChanged += input_OnChanged; //每个输入序列变化都会被执行
 				}
-				DataSeries s = (DataSeries)fieldInfo.GetValue(this);
-				if (s == null)
-				{
-					fieldInfo.SetValue(this, new DataSeries());
-					s = (DataSeries)fieldInfo.GetValue(this);
-				}
-				this.CustomSeries[fieldInfo.Name] = s;
-				s.Idc = this;
+				//初始时调用
+				//20170729 此时原始数据序列为空不可以调用 this.OnBarUpdate();
 			}
 		}
 
+		private void input_OnChanged(int pType, object pNew, object pOld)
+		{
+			if (pType == 0 || pType == 1)
+			{
+				IsFirstTickOfBar = pType == 1; //1-添加; 0-更新; -1移除
+				this.OnBarUpdate();
+			}
+		}
+
+		/// <summary>
+		/// 输入多个序列
+		/// </summary>
+		public DataSeries[] Inputs
+		{
+			get
+			{
+				return _inputs;
+			}
+			set
+			{
+				_inputs = value;
+				Input = _inputs[0];//调用Input.set
+			}
+		}
+
+		/// <summary>
+		/// 输出序列
+		/// </summary>
+		public DataSeries Value
+		{
+			get { return _values[0]; }
+			set { _values[0] = value; }
+		}
+
+		/// <summary>
+		/// 输出序列
+		/// </summary>
+		public DataSeries[] Values
+		{
+			get { return _values; }
+			set { _values = value; }
+		}
+		
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="index"></param>
 		/// <returns></returns>
-		public Numeric this[int index] { get { return Value[index]; } set { Value[index] = value; } }
+		public double this[int index] { get { return Value[index]; } }
+
 
 		/// <summary>
-		/// 	取得参数组中的首个参数
+		/// 当前bar索引(0开始)
 		/// </summary>
-		protected int Period { get { return (int)this.Periods[0]; } }
+		protected int CurrentBar { get { return Math.Max(Input.Count - 1, 0); } }
 
 		/// <summary>
+		/// 输入序列数据点数量
 		/// </summary>
-		protected DataSeries Date { get { return this.IndD; } }
+		protected int Count { get { return Input.Count; } }
 
 		/// <summary>
+		/// 
 		/// </summary>
-		protected DataSeries High { get { return this.IndH; } }
-
-		/// <summary>
-		/// </summary>
-		protected DataSeries Low { get { return this.IndL; } }
-
-		/// <summary>
-		/// </summary>
-		protected DataSeries Open { get { return this.IndO; } }
-
-		/// <summary>
-		/// </summary>
-		protected DataSeries Close { get { return this.IndC; } }
-
-		/// <summary>
-		/// </summary>
-		protected DataSeries Volume { get { return this.IndV; } }
-
-		/// <summary>
-		/// </summary>
-		protected DataSeries OpenInterest { get { return this.IndI; } }
-
-		/// <summary>
-		/// </summary>
-		protected DataSeries Average { get { return this.IndA; } }
-
-		/// <summary>
-		/// 	当前bar索引(0开始)
-		/// </summary>
-		protected int CurrentBar { get { return this.IndD.Count - 1; } }
-
-		/// <summary>
-		/// 	输入序列数据点数量
-		/// </summary>
-		protected int Count { get { return this.IndD.Count; } }
-
-		/// <summary>
-		/// 	K线更新
-		/// </summary>
-		public abstract void OnBarUpdate();
-
-		/// <summary>
-		/// 处理数据同步及执行(根据是否同步过,判断是否再次执行)
-		/// </summary>
-		internal void update()
+		/// <typeparam name="Indicator"></typeparam>
+		/// <param name="idx"></param>
+		/// <param name="catchIdx"></param>
+		/// <returns></returns>
+		protected Indicator CacheIndicator<Indicator>(Indicator idx, ref Indicator[] catchIdx)
 		{
-			//是否同步过?已经执行:未执行
-			//2013.10.6 移至Strategy.indicator2False
-			//if (this.Input.Count > Value.Count)
-			//{
-			//	foreach (var s in this.CustomSeries)
-			//	{
-			//		while (s.Count < Input.Count)
-			//		{
-			//			s.Add(Input[0]);
-			//		}
-			//	}
-			//	//isUpdated = true;
-			//	//OnBarUpdate();
-			//}
-			if (!this.IsUpdated)
+			if (catchIdx == null)
+				catchIdx = new Indicator[] { idx };
+			else
 			{
-				this.IsUpdated = true;
-				OnBarUpdate();
+				var list = new List<Indicator>(catchIdx);
+				list.Add(idx);
+				catchIdx = list.ToArray();
 			}
+			return idx;
 		}
+
+		/// <summary>
+		/// 比较输入序列是否相同
+		/// </summary>
+		/// <param name="inputs"></param>
+		/// <returns></returns>
+		protected bool EqualsInput(params DataSeries[] inputs)
+		{
+			for (int i = 0; i < inputs.Length; i++)
+				if (inputs[i].Equals(Inputs[i]))
+					return false;
+			return true;
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		protected virtual void Init() { }
+
+		/// <summary>
+		/// K线更新
+		/// </summary>
+		protected virtual void OnBarUpdate() { }
 	}
 }

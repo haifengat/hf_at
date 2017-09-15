@@ -59,5 +59,67 @@ namespace HaiFeng.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap Close {
+            get {
+                object obj = ResourceManager.GetObject("Close", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似于 (Icon) 的 System.Drawing.Icon 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Icon HF {
+            get {
+                object obj = ResourceManager.GetObject("HF", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap Open {
+            get {
+                object obj = ResourceManager.GetObject("Open", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 &lt;?xml version=&quot;1.0&quot; encoding=&quot;GB2312&quot; ?&gt;
+        ///
+        ///&lt;root  UpgradeURL=&quot;http://upgrade.quick7.net/q7/yhqh/real/upgrade.xml&quot;&gt;
+        ///	&lt;broker BrokerID=&quot;9999&quot; BrokerName=&quot;模拟&quot;&gt;
+        ///		&lt;FloatProfitAlgorithm&gt;浮盈不计，浮亏计&lt;/FloatProfitAlgorithm&gt;		
+        ///		&lt;!--
+        ///			&quot;浮盈浮亏都计算&quot;;
+        ///			&quot;浮盈不计，浮亏计&quot;;
+        ///			&quot;浮盈计，浮亏不计&quot;;
+        ///			&quot;浮盈浮亏都不计算&quot;;
+        ///		--&gt;
+        ///		&lt;MarginAlgorithm&gt;按开仓价计算&lt;/MarginAlgorithm&gt;
+        ///		&lt;!--
+        ///			&quot;按前结算计算&quot;;
+        ///			&quot;按最新价计算&quot;;
+        ///			&quot;盘中按最新价计算, 盘后按结算价计算&quot;;
+        ///			&quot;按最新均价计算&quot;;
+        ///			&quot;按开仓价计算&quot;;
+        ///		--&gt;		
+        ///		&lt;IsDiscountCZCE&gt;1&lt;/IsDiscountCZCE&gt;		
+        ///		&lt;!--
+        ///			郑州组合是否优惠
+        ///		--&gt;		
+        /// [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// </summary>
+        internal static string simnow {
+            get {
+                return ResourceManager.GetString("simnow", resourceCulture);
+            }
+        }
     }
 }

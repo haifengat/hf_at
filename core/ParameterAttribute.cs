@@ -6,7 +6,7 @@ namespace HaiFeng
 
 	/// <summary>
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
+	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
 	public class ParameterAttribute : DescriptionAttribute
 	{
 		/// <summary>

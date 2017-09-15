@@ -78,7 +78,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>hf_galaxy.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\HF.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -86,9 +86,6 @@
   <ItemGroup>
     <Reference Include="AsyncIO">
       <HintPath>..\Resources\AsyncIO.dll</HintPath>
-    </Reference>
-    <Reference Include="hf_proxy">
-      <HintPath>..\Resources\hf_proxy.dll</HintPath>
     </Reference>
     <Reference Include="NetMQ">
       <HintPath>..\Resources\NetMQ.dll</HintPath>
@@ -98,6 +95,9 @@
     </Reference>
     <Reference Include="NLog">
       <HintPath>..\Resources\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="Proxy">
+      <HintPath>..\Resources\Proxy.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -111,25 +111,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormLogin.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormLogin.designer.cs">
-      <DependentUpon>FormLogin.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormTest.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormTest.designer.cs">
-      <DependentUpon>FormTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormWorkSpace.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormWorkSpace.designer.cs">
-      <DependentUpon>FormWorkSpace.cs</DependentUpon>
-    </Compile>
-    <Compile Include="HFLog.cs" />
     <Compile Include="Plat.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -143,18 +124,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="TradeExt.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="FormLogin.resx">
-      <DependentUpon>FormLogin.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormTest.resx">
-      <DependentUpon>FormTest.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormWorkSpace.resx">
-      <DependentUpon>FormWorkSpace.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Plat.resx">
       <DependentUpon>Plat.cs</DependentUpon>
     </EmbeddedResource>
@@ -164,9 +135,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="hf_galaxy.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
@@ -174,19 +142,32 @@
       <Project>{91cbef71-e159-455a-a052-688d3f2e9fa3}</Project>
       <Name>at_core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\strategy\at_strategy.csproj">
+      <Project>{dde7d0ac-2b70-4873-9381-77ff17d17f21}</Project>
+      <Name>at_strategy</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\" />
+    <None Include="Resources\HF.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Open.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\simnow.xml" />
   </ItemGroup>
   <Import Project="..\FixTick\FixTick.projitems" Label="Shared" />
+  <Import Project="..\at_terminal_share\at_terminal_share.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy $(ProjectDir)..\Resources $(TargetDir)
-@echo 复制Resources资源文件(包括NLog.ini) 到执行目录中</PostBuildEvent>
+    <PostBuildEvent>copy $(ProjectDir)..\Resources $(TargetDir)</PostBuildEvent>
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties Reactor_Deploy="0" Reactor_Output="&lt;AssemblyLocation&gt;\..\..\hf_plat_terminal\debug\&lt;AssemblyFileName&gt;" Reactor_Configuration="ALL" Reactor_Project="D:\haifeng_project\hf_plat_tb\hf_plat_core\hf_plat_core.nrproj" Reactor_Commands="" Reactor_Enabled="0" />
+      <UserProperties Reactor_Enabled="0" Reactor_Commands="" Reactor_Project="D:\haifeng_project\hf_plat_tb\hf_plat_core\hf_plat_core.nrproj" Reactor_Configuration="ALL" Reactor_Output="&lt;AssemblyLocation&gt;\..\..\hf_plat_terminal\debug\&lt;AssemblyFileName&gt;" Reactor_Deploy="0" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

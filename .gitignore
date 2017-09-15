@@ -162,3 +162,5 @@ SanPang01.cs
 obj/
 [Rr]elease*/
 [Tt]est[Rr]esult*
+packages*/
+.vs/haifeng_at/v15/sqlite3/storage.ide

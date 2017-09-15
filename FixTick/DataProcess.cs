@@ -1,35 +1,48 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Text;
+using NetMQ;
+using NetMQ.Sockets;
 using Newtonsoft.Json;
 
-namespace HaiFeng
+namespace DataCenter
 {
 	public class DataProcess
 	{
-		List<string> _tradeDates = new List<string>();
+		//交易日历
+		public List<string> TradeDates = new List<string>();
 		public ConcurrentDictionary<string, Product> ProductInfo = new ConcurrentDictionary<string, Product>();
+		public ConcurrentDictionary<string, Instrument> InstrumentInfo = new ConcurrentDictionary<string, Instrument>();
 		private ConcurrentDictionary<string, WorkingTime> _workingTimes = new ConcurrentDictionary<string, WorkingTime>();
 		ConcurrentDictionary<string, MinList> _dicProcMinList = new ConcurrentDictionary<string, MinList>();
-		GetData _getData = null;
+		string _host;
+		int _port;
 
 		public DataProcess(string host = "58.247.171.146", int port = 5055)
 		{
-			_getData = new GetData(host, port);
+			_host = host;
+			_port = port;
 			UpdateInfo();
 		}
 
-		public GetData GetData { get { return _getData; } }
 
-		public bool FixTick(MarketData tick, string tradingDay)
+		/// <summary>
+		/// 20170405期权上市后不能再用“去尾数字法”取合约的productid
+		/// </summary>
+		/// <param name="tick"></param>
+		/// <param name="tradingDay"></param>
+		/// <param name="proc"></param>
+		/// <returns></returns>
+		public bool FixTick(HaiFeng.Tick tick, string tradingDay, string proc)
 		{
-			var proc = new string(tick.InstrumentID.Where(c => !char.IsDigit(c)).ToArray());
-			var action = _tradeDates[_tradeDates.IndexOf(tradingDay) - 1];
+			var action = TradeDates[TradeDates.IndexOf(tradingDay) - 1];
 			DateTime dtTick;
 			if (_dicProcMinList[proc].FixMin(tick.UpdateTime, tick.UpdateMillisec, tradingDay, action, out dtTick))
 			{
@@ -40,13 +53,15 @@ namespace HaiFeng
 			return false;
 		}
 
-		private void UpdateInfo()
+		public void UpdateInfo()
 		{
-			foreach (var g in _getData.QueryTime().GroupBy(n => n.GroupId))
+			foreach (var g in QueryTime().GroupBy(n => n.GroupId))
 				_workingTimes[g.Key] = g.OrderByDescending(n => n.OpenDate).First();
-			foreach (var v in _getData.QueryProduct())
+			foreach (var v in QueryProduct())
 				ProductInfo[v._id] = v;
-			_tradeDates = _getData.QueryDate();
+			foreach (var v in QueryInstrumentInfo())
+				InstrumentInfo[v._id] = v;
+			TradeDates = QueryDate();
 
 			foreach (var item in ProductInfo)
 			{
@@ -56,6 +71,143 @@ namespace HaiFeng
 				_dicProcMinList[item.Key] = new MinList(wt);
 			}
 			Console.WriteLine("数据更新完成.");
+		}
+
+		public List<Day> QueryDay(string pInstrument, string pBegin, string pEnd)
+		{
+			return (List<Day>)Request(false, pInstrument, pBegin, pEnd);
+		}
+
+		public List<Min> QueryMin(string pInstrument, string pBegin, string pEnd)
+		{
+			return (List<Min>)Request(true, pInstrument, pBegin, pEnd);
+		}
+		public List<Min> QueryReal(string pInstrument)
+		{
+			return (List<Min>)Request(true, pInstrument, null, null);
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="pMin"></param>
+		/// <param name="pInstrument"></param>
+		/// <param name="pBegin">yyyyMMdd</param>
+		/// <param name="pEnd">yyyyMMdd不包含</param>
+		private IList Request(bool pMin, string pInstrument, string pBegin, string pEnd)
+		{
+			string msg = SendAndReceive(new ReqPackage
+			{
+				Type = pMin ? (pBegin == null ? BarType.Real : BarType.Min) : BarType.Day,
+				Instrument = pInstrument,
+				Begin = pBegin,
+				End = pEnd
+			});
+
+			IList bars;
+			if (pMin)
+				bars = JsonConvert.DeserializeObject<List<Min>>(msg);
+			else
+				bars = JsonConvert.DeserializeObject<List<Day>>(msg);
+			return bars;
+		}
+
+		private string SendAndReceive(ReqPackage r)
+		{
+			string msg = string.Empty;
+			using (var req = new RequestSocket($">tcp://{_host}:{_port}"))
+			{
+				req.SendFrame(JsonConvert.SerializeObject(r));
+				byte[] bs;
+				if (!req.TryReceiveFrameBytes(TimeSpan.FromSeconds(10), out bs))
+				{
+					throw new Exception($"服务端未开启 {_host}:{_port}");
+				}
+
+				using (MemoryStream ms = new MemoryStream(bs))
+				{
+					using (GZipStream zipStream = new GZipStream(ms, CompressionMode.Decompress))
+					{
+						byte[] bytes = new byte[1024];
+						var len = 0;
+						MemoryStream oms = new MemoryStream();
+						ms.Position = 0;
+						while ((len = zipStream.Read(bytes, 0, bytes.Length)) > 0)
+							oms.Write(bytes, 0, len);
+						zipStream.Close();
+						msg = Encoding.UTF8.GetString(oms.ToArray());
+					}
+				}
+			}
+			return msg;
+		}
+
+		/// <summary>
+		/// 获取品种信息(最小变动/合约乘数)
+		/// </summary>
+		/// <returns></returns>
+		List<Product> QueryProduct()
+		{
+			string msg = SendAndReceive(new ReqPackage
+			{
+				Type = BarType.Product
+			});
+			return JsonConvert.DeserializeObject<List<Product>>(msg);
+		}
+		/// <summary>
+		/// 查合约信息
+		/// </summary>
+		/// <returns></returns>
+		List<Instrument> QueryInstrumentInfo()
+		{
+			var msg = SendAndReceive(new ReqPackage
+			{
+				Type = BarType.InstrumentInfo,
+			});
+			return JsonConvert.DeserializeObject<List<Instrument>>(msg);
+		}
+
+		/// <summary>
+		/// 获取各品种交易时间
+		/// </summary>
+		/// <returns></returns>
+		List<WorkingTime> QueryTime()
+		{
+			string msg = SendAndReceive(new ReqPackage
+			{
+				Type = BarType.Time
+			});
+			return JsonConvert.DeserializeObject<List<WorkingTime>>(msg);
+		}
+
+		/// <summary>
+		/// 获取交易日历
+		/// </summary>
+		/// <returns></returns>
+		List<string> QueryDate()
+		{
+			var msg = SendAndReceive(new ReqPackage
+			{
+				Type = BarType.TradeDate
+			});
+			var list = JsonConvert.DeserializeObject<List<string>>(msg);
+			list.Sort();
+			return list;
+		}
+
+		/// <summary>
+		/// 查合约
+		/// </summary>
+		/// <returns></returns>
+		List<string> QueryInstrument()
+		{
+			var msg = SendAndReceive(new ReqPackage
+			{
+				Type = BarType.Instrument,
+			});
+			var list = JsonConvert.DeserializeObject<List<string>>(msg);
+			list.Sort();
+			return list;
 		}
 
 		//品种对应的交易时段内的分钟序列

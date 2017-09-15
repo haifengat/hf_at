@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "at_terminal", "terminal\at_terminal.csproj", "{AAF334E9-79AF-4702-8996-768EFBC4CEA2}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -14,10 +14,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "at_core", "core\at_core.csp
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FixTick", "FixTick\FixTick.shproj", "{4AE85C62-4BED-4635-9463-46DB7A7CDBFE}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "at_terminal_share", "at_terminal_share\at_terminal_share.shproj", "{7076A315-5DE7-43FE-A8E7-2618D16D6778}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Indicators", "Indicators\Indicators.shproj", "{7B3CC254-3728-4DFB-9935-5387DE6AB4A8}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		FixTick\FixTick.projitems*{aaf334e9-79af-4702-8996-768efbc4cea2}*SharedItemsImports = 4
 		FixTick\FixTick.projitems*{4ae85c62-4bed-4635-9463-46db7a7cdbfe}*SharedItemsImports = 13
+		at_terminal_share\at_terminal_share.projitems*{7076a315-5de7-43fe-a8e7-2618d16d6778}*SharedItemsImports = 13
+		Indicators\Indicators.projitems*{7b3cc254-3728-4dfb-9935-5387de6ab4a8}*SharedItemsImports = 13
+		Indicators\Indicators.projitems*{91cbef71-e159-455a-a052-688d3f2e9fa3}*SharedItemsImports = 4
+		at_terminal_share\at_terminal_share.projitems*{aaf334e9-79af-4702-8996-768efbc4cea2}*SharedItemsImports = 4
+		FixTick\FixTick.projitems*{aaf334e9-79af-4702-8996-768efbc4cea2}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -29,6 +29,6 @@ namespace HaiFeng
 		/// <summary>
 		/// 最小变动价位
 		/// </summary>
-		public Decimal PriceTick;
+		public double PriceTick;
 	}
 }

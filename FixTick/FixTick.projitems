@@ -11,6 +11,5 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)DataDefine.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataProcess.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)GetData.cs" />
   </ItemGroup>
 </Project>

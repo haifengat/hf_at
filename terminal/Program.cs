@@ -16,8 +16,8 @@ namespace HaiFeng
 		static void Main(string[] args)
 		{
 			_errLog = "err_" + Application.ProductName + ".log";
-
-			Console.Title = "AT  v" + Application.ProductVersion;
+			var ver = new Version(Application.ProductVersion);
+			Console.Title = $"AT {ver.Major}.{ver.MajorRevision}";
 			DisableCloseButton(Console.Title);
 			//Application.Run(new Form1() { Text = Console.Title });
 
@@ -30,21 +30,24 @@ namespace HaiFeng
 			//处理非UI线程异常 
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-			using (Form f = new Form())
+			//定时启动
+			//取日历判断是否应该启动->加载plat->填写前置帐号密码等参数->登录->判断登录是否成功->已加载的所有策略点"加载"->委托(与上次状态相同)
+			using (Plat plat = new Plat()
 			{
-				using (FormLogin fl = new FormLogin())
-					if (fl.ShowDialog() == DialogResult.OK)
-					{
-						f.Text = $"AT  v{Application.ProductVersion} [{fl.Trade.Investor}@{fl.Trade.Server}]";
-						Plat plat = new Plat(fl.Trade, fl.Quote);
-						plat.Dock = DockStyle.Fill;
-						f.Height = plat.Height;
-						f.Width = plat.Width;
-						f.Controls.Add(plat);
-						f.ShowDialog();
-						fl.Trade.ReqUserLogout();
-						fl.Quote.ReqUserLogout();
-					}
+				Dock = DockStyle.Fill
+			})
+			{
+				using (Form f = new Form
+				{
+					Height = plat.Height,
+					Width = plat.Width,
+					Icon = Properties.Resources.HF
+				})
+				{
+					f.Controls.Add(plat);
+					f.ShowDialog();
+					f.Close();
+				}
 			}
 			Environment.Exit(0); //正常关闭
 		}

@@ -91,28 +91,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Indicators\_ADL.cs" />
-    <Compile Include="Indicators\_ADX.cs" />
-    <Compile Include="Indicators\_ADXR.cs" />
-    <Compile Include="Indicators\_Aroon.cs" />
-    <Compile Include="Indicators\_AroonOscillator.cs" />
-    <Compile Include="Indicators\_ATR.cs" />
-    <Compile Include="Indicators\_Bollinger.cs" />
-    <Compile Include="Indicators\_BOP.cs" />
-    <Compile Include="Indicators\_EMA.cs" />
-    <Compile Include="Indicators\_Highest.cs" />
-    <Compile Include="Indicators\_KDJ.cs" />
-    <Compile Include="Indicators\_Lowest.cs" />
-    <Compile Include="Indicators\_MACD.cs" />
-    <Compile Include="Indicators\_RSI.cs" />
-    <Compile Include="Indicators\_SMA.cs" />
-    <Compile Include="Indicators\_StdDev.cs" />
-    <Compile Include="Indicators\_SUM.cs" />
-    <Compile Include="Indicators\_WMA.cs" />
-    <Compile Include="Indicators\_ZigZag.cs" />
-    <Compile Include="Macd.cs" />
+    <Compile Include="TBExtension.cs" />
+    <Compile Include="MACD_Cross.cs" />
     <Compile Include="MACross.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RB_01.cs" />
+    <Compile Include="RB_02.cs" />
+    <Compile Include="UpMins.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\core\at_core.csproj">
@@ -120,10 +105,11 @@
       <Name>at_core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties Reactor_Enabled="0" Reactor_Commands="" Reactor_Project="" Reactor_Configuration="ALL" Reactor_Output="" Reactor_Deploy="0" />
+      <UserProperties Reactor_Deploy="0" Reactor_Output="" Reactor_Configuration="ALL" Reactor_Project="" Reactor_Commands="" Reactor_Enabled="0" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
