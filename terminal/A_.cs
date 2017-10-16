@@ -84,7 +84,7 @@ namespace HaiFeng
 		/// </summary>
 		/// <param name="stra"></param>
 		/// <returns></returns>
-		public static OrderField A_GetLastOrderIndex(this Strategy stra)
+		public static OrderField A_GetLastOrder(this Strategy stra)
 		{
 			return Trade?.DicOrderField.Values.Where(n => int.TryParse(stra.Name, out int id) && n.Custom == id * 100).LastOrDefault();
 		}
@@ -94,7 +94,7 @@ namespace HaiFeng
 		/// </summary>
 		/// <param name="stra"></param>
 		/// <returns></returns>
-		public static OrderField[] A_GetNotFillOrderCount(this Strategy stra)
+		public static OrderField[] A_GetNotFillOrder(this Strategy stra)
 		{
 			return Trade?.DicOrderField.Values.Where(n => int.TryParse(stra.Name, out int id) && n.Custom == id * 100 && (n.Status == OrderStatus.Normal || n.Status == OrderStatus.Partial)).ToArray();
 		}

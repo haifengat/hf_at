@@ -17,12 +17,14 @@ namespace HaiFeng
 		{
 			macd = this.MACD(this.C, 13, 26, 9);
 		}
-
+		Tick last = null;
 		public override void OnBarUpdate()
 		{
 			var macd_0 = this.MACD(this.C, 13, 26, 9);
 			if (macd_0.Diff[0].ApproxCompare(macd.Diff[0]) > 0)
 				return;
+			if (this.Tick.UpdateTime.IndexOf("14:30:00")>0)
+				last = (Tick)this.Tick.Clone();
 		}
 	}
 }

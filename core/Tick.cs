@@ -11,10 +11,10 @@ namespace HaiFeng
 		/// 合约代码
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-		public string InstrumentID; //31
-									/// <summary>
-									/// 最新价
-									/// </summary>
+		public string InstrumentID;
+		/// <summary>
+		/// 最新价
+		/// </summary>
 		public double LastPrice;
 		/// <summary>
 		///申买价一

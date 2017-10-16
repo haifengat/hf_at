@@ -170,3 +170,6 @@ packages*/
 .vs/
 #Nuget packages folder
 packages/
+/simnow.xml
+/strategy/DEMO.cs
+/strategy/gast1.cs
