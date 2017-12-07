@@ -8,7 +8,7 @@ namespace HaiFeng
 	public partial class Indicator
 	{
 		DataSeries _input;
-		DataSeries[] _values = new DataSeries[255];
+		DataSeries[] _values = new DataSeries[8];
 		int[] _periods = new int[255];
 
 		/// <summary>

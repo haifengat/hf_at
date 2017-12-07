@@ -208,15 +208,18 @@ namespace HaiFeng
 					dtBegin = dtBegin.Date.AddHours(dt.Hour / Interval * Interval);
 					break;
 				case EnumIntervalType.Day:
-					dtBegin = dtBegin.Date;
+					dtBegin = DateTime.ParseExact(f.TradingDay.ToString(), "yyyyMMdd", null);
 					break;
 				case EnumIntervalType.Week:
+					dtBegin = DateTime.ParseExact(f.TradingDay.ToString(), "yyyyMMdd", null);
 					dtBegin = dtBegin.Date.AddDays(1 - (byte)dtBegin.DayOfWeek);
 					break;
 				case EnumIntervalType.Month:
+					dtBegin = DateTime.ParseExact(f.TradingDay.ToString(), "yyyyMMdd", null);
 					dtBegin = new DateTime(dtBegin.Year, dtBegin.Month, 1);
 					break;
 				case EnumIntervalType.Year:
+					dtBegin = DateTime.ParseExact(f.TradingDay.ToString(), "yyyyMMdd", null);
 					dtBegin = new DateTime(dtBegin.Year, 1, 1);
 					break;
 				default:

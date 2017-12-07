@@ -76,7 +76,7 @@ namespace HaiFeng
 		/// <returns></returns>
 		public static OrderField[] A_GetOrders(this Strategy stra)
 		{
-			return Trade?.DicOrderField.Values.Where(n => int.TryParse(stra.Name, out int id) && n.Custom == id * 100).ToArray();
+			return Trade?.DicOrderField.Values.Where(n => int.TryParse(stra.Name, out int id) && n.Custom / 1000 == id).ToArray();
 		}
 
 		/// <summary>
@@ -86,7 +86,7 @@ namespace HaiFeng
 		/// <returns></returns>
 		public static OrderField A_GetLastOrder(this Strategy stra)
 		{
-			return Trade?.DicOrderField.Values.Where(n => int.TryParse(stra.Name, out int id) && n.Custom == id * 100).LastOrDefault();
+			return stra.A_GetOrders().LastOrDefault();
 		}
 
 		/// <summary>
@@ -96,7 +96,7 @@ namespace HaiFeng
 		/// <returns></returns>
 		public static OrderField[] A_GetNotFillOrder(this Strategy stra)
 		{
-			return Trade?.DicOrderField.Values.Where(n => int.TryParse(stra.Name, out int id) && n.Custom == id * 100 && (n.Status == OrderStatus.Normal || n.Status == OrderStatus.Partial)).ToArray();
+			return stra.A_GetOrders().TakeWhile(n => n.Status == OrderStatus.Normal || n.Status == OrderStatus.Partial).ToArray();
 		}
 
 		/// <summary>
@@ -121,7 +121,7 @@ namespace HaiFeng
 			if (Trade == null) return -1;
 			if (offset == OffsetType.Close && Trade.DicInstrumentField[stra.InstrumentID].ExchangeID == Exchange.SHFE)
 				return Trade.ClosePosi(stra.InstrumentID, dire == DirectionType.Buy ? DirectionType.Sell : DirectionType.Buy, price, lots);
-			return Trade.ReqOrderInsert(stra.InstrumentID, dire, offset, price, lots, int.Parse(stra.Name) * 100);
+			return Trade.ReqOrderInsert(stra.InstrumentID, dire, offset, price, lots, int.Parse(stra.Name) * 1000 + stra.A_GetOrders().Length);
 		}
 
 		/// <summary>
