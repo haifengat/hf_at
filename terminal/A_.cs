@@ -134,5 +134,11 @@ namespace HaiFeng
 			if (Trade == null) return -1;
 			return Trade.ReqOrderAction(orderid);
 		}
+
+		public static ExchangeStatusType A_GetExcStatus(this Strategy stra)
+		{
+			if (Trade == null) return ExchangeStatusType.Closed;
+			return Trade.GetInstrumentStatus(stra.InstrumentID);
+		}
 	}
 }
