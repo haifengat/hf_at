@@ -615,8 +615,10 @@ namespace HaiFeng
 				_cfg = new ConfigATP();
 			//此处已完成接口启动
 			if (_t != null)
-				_t.StartFollow(_q, _cfg.FloConfig);
-
+			{
+				_t._q = this._q;
+				_t.StartFollow(_cfg.FloConfig);
+			}
 			//foreach (var file in _cfg.StrategyFiles)
 			//20170307:读取指定目录策略文件
 			Directory.CreateDirectory("./strategies");
@@ -883,25 +885,23 @@ namespace HaiFeng
 
 		private void LoginQuote(string[] front, string _Broker, string _Investor, string _Password)
 		{
-			if (_q == null)
-			{
-				_q = new QuoteExt
-				{
-					Broker = _Broker,
-					Investor = _Investor,
-					Password = _Password,
-				};
-				_q.OnFrontConnected += quote_OnFrontConnected;
-				_q.OnRspUserLogin += quote_OnRspUserLogin;
-				_q.OnRspUserLogout += quote_OnRspUserLogout;
-				_q.OnRtnTick += quote_OnRtnTick;
-			}
-			else
+			if (_q != null)
 			{
 				if (_q.IsLogin)
 					_q.ReqUserLogout();
-				//_q = null;  20171219:导致exadeExt中的_q指向错误,影响行情相关判断
+				_q = null;
 			}
+			_q = new QuoteExt
+			{
+				Broker = _Broker,
+				Investor = _Investor,
+				Password = _Password,
+			};
+			_t._q = this._q;
+			_q.OnFrontConnected += quote_OnFrontConnected;
+			_q.OnRspUserLogin += quote_OnRspUserLogin;
+			_q.OnRspUserLogout += quote_OnRspUserLogout;
+			_q.OnRtnTick += quote_OnRtnTick;
 			_q.ReqConnect(front);
 		}
 
@@ -960,8 +960,6 @@ namespace HaiFeng
 			Instrument inst;
 			if (!_dataProcess.InstrumentInfo.TryGetValue(e.Tick.InstrumentID, out inst) || !_dataProcess.ProductInfo.TryGetValue(inst.ProductID, out instField) || _t == null)
 				return;
-			var excStatus = _t.GetInstrumentStatus(e.Tick.InstrumentID);
-			if (excStatus != ExchangeStatusType.Trading) return;
 
 			Tick tick = new Tick
 			{
@@ -984,7 +982,9 @@ namespace HaiFeng
 			//if (_t.DicExcStatus.Count > 1) //非模拟才进行处理
 			if (!_dataProcess.FixTick(tick, _tradingDay, _dataProcess.InstrumentInfo[tick.InstrumentID].ProductID))    //修正tick时间格式:yyyMMdd HH:mm:ss
 				return;
-
+			//非交易时间不调用策略的ontick:防止59:00时触发委托信号
+			var excStatus = _t.GetInstrumentStatus(e.Tick.InstrumentID);
+			if (excStatus != ExchangeStatusType.Trading) return;
 			foreach (var stra in _dicStrategies.Values)
 				if (stra.EnableTick)
 					foreach (var data in stra.Datas)
@@ -996,7 +996,6 @@ namespace HaiFeng
 
 			//处理000数据;20170719增加状态判断，非交易时段会收到脏数据！=>fixtick处理
 			if (_dicTick000.TryAdd(tick.InstrumentID, tick)) return;//首个tick只保存不处理
-			if (excStatus != ExchangeStatusType.Trading) return;    //只在交易时段处理数据
 
 			//if (_qry.Make000(md, _dicTick, out tick000))
 			if (_inst888.IndexOf(tick.InstrumentID) >= 0)
@@ -1036,7 +1035,7 @@ namespace HaiFeng
 			tick000.Volume = 0;
 			tick000.OpenInterest = 0;
 
-			//至少收到所有合约的数据
+			//至少收到所有合约的数据:???20171225:需将不活跃的合约过滤掉(在real中控制)
 			if (ticks.Count() == _dataProcess.Rate000.Count(n => _dataProcess.InstrumentInfo[n.Key].ProductID == proc))
 				foreach (var t in ticks)
 				{
@@ -1071,7 +1070,7 @@ namespace HaiFeng
 				if (insts.Count() > 0)
 				{
 					_q.ReqSubscribeMarketData(insts);
-					return;
+					return; //订阅所有000相关的合约后退出
 				}
 			}
 			_q.ReqSubscribeMarketData(inst);

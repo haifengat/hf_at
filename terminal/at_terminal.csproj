@@ -153,6 +153,7 @@
     <Compile Include="QuoteExt.cs" />
     <Compile Include="Seven24Config.cs" />
     <Compile Include="StrategyConfig.cs" />
+    <Compile Include="Test205959.cs" />
     <Compile Include="TradeExt.cs" />
   </ItemGroup>
   <ItemGroup>

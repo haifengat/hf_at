@@ -181,7 +181,7 @@ namespace HaiFeng
 			return base.ReqOrderInsert(pInstrument, pDirection, pOffset, pPrice, pVolume, pCustom, pType, pHedge);
 		}
 
-		private Quote _q = null;
+		internal Quote _q = null;
 
 		#region 追单功能
 		private FollowConfig _floConfig = new FollowConfig();    //是否为null,处理多次调用
@@ -192,12 +192,16 @@ namespace HaiFeng
 		/// </summary>
 		/// <param name="q"></param>
 		/// <param name="cfg"></param>
-		public void StartFollow(Quote q, FollowConfig cfg)
+		public void StartFollow(FollowConfig cfg)
 		{
-			_q = q;
-			ShowInfo("启动追单功能.");
+			if(_q == null)
+			{
+				ShowInfo("行情未赋值,无法启动追单!");
+				return;
+			}
 			if (!_initFlow)
 			{
+				ShowInfo("启动追单功能.");
 				_floConfig = cfg;
 				_initFlow = true;
 				this.OnRtnOrder += TradeExt_OnRtnOrder;
