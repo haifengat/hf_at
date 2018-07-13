@@ -6,6 +6,7 @@ namespace HaiFeng
 {
 	public partial class QuoteExt : CTPQuote
     {
+        public QuoteExt(string pAbsoluteFilePath):base(pAbsoluteFilePath) {  }
 
 		public string Broker { get; internal set; }
 		public string Investor { get; internal set; }

@@ -798,7 +798,7 @@ namespace HaiFeng
 			_logTime = DateTime.Now;
 			LogWarn("connecting ...");
 
-			_t = new TradeExt
+			_t = new TradeExt("./dll/ctp_trade.dll")
 			{
 				Broker = _Broker,
 				Investor = _Investor,
@@ -812,7 +812,7 @@ namespace HaiFeng
 			_t.OnRspUserLogout += trade_OnRspUserLogout;
 			_t.OnRtnNotice += trade_OnRtnNotice;
 
-			_t.ReqConnect(front);
+			_t.ReqConnect(front[0]);
 		}
 
 		private void trade_OnFrontConnected(object sender, EventArgs e)
@@ -891,7 +891,7 @@ namespace HaiFeng
 					_q.ReqUserLogout();
 				_q = null;
 			}
-			_q = new QuoteExt
+			_q = new QuoteExt("./dll/ctp_quote.dll")
 			{
 				Broker = _Broker,
 				Investor = _Investor,
@@ -902,7 +902,7 @@ namespace HaiFeng
 			_q.OnRspUserLogin += quote_OnRspUserLogin;
 			_q.OnRspUserLogout += quote_OnRspUserLogout;
 			_q.OnRtnTick += quote_OnRtnTick;
-			_q.ReqConnect(front);
+			_q.ReqConnect(front[0]);
 		}
 
 		private void quote_OnRspUserLogout(object sender, IntEventArgs e)

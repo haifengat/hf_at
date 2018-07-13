@@ -15,8 +15,8 @@ namespace HaiFeng
 		public string Investor { get; internal set; }
 		public string Password { get; internal set; }
 
-		public TradeExt()
-		{
+		public TradeExt(string pAbsoluteFilePath): base(pAbsoluteFilePath)
+        {
 			this.OnRtnOrder += TradeExt_OnRtnOrder1;
 			this.OnRtnCancel += TradeExt_OnRtnCancel1;
 			//this.OnRtnTrade += (snd, e) =>

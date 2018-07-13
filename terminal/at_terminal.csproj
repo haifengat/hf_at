@@ -201,11 +201,13 @@
   <Import Project="..\FixTick\FixTick.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy $(ProjectDir)..\Resources $(TargetDir)</PostBuildEvent>
+    <PostBuildEvent>copy $(ProjectDir)..\Resources $(TargetDir)
+md $(TargetDir)dll
+copy $(ProjectDir)..\Resources\dll $(TargetDir)dll</PostBuildEvent>
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties Reactor_Enabled="0" Reactor_Commands="" Reactor_Project="D:\haifeng_project\hf_plat_tb\hf_plat_core\hf_plat_core.nrproj" Reactor_Configuration="ALL" Reactor_Output="&lt;AssemblyLocation&gt;\..\..\hf_plat_terminal\debug\&lt;AssemblyFileName&gt;" Reactor_Deploy="0" />
+      <UserProperties Reactor_Deploy="0" Reactor_Output="&lt;AssemblyLocation&gt;\..\..\hf_plat_terminal\debug\&lt;AssemblyFileName&gt;" Reactor_Configuration="ALL" Reactor_Project="D:\haifeng_project\hf_plat_tb\hf_plat_core\hf_plat_core.nrproj" Reactor_Commands="" Reactor_Enabled="0" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

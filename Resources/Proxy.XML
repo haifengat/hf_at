@@ -30,6 +30,18 @@
             </summary>
             <param name="propertyName"></param>
         </member>
+        <member name="M:HaiFeng.CTPQuote.#ctor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="pAbsoluteFilePath">ctp_quote.dll文件绝对路径</param>
+        </member>
+        <member name="M:HaiFeng.CTPTrade.#ctor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="pAbsoluteFilePath">ctp_trade.dll文件绝对路径</param>
+        </member>
         <member name="M:HaiFeng.CTPTrade.CTPOnRspOrderInsert(CThostFtdcInputOrderField@,CThostFtdcRspInfoField@,System.Int32,System.Boolean)">
             <summary>
             处理错单: CTP平台返回
@@ -750,26 +762,6 @@
             <summary>
               使用此强类型资源类，为所有资源查找
               重写当前线程的 CurrentUICulture 属性。
-            </summary>
-        </member>
-        <member name="P:HaiFeng.Properties.Resources.ctp_quote">
-            <summary>
-              查找 System.Byte[] 类型的本地化资源。
-            </summary>
-        </member>
-        <member name="P:HaiFeng.Properties.Resources.ctp_trade">
-            <summary>
-              查找 System.Byte[] 类型的本地化资源。
-            </summary>
-        </member>
-        <member name="P:HaiFeng.Properties.Resources.thostmduserapi">
-            <summary>
-              查找 System.Byte[] 类型的本地化资源。
-            </summary>
-        </member>
-        <member name="P:HaiFeng.Properties.Resources.thosttraderapi">
-            <summary>
-              查找 System.Byte[] 类型的本地化资源。
             </summary>
         </member>
         <member name="P:HaiFeng.Quote.DicTick">
@@ -1772,6 +1764,56 @@
         <member name="F:TThostFtdcBrokerFunctionCodeType.THOST_FTDC_BFC_ExecOrderNoCheck">
              <summary>
              资金不够仍允许行权
+            </summary>
+        </member>
+        <member name="F:TThostFtdcBrokerFunctionCodeType.THOST_FTDC_BFC_Designate">
+             <summary>
+             指定
+            </summary>
+        </member>
+        <member name="F:TThostFtdcBrokerFunctionCodeType.THOST_FTDC_BFC_StockDisposal">
+             <summary>
+             证券处置
+            </summary>
+        </member>
+        <member name="F:TThostFtdcBrokerFunctionCodeType.THOST_FTDC_BFC_BrokerDepositWarn">
+             <summary>
+             席位资金预警
+            </summary>
+        </member>
+        <member name="F:TThostFtdcBrokerFunctionCodeType.THOST_FTDC_BFC_CoverWarn">
+             <summary>
+             备兑不足预警
+            </summary>
+        </member>
+        <member name="F:TThostFtdcBrokerFunctionCodeType.THOST_FTDC_BFC_PreExecOrder">
+             <summary>
+             行权试算
+            </summary>
+        </member>
+        <member name="F:TThostFtdcBrokerFunctionCodeType.THOST_FTDC_BFC_ExecOrderRisk">
+             <summary>
+             行权交收风险
+            </summary>
+        </member>
+        <member name="F:TThostFtdcBrokerFunctionCodeType.THOST_FTDC_BFC_PosiLimitWarn">
+             <summary>
+             持仓限额预警
+            </summary>
+        </member>
+        <member name="F:TThostFtdcBrokerFunctionCodeType.THOST_FTDC_BFC_QryPosiLimit">
+             <summary>
+             持仓限额查询
+            </summary>
+        </member>
+        <member name="F:TThostFtdcBrokerFunctionCodeType.THOST_FTDC_BFC_FBSign">
+             <summary>
+             银期签到签退
+            </summary>
+        </member>
+        <member name="F:TThostFtdcBrokerFunctionCodeType.THOST_FTDC_BFC_FBAccount">
+             <summary>
+             银期签约解约
             </summary>
         </member>
         <member name="T:TThostFtdcOrderActionStatusType">
@@ -3072,6 +3114,41 @@
         <member name="F:TThostFtdcTradeParamIDType.THOST_FTDC_TPID_IsExecOrderProfit">
              <summary>
              行权冻结是否计算盈利
+            </summary>
+        </member>
+        <member name="F:TThostFtdcTradeParamIDType.THOST_FTDC_TPID_IsCheckBankAcc">
+             <summary>
+             银期开户是否验证开户银行卡号是否是预留银行账户
+            </summary>
+        </member>
+        <member name="F:TThostFtdcTradeParamIDType.THOST_FTDC_TPID_PasswordDeadLine">
+             <summary>
+             弱密码最后修改日期
+            </summary>
+        </member>
+        <member name="F:TThostFtdcTradeParamIDType.THOST_FTDC_TPID_IsStrongPassword">
+             <summary>
+             强密码校验
+            </summary>
+        </member>
+        <member name="F:TThostFtdcTradeParamIDType.THOST_FTDC_TPID_BalanceMorgage">
+             <summary>
+             自有资金质押比
+            </summary>
+        </member>
+        <member name="F:TThostFtdcTradeParamIDType.THOST_FTDC_TPID_MinPwdLen">
+             <summary>
+             最小密码长度
+            </summary>
+        </member>
+        <member name="F:TThostFtdcTradeParamIDType.THOST_FTDC_TPID_LoginFailMaxNumForIP">
+             <summary>
+             IP当日最大登陆失败次数
+            </summary>
+        </member>
+        <member name="F:TThostFtdcTradeParamIDType.THOST_FTDC_TPID_PasswordPeriod">
+             <summary>
+             密码有效期
             </summary>
         </member>
         <member name="T:TThostFtdcFileIDType">
@@ -8189,6 +8266,11 @@
              开仓价
             </summary>
         </member>
+        <member name="F:TThostFtdcOptionRoyaltyPriceTypeType.THOST_FTDC_ORPT_MaxPreSettlementPrice">
+             <summary>
+             最新价与昨结算价较大值
+            </summary>
+        </member>
         <member name="T:TThostFtdcBalanceAlgorithmType">
              <summary>
              权益算法类型
@@ -8509,6 +8591,56 @@
              紧急程度类型
             </summary>
         </member>
+        <member name="T:TThostFtdcWeakPasswordSourceType">
+             <summary>
+             弱密码来源类型
+            </summary>
+        </member>
+        <member name="F:TThostFtdcWeakPasswordSourceType.THOST_FTDC_WPSR_Lib">
+             <summary>
+             弱密码库
+            </summary>
+        </member>
+        <member name="F:TThostFtdcWeakPasswordSourceType.THOST_FTDC_WPSR_Manual">
+             <summary>
+             手工录入
+            </summary>
+        </member>
+        <member name="T:TThostFtdcOptSelfCloseFlagType">
+             <summary>
+             期权行权的头寸是否自对冲类型
+            </summary>
+        </member>
+        <member name="F:TThostFtdcOptSelfCloseFlagType.THOST_FTDC_OSCF_CloseSelfOptionPosition">
+             <summary>
+             自对冲期权仓位
+            </summary>
+        </member>
+        <member name="F:TThostFtdcOptSelfCloseFlagType.THOST_FTDC_OSCF_ReserveOptionPosition">
+             <summary>
+             保留期权仓位
+            </summary>
+        </member>
+        <member name="F:TThostFtdcOptSelfCloseFlagType.THOST_FTDC_OSCF_SellCloseSelfFuturePosition">
+             <summary>
+             自对冲卖方履约后的期货仓位
+            </summary>
+        </member>
+        <member name="T:TThostFtdcBizTypeType">
+             <summary>
+             业务类型类型
+            </summary>
+        </member>
+        <member name="F:TThostFtdcBizTypeType.THOST_FTDC_BZTP_Future">
+             <summary>
+             期货
+            </summary>
+        </member>
+        <member name="F:TThostFtdcBizTypeType.THOST_FTDC_BZTP_Stock">
+             <summary>
+             证券
+            </summary>
+        </member>
         <member name="T:CThostFtdcDisseminationField">
             <summary>
             信息分发
@@ -8757,6 +8889,81 @@
         <member name="F:CThostFtdcAuthenticationInfoField.IsResult">
             <summary>
             是否为认证结果
+            </summary>
+        </member>
+        <member name="T:CThostFtdcRspUserLogin2Field">
+            <summary>
+            用户登录应答2
+            </summary>
+        </member>
+        <member name="F:CThostFtdcRspUserLogin2Field.TradingDay">
+            <summary>
+            交易日
+            </summary>
+        </member>
+        <member name="F:CThostFtdcRspUserLogin2Field.LoginTime">
+            <summary>
+            登录成功时间
+            </summary>
+        </member>
+        <member name="F:CThostFtdcRspUserLogin2Field.BrokerID">
+            <summary>
+            经纪公司代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcRspUserLogin2Field.UserID">
+            <summary>
+            用户代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcRspUserLogin2Field.SystemName">
+            <summary>
+            交易系统名称
+            </summary>
+        </member>
+        <member name="F:CThostFtdcRspUserLogin2Field.FrontID">
+            <summary>
+            前置编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcRspUserLogin2Field.SessionID">
+            <summary>
+            会话编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcRspUserLogin2Field.MaxOrderRef">
+            <summary>
+            最大报单引用
+            </summary>
+        </member>
+        <member name="F:CThostFtdcRspUserLogin2Field.SHFETime">
+            <summary>
+            上期所时间
+            </summary>
+        </member>
+        <member name="F:CThostFtdcRspUserLogin2Field.DCETime">
+            <summary>
+            大商所时间
+            </summary>
+        </member>
+        <member name="F:CThostFtdcRspUserLogin2Field.CZCETime">
+            <summary>
+            郑商所时间
+            </summary>
+        </member>
+        <member name="F:CThostFtdcRspUserLogin2Field.FFEXTime">
+            <summary>
+            中金所时间
+            </summary>
+        </member>
+        <member name="F:CThostFtdcRspUserLogin2Field.INETime">
+            <summary>
+            能源中心时间
+            </summary>
+        </member>
+        <member name="F:CThostFtdcRspUserLogin2Field.RandomString">
+            <summary>
+            随机串
             </summary>
         </member>
         <member name="T:CThostFtdcTransferHeaderField">
@@ -9569,6 +9776,21 @@
             交易编码类型
             </summary>
         </member>
+        <member name="F:CThostFtdcTradingCodeField.BranchID">
+            <summary>
+            营业部编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcTradingCodeField.BizType">
+            <summary>
+            业务类型
+            </summary>
+        </member>
+        <member name="F:CThostFtdcTradingCodeField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcPartBrokerField">
             <summary>
             会员编码和经纪公司编码对照表
@@ -9889,6 +10111,21 @@
             特殊产品交易所保证金
             </summary>
         </member>
+        <member name="F:CThostFtdcTradingAccountField.BizType">
+            <summary>
+            业务类型
+            </summary>
+        </member>
+        <member name="F:CThostFtdcTradingAccountField.FrozenSwap">
+            <summary>
+            延时换汇冻结金额
+            </summary>
+        </member>
+        <member name="F:CThostFtdcTradingAccountField.RemainSwap">
+            <summary>
+            剩余换汇额度
+            </summary>
+        </member>
         <member name="T:CThostFtdcInvestorPositionField">
             <summary>
             投资者持仓
@@ -10109,6 +10346,21 @@
             放弃执行冻结
             </summary>
         </member>
+        <member name="F:CThostFtdcInvestorPositionField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInvestorPositionField.YdStrikeFrozen">
+            <summary>
+            执行冻结的昨仓
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInvestorPositionField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcInstrumentMarginRateField">
             <summary>
             合约保证金率
@@ -10164,6 +10416,16 @@
             是否相对交易所收取
             </summary>
         </member>
+        <member name="F:CThostFtdcInstrumentMarginRateField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInstrumentMarginRateField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcInstrumentCommissionRateField">
             <summary>
             合约手续费率
@@ -10217,6 +10479,21 @@
         <member name="F:CThostFtdcInstrumentCommissionRateField.CloseTodayRatioByVolume">
             <summary>
             平今手续费
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInstrumentCommissionRateField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInstrumentCommissionRateField.BizType">
+            <summary>
+            业务类型
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInstrumentCommissionRateField.InvestUnitID">
+            <summary>
+            投资单元代码
             </summary>
         </member>
         <member name="T:CThostFtdcDepthMarketDataField">
@@ -10509,6 +10786,11 @@
             是否使用令牌
             </summary>
         </member>
+        <member name="F:CThostFtdcBrokerUserField.IsAuthForce">
+            <summary>
+            是否强制终端认证
+            </summary>
+        </member>
         <member name="T:CThostFtdcBrokerUserPasswordField">
             <summary>
             经纪公司用户口令
@@ -10527,6 +10809,26 @@
         <member name="F:CThostFtdcBrokerUserPasswordField.Password">
             <summary>
             密码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcBrokerUserPasswordField.LastUpdateTime">
+            <summary>
+            上次修改时间
+            </summary>
+        </member>
+        <member name="F:CThostFtdcBrokerUserPasswordField.LastLoginTime">
+            <summary>
+            上次登陆时间
+            </summary>
+        </member>
+        <member name="F:CThostFtdcBrokerUserPasswordField.ExpireDate">
+            <summary>
+            密码过期时间
+            </summary>
+        </member>
+        <member name="F:CThostFtdcBrokerUserPasswordField.WeakExpireDate">
+            <summary>
+            弱密码过期时间
             </summary>
         </member>
         <member name="T:CThostFtdcBrokerUserFunctionField">
@@ -10684,6 +10986,16 @@
             消息正文
             </summary>
         </member>
+        <member name="F:CThostFtdcSettlementInfoField.AccountID">
+            <summary>
+            投资者帐号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSettlementInfoField.CurrencyID">
+            <summary>
+            币种代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcInstrumentMarginRateAdjustField">
             <summary>
             合约保证金率调整
@@ -10777,6 +11089,11 @@
         <member name="F:CThostFtdcExchangeMarginRateField.ShortMarginRatioByVolume">
             <summary>
             空头保证金费
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeMarginRateField.ExchangeID">
+            <summary>
+            交易所代码
             </summary>
         </member>
         <member name="T:CThostFtdcExchangeMarginRateAdjustField">
@@ -11009,9 +11326,9 @@
             系统名称
             </summary>
         </member>
-        <member name="F:CThostFtdcLoginInfoField.Password">
+        <member name="F:CThostFtdcLoginInfoField.PasswordDeprecated">
             <summary>
-            密码
+            密码,已弃用
             </summary>
         </member>
         <member name="F:CThostFtdcLoginInfoField.MaxOrderRef">
@@ -11062,6 +11379,11 @@
         <member name="F:CThostFtdcLoginInfoField.LoginRemark">
             <summary>
             登录备注
+            </summary>
+        </member>
+        <member name="F:CThostFtdcLoginInfoField.Password">
+            <summary>
+            密码
             </summary>
         </member>
         <member name="T:CThostFtdcLogoutAllField">
@@ -12534,6 +12856,11 @@
             成交来源
             </summary>
         </member>
+        <member name="F:CThostFtdcTradeField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcUserSessionField">
             <summary>
             用户会话
@@ -12639,6 +12966,16 @@
             最大允许报单数量
             </summary>
         </member>
+        <member name="F:CThostFtdcQueryMaxOrderVolumeField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQueryMaxOrderVolumeField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcSettlementInfoConfirmField">
             <summary>
             投资者结算结果确认信息
@@ -12662,6 +12999,21 @@
         <member name="F:CThostFtdcSettlementInfoConfirmField.ConfirmTime">
             <summary>
             确认时间
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSettlementInfoConfirmField.SettlementID">
+            <summary>
+            结算编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSettlementInfoConfirmField.AccountID">
+            <summary>
+            投资者帐号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSettlementInfoConfirmField.CurrencyID">
+            <summary>
+            币种代码
             </summary>
         </member>
         <member name="T:CThostFtdcSyncDepositField">
@@ -13104,6 +13456,16 @@
             特殊产品交易所保证金
             </summary>
         </member>
+        <member name="F:CThostFtdcSyncingTradingAccountField.FrozenSwap">
+            <summary>
+            延时换汇冻结金额
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSyncingTradingAccountField.RemainSwap">
+            <summary>
+            剩余换汇额度
+            </summary>
+        </member>
         <member name="T:CThostFtdcSyncingInvestorPositionField">
             <summary>
             正在同步中的投资者持仓
@@ -13324,6 +13686,21 @@
             放弃执行冻结
             </summary>
         </member>
+        <member name="F:CThostFtdcSyncingInvestorPositionField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSyncingInvestorPositionField.YdStrikeFrozen">
+            <summary>
+            执行冻结的昨仓
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSyncingInvestorPositionField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcSyncingInstrumentMarginRateField">
             <summary>
             正在同步中的合约保证金率
@@ -13504,6 +13881,11 @@
             结束时间
             </summary>
         </member>
+        <member name="F:CThostFtdcQryOrderField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryTradeField">
             <summary>
             查询成交
@@ -13544,6 +13926,11 @@
             结束时间
             </summary>
         </member>
+        <member name="F:CThostFtdcQryTradeField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryInvestorPositionField">
             <summary>
             查询投资者持仓
@@ -13564,6 +13951,16 @@
             合约代码
             </summary>
         </member>
+        <member name="F:CThostFtdcQryInvestorPositionField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryInvestorPositionField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryTradingAccountField">
             <summary>
             查询资金账户
@@ -13582,6 +13979,16 @@
         <member name="F:CThostFtdcQryTradingAccountField.CurrencyID">
             <summary>
             币种代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryTradingAccountField.BizType">
+            <summary>
+            业务类型
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryTradingAccountField.AccountID">
+            <summary>
+            投资者帐号
             </summary>
         </member>
         <member name="T:CThostFtdcQryInvestorField">
@@ -13629,6 +14036,11 @@
             交易编码类型
             </summary>
         </member>
+        <member name="F:CThostFtdcQryTradingCodeField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryInvestorGroupField">
             <summary>
             查询投资者组
@@ -13664,6 +14076,16 @@
             投机套保标志
             </summary>
         </member>
+        <member name="F:CThostFtdcQryInstrumentMarginRateField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryInstrumentMarginRateField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryInstrumentCommissionRateField">
             <summary>
             查询手续费率
@@ -13682,6 +14104,16 @@
         <member name="F:CThostFtdcQryInstrumentCommissionRateField.InstrumentID">
             <summary>
             合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryInstrumentCommissionRateField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryInstrumentCommissionRateField.InvestUnitID">
+            <summary>
+            投资单元代码
             </summary>
         </member>
         <member name="T:CThostFtdcQryInstrumentTradingRightField">
@@ -13909,6 +14341,11 @@
             产品类型
             </summary>
         </member>
+        <member name="F:CThostFtdcQryProductField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryInstrumentField">
             <summary>
             查询合约
@@ -13942,6 +14379,11 @@
         <member name="F:CThostFtdcQryDepthMarketDataField.InstrumentID">
             <summary>
             合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryDepthMarketDataField.ExchangeID">
+            <summary>
+            交易所代码
             </summary>
         </member>
         <member name="T:CThostFtdcQryBrokerUserField">
@@ -14029,6 +14471,16 @@
             交易日
             </summary>
         </member>
+        <member name="F:CThostFtdcQrySettlementInfoField.AccountID">
+            <summary>
+            投资者帐号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQrySettlementInfoField.CurrencyID">
+            <summary>
+            币种代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryExchangeMarginRateField">
             <summary>
             查询交易所保证金率
@@ -14047,6 +14499,11 @@
         <member name="F:CThostFtdcQryExchangeMarginRateField.HedgeFlag">
             <summary>
             投机套保标志
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryExchangeMarginRateField.ExchangeID">
+            <summary>
+            交易所代码
             </summary>
         </member>
         <member name="T:CThostFtdcQryExchangeMarginRateAdjustField">
@@ -14329,6 +14786,16 @@
             执行手续费
             </summary>
         </member>
+        <member name="F:CThostFtdcOptionInstrCommRateField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionInstrCommRateField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcOptionInstrTradeCostField">
             <summary>
             期权交易成本
@@ -14379,6 +14846,16 @@
             交易所期权合约最小保证金
             </summary>
         </member>
+        <member name="F:CThostFtdcOptionInstrTradeCostField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionInstrTradeCostField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryOptionInstrTradeCostField">
             <summary>
             期权交易成本查询
@@ -14414,6 +14891,16 @@
             标的价格,填0则用昨结算价
             </summary>
         </member>
+        <member name="F:CThostFtdcQryOptionInstrTradeCostField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryOptionInstrTradeCostField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryOptionInstrCommRateField">
             <summary>
             期权手续费率查询
@@ -14432,6 +14919,16 @@
         <member name="F:CThostFtdcQryOptionInstrCommRateField.InstrumentID">
             <summary>
             合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryOptionInstrCommRateField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryOptionInstrCommRateField.InvestUnitID">
+            <summary>
+            投资单元代码
             </summary>
         </member>
         <member name="T:CThostFtdcIndexPriceField">
@@ -14521,7 +15018,7 @@
         </member>
         <member name="F:CThostFtdcInputExecOrderField.ReservePositionFlag">
             <summary>
-            期权行权后是否保留期货头寸的标记
+            期权行权后是否保留期货头寸的标记,该字段已废弃
             </summary>
         </member>
         <member name="F:CThostFtdcInputExecOrderField.CloseFlag">
@@ -14711,7 +15208,7 @@
         </member>
         <member name="F:CThostFtdcExecOrderField.ReservePositionFlag">
             <summary>
-            期权行权后是否保留期货头寸的标记
+            期权行权后是否保留期货头寸的标记,该字段已废弃
             </summary>
         </member>
         <member name="F:CThostFtdcExecOrderField.CloseFlag">
@@ -15096,7 +15593,7 @@
         </member>
         <member name="F:CThostFtdcExchangeExecOrderField.ReservePositionFlag">
             <summary>
-            期权行权后是否保留期货头寸的标记
+            期权行权后是否保留期货头寸的标记,该字段已废弃
             </summary>
         </member>
         <member name="F:CThostFtdcExchangeExecOrderField.CloseFlag">
@@ -15446,7 +15943,7 @@
         </member>
         <member name="F:CThostFtdcErrExecOrderField.ReservePositionFlag">
             <summary>
-            期权行权后是否保留期货头寸的标记
+            期权行权后是否保留期货头寸的标记,该字段已废弃
             </summary>
         </member>
         <member name="F:CThostFtdcErrExecOrderField.CloseFlag">
@@ -15882,6 +16379,11 @@
         <member name="F:CThostFtdcQryForQuoteField.InsertTimeEnd">
             <summary>
             结束时间
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryForQuoteField.InvestUnitID">
+            <summary>
+            投资单元代码
             </summary>
         </member>
         <member name="T:CThostFtdcExchangeForQuoteField">
@@ -16619,6 +17121,11 @@
             结束时间
             </summary>
         </member>
+        <member name="F:CThostFtdcQryQuoteField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcExchangeQuoteField">
             <summary>
             交易所报价信息
@@ -17354,6 +17861,11 @@
             
             </summary>
         </member>
+        <member name="F:CThostFtdcCombInstrumentGuardField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryCombInstrumentGuardField">
             <summary>
             组合合约安全系数查询
@@ -17367,6 +17879,11 @@
         <member name="F:CThostFtdcQryCombInstrumentGuardField.InstrumentID">
             <summary>
             合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryCombInstrumentGuardField.ExchangeID">
+            <summary>
+            交易所代码
             </summary>
         </member>
         <member name="T:CThostFtdcInputCombActionField">
@@ -17432,6 +17949,11 @@
         <member name="F:CThostFtdcInputCombActionField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputCombActionField.InvestUnitID">
+            <summary>
+            投资单元代码
             </summary>
         </member>
         <member name="T:CThostFtdcCombActionField">
@@ -17574,6 +18096,21 @@
             Mac地址
             </summary>
         </member>
+        <member name="F:CThostFtdcCombActionField.ComTradeID">
+            <summary>
+            组合编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcCombActionField.BranchID">
+            <summary>
+            营业部编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcCombActionField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryCombActionField">
             <summary>
             申请组合查询
@@ -17597,6 +18134,11 @@
         <member name="F:CThostFtdcQryCombActionField.ExchangeID">
             <summary>
             交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryCombActionField.InvestUnitID">
+            <summary>
+            投资单元代码
             </summary>
         </member>
         <member name="T:CThostFtdcExchangeCombActionField">
@@ -17694,6 +18236,16 @@
             Mac地址
             </summary>
         </member>
+        <member name="F:CThostFtdcExchangeCombActionField.ComTradeID">
+            <summary>
+            组合编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeCombActionField.BranchID">
+            <summary>
+            营业部编号
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryExchangeCombActionField">
             <summary>
             交易所申请组合查询
@@ -17744,6 +18296,11 @@
             汇率
             </summary>
         </member>
+        <member name="F:CThostFtdcProductExchRateField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryProductExchRateField">
             <summary>
             产品报价汇率查询
@@ -17752,6 +18309,11 @@
         <member name="F:CThostFtdcQryProductExchRateField.ProductID">
             <summary>
             产品代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryProductExchRateField.ExchangeID">
+            <summary>
+            交易所代码
             </summary>
         </member>
         <member name="T:CThostFtdcQryForQuoteParamField">
@@ -18004,6 +18566,16 @@
             撤单手续费
             </summary>
         </member>
+        <member name="F:CThostFtdcInstrumentOrderCommRateField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInstrumentOrderCommRateField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryInstrumentOrderCommRateField">
             <summary>
             报单手续费率查询
@@ -18022,6 +18594,1111 @@
         <member name="F:CThostFtdcQryInstrumentOrderCommRateField.InstrumentID">
             <summary>
             合约代码
+            </summary>
+        </member>
+        <member name="T:CThostFtdcTradeParamField">
+            <summary>
+            交易参数
+            </summary>
+        </member>
+        <member name="F:CThostFtdcTradeParamField.BrokerID">
+            <summary>
+            经纪公司代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcTradeParamField.TradeParamID">
+            <summary>
+            参数代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcTradeParamField.TradeParamValue">
+            <summary>
+            参数代码值
+            </summary>
+        </member>
+        <member name="F:CThostFtdcTradeParamField.Memo">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="T:CThostFtdcInstrumentMarginRateULField">
+            <summary>
+            合约保证金率调整
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInstrumentMarginRateULField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInstrumentMarginRateULField.InvestorRange">
+            <summary>
+            投资者范围
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInstrumentMarginRateULField.BrokerID">
+            <summary>
+            经纪公司代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInstrumentMarginRateULField.InvestorID">
+            <summary>
+            投资者代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInstrumentMarginRateULField.HedgeFlag">
+            <summary>
+            投机套保标志
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInstrumentMarginRateULField.LongMarginRatioByMoney">
+            <summary>
+            多头保证金率
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInstrumentMarginRateULField.LongMarginRatioByVolume">
+            <summary>
+            多头保证金费
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInstrumentMarginRateULField.ShortMarginRatioByMoney">
+            <summary>
+            空头保证金率
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInstrumentMarginRateULField.ShortMarginRatioByVolume">
+            <summary>
+            空头保证金费
+            </summary>
+        </member>
+        <member name="T:CThostFtdcFutureLimitPosiParamField">
+            <summary>
+            期货持仓限制参数
+            </summary>
+        </member>
+        <member name="F:CThostFtdcFutureLimitPosiParamField.InvestorRange">
+            <summary>
+            投资者范围
+            </summary>
+        </member>
+        <member name="F:CThostFtdcFutureLimitPosiParamField.BrokerID">
+            <summary>
+            经纪公司代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcFutureLimitPosiParamField.InvestorID">
+            <summary>
+            投资者代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcFutureLimitPosiParamField.ProductID">
+            <summary>
+            产品代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcFutureLimitPosiParamField.SpecOpenVolume">
+            <summary>
+            当日投机开仓数量限制
+            </summary>
+        </member>
+        <member name="F:CThostFtdcFutureLimitPosiParamField.ArbiOpenVolume">
+            <summary>
+            当日套利开仓数量限制
+            </summary>
+        </member>
+        <member name="F:CThostFtdcFutureLimitPosiParamField.OpenVolume">
+            <summary>
+            当日投机+套利开仓数量限制
+            </summary>
+        </member>
+        <member name="T:CThostFtdcLoginForbiddenIPField">
+            <summary>
+            禁止登录IP
+            </summary>
+        </member>
+        <member name="F:CThostFtdcLoginForbiddenIPField.IPAddress">
+            <summary>
+            IP地址
+            </summary>
+        </member>
+        <member name="T:CThostFtdcIPListField">
+            <summary>
+            IP列表
+            </summary>
+        </member>
+        <member name="F:CThostFtdcIPListField.IPAddress">
+            <summary>
+            IP地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcIPListField.IsWhite">
+            <summary>
+            是否白名单
+            </summary>
+        </member>
+        <member name="T:CThostFtdcInputOptionSelfCloseField">
+            <summary>
+            输入的期权自对冲
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseField.BrokerID">
+            <summary>
+            经纪公司代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseField.InvestorID">
+            <summary>
+            投资者代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseField.OptionSelfCloseRef">
+            <summary>
+            期权自对冲引用
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseField.UserID">
+            <summary>
+            用户代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseField.Volume">
+            <summary>
+            数量
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseField.RequestID">
+            <summary>
+            请求编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseField.BusinessUnit">
+            <summary>
+            业务单元
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseField.HedgeFlag">
+            <summary>
+            投机套保标志
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseField.OptSelfCloseFlag">
+            <summary>
+            期权行权的头寸是否自对冲
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseField.AccountID">
+            <summary>
+            资金账号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseField.CurrencyID">
+            <summary>
+            币种代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseField.ClientID">
+            <summary>
+            交易编码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseField.IPAddress">
+            <summary>
+            IP地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseField.MacAddress">
+            <summary>
+            Mac地址
+            </summary>
+        </member>
+        <member name="T:CThostFtdcInputOptionSelfCloseActionField">
+            <summary>
+            输入期权自对冲操作
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseActionField.BrokerID">
+            <summary>
+            经纪公司代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseActionField.InvestorID">
+            <summary>
+            投资者代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseActionField.OptionSelfCloseActionRef">
+            <summary>
+            期权自对冲操作引用
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseActionField.OptionSelfCloseRef">
+            <summary>
+            期权自对冲引用
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseActionField.RequestID">
+            <summary>
+            请求编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseActionField.FrontID">
+            <summary>
+            前置编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseActionField.SessionID">
+            <summary>
+            会话编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseActionField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseActionField.OptionSelfCloseSysID">
+            <summary>
+            期权自对冲操作编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseActionField.ActionFlag">
+            <summary>
+            操作标志
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseActionField.UserID">
+            <summary>
+            用户代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseActionField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseActionField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseActionField.IPAddress">
+            <summary>
+            IP地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseActionField.MacAddress">
+            <summary>
+            Mac地址
+            </summary>
+        </member>
+        <member name="T:CThostFtdcOptionSelfCloseField">
+            <summary>
+            期权自对冲
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.BrokerID">
+            <summary>
+            经纪公司代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.InvestorID">
+            <summary>
+            投资者代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.OptionSelfCloseRef">
+            <summary>
+            期权自对冲引用
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.UserID">
+            <summary>
+            用户代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.Volume">
+            <summary>
+            数量
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.RequestID">
+            <summary>
+            请求编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.BusinessUnit">
+            <summary>
+            业务单元
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.HedgeFlag">
+            <summary>
+            投机套保标志
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.OptSelfCloseFlag">
+            <summary>
+            期权行权的头寸是否自对冲
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.OptionSelfCloseLocalID">
+            <summary>
+            本地期权自对冲编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.ParticipantID">
+            <summary>
+            会员代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.ClientID">
+            <summary>
+            客户代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.ExchangeInstID">
+            <summary>
+            合约在交易所的代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.TraderID">
+            <summary>
+            交易所交易员代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.InstallID">
+            <summary>
+            安装编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.OrderSubmitStatus">
+            <summary>
+            期权自对冲提交状态
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.NotifySequence">
+            <summary>
+            报单提示序号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.TradingDay">
+            <summary>
+            交易日
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.SettlementID">
+            <summary>
+            结算编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.OptionSelfCloseSysID">
+            <summary>
+            期权自对冲编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.InsertDate">
+            <summary>
+            报单日期
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.InsertTime">
+            <summary>
+            插入时间
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.CancelTime">
+            <summary>
+            撤销时间
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.ExecResult">
+            <summary>
+            自对冲结果
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.ClearingPartID">
+            <summary>
+            结算会员编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.SequenceNo">
+            <summary>
+            序号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.FrontID">
+            <summary>
+            前置编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.SessionID">
+            <summary>
+            会话编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.UserProductInfo">
+            <summary>
+            用户端产品信息
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.StatusMsg">
+            <summary>
+            状态信息
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.ActiveUserID">
+            <summary>
+            操作用户代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.BrokerOptionSelfCloseSeq">
+            <summary>
+            经纪公司报单编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.BranchID">
+            <summary>
+            营业部编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.AccountID">
+            <summary>
+            资金账号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.CurrencyID">
+            <summary>
+            币种代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.IPAddress">
+            <summary>
+            IP地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.MacAddress">
+            <summary>
+            Mac地址
+            </summary>
+        </member>
+        <member name="T:CThostFtdcOptionSelfCloseActionField">
+            <summary>
+            期权自对冲操作
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseActionField.BrokerID">
+            <summary>
+            经纪公司代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseActionField.InvestorID">
+            <summary>
+            投资者代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseActionField.OptionSelfCloseActionRef">
+            <summary>
+            期权自对冲操作引用
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseActionField.OptionSelfCloseRef">
+            <summary>
+            期权自对冲引用
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseActionField.RequestID">
+            <summary>
+            请求编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseActionField.FrontID">
+            <summary>
+            前置编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseActionField.SessionID">
+            <summary>
+            会话编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseActionField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseActionField.OptionSelfCloseSysID">
+            <summary>
+            期权自对冲操作编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseActionField.ActionFlag">
+            <summary>
+            操作标志
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseActionField.ActionDate">
+            <summary>
+            操作日期
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseActionField.ActionTime">
+            <summary>
+            操作时间
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseActionField.TraderID">
+            <summary>
+            交易所交易员代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseActionField.InstallID">
+            <summary>
+            安装编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseActionField.OptionSelfCloseLocalID">
+            <summary>
+            本地期权自对冲编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseActionField.ActionLocalID">
+            <summary>
+            操作本地编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseActionField.ParticipantID">
+            <summary>
+            会员代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseActionField.ClientID">
+            <summary>
+            客户代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseActionField.BusinessUnit">
+            <summary>
+            业务单元
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseActionField.OrderActionStatus">
+            <summary>
+            报单操作状态
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseActionField.UserID">
+            <summary>
+            用户代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseActionField.StatusMsg">
+            <summary>
+            状态信息
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseActionField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseActionField.BranchID">
+            <summary>
+            营业部编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseActionField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseActionField.IPAddress">
+            <summary>
+            IP地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseActionField.MacAddress">
+            <summary>
+            Mac地址
+            </summary>
+        </member>
+        <member name="T:CThostFtdcQryOptionSelfCloseField">
+            <summary>
+            期权自对冲查询
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryOptionSelfCloseField.BrokerID">
+            <summary>
+            经纪公司代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryOptionSelfCloseField.InvestorID">
+            <summary>
+            投资者代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryOptionSelfCloseField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryOptionSelfCloseField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryOptionSelfCloseField.OptionSelfCloseSysID">
+            <summary>
+            期权自对冲编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryOptionSelfCloseField.InsertTimeStart">
+            <summary>
+            开始时间
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryOptionSelfCloseField.InsertTimeEnd">
+            <summary>
+            结束时间
+            </summary>
+        </member>
+        <member name="T:CThostFtdcExchangeOptionSelfCloseField">
+            <summary>
+            交易所期权自对冲信息
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseField.Volume">
+            <summary>
+            数量
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseField.RequestID">
+            <summary>
+            请求编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseField.BusinessUnit">
+            <summary>
+            业务单元
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseField.HedgeFlag">
+            <summary>
+            投机套保标志
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseField.OptSelfCloseFlag">
+            <summary>
+            期权行权的头寸是否自对冲
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseField.OptionSelfCloseLocalID">
+            <summary>
+            本地期权自对冲编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseField.ParticipantID">
+            <summary>
+            会员代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseField.ClientID">
+            <summary>
+            客户代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseField.ExchangeInstID">
+            <summary>
+            合约在交易所的代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseField.TraderID">
+            <summary>
+            交易所交易员代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseField.InstallID">
+            <summary>
+            安装编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseField.OrderSubmitStatus">
+            <summary>
+            期权自对冲提交状态
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseField.NotifySequence">
+            <summary>
+            报单提示序号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseField.TradingDay">
+            <summary>
+            交易日
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseField.SettlementID">
+            <summary>
+            结算编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseField.OptionSelfCloseSysID">
+            <summary>
+            期权自对冲编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseField.InsertDate">
+            <summary>
+            报单日期
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseField.InsertTime">
+            <summary>
+            插入时间
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseField.CancelTime">
+            <summary>
+            撤销时间
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseField.ExecResult">
+            <summary>
+            自对冲结果
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseField.ClearingPartID">
+            <summary>
+            结算会员编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseField.SequenceNo">
+            <summary>
+            序号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseField.BranchID">
+            <summary>
+            营业部编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseField.IPAddress">
+            <summary>
+            IP地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseField.MacAddress">
+            <summary>
+            Mac地址
+            </summary>
+        </member>
+        <member name="T:CThostFtdcQryOptionSelfCloseActionField">
+            <summary>
+            期权自对冲操作查询
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryOptionSelfCloseActionField.BrokerID">
+            <summary>
+            经纪公司代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryOptionSelfCloseActionField.InvestorID">
+            <summary>
+            投资者代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryOptionSelfCloseActionField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
+        <member name="T:CThostFtdcExchangeOptionSelfCloseActionField">
+            <summary>
+            交易所期权自对冲操作
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseActionField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseActionField.OptionSelfCloseSysID">
+            <summary>
+            期权自对冲操作编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseActionField.ActionFlag">
+            <summary>
+            操作标志
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseActionField.ActionDate">
+            <summary>
+            操作日期
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseActionField.ActionTime">
+            <summary>
+            操作时间
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseActionField.TraderID">
+            <summary>
+            交易所交易员代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseActionField.InstallID">
+            <summary>
+            安装编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseActionField.OptionSelfCloseLocalID">
+            <summary>
+            本地期权自对冲编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseActionField.ActionLocalID">
+            <summary>
+            操作本地编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseActionField.ParticipantID">
+            <summary>
+            会员代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseActionField.ClientID">
+            <summary>
+            客户代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseActionField.BusinessUnit">
+            <summary>
+            业务单元
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseActionField.OrderActionStatus">
+            <summary>
+            报单操作状态
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseActionField.UserID">
+            <summary>
+            用户代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseActionField.BranchID">
+            <summary>
+            营业部编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseActionField.IPAddress">
+            <summary>
+            IP地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseActionField.MacAddress">
+            <summary>
+            Mac地址
+            </summary>
+        </member>
+        <member name="T:CThostFtdcSyncDelaySwapField">
+            <summary>
+            延时换汇同步
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSyncDelaySwapField.DelaySwapSeqNo">
+            <summary>
+            换汇流水号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSyncDelaySwapField.BrokerID">
+            <summary>
+            经纪公司代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSyncDelaySwapField.InvestorID">
+            <summary>
+            投资者代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSyncDelaySwapField.FromCurrencyID">
+            <summary>
+            源币种
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSyncDelaySwapField.FromAmount">
+            <summary>
+            源金额
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSyncDelaySwapField.FromFrozenSwap">
+            <summary>
+            源换汇冻结金额(可用冻结)
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSyncDelaySwapField.FromRemainSwap">
+            <summary>
+            源剩余换汇额度(可提冻结)
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSyncDelaySwapField.ToCurrencyID">
+            <summary>
+            目标币种
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSyncDelaySwapField.ToAmount">
+            <summary>
+            目标金额
+            </summary>
+        </member>
+        <member name="T:CThostFtdcQrySyncDelaySwapField">
+            <summary>
+            查询延时换汇同步
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQrySyncDelaySwapField.BrokerID">
+            <summary>
+            经纪公司代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQrySyncDelaySwapField.DelaySwapSeqNo">
+            <summary>
+            延时换汇流水号
+            </summary>
+        </member>
+        <member name="T:CThostFtdcInvestUnitField">
+            <summary>
+            投资单元
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInvestUnitField.BrokerID">
+            <summary>
+            经纪公司代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInvestUnitField.InvestorID">
+            <summary>
+            投资者代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInvestUnitField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInvestUnitField.InvestorUnitName">
+            <summary>
+            投资者单元名称
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInvestUnitField.InvestorGroupID">
+            <summary>
+            投资者分组代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInvestUnitField.CommModelID">
+            <summary>
+            手续费率模板代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInvestUnitField.MarginModelID">
+            <summary>
+            保证金率模板代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInvestUnitField.AccountID">
+            <summary>
+            资金账号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInvestUnitField.CurrencyID">
+            <summary>
+            币种代码
+            </summary>
+        </member>
+        <member name="T:CThostFtdcQryInvestUnitField">
+            <summary>
+            查询投资单元
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryInvestUnitField.BrokerID">
+            <summary>
+            经纪公司代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryInvestUnitField.InvestorID">
+            <summary>
+            投资者代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryInvestUnitField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
+        <member name="T:CThostFtdcSecAgentCheckModeField">
+            <summary>
+            二级代理商资金校验模式
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSecAgentCheckModeField.InvestorID">
+            <summary>
+            投资者代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSecAgentCheckModeField.BrokerID">
+            <summary>
+            经纪公司代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSecAgentCheckModeField.CurrencyID">
+            <summary>
+            币种
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSecAgentCheckModeField.BrokerSecAgentID">
+            <summary>
+            境外中介机构资金帐号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSecAgentCheckModeField.CheckSelfAccount">
+            <summary>
+            是否需要校验自己的资金账户
             </summary>
         </member>
         <member name="T:CThostFtdcMarketDataField">
@@ -18614,6 +20291,16 @@
             合约代码
             </summary>
         </member>
+        <member name="F:CThostFtdcQryInvestorPositionDetailField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryInvestorPositionDetailField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcInvestorPositionDetailField">
             <summary>
             投资者持仓明细
@@ -18747,6 +20434,11 @@
         <member name="F:CThostFtdcInvestorPositionDetailField.CloseAmount">
             <summary>
             平仓金额
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInvestorPositionDetailField.InvestUnitID">
+            <summary>
+            投资单元代码
             </summary>
         </member>
         <member name="T:CThostFtdcTradingAccountPasswordField">
@@ -18962,6 +20654,16 @@
         <member name="F:CThostFtdcQrySettlementInfoConfirmField.InvestorID">
             <summary>
             投资者代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQrySettlementInfoConfirmField.AccountID">
+            <summary>
+            投资者帐号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQrySettlementInfoConfirmField.CurrencyID">
+            <summary>
+            币种代码
             </summary>
         </member>
         <member name="T:CThostFtdcLoadSettlementInfoField">
@@ -19464,6 +21166,11 @@
             成交组号
             </summary>
         </member>
+        <member name="F:CThostFtdcInvestorPositionCombineDetailField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcParkedOrderField">
             <summary>
             预埋单
@@ -19784,6 +21491,11 @@
             交易所代码
             </summary>
         </member>
+        <member name="F:CThostFtdcQryParkedOrderField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryParkedOrderActionField">
             <summary>
             查询预埋撤单
@@ -19809,6 +21521,11 @@
             交易所代码
             </summary>
         </member>
+        <member name="F:CThostFtdcQryParkedOrderActionField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcRemoveParkedOrderField">
             <summary>
             删除预埋单
@@ -19829,6 +21546,11 @@
             预埋报单编号
             </summary>
         </member>
+        <member name="F:CThostFtdcRemoveParkedOrderField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcRemoveParkedOrderActionField">
             <summary>
             删除预埋撤单
@@ -19847,6 +21569,11 @@
         <member name="F:CThostFtdcRemoveParkedOrderActionField.ParkedOrderActionID">
             <summary>
             预埋撤单编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcRemoveParkedOrderActionField.InvestUnitID">
+            <summary>
+            投资单元代码
             </summary>
         </member>
         <member name="T:CThostFtdcInvestorWithdrawAlgorithmField">
@@ -19902,6 +21629,16 @@
         <member name="F:CThostFtdcQryInvestorPositionCombineDetailField.CombInstrumentID">
             <summary>
             组合持仓合约编码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryInvestorPositionCombineDetailField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryInvestorPositionCombineDetailField.InvestUnitID">
+            <summary>
+            投资单元代码
             </summary>
         </member>
         <member name="T:CThostFtdcMarketDataAveragePriceField">
@@ -19999,6 +21736,11 @@
             序列号
             </summary>
         </member>
+        <member name="F:CThostFtdcTradingNoticeInfoField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcTradingNoticeField">
             <summary>
             用户事件通知
@@ -20044,6 +21786,11 @@
             消息正文
             </summary>
         </member>
+        <member name="F:CThostFtdcTradingNoticeField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryTradingNoticeField">
             <summary>
             查询交易事件通知
@@ -20057,6 +21804,11 @@
         <member name="F:CThostFtdcQryTradingNoticeField.InvestorID">
             <summary>
             投资者代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryTradingNoticeField.InvestUnitID">
+            <summary>
+            投资单元代码
             </summary>
         </member>
         <member name="T:CThostFtdcQryErrOrderField">
@@ -20819,6 +22571,16 @@
             报单价格
             </summary>
         </member>
+        <member name="F:CThostFtdcQueryMaxOrderVolumeWithPriceField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQueryMaxOrderVolumeWithPriceField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryBrokerTradingParamsField">
             <summary>
             查询经纪公司交易参数
@@ -20837,6 +22599,11 @@
         <member name="F:CThostFtdcQryBrokerTradingParamsField.CurrencyID">
             <summary>
             币种代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryBrokerTradingParamsField.AccountID">
+            <summary>
+            投资者帐号
             </summary>
         </member>
         <member name="T:CThostFtdcBrokerTradingParamsField">
@@ -20877,6 +22644,11 @@
         <member name="F:CThostFtdcBrokerTradingParamsField.OptionRoyaltyPriceType">
             <summary>
             期权权利金价格类型
+            </summary>
+        </member>
+        <member name="F:CThostFtdcBrokerTradingParamsField.AccountID">
+            <summary>
+            投资者帐号
             </summary>
         </member>
         <member name="T:CThostFtdcQryBrokerTradingAlgosField">
@@ -21304,6 +23076,11 @@
             数量
             </summary>
         </member>
+        <member name="F:CThostFtdcEWarrantOffsetField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryEWarrantOffsetField">
             <summary>
             查询仓单折抵信息
@@ -21329,6 +23106,11 @@
             合约代码
             </summary>
         </member>
+        <member name="F:CThostFtdcQryEWarrantOffsetField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryInvestorProductGroupMarginField">
             <summary>
             查询投资者品种/跨品种保证金
@@ -21352,6 +23134,16 @@
         <member name="F:CThostFtdcQryInvestorProductGroupMarginField.HedgeFlag">
             <summary>
             投机套保标志
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryInvestorProductGroupMarginField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryInvestorProductGroupMarginField.InvestUnitID">
+            <summary>
+            投资单元代码
             </summary>
         </member>
         <member name="T:CThostFtdcInvestorProductGroupMarginField">
@@ -21494,6 +23286,16 @@
             投机套保标志
             </summary>
         </member>
+        <member name="F:CThostFtdcInvestorProductGroupMarginField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInvestorProductGroupMarginField.InvestUnitID">
+            <summary>
+            投资单元代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQueryCFMMCTradingAccountTokenField">
             <summary>
             查询监控中心用户令牌
@@ -21507,6 +23309,11 @@
         <member name="F:CThostFtdcQueryCFMMCTradingAccountTokenField.InvestorID">
             <summary>
             投资者代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQueryCFMMCTradingAccountTokenField.InvestUnitID">
+            <summary>
+            投资单元代码
             </summary>
         </member>
         <member name="T:CThostFtdcCFMMCTradingAccountTokenField">
@@ -26789,6 +28596,41 @@
             币种代码
             </summary>
         </member>
+        <member name="T:CThostFtdcQryLoginForbiddenIPField">
+            <summary>
+            查询禁止登录IP
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryLoginForbiddenIPField.IPAddress">
+            <summary>
+            IP地址
+            </summary>
+        </member>
+        <member name="T:CThostFtdcQryIPListField">
+            <summary>
+            查询IP列表
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryIPListField.IPAddress">
+            <summary>
+            IP地址
+            </summary>
+        </member>
+        <member name="T:CThostFtdcQryUserRightsAssignField">
+            <summary>
+            查询用户下单权限分配表
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryUserRightsAssignField.BrokerID">
+            <summary>
+            应用单元代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryUserRightsAssignField.UserID">
+            <summary>
+            用户代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcReserveOpenAccountConfirmField">
             <summary>
             银期预约开户确认请求
@@ -27187,6 +29029,116 @@
         <member name="F:CThostFtdcReserveOpenAccountField.ErrorMsg">
             <summary>
             错误信息
+            </summary>
+        </member>
+        <member name="T:CThostFtdcAccountPropertyField">
+            <summary>
+            银行账户属性
+            </summary>
+        </member>
+        <member name="F:CThostFtdcAccountPropertyField.BrokerID">
+            <summary>
+            经纪公司代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcAccountPropertyField.AccountID">
+            <summary>
+            投资者帐号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcAccountPropertyField.BankID">
+            <summary>
+            银行统一标识类型
+            </summary>
+        </member>
+        <member name="F:CThostFtdcAccountPropertyField.BankAccount">
+            <summary>
+            银行账户
+            </summary>
+        </member>
+        <member name="F:CThostFtdcAccountPropertyField.OpenName">
+            <summary>
+            银行账户的开户人名称
+            </summary>
+        </member>
+        <member name="F:CThostFtdcAccountPropertyField.OpenBank">
+            <summary>
+            银行账户的开户行
+            </summary>
+        </member>
+        <member name="F:CThostFtdcAccountPropertyField.IsActive">
+            <summary>
+            是否活跃
+            </summary>
+        </member>
+        <member name="F:CThostFtdcAccountPropertyField.AccountSourceType">
+            <summary>
+            账户来源
+            </summary>
+        </member>
+        <member name="F:CThostFtdcAccountPropertyField.OpenDate">
+            <summary>
+            开户日期
+            </summary>
+        </member>
+        <member name="F:CThostFtdcAccountPropertyField.CancelDate">
+            <summary>
+            注销日期
+            </summary>
+        </member>
+        <member name="F:CThostFtdcAccountPropertyField.OperatorID">
+            <summary>
+            录入员代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcAccountPropertyField.OperateDate">
+            <summary>
+            录入日期
+            </summary>
+        </member>
+        <member name="F:CThostFtdcAccountPropertyField.OperateTime">
+            <summary>
+            录入时间
+            </summary>
+        </member>
+        <member name="F:CThostFtdcAccountPropertyField.CurrencyID">
+            <summary>
+            币种代码
+            </summary>
+        </member>
+        <member name="T:CThostFtdcQryCurrDRIdentityField">
+            <summary>
+            查询当前交易中心
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryCurrDRIdentityField.DRIdentityID">
+            <summary>
+            交易中心代码
+            </summary>
+        </member>
+        <member name="T:CThostFtdcCurrDRIdentityField">
+            <summary>
+            当前交易中心
+            </summary>
+        </member>
+        <member name="F:CThostFtdcCurrDRIdentityField.DRIdentityID">
+            <summary>
+            交易中心代码
+            </summary>
+        </member>
+        <member name="T:CThostFtdcQrySecAgentCheckModeField">
+            <summary>
+            查询二级代理商资金校验模式
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQrySecAgentCheckModeField.BrokerID">
+            <summary>
+            经纪公司代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQrySecAgentCheckModeField.InvestorID">
+            <summary>
+            投资者代码
             </summary>
         </member>
     </members>
