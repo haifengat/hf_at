@@ -35,11 +35,14 @@ namespace HaiFeng
 				_input = value;
 				for (int i = 0; i < _values.Length; i++)
 					_values[i] = new DataSeries(value);     //所有输出序列与values[0]同步,如需更改可在指标中用dataseries(xxx)
-						
-				//输入序列有变化:执行OnBarUpdate
-				_input.OnChanged += input_OnChanged; //每个输入序列变化都会被执行
 
-				this.Init(); //在生成后再调用，否则会导致Input为null
+                //20180718 init放在onchanged事件前,在多层指标中,会让子指标先生成并先注册onchanged事件;
+                //在运行时会先于上层指标执行onchanged事件的内容;否则,父指标先执行,结果就不对了;
+                this.Init(); //在生成后再调用，否则会导致Input为null
+
+                //输入序列有变化:执行OnBarUpdate
+                _input.OnChanged += input_OnChanged; //每个输入序列变化都会被执行
+
 
 				//初始时调用
 				//20170729 此时原始数据序列为空不可以调用 this.OnBarUpdate();
