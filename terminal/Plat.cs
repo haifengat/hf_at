@@ -31,8 +31,9 @@ namespace HaiFeng
 		private QuoteExt _q;
 		private readonly ConcurrentDictionary<string, Tick> _dicTick000 = new ConcurrentDictionary<string, Tick>(); //用于处理000数据
 
-		public Plat()
-		{
+		public Plat(string data_server= "127.0.0.1", int port=5055)
+
+        {
 			InitializeComponent();
 			this.buttonLogin.Click += ButtonLogin_Click;
 			this.buttonOffline.Click += Offline_Click;
@@ -50,7 +51,8 @@ namespace HaiFeng
 				this.textBoxUser.Text = fs[0].Split('@')[0];
 				this.ActiveControl = this.textBoxPwd;
 			}
-		}
+            _dataProcess = new DataProcess(data_server, 5055);
+        }
 
 		protected override void OnHandleDestroyed(EventArgs e)
 		{
@@ -67,8 +69,8 @@ namespace HaiFeng
 
 		private string[] fs;
 
-		//数据处理功能模块
-		private DataProcess _dataProcess = new DataProcess();
+        //数据处理功能模块
+        private DataProcess _dataProcess = null;
 
 		//平台相关配置
 		ConfigATP _cfg = null;
