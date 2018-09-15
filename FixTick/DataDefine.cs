@@ -63,7 +63,6 @@ namespace DataCenter
 
 	public class WorkingTime
 	{
-		public object _id { get; set; }
 		/// <summary>
 		/// 品种ID
 		/// </summary>

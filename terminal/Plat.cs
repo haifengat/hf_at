@@ -155,7 +155,7 @@ namespace HaiFeng
 			if (inst.EndsWith("000"))
 			{
 				string inst888;
-				if (_dataProcess.Instrument888.TryGetValue(inst.TrimEnd('0'), out inst888))
+				if (_dataProcess.Instrument888.TryGetValue(inst.TrimEnd('0').TrimEnd('_'), out inst888))
 					this.comboBoxInstOrder.Text = inst888;
 			}
 			else
