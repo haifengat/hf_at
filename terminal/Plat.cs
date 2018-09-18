@@ -683,6 +683,8 @@ namespace HaiFeng
 							if (stra.Datas.Count > 0)
 							{
 								row.Cells["UpdateTime"].Value = string.IsNullOrEmpty(stra.Tick.UpdateTime) ? stra.D[0].ToString() : stra.Tick.UpdateTime.Split(' ')[1];
+                                //持仓更新
+                                row.Cells["Position"].Value = $"L={stra.PositionLong};S={stra.PositionShort}";
 								ExchangeStatusType status;
 								if (_t.DicExcStatus.Count == 1)
 									row.Cells["ExcStatus"].Value = _t.DicExcStatus.ElementAt(0).Value;
@@ -1023,9 +1025,9 @@ namespace HaiFeng
 		bool Make000Double(Tick tick, out Tick tick000)
 		{
 			var proc = _dataProcess.InstrumentInfo[tick.InstrumentID].ProductID;
-			tick000 = _dicTick000.GetOrAdd(_dataProcess.InstrumentInfo[tick.InstrumentID].ProductID + "000", new Tick
+			tick000 = _dicTick000.GetOrAdd(_dataProcess.InstrumentInfo[tick.InstrumentID].ProductID + "_000", new Tick
 			{
-				InstrumentID = proc + "000",
+				InstrumentID = proc + "_000",
 				UpdateTime = tick.UpdateTime,
 				UpdateMillisec = tick.UpdateMillisec,
 			});
@@ -1038,7 +1040,7 @@ namespace HaiFeng
 			tick000.OpenInterest = 0;
 
 			//至少收到所有合约的数据:???20171225:需将不活跃的合约过滤掉(在real中控制)
-			if (ticks.Count() == _dataProcess.Rate000.Count(n => _dataProcess.InstrumentInfo[n.Key].ProductID == proc))
+			if (ticks.Count() == _dataProcess.Rate000.Where(n => _dataProcess.InstrumentInfo.ContainsKey(n.Key) && _dataProcess.InstrumentInfo[n.Key].ProductID == proc).Count())
 				foreach (var t in ticks)
 				{
 					var rate = _dataProcess.Rate000[t.Value.InstrumentID];
@@ -1068,7 +1070,8 @@ namespace HaiFeng
 		{
 			if (inst.EndsWith("000"))
 			{
-				var insts = _dataProcess.Rate000.Where(n => _dataProcess.InstrumentInfo[n.Key].ProductID == inst.TrimEnd('0')).Select(n => n.Key).ToArray();
+                var proc = inst.TrimEnd('0').TrimEnd('_');
+                var insts = _dataProcess.InstrumentInfo.Where(n => n.Value.ProductID == proc).Select(n => n.Key).ToArray();
 				if (insts.Count() > 0)
 				{
 					_q.ReqSubscribeMarketData(insts);
