@@ -8,8 +8,6 @@
 * 邮件(hubert28@qq.com)
 * QQ: 24918700
 * Q群:65164336
-* 代码同步
-    * https://github.com/haifengat
     
 ##海风AT的功能
 * 策略编写
@@ -28,6 +26,3 @@
 * 追单功能
 * 7*24不间断运行
 
-##界面
-
-![AT](http://a2.qpic.cn/psb?/aeac23d0-f56c-45b7-a6fd-096b873424ae/YVs*PxV61O4UHxK16zh7MxBgjP12N*OVFQbc1mtwPlU!/b/dDwBAAAAAAAA&bo=HgW4AgAAAAACEZQ!&rf=viewer_4&t=5)
