@@ -26,13 +26,11 @@ namespace DataCenter
 		private ConcurrentDictionary<string, WorkingTime> _workingTimes = new ConcurrentDictionary<string, WorkingTime>();
 		private ConcurrentDictionary<string, MinList> _dicProcMinList = new ConcurrentDictionary<string, MinList>();
 		string _host;
-		int _port;
 
-		public DataProcess(string host = "58.247.171.146", int port = 5055)
+		public DataProcess(string server_addr)
 		{
-			_host = host;
-			_port = port;
-			UpdateInfo();
+            _host = server_addr;
+            UpdateInfo();
 		}
 
 
@@ -126,13 +124,13 @@ namespace DataCenter
 		private string SendAndReceive(ReqPackage r)
 		{
 			string msg = string.Empty;
-			using (var req = new RequestSocket($">tcp://{_host}:{_port}"))
+			using (var req = new RequestSocket($">tcp://{_host}"))
 			{
 				req.SendFrame(JsonConvert.SerializeObject(r));
 				byte[] bs;
-				if (!req.TryReceiveFrameBytes(TimeSpan.FromSeconds(10), out bs))
+				if (!req.TryReceiveFrameBytes(TimeSpan.FromSeconds(20), out bs))
 				{
-					throw new Exception($"服务端未开启 {_host}:{_port}");
+					throw new Exception($"服务端未开启 {_host}");
 				}
 
 				using (MemoryStream ms = new MemoryStream(bs))
