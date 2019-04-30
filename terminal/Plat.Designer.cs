@@ -92,6 +92,12 @@
             this.Position = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.report = new System.Windows.Forms.DataGridViewButtonColumn();
             this.Graphics = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.textBoxAppID = new System.Windows.Forms.TextBox();
+            this.textBoxAuthCode = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.textBoxProductInfo = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
             this.panelLogin.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -112,7 +118,7 @@
             this.panelLogin.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelLogin.Location = new System.Drawing.Point(0, 0);
             this.panelLogin.Name = "panelLogin";
-            this.panelLogin.Size = new System.Drawing.Size(1195, 28);
+            this.panelLogin.Size = new System.Drawing.Size(1179, 28);
             this.panelLogin.TabIndex = 29;
             // 
             // splitContainer1
@@ -127,20 +133,26 @@
             // 
             this.splitContainer1.Panel1.Controls.Add(this.label11);
             this.splitContainer1.Panel1.Controls.Add(this.buttonOffline);
+            this.splitContainer1.Panel1.Controls.Add(this.label16);
+            this.splitContainer1.Panel1.Controls.Add(this.label8);
             this.splitContainer1.Panel1.Controls.Add(this.label10);
             this.splitContainer1.Panel1.Controls.Add(this.buttonLogin);
+            this.splitContainer1.Panel1.Controls.Add(this.label7);
             this.splitContainer1.Panel1.Controls.Add(this.label9);
+            this.splitContainer1.Panel1.Controls.Add(this.textBoxAuthCode);
             this.splitContainer1.Panel1.Controls.Add(this.textBoxPwd);
+            this.splitContainer1.Panel1.Controls.Add(this.textBoxProductInfo);
+            this.splitContainer1.Panel1.Controls.Add(this.textBoxAppID);
             this.splitContainer1.Panel1.Controls.Add(this.comboBoxServer);
             this.splitContainer1.Panel1.Controls.Add(this.textBoxUser);
-            this.splitContainer1.Size = new System.Drawing.Size(1195, 28);
-            this.splitContainer1.SplitterDistance = 617;
+            this.splitContainer1.Size = new System.Drawing.Size(1179, 28);
+            this.splitContainer1.SplitterDistance = 1111;
             this.splitContainer1.TabIndex = 42;
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(12, 10);
+            this.label11.Location = new System.Drawing.Point(12, 8);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(41, 12);
             this.label11.TabIndex = 7;
@@ -148,7 +160,7 @@
             // 
             // buttonOffline
             // 
-            this.buttonOffline.Location = new System.Drawing.Point(538, 4);
+            this.buttonOffline.Location = new System.Drawing.Point(1027, 3);
             this.buttonOffline.Name = "buttonOffline";
             this.buttonOffline.Size = new System.Drawing.Size(75, 23);
             this.buttonOffline.TabIndex = 101;
@@ -158,7 +170,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(174, 10);
+            this.label10.Location = new System.Drawing.Point(176, 8);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(29, 12);
             this.label10.TabIndex = 6;
@@ -166,7 +178,7 @@
             // 
             // buttonLogin
             // 
-            this.buttonLogin.Location = new System.Drawing.Point(456, 4);
+            this.buttonLogin.Location = new System.Drawing.Point(951, 3);
             this.buttonLogin.Name = "buttonLogin";
             this.buttonLogin.Size = new System.Drawing.Size(75, 23);
             this.buttonLogin.TabIndex = 11;
@@ -176,7 +188,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(312, 10);
+            this.label9.Location = new System.Drawing.Point(316, 8);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(29, 12);
             this.label9.TabIndex = 5;
@@ -185,7 +197,7 @@
             // textBoxPwd
             // 
             this.textBoxPwd.BackColor = System.Drawing.SystemColors.Control;
-            this.textBoxPwd.Location = new System.Drawing.Point(341, 6);
+            this.textBoxPwd.Location = new System.Drawing.Point(346, 4);
             this.textBoxPwd.Name = "textBoxPwd";
             this.textBoxPwd.PasswordChar = '*';
             this.textBoxPwd.Size = new System.Drawing.Size(108, 21);
@@ -196,7 +208,7 @@
             this.comboBoxServer.BackColor = System.Drawing.SystemColors.Control;
             this.comboBoxServer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxServer.FormattingEnabled = true;
-            this.comboBoxServer.Location = new System.Drawing.Point(53, 6);
+            this.comboBoxServer.Location = new System.Drawing.Point(54, 4);
             this.comboBoxServer.Name = "comboBoxServer";
             this.comboBoxServer.Size = new System.Drawing.Size(121, 20);
             this.comboBoxServer.TabIndex = 8;
@@ -204,7 +216,7 @@
             // textBoxUser
             // 
             this.textBoxUser.BackColor = System.Drawing.SystemColors.Control;
-            this.textBoxUser.Location = new System.Drawing.Point(203, 6);
+            this.textBoxUser.Location = new System.Drawing.Point(206, 4);
             this.textBoxUser.Name = "textBoxUser";
             this.textBoxUser.Size = new System.Drawing.Size(109, 21);
             this.textBoxUser.TabIndex = 9;
@@ -229,7 +241,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(0, 28);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1195, 35);
+            this.groupBox1.Size = new System.Drawing.Size(1179, 35);
             this.groupBox1.TabIndex = 37;
             this.groupBox1.TabStop = false;
             // 
@@ -390,16 +402,16 @@
             this.groupBox2.Controls.Add(this.numericUpDownFirst);
             this.groupBox2.Controls.Add(this.label12);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox2.Location = new System.Drawing.Point(0, 514);
+            this.groupBox2.Location = new System.Drawing.Point(0, 475);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(1195, 39);
+            this.groupBox2.Size = new System.Drawing.Size(1179, 39);
             this.groupBox2.TabIndex = 39;
             this.groupBox2.TabStop = false;
             // 
             // pictureBox1
             // 
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.pictureBox1.Location = new System.Drawing.Point(1160, 17);
+            this.pictureBox1.Location = new System.Drawing.Point(1144, 17);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(32, 19);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -532,7 +544,7 @@
             this.DataGridViewStrategies.RowTemplate.Height = 27;
             this.DataGridViewStrategies.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.DataGridViewStrategies.ShowCellToolTips = false;
-            this.DataGridViewStrategies.Size = new System.Drawing.Size(1195, 451);
+            this.DataGridViewStrategies.Size = new System.Drawing.Size(1179, 412);
             this.DataGridViewStrategies.TabIndex = 40;
             // 
             // StraName
@@ -649,16 +661,68 @@
             this.Graphics.HeaderText = "图形显示";
             this.Graphics.Name = "Graphics";
             // 
+            // textBoxAppID
+            // 
+            this.textBoxAppID.BackColor = System.Drawing.SystemColors.Control;
+            this.textBoxAppID.Location = new System.Drawing.Point(491, 4);
+            this.textBoxAppID.Name = "textBoxAppID";
+            this.textBoxAppID.Size = new System.Drawing.Size(148, 21);
+            this.textBoxAppID.TabIndex = 9;
+            // 
+            // textBoxAuthCode
+            // 
+            this.textBoxAuthCode.BackColor = System.Drawing.SystemColors.Control;
+            this.textBoxAuthCode.Location = new System.Drawing.Point(682, 4);
+            this.textBoxAuthCode.Name = "textBoxAuthCode";
+            this.textBoxAuthCode.PasswordChar = '*';
+            this.textBoxAuthCode.Size = new System.Drawing.Size(140, 21);
+            this.textBoxAuthCode.TabIndex = 10;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(640, 8);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(41, 12);
+            this.label7.TabIndex = 5;
+            this.label7.Text = "验证码";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(455, 8);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(35, 12);
+            this.label8.TabIndex = 6;
+            this.label8.Text = "AppID";
+            // 
+            // textBoxProductInfo
+            // 
+            this.textBoxProductInfo.BackColor = System.Drawing.SystemColors.Control;
+            this.textBoxProductInfo.Location = new System.Drawing.Point(853, 4);
+            this.textBoxProductInfo.Name = "textBoxProductInfo";
+            this.textBoxProductInfo.Size = new System.Drawing.Size(97, 21);
+            this.textBoxProductInfo.TabIndex = 9;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(823, 8);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(29, 12);
+            this.label16.TabIndex = 6;
+            this.label16.Text = "产品";
+            // 
             // Plat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(1179, 514);
             this.Controls.Add(this.DataGridViewStrategies);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.panelLogin);
             this.Name = "Plat";
-            this.Size = new System.Drawing.Size(1195, 553);
             this.panelLogin.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
@@ -733,5 +797,11 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Position;
         private System.Windows.Forms.DataGridViewButtonColumn report;
         private System.Windows.Forms.DataGridViewButtonColumn Graphics;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox textBoxAuthCode;
+        private System.Windows.Forms.TextBox textBoxProductInfo;
+        private System.Windows.Forms.TextBox textBoxAppID;
     }
 }

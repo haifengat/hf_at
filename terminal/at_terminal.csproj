@@ -111,6 +111,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Account.cs" />
     <Compile Include="FormParams.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -135,9 +136,6 @@
     </Compile>
     <Compile Include="Plat.Designer.cs">
       <DependentUpon>Plat.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PlatCommon.cs">
-      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -201,13 +199,12 @@
   <Import Project="..\FixTick\FixTick.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy $(ProjectDir)..\Resources $(TargetDir)
-md $(TargetDir)dll
-copy $(ProjectDir)..\Resources\dll $(TargetDir)dll</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties Reactor_Deploy="0" Reactor_Output="&lt;AssemblyLocation&gt;\..\..\hf_plat_terminal\debug\&lt;AssemblyFileName&gt;" Reactor_Configuration="ALL" Reactor_Project="D:\haifeng_project\hf_plat_tb\hf_plat_core\hf_plat_core.nrproj" Reactor_Commands="" Reactor_Enabled="0" />
+      <UserProperties Reactor_Enabled="0" Reactor_Commands="" Reactor_Project="D:\haifeng_project\hf_plat_tb\hf_plat_core\hf_plat_core.nrproj" Reactor_Configuration="ALL" Reactor_Output="&lt;AssemblyLocation&gt;\..\..\hf_plat_terminal\debug\&lt;AssemblyFileName&gt;" Reactor_Deploy="0" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

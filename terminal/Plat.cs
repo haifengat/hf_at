@@ -30,6 +30,7 @@ namespace HaiFeng
         private TradeExt _t;
         private QuoteExt _q;
         private readonly ConcurrentDictionary<string, Tick> _dicTick000 = new ConcurrentDictionary<string, Tick>(); //用于处理000数据
+        Account account = new Account();
 
         public Plat(string server_addr = "broadcast.eicp.net:55881")
 
@@ -43,14 +44,15 @@ namespace HaiFeng
             this.comboBoxServer.DisplayMember = "txt";
             this.comboBoxServer.ValueMember = "val";
 
-            //读取登录信息
-            if (File.Exists("login.ini"))
-            {
-                string[] fs = File.ReadAllLines("login.ini");
-                this.comboBoxServer.Text = fs[0].Split('@')[1];
-                this.textBoxUser.Text = fs[0].Split('@')[0];
-                this.ActiveControl = this.textBoxPwd;
-            }
+            if (File.Exists("./account.json"))
+                account = JsonConvert.DeserializeObject<Account>(File.ReadAllText("./account.json"));
+            //登录信息
+            this.comboBoxServer.DataBindings.Add("Text", account, "ServerName", false, DataSourceUpdateMode.OnPropertyChanged);
+            this.textBoxUser.DataBindings.Add("Text", account, "Investor", false, DataSourceUpdateMode.OnPropertyChanged);
+            this.textBoxAppID.DataBindings.Add("Text", account, "AppID", false, DataSourceUpdateMode.OnPropertyChanged);
+            this.textBoxAuthCode.DataBindings.Add("Text", account, "AuthCode", false, DataSourceUpdateMode.OnPropertyChanged);
+            this.textBoxProductInfo.DataBindings.Add("Text", account, "ProductInfo", false, DataSourceUpdateMode.OnPropertyChanged);
+
             _dataProcess = new DataProcess(server_addr);
         }
 
@@ -805,11 +807,15 @@ namespace HaiFeng
             _logTime = DateTime.Now;
             LogWarn("connecting ...");
 
-            _t = new TradeExt("./dll/ctp_trade.dll")
+            _t = new TradeExt
             {
+                FrontAddr = front[0],
                 Broker = _Broker,
                 Investor = _Investor,
                 Password = _Password,
+                ProductInfo = this.textBoxProductInfo.Text,
+                AppID = this.textBoxAppID.Text,
+                AuthCode = this.textBoxAuthCode.Text,
             };
             _t.OnFrontConnected += trade_OnFrontConnected;
             _t.OnRspUserLogin += trade_OnRspUserLogin;
@@ -819,19 +825,19 @@ namespace HaiFeng
             _t.OnRspUserLogout += trade_OnRspUserLogout;
             _t.OnRtnNotice += trade_OnRtnNotice;
 
-            _t.ReqConnect(front[0]);
+            _t.ReqConnect();
         }
 
         private void trade_OnFrontConnected(object sender, EventArgs e)
         {
             var t = (TradeExt)sender;
-            t.ReqUserLogin(t.Investor, t.Password, t.Broker);
+            t.ReqUserLogin();
             LogWarn("登录中 ...");
         }
 
-        private void trade_OnRspUserLogin(object sender, IntEventArgs e)
+        private void trade_OnRspUserLogin(object sender, ErrorEventArgs e)
         {
-            if (e.Value == 0)
+            if (e.ErrorID == 0)
             {
                 LogWarn("登录成功.");
                 _tradingDay = ((Trade)sender).TradingDay;
@@ -853,7 +859,7 @@ namespace HaiFeng
             }
             else
             {
-                LogError("login error:" + e.Value);
+                LogError("login error:" + e.ErrorMsg);
                 _t.ReqUserLogout();
                 _t = null;
                 _q = null;
@@ -898,8 +904,9 @@ namespace HaiFeng
                     _q.ReqUserLogout();
                 _q = null;
             }
-            _q = new QuoteExt("./dll/ctp_quote.dll")
+            _q = new QuoteExt()
             {
+                FrontAddr = front[0],
                 Broker = _Broker,
                 Investor = _Investor,
                 Password = _Password,
@@ -909,7 +916,7 @@ namespace HaiFeng
             _q.OnRspUserLogin += quote_OnRspUserLogin;
             _q.OnRspUserLogout += quote_OnRspUserLogout;
             _q.OnRtnTick += quote_OnRtnTick;
-            _q.ReqConnect(front[0]);
+            _q.ReqConnect();
         }
 
         private void quote_OnRspUserLogout(object sender, IntEventArgs e)
@@ -922,7 +929,7 @@ namespace HaiFeng
         {
             LogWarn("行情连接");
             var q = (QuoteExt)sender;
-            q.ReqUserLogin(q.Investor, q.Password, q.Broker);
+            q.ReqUserLogin();
         }
 
         private void quote_OnRspUserLogin(object sender, IntEventArgs e)
@@ -955,7 +962,8 @@ namespace HaiFeng
                     this.panelLogin.Enabled = false;
                     Console.Title += $" ({textBoxUser.Text}@{comboBoxServer.Text})";
                     this.ParentForm.Text = Console.Title;
-                    File.WriteAllText("login.ini", _t.Investor + "@" + this.comboBoxServer.Text);
+
+                    File.WriteAllText("./account.json", JsonConvert.SerializeObject(account));
                     InitControls();
                 }));
             }
