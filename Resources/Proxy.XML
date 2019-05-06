@@ -95,6 +95,16 @@
             
             </summary>
         </member>
+        <member name="P:HaiFeng.CTPTrade.IP">
+            <summary>
+            直接方式不需要
+            </summary>
+        </member>
+        <member name="P:HaiFeng.CTPTrade.Port">
+            <summary>
+            直接方式不需要
+            </summary>
+        </member>
         <member name="P:HaiFeng.CTPTrade.Version">
             <summary>
             接口版本
