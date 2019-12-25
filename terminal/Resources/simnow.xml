@@ -5,10 +5,10 @@
       <Server>
         <Name>sim</Name>
         <Trading>
-          <item>180.168.146.187:13030</item>
+          <item>180.168.146.187:10101</item>
         </Trading>
         <MarketData>
-          <item>180.168.146.187:13040</item>
+          <item>180.168.146.187:10110</item>
         </MarketData>
       </Server>
     </Servers>
