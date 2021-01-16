@@ -36,8 +36,9 @@ namespace HaiFeng
             if (args.Length > 0)
                 plat = new Plat(args[0]);
             else
-                plat = new Plat();
-                //Console.WriteLine("params data service address ip:port");
+                //plat = new Plat();
+                plat = new Plat("service.haifengat.com:15555");
+            //Console.WriteLine("params data service address ip:port");
             plat.Dock = DockStyle.Fill;
 
             using (Form f = new Form

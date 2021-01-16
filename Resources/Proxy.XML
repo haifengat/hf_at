@@ -834,11 +834,11 @@
         </member>
         <member name="P:HaiFeng.Properties.Resources.Culture">
             <summary>
-              使用此强类型资源类，为所有资源查找
+              重写当前线程的 CurrentUICulture 属性
               重写当前线程的 CurrentUICulture 属性。
             </summary>
         </member>
-        <member name="P:HaiFeng.Properties.Resources.lib">
+        <member name="P:HaiFeng.Properties.Resources.lib64">
             <summary>
               查找 System.Byte[] 类型的本地化资源。
             </summary>
@@ -1374,6 +1374,16 @@
         <member name="F:TThostFtdcIdCardTypeType.THOST_FTDC_ICT_OtherCard">
              <summary>
              其他证件
+            </summary>
+        </member>
+        <member name="F:TThostFtdcIdCardTypeType.THOST_FTDC_ICT_CorporationCertNo">
+             <summary>
+             机构成立证明文件
+            </summary>
+        </member>
+        <member name="F:TThostFtdcIdCardTypeType.THOST_FTDC_ICT_UniformSocialCreditCode">
+             <summary>
+             统一社会信用代码
             </summary>
         </member>
         <member name="F:TThostFtdcIdCardTypeType.THOST_FTDC_ICT_CptMngPrdLetter">
@@ -2126,6 +2136,16 @@
              产品类型类型
             </summary>
         </member>
+        <member name="F:TThostFtdcProductClassType.THOST_FTDC_PC_MI">
+             <summary>
+             金属指数
+            </summary>
+        </member>
+        <member name="F:TThostFtdcProductClassType.THOST_FTDC_PC_TAS">
+             <summary>
+             TAS合约
+            </summary>
+        </member>
         <member name="F:TThostFtdcProductClassType.THOST_FTDC_PC_SpotOption">
              <summary>
              现货期权
@@ -2154,6 +2174,51 @@
         <member name="F:TThostFtdcProductClassType.THOST_FTDC_PC_Futures">
              <summary>
              期货
+            </summary>
+        </member>
+        <member name="T:TThostFtdcAPIProductClassType">
+             <summary>
+             产品类型类型
+            </summary>
+        </member>
+        <member name="F:TThostFtdcAPIProductClassType.THOST_FTDC_APC_All">
+             <summary>
+             所有合约（包含不能交易合约 慎用）
+            </summary>
+        </member>
+        <member name="F:TThostFtdcAPIProductClassType.THOST_FTDC_APC_AllTrading">
+             <summary>
+             所有可以交易合约
+            </summary>
+        </member>
+        <member name="F:TThostFtdcAPIProductClassType.THOST_FTDC_APC_UnTradingComb">
+             <summary>
+             可申请的组合（dce可以申请的组合合约 包含dce可以交易的合约）
+            </summary>
+        </member>
+        <member name="F:TThostFtdcAPIProductClassType.THOST_FTDC_APC_TradingComb">
+             <summary>
+             可下单组合（目前包含DCE和ZCE的期货组合）
+            </summary>
+        </member>
+        <member name="F:TThostFtdcAPIProductClassType.THOST_FTDC_APC_Options">
+             <summary>
+             可交易期权(含期权组合和期权单一合约)
+            </summary>
+        </member>
+        <member name="F:TThostFtdcAPIProductClassType.THOST_FTDC_APC_Futures">
+             <summary>
+             可交易期货(含期货组合和期货单一合约)
+            </summary>
+        </member>
+        <member name="F:TThostFtdcAPIProductClassType.THOST_FTDC_APC_OptionSingle">
+             <summary>
+             期权单一合约
+            </summary>
+        </member>
+        <member name="F:TThostFtdcAPIProductClassType.THOST_FTDC_APC_FutureSingle">
+             <summary>
+             期货单一合约
             </summary>
         </member>
         <member name="T:TThostFtdcInstLifePhaseType">
@@ -2799,6 +2864,21 @@
         <member name="F:TThostFtdcTradeTypeType.THOST_FTDC_TRDT_SplitCombinatio">
              <summary>
              组合持仓拆分为单一持仓,初始化不应包含该类型的持仓
+            </summary>
+        </member>
+        <member name="T:TThostFtdcSpecPosiTypeType">
+             <summary>
+             特殊持仓明细标识类型
+            </summary>
+        </member>
+        <member name="F:TThostFtdcSpecPosiTypeType.THOST_FTDC_SPOST_Tas">
+             <summary>
+             TAS合约成交产生的标的合约持仓明细
+            </summary>
+        </member>
+        <member name="F:TThostFtdcSpecPosiTypeType.THOST_FTDC_SPOST_Commo">
+             <summary>
+             普通持仓明细
             </summary>
         </member>
         <member name="T:TThostFtdcPriceSourceType">
@@ -4339,6 +4419,16 @@
         <member name="F:TThostFtdcUserEventTypeType.THOST_FTDC_UET_Other">
              <summary>
              其他
+            </summary>
+        </member>
+        <member name="F:TThostFtdcUserEventTypeType.THOST_FTDC_UET_Transfer">
+             <summary>
+             转账
+            </summary>
+        </member>
+        <member name="F:TThostFtdcUserEventTypeType.THOST_FTDC_UET_SubmitSysInfo">
+             <summary>
+             终端信息上报
             </summary>
         </member>
         <member name="F:TThostFtdcUserEventTypeType.THOST_FTDC_UET_Authenticate">
@@ -8396,7 +8486,27 @@
              组合类型类型
             </summary>
         </member>
-        <member name="F:TThostFtdcCombinationTypeType.THOST_FTDC_COMBT_CLD">
+        <member name="F:TThostFtdcCombinationTypeType.THOST_FTDC_COMBT_BES">
+             <summary>
+             卖出期权垂直价差组合
+            </summary>
+        </member>
+        <member name="F:TThostFtdcCombinationTypeType.THOST_FTDC_COMBT_BLS">
+             <summary>
+             买入期权垂直价差组合
+            </summary>
+        </member>
+        <member name="F:TThostFtdcCombinationTypeType.THOST_FTDC_COMBT_BFO">
+             <summary>
+             买备兑组合
+            </summary>
+        </member>
+        <member name="F:TThostFtdcCombinationTypeType.THOST_FTDC_COMBT_OPL">
+             <summary>
+             期权对锁组合
+            </summary>
+        </member>
+        <member name="F:TThostFtdcCombinationTypeType.THOST_FTDC_COMBT_CAS">
              <summary>
              时间价差组合
             </summary>
@@ -8766,6 +8876,11 @@
              组合指令方向类型
             </summary>
         </member>
+        <member name="F:TThostFtdcCombDirectionType.THOST_FTDC_CMDR_DelComb">
+             <summary>
+             操作员删组合单
+            </summary>
+        </member>
         <member name="F:TThostFtdcCombDirectionType.THOST_FTDC_CMDR_UnComb">
              <summary>
              申请拆分
@@ -8956,6 +9071,66 @@
              基点价值
             </summary>
         </member>
+        <member name="T:TThostFtdcAuthTypeType">
+             <summary>
+             用户终端认证方式类型
+            </summary>
+        </member>
+        <member name="F:TThostFtdcAuthTypeType.THOST_FTDC_AU_BLACK">
+             <summary>
+             黑名单校验
+            </summary>
+        </member>
+        <member name="F:TThostFtdcAuthTypeType.THOST_FTDC_AU_WHITE">
+             <summary>
+             白名单校验
+            </summary>
+        </member>
+        <member name="T:TThostFtdcClassTypeType">
+             <summary>
+             合约分类方式类型
+            </summary>
+        </member>
+        <member name="F:TThostFtdcClassTypeType.THOST_FTDC_INS_COMB">
+             <summary>
+             组合合约
+            </summary>
+        </member>
+        <member name="F:TThostFtdcClassTypeType.THOST_FTDC_INS_OPTION">
+             <summary>
+             期货、现货期权合约
+            </summary>
+        </member>
+        <member name="F:TThostFtdcClassTypeType.THOST_FTDC_INS_FUTURE">
+             <summary>
+             期货、即期、期转现、Tas、金属指数合约
+            </summary>
+        </member>
+        <member name="F:TThostFtdcClassTypeType.THOST_FTDC_INS_ALL">
+             <summary>
+             所有合约
+            </summary>
+        </member>
+        <member name="T:TThostFtdcTradingTypeType">
+             <summary>
+             合约交易状态分类方式类型
+            </summary>
+        </member>
+        <member name="F:TThostFtdcTradingTypeType.THOST_FTDC_TD_UNTRADE">
+             <summary>
+             非交易
+            </summary>
+        </member>
+        <member name="F:TThostFtdcTradingTypeType.THOST_FTDC_TD_TRADE">
+             <summary>
+             交易
+            </summary>
+        </member>
+        <member name="F:TThostFtdcTradingTypeType.THOST_FTDC_TD_ALL">
+             <summary>
+             所有状态
+            </summary>
+        </member>
         <member name="T:CThostFtdcDisseminationField">
             <summary>
             信息分发
@@ -9021,9 +9196,9 @@
             动态密码
             </summary>
         </member>
-        <member name="F:CThostFtdcReqUserLoginField.ClientIPAddress">
+        <member name="F:CThostFtdcReqUserLoginField.reserve1">
             <summary>
-            终端IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcReqUserLoginField.LoginRemark">
@@ -9034,6 +9209,11 @@
         <member name="F:CThostFtdcReqUserLoginField.ClientIPPort">
             <summary>
             终端IP端口
+            </summary>
+        </member>
+        <member name="F:CThostFtdcReqUserLoginField.ClientIPAddress">
+            <summary>
+            终端IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcRspUserLoginField">
@@ -9234,6 +9414,16 @@
         <member name="F:CThostFtdcAuthenticationInfoField.AppType">
             <summary>
             App类型
+            </summary>
+        </member>
+        <member name="F:CThostFtdcAuthenticationInfoField.reserve1">
+            <summary>
+            保留的无效字段
+            </summary>
+        </member>
+        <member name="F:CThostFtdcAuthenticationInfoField.ClientIPAddress">
+            <summary>
+            终端IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcRspUserLogin2Field">
@@ -9711,9 +9901,9 @@
             产品
             </summary>
         </member>
-        <member name="F:CThostFtdcProductField.ProductID">
+        <member name="F:CThostFtdcProductField.reserve1">
             <summary>
-            产品代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcProductField.ProductName">
@@ -9786,9 +9976,9 @@
             质押资金可用范围
             </summary>
         </member>
-        <member name="F:CThostFtdcProductField.ExchangeProductID">
+        <member name="F:CThostFtdcProductField.reserve2">
             <summary>
-            交易所产品代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcProductField.UnderlyingMultiple">
@@ -9796,14 +9986,24 @@
             合约基础商品乘数
             </summary>
         </member>
+        <member name="F:CThostFtdcProductField.ProductID">
+            <summary>
+            产品代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcProductField.ExchangeProductID">
+            <summary>
+            交易所产品代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcInstrumentField">
             <summary>
             合约
             </summary>
         </member>
-        <member name="F:CThostFtdcInstrumentField.InstrumentID">
+        <member name="F:CThostFtdcInstrumentField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInstrumentField.ExchangeID">
@@ -9816,14 +10016,14 @@
             合约名称
             </summary>
         </member>
-        <member name="F:CThostFtdcInstrumentField.ExchangeInstID">
+        <member name="F:CThostFtdcInstrumentField.reserve2">
             <summary>
-            合约在交易所的代码
+            保留的无效字段
             </summary>
         </member>
-        <member name="F:CThostFtdcInstrumentField.ProductID">
+        <member name="F:CThostFtdcInstrumentField.reserve3">
             <summary>
-            产品代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInstrumentField.ProductClass">
@@ -9931,9 +10131,9 @@
             是否使用大额单边保证金算法
             </summary>
         </member>
-        <member name="F:CThostFtdcInstrumentField.UnderlyingInstrID">
+        <member name="F:CThostFtdcInstrumentField.reserve4">
             <summary>
-            基础商品代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInstrumentField.StrikePrice">
@@ -9954,6 +10154,26 @@
         <member name="F:CThostFtdcInstrumentField.CombinationType">
             <summary>
             组合类型
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInstrumentField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInstrumentField.ExchangeInstID">
+            <summary>
+            合约在交易所的代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInstrumentField.ProductID">
+            <summary>
+            产品代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInstrumentField.UnderlyingInstrID">
+            <summary>
+            基础商品代码
             </summary>
         </member>
         <member name="T:CThostFtdcBrokerField">
@@ -10476,9 +10696,9 @@
             投资者持仓
             </summary>
         </member>
-        <member name="F:CThostFtdcInvestorPositionField.InstrumentID">
+        <member name="F:CThostFtdcInvestorPositionField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInvestorPositionField.BrokerID">
@@ -10711,14 +10931,29 @@
             大商所持仓成本差值，只有大商所使用
             </summary>
         </member>
+        <member name="F:CThostFtdcInvestorPositionField.TasPosition">
+            <summary>
+            tas持仓手数
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInvestorPositionField.TasPositionCost">
+            <summary>
+            tas持仓成本
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInvestorPositionField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcInstrumentMarginRateField">
             <summary>
             合约保证金率
             </summary>
         </member>
-        <member name="F:CThostFtdcInstrumentMarginRateField.InstrumentID">
+        <member name="F:CThostFtdcInstrumentMarginRateField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInstrumentMarginRateField.InvestorRange">
@@ -10776,14 +11011,19 @@
             投资单元代码
             </summary>
         </member>
+        <member name="F:CThostFtdcInstrumentMarginRateField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcInstrumentCommissionRateField">
             <summary>
             合约手续费率
             </summary>
         </member>
-        <member name="F:CThostFtdcInstrumentCommissionRateField.InstrumentID">
+        <member name="F:CThostFtdcInstrumentCommissionRateField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInstrumentCommissionRateField.InvestorRange">
@@ -10846,6 +11086,11 @@
             投资单元代码
             </summary>
         </member>
+        <member name="F:CThostFtdcInstrumentCommissionRateField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcDepthMarketDataField">
             <summary>
             深度行情
@@ -10856,9 +11101,9 @@
             交易日
             </summary>
         </member>
-        <member name="F:CThostFtdcDepthMarketDataField.InstrumentID">
+        <member name="F:CThostFtdcDepthMarketDataField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcDepthMarketDataField.ExchangeID">
@@ -10866,9 +11111,9 @@
             交易所代码
             </summary>
         </member>
-        <member name="F:CThostFtdcDepthMarketDataField.ExchangeInstID">
+        <member name="F:CThostFtdcDepthMarketDataField.reserve2">
             <summary>
-            合约在交易所的代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcDepthMarketDataField.LastPrice">
@@ -11071,14 +11316,24 @@
             业务日期
             </summary>
         </member>
+        <member name="F:CThostFtdcDepthMarketDataField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcDepthMarketDataField.ExchangeInstID">
+            <summary>
+            合约在交易所的代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcInstrumentTradingRightField">
             <summary>
             投资者合约交易权限
             </summary>
         </member>
-        <member name="F:CThostFtdcInstrumentTradingRightField.InstrumentID">
+        <member name="F:CThostFtdcInstrumentTradingRightField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInstrumentTradingRightField.InvestorRange">
@@ -11099,6 +11354,11 @@
         <member name="F:CThostFtdcInstrumentTradingRightField.TradingRight">
             <summary>
             交易权限
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInstrumentTradingRightField.InstrumentID">
+            <summary>
+            合约代码
             </summary>
         </member>
         <member name="T:CThostFtdcBrokerUserField">
@@ -11351,9 +11611,9 @@
             合约保证金率调整
             </summary>
         </member>
-        <member name="F:CThostFtdcInstrumentMarginRateAdjustField.InstrumentID">
+        <member name="F:CThostFtdcInstrumentMarginRateAdjustField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInstrumentMarginRateAdjustField.InvestorRange">
@@ -11401,6 +11661,11 @@
             是否相对交易所收取
             </summary>
         </member>
+        <member name="F:CThostFtdcInstrumentMarginRateAdjustField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcExchangeMarginRateField">
             <summary>
             交易所保证金率
@@ -11411,9 +11676,9 @@
             经纪公司代码
             </summary>
         </member>
-        <member name="F:CThostFtdcExchangeMarginRateField.InstrumentID">
+        <member name="F:CThostFtdcExchangeMarginRateField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcExchangeMarginRateField.HedgeFlag">
@@ -11446,6 +11711,11 @@
             交易所代码
             </summary>
         </member>
+        <member name="F:CThostFtdcExchangeMarginRateField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcExchangeMarginRateAdjustField">
             <summary>
             交易所保证金率调整
@@ -11456,9 +11726,9 @@
             经纪公司代码
             </summary>
         </member>
-        <member name="F:CThostFtdcExchangeMarginRateAdjustField.InstrumentID">
+        <member name="F:CThostFtdcExchangeMarginRateAdjustField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcExchangeMarginRateAdjustField.HedgeFlag">
@@ -11524,6 +11794,11 @@
         <member name="F:CThostFtdcExchangeMarginRateAdjustField.NoShortMarginRatioByVolume">
             <summary>
             不跟随交易所投资者空头保证金费
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeMarginRateAdjustField.InstrumentID">
+            <summary>
+            合约代码
             </summary>
         </member>
         <member name="T:CThostFtdcExchangeRateField">
@@ -11651,9 +11926,9 @@
             登录时间
             </summary>
         </member>
-        <member name="F:CThostFtdcLoginInfoField.IPAddress">
+        <member name="F:CThostFtdcLoginInfoField.reserve1">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcLoginInfoField.UserProductInfo">
@@ -11734,6 +12009,11 @@
         <member name="F:CThostFtdcLoginInfoField.Password">
             <summary>
             密码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcLoginInfoField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcLogoutAllField">
@@ -11821,9 +12101,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcInputOrderField.InstrumentID">
+        <member name="F:CThostFtdcInputOrderField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInputOrderField.OrderRef">
@@ -11951,14 +12231,24 @@
             交易编码
             </summary>
         </member>
-        <member name="F:CThostFtdcInputOrderField.IPAddress">
+        <member name="F:CThostFtdcInputOrderField.reserve2">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInputOrderField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOrderField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOrderField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcOrderField">
@@ -11976,9 +12266,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcOrderField.InstrumentID">
+        <member name="F:CThostFtdcOrderField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcOrderField.OrderRef">
@@ -12091,9 +12381,9 @@
             客户代码
             </summary>
         </member>
-        <member name="F:CThostFtdcOrderField.ExchangeInstID">
+        <member name="F:CThostFtdcOrderField.reserve2">
             <summary>
-            合约在交易所的代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcOrderField.TraderID">
@@ -12271,14 +12561,29 @@
             币种代码
             </summary>
         </member>
-        <member name="F:CThostFtdcOrderField.IPAddress">
+        <member name="F:CThostFtdcOrderField.reserve3">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcOrderField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOrderField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOrderField.ExchangeInstID">
+            <summary>
+            合约在交易所的代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOrderField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcExchangeOrderField">
@@ -12386,9 +12691,9 @@
             客户代码
             </summary>
         </member>
-        <member name="F:CThostFtdcExchangeOrderField.ExchangeInstID">
+        <member name="F:CThostFtdcExchangeOrderField.reserve1">
             <summary>
-            合约在交易所的代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcExchangeOrderField.TraderID">
@@ -12501,14 +12806,24 @@
             营业部编号
             </summary>
         </member>
-        <member name="F:CThostFtdcExchangeOrderField.IPAddress">
+        <member name="F:CThostFtdcExchangeOrderField.reserve2">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcExchangeOrderField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOrderField.ExchangeInstID">
+            <summary>
+            合约在交易所的代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOrderField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcExchangeOrderInsertErrorField">
@@ -12621,9 +12936,9 @@
             用户代码
             </summary>
         </member>
-        <member name="F:CThostFtdcInputOrderActionField.InstrumentID">
+        <member name="F:CThostFtdcInputOrderActionField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInputOrderActionField.InvestUnitID">
@@ -12631,14 +12946,24 @@
             投资单元代码
             </summary>
         </member>
-        <member name="F:CThostFtdcInputOrderActionField.IPAddress">
+        <member name="F:CThostFtdcInputOrderActionField.reserve2">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInputOrderActionField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOrderActionField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOrderActionField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcOrderActionField">
@@ -12766,9 +13091,9 @@
             状态信息
             </summary>
         </member>
-        <member name="F:CThostFtdcOrderActionField.InstrumentID">
+        <member name="F:CThostFtdcOrderActionField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcOrderActionField.BranchID">
@@ -12781,14 +13106,24 @@
             投资单元代码
             </summary>
         </member>
-        <member name="F:CThostFtdcOrderActionField.IPAddress">
+        <member name="F:CThostFtdcOrderActionField.reserve2">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcOrderActionField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOrderActionField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOrderActionField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcExchangeOrderActionField">
@@ -12881,14 +13216,19 @@
             营业部编号
             </summary>
         </member>
-        <member name="F:CThostFtdcExchangeOrderActionField.IPAddress">
+        <member name="F:CThostFtdcExchangeOrderActionField.reserve1">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcExchangeOrderActionField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOrderActionField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcExchangeOrderActionErrorField">
@@ -12976,9 +13316,9 @@
             交易角色
             </summary>
         </member>
-        <member name="F:CThostFtdcExchangeTradeField.ExchangeInstID">
+        <member name="F:CThostFtdcExchangeTradeField.reserve1">
             <summary>
-            合约在交易所的代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcExchangeTradeField.OffsetFlag">
@@ -13051,6 +13391,11 @@
             成交来源
             </summary>
         </member>
+        <member name="F:CThostFtdcExchangeTradeField.ExchangeInstID">
+            <summary>
+            合约在交易所的代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcTradeField">
             <summary>
             成交
@@ -13066,9 +13411,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcTradeField.InstrumentID">
+        <member name="F:CThostFtdcTradeField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcTradeField.OrderRef">
@@ -13116,9 +13461,9 @@
             交易角色
             </summary>
         </member>
-        <member name="F:CThostFtdcTradeField.ExchangeInstID">
+        <member name="F:CThostFtdcTradeField.reserve2">
             <summary>
-            合约在交易所的代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcTradeField.OffsetFlag">
@@ -13211,6 +13556,16 @@
             投资单元代码
             </summary>
         </member>
+        <member name="F:CThostFtdcTradeField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcTradeField.ExchangeInstID">
+            <summary>
+            合约在交易所的代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcUserSessionField">
             <summary>
             用户会话
@@ -13246,9 +13601,9 @@
             登录时间
             </summary>
         </member>
-        <member name="F:CThostFtdcUserSessionField.IPAddress">
+        <member name="F:CThostFtdcUserSessionField.reserve1">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcUserSessionField.UserProductInfo">
@@ -13276,54 +13631,64 @@
             登录备注
             </summary>
         </member>
-        <member name="T:CThostFtdcQueryMaxOrderVolumeField">
+        <member name="F:CThostFtdcUserSessionField.IPAddress">
+            <summary>
+            IP地址
+            </summary>
+        </member>
+        <member name="T:CThostFtdcQryMaxOrderVolumeField">
             <summary>
             查询最大报单数量
             </summary>
         </member>
-        <member name="F:CThostFtdcQueryMaxOrderVolumeField.BrokerID">
+        <member name="F:CThostFtdcQryMaxOrderVolumeField.BrokerID">
             <summary>
             经纪公司代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQueryMaxOrderVolumeField.InvestorID">
+        <member name="F:CThostFtdcQryMaxOrderVolumeField.InvestorID">
             <summary>
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQueryMaxOrderVolumeField.InstrumentID">
+        <member name="F:CThostFtdcQryMaxOrderVolumeField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
-        <member name="F:CThostFtdcQueryMaxOrderVolumeField.Direction">
+        <member name="F:CThostFtdcQryMaxOrderVolumeField.Direction">
             <summary>
             买卖方向
             </summary>
         </member>
-        <member name="F:CThostFtdcQueryMaxOrderVolumeField.OffsetFlag">
+        <member name="F:CThostFtdcQryMaxOrderVolumeField.OffsetFlag">
             <summary>
             开平标志
             </summary>
         </member>
-        <member name="F:CThostFtdcQueryMaxOrderVolumeField.HedgeFlag">
+        <member name="F:CThostFtdcQryMaxOrderVolumeField.HedgeFlag">
             <summary>
             投机套保标志
             </summary>
         </member>
-        <member name="F:CThostFtdcQueryMaxOrderVolumeField.MaxVolume">
+        <member name="F:CThostFtdcQryMaxOrderVolumeField.MaxVolume">
             <summary>
             最大允许报单数量
             </summary>
         </member>
-        <member name="F:CThostFtdcQueryMaxOrderVolumeField.ExchangeID">
+        <member name="F:CThostFtdcQryMaxOrderVolumeField.ExchangeID">
             <summary>
             交易所代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQueryMaxOrderVolumeField.InvestUnitID">
+        <member name="F:CThostFtdcQryMaxOrderVolumeField.InvestUnitID">
             <summary>
             投资单元代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryMaxOrderVolumeField.InstrumentID">
+            <summary>
+            合约代码
             </summary>
         </member>
         <member name="T:CThostFtdcSettlementInfoConfirmField">
@@ -13821,9 +14186,9 @@
             正在同步中的投资者持仓
             </summary>
         </member>
-        <member name="F:CThostFtdcSyncingInvestorPositionField.InstrumentID">
+        <member name="F:CThostFtdcSyncingInvestorPositionField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcSyncingInvestorPositionField.BrokerID">
@@ -14056,14 +14421,29 @@
             大商所持仓成本差值，只有大商所使用
             </summary>
         </member>
+        <member name="F:CThostFtdcSyncingInvestorPositionField.TasPosition">
+            <summary>
+            tas持仓手数
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSyncingInvestorPositionField.TasPositionCost">
+            <summary>
+            tas持仓成本
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSyncingInvestorPositionField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcSyncingInstrumentMarginRateField">
             <summary>
             正在同步中的合约保证金率
             </summary>
         </member>
-        <member name="F:CThostFtdcSyncingInstrumentMarginRateField.InstrumentID">
+        <member name="F:CThostFtdcSyncingInstrumentMarginRateField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcSyncingInstrumentMarginRateField.InvestorRange">
@@ -14111,14 +14491,19 @@
             是否相对交易所收取
             </summary>
         </member>
+        <member name="F:CThostFtdcSyncingInstrumentMarginRateField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcSyncingInstrumentCommissionRateField">
             <summary>
             正在同步中的合约手续费率
             </summary>
         </member>
-        <member name="F:CThostFtdcSyncingInstrumentCommissionRateField.InstrumentID">
+        <member name="F:CThostFtdcSyncingInstrumentCommissionRateField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcSyncingInstrumentCommissionRateField.InvestorRange">
@@ -14166,14 +14551,19 @@
             平今手续费
             </summary>
         </member>
+        <member name="F:CThostFtdcSyncingInstrumentCommissionRateField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcSyncingInstrumentTradingRightField">
             <summary>
             正在同步中的合约交易权限
             </summary>
         </member>
-        <member name="F:CThostFtdcSyncingInstrumentTradingRightField.InstrumentID">
+        <member name="F:CThostFtdcSyncingInstrumentTradingRightField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcSyncingInstrumentTradingRightField.InvestorRange">
@@ -14196,6 +14586,11 @@
             交易权限
             </summary>
         </member>
+        <member name="F:CThostFtdcSyncingInstrumentTradingRightField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryOrderField">
             <summary>
             查询报单
@@ -14211,9 +14606,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQryOrderField.InstrumentID">
+        <member name="F:CThostFtdcQryOrderField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryOrderField.ExchangeID">
@@ -14241,6 +14636,11 @@
             投资单元代码
             </summary>
         </member>
+        <member name="F:CThostFtdcQryOrderField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryTradeField">
             <summary>
             查询成交
@@ -14256,9 +14656,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQryTradeField.InstrumentID">
+        <member name="F:CThostFtdcQryTradeField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryTradeField.ExchangeID">
@@ -14286,6 +14686,11 @@
             投资单元代码
             </summary>
         </member>
+        <member name="F:CThostFtdcQryTradeField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryInvestorPositionField">
             <summary>
             查询投资者持仓
@@ -14301,9 +14706,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQryInvestorPositionField.InstrumentID">
+        <member name="F:CThostFtdcQryInvestorPositionField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryInvestorPositionField.ExchangeID">
@@ -14314,6 +14719,11 @@
         <member name="F:CThostFtdcQryInvestorPositionField.InvestUnitID">
             <summary>
             投资单元代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryInvestorPositionField.InstrumentID">
+            <summary>
+            合约代码
             </summary>
         </member>
         <member name="T:CThostFtdcQryTradingAccountField">
@@ -14421,9 +14831,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQryInstrumentMarginRateField.InstrumentID">
+        <member name="F:CThostFtdcQryInstrumentMarginRateField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryInstrumentMarginRateField.HedgeFlag">
@@ -14441,6 +14851,11 @@
             投资单元代码
             </summary>
         </member>
+        <member name="F:CThostFtdcQryInstrumentMarginRateField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryInstrumentCommissionRateField">
             <summary>
             查询手续费率
@@ -14456,9 +14871,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQryInstrumentCommissionRateField.InstrumentID">
+        <member name="F:CThostFtdcQryInstrumentCommissionRateField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryInstrumentCommissionRateField.ExchangeID">
@@ -14469,6 +14884,11 @@
         <member name="F:CThostFtdcQryInstrumentCommissionRateField.InvestUnitID">
             <summary>
             投资单元代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryInstrumentCommissionRateField.InstrumentID">
+            <summary>
+            合约代码
             </summary>
         </member>
         <member name="T:CThostFtdcQryInstrumentTradingRightField">
@@ -14484,6 +14904,11 @@
         <member name="F:CThostFtdcQryInstrumentTradingRightField.InvestorID">
             <summary>
             投资者代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryInstrumentTradingRightField.reserve1">
+            <summary>
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryInstrumentTradingRightField.InstrumentID">
@@ -14601,9 +15026,9 @@
             客户代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQryExchangeOrderField.ExchangeInstID">
+        <member name="F:CThostFtdcQryExchangeOrderField.reserve1">
             <summary>
-            合约在交易所的代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryExchangeOrderField.ExchangeID">
@@ -14614,6 +15039,11 @@
         <member name="F:CThostFtdcQryExchangeOrderField.TraderID">
             <summary>
             交易所交易员代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryExchangeOrderField.ExchangeInstID">
+            <summary>
+            合约在交易所的代码
             </summary>
         </member>
         <member name="T:CThostFtdcQryOrderActionField">
@@ -14686,9 +15116,9 @@
             查询产品
             </summary>
         </member>
-        <member name="F:CThostFtdcQryProductField.ProductID">
+        <member name="F:CThostFtdcQryProductField.reserve1">
             <summary>
-            产品代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryProductField.ProductClass">
@@ -14701,19 +15131,39 @@
             交易所代码
             </summary>
         </member>
+        <member name="F:CThostFtdcQryProductField.ProductID">
+            <summary>
+            产品代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryInstrumentField">
             <summary>
             查询合约
             </summary>
         </member>
-        <member name="F:CThostFtdcQryInstrumentField.InstrumentID">
+        <member name="F:CThostFtdcQryInstrumentField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryInstrumentField.ExchangeID">
             <summary>
             交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryInstrumentField.reserve2">
+            <summary>
+            保留的无效字段
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryInstrumentField.reserve3">
+            <summary>
+            保留的无效字段
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryInstrumentField.InstrumentID">
+            <summary>
+            合约代码
             </summary>
         </member>
         <member name="F:CThostFtdcQryInstrumentField.ExchangeInstID">
@@ -14731,14 +15181,19 @@
             查询行情
             </summary>
         </member>
-        <member name="F:CThostFtdcQryDepthMarketDataField.InstrumentID">
+        <member name="F:CThostFtdcQryDepthMarketDataField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryDepthMarketDataField.ExchangeID">
             <summary>
             交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryDepthMarketDataField.InstrumentID">
+            <summary>
+            合约代码
             </summary>
         </member>
         <member name="T:CThostFtdcQryBrokerUserField">
@@ -14846,9 +15301,9 @@
             经纪公司代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQryExchangeMarginRateField.InstrumentID">
+        <member name="F:CThostFtdcQryExchangeMarginRateField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryExchangeMarginRateField.HedgeFlag">
@@ -14861,6 +15316,11 @@
             交易所代码
             </summary>
         </member>
+        <member name="F:CThostFtdcQryExchangeMarginRateField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryExchangeMarginRateAdjustField">
             <summary>
             查询交易所调整保证金率
@@ -14871,14 +15331,19 @@
             经纪公司代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQryExchangeMarginRateAdjustField.InstrumentID">
+        <member name="F:CThostFtdcQryExchangeMarginRateAdjustField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryExchangeMarginRateAdjustField.HedgeFlag">
             <summary>
             投机套保标志
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryExchangeMarginRateAdjustField.InstrumentID">
+            <summary>
+            合约代码
             </summary>
         </member>
         <member name="T:CThostFtdcQryExchangeRateField">
@@ -14931,9 +15396,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQryHisOrderField.InstrumentID">
+        <member name="F:CThostFtdcQryHisOrderField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryHisOrderField.ExchangeID">
@@ -14966,14 +15431,19 @@
             结算编号
             </summary>
         </member>
+        <member name="F:CThostFtdcQryHisOrderField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcOptionInstrMiniMarginField">
             <summary>
             当前期权合约最小保证金
             </summary>
         </member>
-        <member name="F:CThostFtdcOptionInstrMiniMarginField.InstrumentID">
+        <member name="F:CThostFtdcOptionInstrMiniMarginField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcOptionInstrMiniMarginField.InvestorRange">
@@ -15006,14 +15476,19 @@
             是否跟随交易所收取
             </summary>
         </member>
+        <member name="F:CThostFtdcOptionInstrMiniMarginField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcOptionInstrMarginAdjustField">
             <summary>
             当前期权合约保证金调整系数
             </summary>
         </member>
-        <member name="F:CThostFtdcOptionInstrMarginAdjustField.InstrumentID">
+        <member name="F:CThostFtdcOptionInstrMarginAdjustField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcOptionInstrMarginAdjustField.InvestorRange">
@@ -15076,14 +15551,19 @@
             做市商空头保证金调整系数
             </summary>
         </member>
+        <member name="F:CThostFtdcOptionInstrMarginAdjustField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcOptionInstrCommRateField">
             <summary>
             当前期权合约手续费的详细内容
             </summary>
         </member>
-        <member name="F:CThostFtdcOptionInstrCommRateField.InstrumentID">
+        <member name="F:CThostFtdcOptionInstrCommRateField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcOptionInstrCommRateField.InvestorRange">
@@ -15151,6 +15631,11 @@
             投资单元代码
             </summary>
         </member>
+        <member name="F:CThostFtdcOptionInstrCommRateField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcOptionInstrTradeCostField">
             <summary>
             期权交易成本
@@ -15166,9 +15651,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcOptionInstrTradeCostField.InstrumentID">
+        <member name="F:CThostFtdcOptionInstrTradeCostField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcOptionInstrTradeCostField.HedgeFlag">
@@ -15211,6 +15696,11 @@
             投资单元代码
             </summary>
         </member>
+        <member name="F:CThostFtdcOptionInstrTradeCostField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryOptionInstrTradeCostField">
             <summary>
             期权交易成本查询
@@ -15226,9 +15716,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQryOptionInstrTradeCostField.InstrumentID">
+        <member name="F:CThostFtdcQryOptionInstrTradeCostField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryOptionInstrTradeCostField.HedgeFlag">
@@ -15256,6 +15746,11 @@
             投资单元代码
             </summary>
         </member>
+        <member name="F:CThostFtdcQryOptionInstrTradeCostField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryOptionInstrCommRateField">
             <summary>
             期权手续费率查询
@@ -15271,9 +15766,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQryOptionInstrCommRateField.InstrumentID">
+        <member name="F:CThostFtdcQryOptionInstrCommRateField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryOptionInstrCommRateField.ExchangeID">
@@ -15286,6 +15781,11 @@
             投资单元代码
             </summary>
         </member>
+        <member name="F:CThostFtdcQryOptionInstrCommRateField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcIndexPriceField">
             <summary>
             股指现货指数
@@ -15296,14 +15796,19 @@
             经纪公司代码
             </summary>
         </member>
-        <member name="F:CThostFtdcIndexPriceField.InstrumentID">
+        <member name="F:CThostFtdcIndexPriceField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcIndexPriceField.ClosePrice">
             <summary>
             指数现货收盘价
+            </summary>
+        </member>
+        <member name="F:CThostFtdcIndexPriceField.InstrumentID">
+            <summary>
+            合约代码
             </summary>
         </member>
         <member name="T:CThostFtdcInputExecOrderField">
@@ -15321,9 +15826,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcInputExecOrderField.InstrumentID">
+        <member name="F:CThostFtdcInputExecOrderField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInputExecOrderField.ExecOrderRef">
@@ -15406,14 +15911,24 @@
             交易编码
             </summary>
         </member>
-        <member name="F:CThostFtdcInputExecOrderField.IPAddress">
+        <member name="F:CThostFtdcInputExecOrderField.reserve2">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInputExecOrderField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputExecOrderField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputExecOrderField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcInputExecOrderActionField">
@@ -15476,9 +15991,9 @@
             用户代码
             </summary>
         </member>
-        <member name="F:CThostFtdcInputExecOrderActionField.InstrumentID">
+        <member name="F:CThostFtdcInputExecOrderActionField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInputExecOrderActionField.InvestUnitID">
@@ -15486,14 +16001,24 @@
             投资单元代码
             </summary>
         </member>
-        <member name="F:CThostFtdcInputExecOrderActionField.IPAddress">
+        <member name="F:CThostFtdcInputExecOrderActionField.reserve2">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInputExecOrderActionField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputExecOrderActionField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputExecOrderActionField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcExecOrderField">
@@ -15511,9 +16036,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcExecOrderField.InstrumentID">
+        <member name="F:CThostFtdcExecOrderField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcExecOrderField.ExecOrderRef">
@@ -15591,9 +16116,9 @@
             客户代码
             </summary>
         </member>
-        <member name="F:CThostFtdcExecOrderField.ExchangeInstID">
+        <member name="F:CThostFtdcExecOrderField.reserve2">
             <summary>
-            合约在交易所的代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcExecOrderField.TraderID">
@@ -15711,14 +16236,29 @@
             币种代码
             </summary>
         </member>
-        <member name="F:CThostFtdcExecOrderField.IPAddress">
+        <member name="F:CThostFtdcExecOrderField.reserve3">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcExecOrderField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExecOrderField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExecOrderField.ExchangeInstID">
+            <summary>
+            合约在交易所的代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExecOrderField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcExecOrderActionField">
@@ -15841,9 +16381,9 @@
             状态信息
             </summary>
         </member>
-        <member name="F:CThostFtdcExecOrderActionField.InstrumentID">
+        <member name="F:CThostFtdcExecOrderActionField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcExecOrderActionField.BranchID">
@@ -15856,14 +16396,24 @@
             投资单元代码
             </summary>
         </member>
-        <member name="F:CThostFtdcExecOrderActionField.IPAddress">
+        <member name="F:CThostFtdcExecOrderActionField.reserve2">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcExecOrderActionField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExecOrderActionField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExecOrderActionField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcQryExecOrderField">
@@ -15881,9 +16431,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQryExecOrderField.InstrumentID">
+        <member name="F:CThostFtdcQryExecOrderField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryExecOrderField.ExchangeID">
@@ -15904,6 +16454,11 @@
         <member name="F:CThostFtdcQryExecOrderField.InsertTimeEnd">
             <summary>
             结束时间
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryExecOrderField.InstrumentID">
+            <summary>
+            合约代码
             </summary>
         </member>
         <member name="T:CThostFtdcExchangeExecOrderField">
@@ -15976,9 +16531,9 @@
             客户代码
             </summary>
         </member>
-        <member name="F:CThostFtdcExchangeExecOrderField.ExchangeInstID">
+        <member name="F:CThostFtdcExchangeExecOrderField.reserve1">
             <summary>
-            合约在交易所的代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcExchangeExecOrderField.TraderID">
@@ -16051,14 +16606,24 @@
             营业部编号
             </summary>
         </member>
-        <member name="F:CThostFtdcExchangeExecOrderField.IPAddress">
+        <member name="F:CThostFtdcExchangeExecOrderField.reserve2">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcExchangeExecOrderField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeExecOrderField.ExchangeInstID">
+            <summary>
+            合约在交易所的代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeExecOrderField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcQryExchangeExecOrderField">
@@ -16076,9 +16641,9 @@
             客户代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQryExchangeExecOrderField.ExchangeInstID">
+        <member name="F:CThostFtdcQryExchangeExecOrderField.reserve1">
             <summary>
-            合约在交易所的代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryExchangeExecOrderField.ExchangeID">
@@ -16089,6 +16654,11 @@
         <member name="F:CThostFtdcQryExchangeExecOrderField.TraderID">
             <summary>
             交易所交易员代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryExchangeExecOrderField.ExchangeInstID">
+            <summary>
+            合约在交易所的代码
             </summary>
         </member>
         <member name="T:CThostFtdcQryExecOrderActionField">
@@ -16196,9 +16766,9 @@
             营业部编号
             </summary>
         </member>
-        <member name="F:CThostFtdcExchangeExecOrderActionField.IPAddress">
+        <member name="F:CThostFtdcExchangeExecOrderActionField.reserve1">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcExchangeExecOrderActionField.MacAddress">
@@ -16206,14 +16776,24 @@
             Mac地址
             </summary>
         </member>
-        <member name="F:CThostFtdcExchangeExecOrderActionField.ExchangeInstID">
+        <member name="F:CThostFtdcExchangeExecOrderActionField.reserve2">
             <summary>
-            合约在交易所的代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcExchangeExecOrderActionField.Volume">
             <summary>
             数量
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeExecOrderActionField.IPAddress">
+            <summary>
+            IP地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeExecOrderActionField.ExchangeInstID">
+            <summary>
+            合约在交易所的代码
             </summary>
         </member>
         <member name="T:CThostFtdcQryExchangeExecOrderActionField">
@@ -16256,9 +16836,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcErrExecOrderField.InstrumentID">
+        <member name="F:CThostFtdcErrExecOrderField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcErrExecOrderField.ExecOrderRef">
@@ -16341,9 +16921,9 @@
             交易编码
             </summary>
         </member>
-        <member name="F:CThostFtdcErrExecOrderField.IPAddress">
+        <member name="F:CThostFtdcErrExecOrderField.reserve2">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcErrExecOrderField.MacAddress">
@@ -16359,6 +16939,16 @@
         <member name="F:CThostFtdcErrExecOrderField.ErrorMsg">
             <summary>
             错误信息
+            </summary>
+        </member>
+        <member name="F:CThostFtdcErrExecOrderField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcErrExecOrderField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcQryErrExecOrderField">
@@ -16436,9 +17026,9 @@
             用户代码
             </summary>
         </member>
-        <member name="F:CThostFtdcErrExecOrderActionField.InstrumentID">
+        <member name="F:CThostFtdcErrExecOrderActionField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcErrExecOrderActionField.InvestUnitID">
@@ -16446,9 +17036,9 @@
             投资单元代码
             </summary>
         </member>
-        <member name="F:CThostFtdcErrExecOrderActionField.IPAddress">
+        <member name="F:CThostFtdcErrExecOrderActionField.reserve2">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcErrExecOrderActionField.MacAddress">
@@ -16464,6 +17054,16 @@
         <member name="F:CThostFtdcErrExecOrderActionField.ErrorMsg">
             <summary>
             错误信息
+            </summary>
+        </member>
+        <member name="F:CThostFtdcErrExecOrderActionField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcErrExecOrderActionField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcQryErrExecOrderActionField">
@@ -16486,9 +17086,9 @@
             投资者期权合约交易权限
             </summary>
         </member>
-        <member name="F:CThostFtdcOptionInstrTradingRightField.InstrumentID">
+        <member name="F:CThostFtdcOptionInstrTradingRightField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcOptionInstrTradingRightField.InvestorRange">
@@ -16516,6 +17116,11 @@
             交易权限
             </summary>
         </member>
+        <member name="F:CThostFtdcOptionInstrTradingRightField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryOptionInstrTradingRightField">
             <summary>
             查询期权合约交易权限
@@ -16531,14 +17136,19 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQryOptionInstrTradingRightField.InstrumentID">
+        <member name="F:CThostFtdcQryOptionInstrTradingRightField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryOptionInstrTradingRightField.Direction">
             <summary>
             买卖方向
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryOptionInstrTradingRightField.InstrumentID">
+            <summary>
+            合约代码
             </summary>
         </member>
         <member name="T:CThostFtdcInputForQuoteField">
@@ -16556,9 +17166,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcInputForQuoteField.InstrumentID">
+        <member name="F:CThostFtdcInputForQuoteField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInputForQuoteField.ForQuoteRef">
@@ -16581,14 +17191,24 @@
             投资单元代码
             </summary>
         </member>
-        <member name="F:CThostFtdcInputForQuoteField.IPAddress">
+        <member name="F:CThostFtdcInputForQuoteField.reserve2">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInputForQuoteField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputForQuoteField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputForQuoteField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcForQuoteField">
@@ -16606,9 +17226,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcForQuoteField.InstrumentID">
+        <member name="F:CThostFtdcForQuoteField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcForQuoteField.ForQuoteRef">
@@ -16641,9 +17261,9 @@
             客户代码
             </summary>
         </member>
-        <member name="F:CThostFtdcForQuoteField.ExchangeInstID">
+        <member name="F:CThostFtdcForQuoteField.reserve2">
             <summary>
-            合约在交易所的代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcForQuoteField.TraderID">
@@ -16701,14 +17321,29 @@
             投资单元代码
             </summary>
         </member>
-        <member name="F:CThostFtdcForQuoteField.IPAddress">
+        <member name="F:CThostFtdcForQuoteField.reserve3">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcForQuoteField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcForQuoteField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcForQuoteField.ExchangeInstID">
+            <summary>
+            合约在交易所的代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcForQuoteField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcQryForQuoteField">
@@ -16726,9 +17361,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQryForQuoteField.InstrumentID">
+        <member name="F:CThostFtdcQryForQuoteField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryForQuoteField.ExchangeID">
@@ -16749,6 +17384,11 @@
         <member name="F:CThostFtdcQryForQuoteField.InvestUnitID">
             <summary>
             投资单元代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryForQuoteField.InstrumentID">
+            <summary>
+            合约代码
             </summary>
         </member>
         <member name="T:CThostFtdcExchangeForQuoteField">
@@ -16776,9 +17416,9 @@
             客户代码
             </summary>
         </member>
-        <member name="F:CThostFtdcExchangeForQuoteField.ExchangeInstID">
+        <member name="F:CThostFtdcExchangeForQuoteField.reserve1">
             <summary>
-            合约在交易所的代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcExchangeForQuoteField.TraderID">
@@ -16806,14 +17446,24 @@
             询价状态
             </summary>
         </member>
-        <member name="F:CThostFtdcExchangeForQuoteField.IPAddress">
+        <member name="F:CThostFtdcExchangeForQuoteField.reserve2">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcExchangeForQuoteField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeForQuoteField.ExchangeInstID">
+            <summary>
+            合约在交易所的代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeForQuoteField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcQryExchangeForQuoteField">
@@ -16831,9 +17481,9 @@
             客户代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQryExchangeForQuoteField.ExchangeInstID">
+        <member name="F:CThostFtdcQryExchangeForQuoteField.reserve1">
             <summary>
-            合约在交易所的代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryExchangeForQuoteField.ExchangeID">
@@ -16844,6 +17494,11 @@
         <member name="F:CThostFtdcQryExchangeForQuoteField.TraderID">
             <summary>
             交易所交易员代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryExchangeForQuoteField.ExchangeInstID">
+            <summary>
+            合约在交易所的代码
             </summary>
         </member>
         <member name="T:CThostFtdcInputQuoteField">
@@ -16861,9 +17516,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcInputQuoteField.InstrumentID">
+        <member name="F:CThostFtdcInputQuoteField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInputQuoteField.QuoteRef">
@@ -16956,14 +17611,24 @@
             交易编码
             </summary>
         </member>
-        <member name="F:CThostFtdcInputQuoteField.IPAddress">
+        <member name="F:CThostFtdcInputQuoteField.reserve2">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInputQuoteField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputQuoteField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputQuoteField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcInputQuoteActionField">
@@ -17026,9 +17691,9 @@
             用户代码
             </summary>
         </member>
-        <member name="F:CThostFtdcInputQuoteActionField.InstrumentID">
+        <member name="F:CThostFtdcInputQuoteActionField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInputQuoteActionField.InvestUnitID">
@@ -17041,14 +17706,24 @@
             交易编码
             </summary>
         </member>
-        <member name="F:CThostFtdcInputQuoteActionField.IPAddress">
+        <member name="F:CThostFtdcInputQuoteActionField.reserve2">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInputQuoteActionField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputQuoteActionField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputQuoteActionField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcQuoteField">
@@ -17066,9 +17741,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQuoteField.InstrumentID">
+        <member name="F:CThostFtdcQuoteField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQuoteField.QuoteRef">
@@ -17151,9 +17826,9 @@
             客户代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQuoteField.ExchangeInstID">
+        <member name="F:CThostFtdcQuoteField.reserve2">
             <summary>
-            合约在交易所的代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQuoteField.TraderID">
@@ -17296,14 +17971,29 @@
             币种代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQuoteField.IPAddress">
+        <member name="F:CThostFtdcQuoteField.reserve3">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQuoteField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQuoteField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQuoteField.ExchangeInstID">
+            <summary>
+            合约在交易所的代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQuoteField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcQuoteActionField">
@@ -17421,9 +18111,9 @@
             状态信息
             </summary>
         </member>
-        <member name="F:CThostFtdcQuoteActionField.InstrumentID">
+        <member name="F:CThostFtdcQuoteActionField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQuoteActionField.BranchID">
@@ -17436,14 +18126,24 @@
             投资单元代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQuoteActionField.IPAddress">
+        <member name="F:CThostFtdcQuoteActionField.reserve2">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQuoteActionField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQuoteActionField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQuoteActionField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcQryQuoteField">
@@ -17461,9 +18161,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQryQuoteField.InstrumentID">
+        <member name="F:CThostFtdcQryQuoteField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryQuoteField.ExchangeID">
@@ -17489,6 +18189,11 @@
         <member name="F:CThostFtdcQryQuoteField.InvestUnitID">
             <summary>
             投资单元代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryQuoteField.InstrumentID">
+            <summary>
+            合约代码
             </summary>
         </member>
         <member name="T:CThostFtdcExchangeQuoteField">
@@ -17566,9 +18271,9 @@
             客户代码
             </summary>
         </member>
-        <member name="F:CThostFtdcExchangeQuoteField.ExchangeInstID">
+        <member name="F:CThostFtdcExchangeQuoteField.reserve1">
             <summary>
-            合约在交易所的代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcExchangeQuoteField.TraderID">
@@ -17656,14 +18361,24 @@
             营业部编号
             </summary>
         </member>
-        <member name="F:CThostFtdcExchangeQuoteField.IPAddress">
+        <member name="F:CThostFtdcExchangeQuoteField.reserve2">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcExchangeQuoteField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeQuoteField.ExchangeInstID">
+            <summary>
+            合约在交易所的代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeQuoteField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcQryExchangeQuoteField">
@@ -17681,9 +18396,9 @@
             客户代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQryExchangeQuoteField.ExchangeInstID">
+        <member name="F:CThostFtdcQryExchangeQuoteField.reserve1">
             <summary>
-            合约在交易所的代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryExchangeQuoteField.ExchangeID">
@@ -17694,6 +18409,11 @@
         <member name="F:CThostFtdcQryExchangeQuoteField.TraderID">
             <summary>
             交易所交易员代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryExchangeQuoteField.ExchangeInstID">
+            <summary>
+            合约在交易所的代码
             </summary>
         </member>
         <member name="T:CThostFtdcQryQuoteActionField">
@@ -17791,14 +18511,19 @@
             用户代码
             </summary>
         </member>
-        <member name="F:CThostFtdcExchangeQuoteActionField.IPAddress">
+        <member name="F:CThostFtdcExchangeQuoteActionField.reserve1">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcExchangeQuoteActionField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeQuoteActionField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcQryExchangeQuoteActionField">
@@ -17831,9 +18556,9 @@
             期权合约delta值
             </summary>
         </member>
-        <member name="F:CThostFtdcOptionInstrDeltaField.InstrumentID">
+        <member name="F:CThostFtdcOptionInstrDeltaField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcOptionInstrDeltaField.InvestorRange">
@@ -17856,6 +18581,11 @@
             Delta值
             </summary>
         </member>
+        <member name="F:CThostFtdcOptionInstrDeltaField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcForQuoteRspField">
             <summary>
             发给做市商的询价请求
@@ -17866,9 +18596,9 @@
             交易日
             </summary>
         </member>
-        <member name="F:CThostFtdcForQuoteRspField.InstrumentID">
+        <member name="F:CThostFtdcForQuoteRspField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcForQuoteRspField.ForQuoteSysID">
@@ -17891,14 +18621,19 @@
             交易所代码
             </summary>
         </member>
+        <member name="F:CThostFtdcForQuoteRspField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcStrikeOffsetField">
             <summary>
             当前期权合约执行偏移值的详细内容
             </summary>
         </member>
-        <member name="F:CThostFtdcStrikeOffsetField.InstrumentID">
+        <member name="F:CThostFtdcStrikeOffsetField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcStrikeOffsetField.InvestorRange">
@@ -17926,6 +18661,11 @@
             执行偏移类型
             </summary>
         </member>
+        <member name="F:CThostFtdcStrikeOffsetField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryStrikeOffsetField">
             <summary>
             期权执行偏移值查询
@@ -17939,6 +18679,11 @@
         <member name="F:CThostFtdcQryStrikeOffsetField.InvestorID">
             <summary>
             投资者代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryStrikeOffsetField.reserve1">
+            <summary>
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryStrikeOffsetField.InstrumentID">
@@ -17996,14 +18741,19 @@
             投资单元代码
             </summary>
         </member>
-        <member name="F:CThostFtdcInputBatchOrderActionField.IPAddress">
+        <member name="F:CThostFtdcInputBatchOrderActionField.reserve1">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInputBatchOrderActionField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputBatchOrderActionField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcBatchOrderActionField">
@@ -18106,14 +18856,19 @@
             投资单元代码
             </summary>
         </member>
-        <member name="F:CThostFtdcBatchOrderActionField.IPAddress">
+        <member name="F:CThostFtdcBatchOrderActionField.reserve1">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcBatchOrderActionField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcBatchOrderActionField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcExchangeBatchOrderActionField">
@@ -18176,14 +18931,19 @@
             用户代码
             </summary>
         </member>
-        <member name="F:CThostFtdcExchangeBatchOrderActionField.IPAddress">
+        <member name="F:CThostFtdcExchangeBatchOrderActionField.reserve1">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcExchangeBatchOrderActionField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeBatchOrderActionField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcQryBatchOrderActionField">
@@ -18216,9 +18976,9 @@
             经纪公司代码
             </summary>
         </member>
-        <member name="F:CThostFtdcCombInstrumentGuardField.InstrumentID">
+        <member name="F:CThostFtdcCombInstrumentGuardField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcCombInstrumentGuardField.GuarantRatio">
@@ -18231,6 +18991,11 @@
             交易所代码
             </summary>
         </member>
+        <member name="F:CThostFtdcCombInstrumentGuardField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryCombInstrumentGuardField">
             <summary>
             组合合约安全系数查询
@@ -18241,14 +19006,19 @@
             经纪公司代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQryCombInstrumentGuardField.InstrumentID">
+        <member name="F:CThostFtdcQryCombInstrumentGuardField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryCombInstrumentGuardField.ExchangeID">
             <summary>
             交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryCombInstrumentGuardField.InstrumentID">
+            <summary>
+            合约代码
             </summary>
         </member>
         <member name="T:CThostFtdcInputCombActionField">
@@ -18266,9 +19036,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcInputCombActionField.InstrumentID">
+        <member name="F:CThostFtdcInputCombActionField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInputCombActionField.CombActionRef">
@@ -18306,9 +19076,9 @@
             交易所代码
             </summary>
         </member>
-        <member name="F:CThostFtdcInputCombActionField.IPAddress">
+        <member name="F:CThostFtdcInputCombActionField.reserve2">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInputCombActionField.MacAddress">
@@ -18319,6 +19089,26 @@
         <member name="F:CThostFtdcInputCombActionField.InvestUnitID">
             <summary>
             投资单元代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputCombActionField.FrontID">
+            <summary>
+            前置编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputCombActionField.SessionID">
+            <summary>
+            会话编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputCombActionField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputCombActionField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcCombActionField">
@@ -18336,9 +19126,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcCombActionField.InstrumentID">
+        <member name="F:CThostFtdcCombActionField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcCombActionField.CombActionRef">
@@ -18391,9 +19181,9 @@
             客户代码
             </summary>
         </member>
-        <member name="F:CThostFtdcCombActionField.ExchangeInstID">
+        <member name="F:CThostFtdcCombActionField.reserve2">
             <summary>
-            合约在交易所的代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcCombActionField.TraderID">
@@ -18451,9 +19241,9 @@
             状态信息
             </summary>
         </member>
-        <member name="F:CThostFtdcCombActionField.IPAddress">
+        <member name="F:CThostFtdcCombActionField.reserve3">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcCombActionField.MacAddress">
@@ -18476,6 +19266,21 @@
             投资单元代码
             </summary>
         </member>
+        <member name="F:CThostFtdcCombActionField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcCombActionField.ExchangeInstID">
+            <summary>
+            合约在交易所的代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcCombActionField.IPAddress">
+            <summary>
+            IP地址
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryCombActionField">
             <summary>
             申请组合查询
@@ -18491,9 +19296,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQryCombActionField.InstrumentID">
+        <member name="F:CThostFtdcQryCombActionField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryCombActionField.ExchangeID">
@@ -18504,6 +19309,11 @@
         <member name="F:CThostFtdcQryCombActionField.InvestUnitID">
             <summary>
             投资单元代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryCombActionField.InstrumentID">
+            <summary>
+            合约代码
             </summary>
         </member>
         <member name="T:CThostFtdcExchangeCombActionField">
@@ -18551,9 +19361,9 @@
             客户代码
             </summary>
         </member>
-        <member name="F:CThostFtdcExchangeCombActionField.ExchangeInstID">
+        <member name="F:CThostFtdcExchangeCombActionField.reserve1">
             <summary>
-            合约在交易所的代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcExchangeCombActionField.TraderID">
@@ -18591,9 +19401,9 @@
             序号
             </summary>
         </member>
-        <member name="F:CThostFtdcExchangeCombActionField.IPAddress">
+        <member name="F:CThostFtdcExchangeCombActionField.reserve2">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcExchangeCombActionField.MacAddress">
@@ -18611,6 +19421,16 @@
             营业部编号
             </summary>
         </member>
+        <member name="F:CThostFtdcExchangeCombActionField.ExchangeInstID">
+            <summary>
+            合约在交易所的代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeCombActionField.IPAddress">
+            <summary>
+            IP地址
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryExchangeCombActionField">
             <summary>
             交易所申请组合查询
@@ -18626,9 +19446,9 @@
             客户代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQryExchangeCombActionField.ExchangeInstID">
+        <member name="F:CThostFtdcQryExchangeCombActionField.reserve1">
             <summary>
-            合约在交易所的代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryExchangeCombActionField.ExchangeID">
@@ -18641,14 +19461,19 @@
             交易所交易员代码
             </summary>
         </member>
+        <member name="F:CThostFtdcQryExchangeCombActionField.ExchangeInstID">
+            <summary>
+            合约在交易所的代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcProductExchRateField">
             <summary>
             产品报价汇率
             </summary>
         </member>
-        <member name="F:CThostFtdcProductExchRateField.ProductID">
+        <member name="F:CThostFtdcProductExchRateField.reserve1">
             <summary>
-            产品代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcProductExchRateField.QuoteCurrencyID">
@@ -18666,19 +19491,29 @@
             交易所代码
             </summary>
         </member>
+        <member name="F:CThostFtdcProductExchRateField.ProductID">
+            <summary>
+            产品代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryProductExchRateField">
             <summary>
             产品报价汇率查询
             </summary>
         </member>
-        <member name="F:CThostFtdcQryProductExchRateField.ProductID">
+        <member name="F:CThostFtdcQryProductExchRateField.reserve1">
             <summary>
-            产品代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryProductExchRateField.ExchangeID">
             <summary>
             交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryProductExchRateField.ProductID">
+            <summary>
+            产品代码
             </summary>
         </member>
         <member name="T:CThostFtdcQryForQuoteParamField">
@@ -18691,14 +19526,19 @@
             经纪公司代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQryForQuoteParamField.InstrumentID">
+        <member name="F:CThostFtdcQryForQuoteParamField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryForQuoteParamField.ExchangeID">
             <summary>
             交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryForQuoteParamField.InstrumentID">
+            <summary>
+            合约代码
             </summary>
         </member>
         <member name="T:CThostFtdcForQuoteParamField">
@@ -18711,9 +19551,9 @@
             经纪公司代码
             </summary>
         </member>
-        <member name="F:CThostFtdcForQuoteParamField.InstrumentID">
+        <member name="F:CThostFtdcForQuoteParamField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcForQuoteParamField.ExchangeID">
@@ -18731,14 +19571,19 @@
             价差
             </summary>
         </member>
+        <member name="F:CThostFtdcForQuoteParamField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcMMOptionInstrCommRateField">
             <summary>
             当前做市商期权合约手续费的详细内容
             </summary>
         </member>
-        <member name="F:CThostFtdcMMOptionInstrCommRateField.InstrumentID">
+        <member name="F:CThostFtdcMMOptionInstrCommRateField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcMMOptionInstrCommRateField.InvestorRange">
@@ -18796,6 +19641,11 @@
             执行手续费
             </summary>
         </member>
+        <member name="F:CThostFtdcMMOptionInstrCommRateField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryMMOptionInstrCommRateField">
             <summary>
             做市商期权手续费率查询
@@ -18811,6 +19661,11 @@
             投资者代码
             </summary>
         </member>
+        <member name="F:CThostFtdcQryMMOptionInstrCommRateField.reserve1">
+            <summary>
+            保留的无效字段
+            </summary>
+        </member>
         <member name="F:CThostFtdcQryMMOptionInstrCommRateField.InstrumentID">
             <summary>
             合约代码
@@ -18821,9 +19676,9 @@
             做市商合约手续费率
             </summary>
         </member>
-        <member name="F:CThostFtdcMMInstrumentCommissionRateField.InstrumentID">
+        <member name="F:CThostFtdcMMInstrumentCommissionRateField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcMMInstrumentCommissionRateField.InvestorRange">
@@ -18871,6 +19726,11 @@
             平今手续费
             </summary>
         </member>
+        <member name="F:CThostFtdcMMInstrumentCommissionRateField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryMMInstrumentCommissionRateField">
             <summary>
             查询做市商合约手续费率
@@ -18886,6 +19746,11 @@
             投资者代码
             </summary>
         </member>
+        <member name="F:CThostFtdcQryMMInstrumentCommissionRateField.reserve1">
+            <summary>
+            保留的无效字段
+            </summary>
+        </member>
         <member name="F:CThostFtdcQryMMInstrumentCommissionRateField.InstrumentID">
             <summary>
             合约代码
@@ -18896,9 +19761,9 @@
             当前报单手续费的详细内容
             </summary>
         </member>
-        <member name="F:CThostFtdcInstrumentOrderCommRateField.InstrumentID">
+        <member name="F:CThostFtdcInstrumentOrderCommRateField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInstrumentOrderCommRateField.InvestorRange">
@@ -18941,6 +19806,11 @@
             投资单元代码
             </summary>
         </member>
+        <member name="F:CThostFtdcInstrumentOrderCommRateField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryInstrumentOrderCommRateField">
             <summary>
             报单手续费率查询
@@ -18954,6 +19824,11 @@
         <member name="F:CThostFtdcQryInstrumentOrderCommRateField.InvestorID">
             <summary>
             投资者代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryInstrumentOrderCommRateField.reserve1">
+            <summary>
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryInstrumentOrderCommRateField.InstrumentID">
@@ -18991,9 +19866,9 @@
             合约保证金率调整
             </summary>
         </member>
-        <member name="F:CThostFtdcInstrumentMarginRateULField.InstrumentID">
+        <member name="F:CThostFtdcInstrumentMarginRateULField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInstrumentMarginRateULField.InvestorRange">
@@ -19036,6 +19911,11 @@
             空头保证金费
             </summary>
         </member>
+        <member name="F:CThostFtdcInstrumentMarginRateULField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcFutureLimitPosiParamField">
             <summary>
             期货持仓限制参数
@@ -19056,9 +19936,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcFutureLimitPosiParamField.ProductID">
+        <member name="F:CThostFtdcFutureLimitPosiParamField.reserve1">
             <summary>
-            产品代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcFutureLimitPosiParamField.SpecOpenVolume">
@@ -19076,9 +19956,19 @@
             当日投机+套利开仓数量限制
             </summary>
         </member>
+        <member name="F:CThostFtdcFutureLimitPosiParamField.ProductID">
+            <summary>
+            产品代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcLoginForbiddenIPField">
             <summary>
             禁止登录IP
+            </summary>
+        </member>
+        <member name="F:CThostFtdcLoginForbiddenIPField.reserve1">
+            <summary>
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcLoginForbiddenIPField.IPAddress">
@@ -19091,14 +19981,19 @@
             IP列表
             </summary>
         </member>
-        <member name="F:CThostFtdcIPListField.IPAddress">
+        <member name="F:CThostFtdcIPListField.reserve1">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcIPListField.IsWhite">
             <summary>
             是否白名单
+            </summary>
+        </member>
+        <member name="F:CThostFtdcIPListField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcInputOptionSelfCloseField">
@@ -19116,9 +20011,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcInputOptionSelfCloseField.InstrumentID">
+        <member name="F:CThostFtdcInputOptionSelfCloseField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInputOptionSelfCloseField.OptionSelfCloseRef">
@@ -19181,14 +20076,24 @@
             交易编码
             </summary>
         </member>
-        <member name="F:CThostFtdcInputOptionSelfCloseField.IPAddress">
+        <member name="F:CThostFtdcInputOptionSelfCloseField.reserve2">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInputOptionSelfCloseField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcInputOptionSelfCloseActionField">
@@ -19251,9 +20156,9 @@
             用户代码
             </summary>
         </member>
-        <member name="F:CThostFtdcInputOptionSelfCloseActionField.InstrumentID">
+        <member name="F:CThostFtdcInputOptionSelfCloseActionField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInputOptionSelfCloseActionField.InvestUnitID">
@@ -19261,14 +20166,24 @@
             投资单元代码
             </summary>
         </member>
-        <member name="F:CThostFtdcInputOptionSelfCloseActionField.IPAddress">
+        <member name="F:CThostFtdcInputOptionSelfCloseActionField.reserve2">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInputOptionSelfCloseActionField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseActionField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInputOptionSelfCloseActionField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcOptionSelfCloseField">
@@ -19286,9 +20201,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcOptionSelfCloseField.InstrumentID">
+        <member name="F:CThostFtdcOptionSelfCloseField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcOptionSelfCloseField.OptionSelfCloseRef">
@@ -19346,9 +20261,9 @@
             客户代码
             </summary>
         </member>
-        <member name="F:CThostFtdcOptionSelfCloseField.ExchangeInstID">
+        <member name="F:CThostFtdcOptionSelfCloseField.reserve2">
             <summary>
-            合约在交易所的代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcOptionSelfCloseField.TraderID">
@@ -19466,14 +20381,29 @@
             币种代码
             </summary>
         </member>
-        <member name="F:CThostFtdcOptionSelfCloseField.IPAddress">
+        <member name="F:CThostFtdcOptionSelfCloseField.reserve3">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcOptionSelfCloseField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.ExchangeInstID">
+            <summary>
+            合约在交易所的代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcOptionSelfCloseActionField">
@@ -19591,9 +20521,9 @@
             状态信息
             </summary>
         </member>
-        <member name="F:CThostFtdcOptionSelfCloseActionField.InstrumentID">
+        <member name="F:CThostFtdcOptionSelfCloseActionField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcOptionSelfCloseActionField.BranchID">
@@ -19606,14 +20536,24 @@
             投资单元代码
             </summary>
         </member>
-        <member name="F:CThostFtdcOptionSelfCloseActionField.IPAddress">
+        <member name="F:CThostFtdcOptionSelfCloseActionField.reserve2">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcOptionSelfCloseActionField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseActionField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcOptionSelfCloseActionField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcQryOptionSelfCloseField">
@@ -19631,9 +20571,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQryOptionSelfCloseField.InstrumentID">
+        <member name="F:CThostFtdcQryOptionSelfCloseField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryOptionSelfCloseField.ExchangeID">
@@ -19654,6 +20594,11 @@
         <member name="F:CThostFtdcQryOptionSelfCloseField.InsertTimeEnd">
             <summary>
             结束时间
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryOptionSelfCloseField.InstrumentID">
+            <summary>
+            合约代码
             </summary>
         </member>
         <member name="T:CThostFtdcExchangeOptionSelfCloseField">
@@ -19706,9 +20651,9 @@
             客户代码
             </summary>
         </member>
-        <member name="F:CThostFtdcExchangeOptionSelfCloseField.ExchangeInstID">
+        <member name="F:CThostFtdcExchangeOptionSelfCloseField.reserve1">
             <summary>
-            合约在交易所的代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcExchangeOptionSelfCloseField.TraderID">
@@ -19781,14 +20726,24 @@
             营业部编号
             </summary>
         </member>
-        <member name="F:CThostFtdcExchangeOptionSelfCloseField.IPAddress">
+        <member name="F:CThostFtdcExchangeOptionSelfCloseField.reserve2">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcExchangeOptionSelfCloseField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseField.ExchangeInstID">
+            <summary>
+            合约在交易所的代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcQryOptionSelfCloseActionField">
@@ -19891,9 +20846,9 @@
             营业部编号
             </summary>
         </member>
-        <member name="F:CThostFtdcExchangeOptionSelfCloseActionField.IPAddress">
+        <member name="F:CThostFtdcExchangeOptionSelfCloseActionField.reserve1">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcExchangeOptionSelfCloseActionField.MacAddress">
@@ -19901,14 +20856,24 @@
             Mac地址
             </summary>
         </member>
-        <member name="F:CThostFtdcExchangeOptionSelfCloseActionField.ExchangeInstID">
+        <member name="F:CThostFtdcExchangeOptionSelfCloseActionField.reserve2">
             <summary>
-            合约在交易所的代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcExchangeOptionSelfCloseActionField.OptSelfCloseFlag">
             <summary>
             期权行权的头寸是否自对冲
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseActionField.IPAddress">
+            <summary>
+            IP地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcExchangeOptionSelfCloseActionField.ExchangeInstID">
+            <summary>
+            合约在交易所的代码
             </summary>
         </member>
         <member name="T:CThostFtdcSyncDelaySwapField">
@@ -19959,6 +20924,16 @@
         <member name="F:CThostFtdcSyncDelaySwapField.ToAmount">
             <summary>
             目标金额
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSyncDelaySwapField.IsManualSwap">
+            <summary>
+            是否手工换汇
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSyncDelaySwapField.IsAllRemainSetZero">
+            <summary>
+            是否将所有外币的剩余换汇额度设置为0
             </summary>
         </member>
         <member name="T:CThostFtdcQrySyncDelaySwapField">
@@ -20111,9 +21086,9 @@
             交易日
             </summary>
         </member>
-        <member name="F:CThostFtdcMarketDataField.InstrumentID">
+        <member name="F:CThostFtdcMarketDataField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcMarketDataField.ExchangeID">
@@ -20121,9 +21096,9 @@
             交易所代码
             </summary>
         </member>
-        <member name="F:CThostFtdcMarketDataField.ExchangeInstID">
+        <member name="F:CThostFtdcMarketDataField.reserve2">
             <summary>
-            合约在交易所的代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcMarketDataField.LastPrice">
@@ -20219,6 +21194,16 @@
         <member name="F:CThostFtdcMarketDataField.ActionDay">
             <summary>
             业务日期
+            </summary>
+        </member>
+        <member name="F:CThostFtdcMarketDataField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcMarketDataField.ExchangeInstID">
+            <summary>
+            合约在交易所的代码
             </summary>
         </member>
         <member name="T:CThostFtdcMarketDataBaseField">
@@ -20451,9 +21436,9 @@
             行情更新时间属性
             </summary>
         </member>
-        <member name="F:CThostFtdcMarketDataUpdateTimeField.InstrumentID">
+        <member name="F:CThostFtdcMarketDataUpdateTimeField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcMarketDataUpdateTimeField.UpdateTime">
@@ -20471,6 +21456,11 @@
             业务日期
             </summary>
         </member>
+        <member name="F:CThostFtdcMarketDataUpdateTimeField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcMarketDataExchangeField">
             <summary>
             行情交易所代码属性
@@ -20484,6 +21474,11 @@
         <member name="T:CThostFtdcSpecificInstrumentField">
             <summary>
             指定的合约
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSpecificInstrumentField.reserve1">
+            <summary>
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcSpecificInstrumentField.InstrumentID">
@@ -20501,9 +21496,9 @@
             交易所代码
             </summary>
         </member>
-        <member name="F:CThostFtdcInstrumentStatusField.ExchangeInstID">
+        <member name="F:CThostFtdcInstrumentStatusField.reserve1">
             <summary>
-            合约在交易所的代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInstrumentStatusField.SettlementGroupID">
@@ -20511,9 +21506,9 @@
             结算组代码
             </summary>
         </member>
-        <member name="F:CThostFtdcInstrumentStatusField.InstrumentID">
+        <member name="F:CThostFtdcInstrumentStatusField.reserve2">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInstrumentStatusField.InstrumentStatus">
@@ -20536,6 +21531,16 @@
             进入本状态原因
             </summary>
         </member>
+        <member name="F:CThostFtdcInstrumentStatusField.ExchangeInstID">
+            <summary>
+            合约在交易所的代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInstrumentStatusField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryInstrumentStatusField">
             <summary>
             查询合约状态
@@ -20544,6 +21549,11 @@
         <member name="F:CThostFtdcQryInstrumentStatusField.ExchangeID">
             <summary>
             交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryInstrumentStatusField.reserve1">
+            <summary>
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryInstrumentStatusField.ExchangeInstID">
@@ -20686,9 +21696,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQryInvestorPositionDetailField.InstrumentID">
+        <member name="F:CThostFtdcQryInvestorPositionDetailField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryInvestorPositionDetailField.ExchangeID">
@@ -20701,14 +21711,19 @@
             投资单元代码
             </summary>
         </member>
+        <member name="F:CThostFtdcQryInvestorPositionDetailField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcInvestorPositionDetailField">
             <summary>
             投资者持仓明细
             </summary>
         </member>
-        <member name="F:CThostFtdcInvestorPositionDetailField.InstrumentID">
+        <member name="F:CThostFtdcInvestorPositionDetailField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInvestorPositionDetailField.BrokerID">
@@ -20766,9 +21781,9 @@
             成交类型
             </summary>
         </member>
-        <member name="F:CThostFtdcInvestorPositionDetailField.CombInstrumentID">
+        <member name="F:CThostFtdcInvestorPositionDetailField.reserve2">
             <summary>
-            组合合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInvestorPositionDetailField.ExchangeID">
@@ -20838,12 +21853,27 @@
         </member>
         <member name="F:CThostFtdcInvestorPositionDetailField.TimeFirstVolume">
             <summary>
-            按照时间顺序平仓的笔数,大商所专用
+            先开先平剩余数量（DCE）
             </summary>
         </member>
         <member name="F:CThostFtdcInvestorPositionDetailField.InvestUnitID">
             <summary>
             投资单元代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInvestorPositionDetailField.SpecPosiType">
+            <summary>
+            特殊持仓标志
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInvestorPositionDetailField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInvestorPositionDetailField.CombInstrumentID">
+            <summary>
+            组合合约代码
             </summary>
         </member>
         <member name="T:CThostFtdcTradingAccountPasswordField">
@@ -21196,14 +22226,24 @@
             查询组合合约分腿
             </summary>
         </member>
-        <member name="F:CThostFtdcQryCombinationLegField.CombInstrumentID">
+        <member name="F:CThostFtdcQryCombinationLegField.reserve1">
             <summary>
-            组合合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryCombinationLegField.LegID">
             <summary>
             单腿编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryCombinationLegField.reserve2">
+            <summary>
+            保留的无效字段
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryCombinationLegField.CombInstrumentID">
+            <summary>
+            组合合约代码
             </summary>
         </member>
         <member name="F:CThostFtdcQryCombinationLegField.LegInstrumentID">
@@ -21226,9 +22266,9 @@
             组合交易合约的单腿
             </summary>
         </member>
-        <member name="F:CThostFtdcCombinationLegField.CombInstrumentID">
+        <member name="F:CThostFtdcCombinationLegField.reserve1">
             <summary>
-            组合合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcCombinationLegField.LegID">
@@ -21236,9 +22276,9 @@
             单腿编号
             </summary>
         </member>
-        <member name="F:CThostFtdcCombinationLegField.LegInstrumentID">
+        <member name="F:CThostFtdcCombinationLegField.reserve2">
             <summary>
-            单腿合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcCombinationLegField.Direction">
@@ -21254,6 +22294,16 @@
         <member name="F:CThostFtdcCombinationLegField.ImplyLevel">
             <summary>
             派生层数
+            </summary>
+        </member>
+        <member name="F:CThostFtdcCombinationLegField.CombInstrumentID">
+            <summary>
+            组合合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcCombinationLegField.LegInstrumentID">
+            <summary>
+            单腿合约代码
             </summary>
         </member>
         <member name="T:CThostFtdcSyncStatusField">
@@ -21416,6 +22466,11 @@
             投资者代码
             </summary>
         </member>
+        <member name="F:CThostFtdcBrokerUserEventField.reserve1">
+            <summary>
+            保留的无效字段
+            </summary>
+        </member>
         <member name="F:CThostFtdcBrokerUserEventField.InstrumentID">
             <summary>
             合约代码
@@ -21511,9 +22566,9 @@
             撮合编号
             </summary>
         </member>
-        <member name="F:CThostFtdcInvestorPositionCombineDetailField.InstrumentID">
+        <member name="F:CThostFtdcInvestorPositionCombineDetailField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInvestorPositionCombineDetailField.HedgeFlag">
@@ -21561,9 +22616,9 @@
             单腿乘数
             </summary>
         </member>
-        <member name="F:CThostFtdcInvestorPositionCombineDetailField.CombInstrumentID">
+        <member name="F:CThostFtdcInvestorPositionCombineDetailField.reserve2">
             <summary>
-            组合持仓合约编码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInvestorPositionCombineDetailField.TradeGroupID">
@@ -21574,6 +22629,16 @@
         <member name="F:CThostFtdcInvestorPositionCombineDetailField.InvestUnitID">
             <summary>
             投资单元代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInvestorPositionCombineDetailField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcInvestorPositionCombineDetailField.CombInstrumentID">
+            <summary>
+            组合持仓合约编码
             </summary>
         </member>
         <member name="T:CThostFtdcParkedOrderField">
@@ -21591,9 +22656,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcParkedOrderField.InstrumentID">
+        <member name="F:CThostFtdcParkedOrderField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcParkedOrderField.OrderRef">
@@ -21746,14 +22811,24 @@
             投资单元代码
             </summary>
         </member>
-        <member name="F:CThostFtdcParkedOrderField.IPAddress">
+        <member name="F:CThostFtdcParkedOrderField.reserve2">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcParkedOrderField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcParkedOrderField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcParkedOrderField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcParkedOrderActionField">
@@ -21826,9 +22901,9 @@
             用户代码
             </summary>
         </member>
-        <member name="F:CThostFtdcParkedOrderActionField.InstrumentID">
+        <member name="F:CThostFtdcParkedOrderActionField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcParkedOrderActionField.ParkedOrderActionID">
@@ -21861,14 +22936,24 @@
             投资单元代码
             </summary>
         </member>
-        <member name="F:CThostFtdcParkedOrderActionField.IPAddress">
+        <member name="F:CThostFtdcParkedOrderActionField.reserve2">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcParkedOrderActionField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcParkedOrderActionField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcParkedOrderActionField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcQryParkedOrderField">
@@ -21886,9 +22971,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQryParkedOrderField.InstrumentID">
+        <member name="F:CThostFtdcQryParkedOrderField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryParkedOrderField.ExchangeID">
@@ -21899,6 +22984,11 @@
         <member name="F:CThostFtdcQryParkedOrderField.InvestUnitID">
             <summary>
             投资单元代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryParkedOrderField.InstrumentID">
+            <summary>
+            合约代码
             </summary>
         </member>
         <member name="T:CThostFtdcQryParkedOrderActionField">
@@ -21916,9 +23006,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQryParkedOrderActionField.InstrumentID">
+        <member name="F:CThostFtdcQryParkedOrderActionField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryParkedOrderActionField.ExchangeID">
@@ -21929,6 +23019,11 @@
         <member name="F:CThostFtdcQryParkedOrderActionField.InvestUnitID">
             <summary>
             投资单元代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryParkedOrderActionField.InstrumentID">
+            <summary>
+            合约代码
             </summary>
         </member>
         <member name="T:CThostFtdcRemoveParkedOrderField">
@@ -22031,9 +23126,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQryInvestorPositionCombineDetailField.CombInstrumentID">
+        <member name="F:CThostFtdcQryInvestorPositionCombineDetailField.reserve1">
             <summary>
-            组合持仓合约编码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryInvestorPositionCombineDetailField.ExchangeID">
@@ -22044,6 +23139,11 @@
         <member name="F:CThostFtdcQryInvestorPositionCombineDetailField.InvestUnitID">
             <summary>
             投资单元代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryInvestorPositionCombineDetailField.CombInstrumentID">
+            <summary>
+            组合持仓合约编码
             </summary>
         </member>
         <member name="T:CThostFtdcMarketDataAveragePriceField">
@@ -22091,6 +23191,21 @@
             用户代码
             </summary>
         </member>
+        <member name="F:CThostFtdcUserIPField.reserve1">
+            <summary>
+            保留的无效字段
+            </summary>
+        </member>
+        <member name="F:CThostFtdcUserIPField.reserve2">
+            <summary>
+            保留的无效字段
+            </summary>
+        </member>
+        <member name="F:CThostFtdcUserIPField.MacAddress">
+            <summary>
+            Mac地址
+            </summary>
+        </member>
         <member name="F:CThostFtdcUserIPField.IPAddress">
             <summary>
             IP地址
@@ -22099,11 +23214,6 @@
         <member name="F:CThostFtdcUserIPField.IPMask">
             <summary>
             IP地址掩码
-            </summary>
-        </member>
-        <member name="F:CThostFtdcUserIPField.MacAddress">
-            <summary>
-            Mac地址
             </summary>
         </member>
         <member name="T:CThostFtdcTradingNoticeInfoField">
@@ -22246,9 +23356,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcErrOrderField.InstrumentID">
+        <member name="F:CThostFtdcErrOrderField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcErrOrderField.OrderRef">
@@ -22386,14 +23496,24 @@
             交易编码
             </summary>
         </member>
-        <member name="F:CThostFtdcErrOrderField.IPAddress">
+        <member name="F:CThostFtdcErrOrderField.reserve2">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcErrOrderField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcErrOrderField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcErrOrderField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcErrorConditionalOrderField">
@@ -22411,9 +23531,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcErrorConditionalOrderField.InstrumentID">
+        <member name="F:CThostFtdcErrorConditionalOrderField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcErrorConditionalOrderField.OrderRef">
@@ -22526,9 +23646,9 @@
             客户代码
             </summary>
         </member>
-        <member name="F:CThostFtdcErrorConditionalOrderField.ExchangeInstID">
+        <member name="F:CThostFtdcErrorConditionalOrderField.reserve2">
             <summary>
-            合约在交易所的代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcErrorConditionalOrderField.TraderID">
@@ -22716,14 +23836,29 @@
             币种代码
             </summary>
         </member>
-        <member name="F:CThostFtdcErrorConditionalOrderField.IPAddress">
+        <member name="F:CThostFtdcErrorConditionalOrderField.reserve3">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcErrorConditionalOrderField.MacAddress">
             <summary>
             Mac地址
+            </summary>
+        </member>
+        <member name="F:CThostFtdcErrorConditionalOrderField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcErrorConditionalOrderField.ExchangeInstID">
+            <summary>
+            合约在交易所的代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcErrorConditionalOrderField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcQryErrOrderActionField">
@@ -22866,9 +24001,9 @@
             状态信息
             </summary>
         </member>
-        <member name="F:CThostFtdcErrOrderActionField.InstrumentID">
+        <member name="F:CThostFtdcErrOrderActionField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcErrOrderActionField.BranchID">
@@ -22881,9 +24016,9 @@
             投资单元代码
             </summary>
         </member>
-        <member name="F:CThostFtdcErrOrderActionField.IPAddress">
+        <member name="F:CThostFtdcErrOrderActionField.reserve2">
             <summary>
-            IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcErrOrderActionField.MacAddress">
@@ -22899,6 +24034,16 @@
         <member name="F:CThostFtdcErrOrderActionField.ErrorMsg">
             <summary>
             错误信息
+            </summary>
+        </member>
+        <member name="F:CThostFtdcErrOrderActionField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcErrOrderActionField.IPAddress">
+            <summary>
+            IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcQryExchangeSequenceField">
@@ -22931,59 +24076,64 @@
             合约交易状态
             </summary>
         </member>
-        <member name="T:CThostFtdcQueryMaxOrderVolumeWithPriceField">
+        <member name="T:CThostFtdcQryMaxOrderVolumeWithPriceField">
             <summary>
             根据价格查询最大报单数量
             </summary>
         </member>
-        <member name="F:CThostFtdcQueryMaxOrderVolumeWithPriceField.BrokerID">
+        <member name="F:CThostFtdcQryMaxOrderVolumeWithPriceField.BrokerID">
             <summary>
             经纪公司代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQueryMaxOrderVolumeWithPriceField.InvestorID">
+        <member name="F:CThostFtdcQryMaxOrderVolumeWithPriceField.InvestorID">
             <summary>
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQueryMaxOrderVolumeWithPriceField.InstrumentID">
+        <member name="F:CThostFtdcQryMaxOrderVolumeWithPriceField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
-        <member name="F:CThostFtdcQueryMaxOrderVolumeWithPriceField.Direction">
+        <member name="F:CThostFtdcQryMaxOrderVolumeWithPriceField.Direction">
             <summary>
             买卖方向
             </summary>
         </member>
-        <member name="F:CThostFtdcQueryMaxOrderVolumeWithPriceField.OffsetFlag">
+        <member name="F:CThostFtdcQryMaxOrderVolumeWithPriceField.OffsetFlag">
             <summary>
             开平标志
             </summary>
         </member>
-        <member name="F:CThostFtdcQueryMaxOrderVolumeWithPriceField.HedgeFlag">
+        <member name="F:CThostFtdcQryMaxOrderVolumeWithPriceField.HedgeFlag">
             <summary>
             投机套保标志
             </summary>
         </member>
-        <member name="F:CThostFtdcQueryMaxOrderVolumeWithPriceField.MaxVolume">
+        <member name="F:CThostFtdcQryMaxOrderVolumeWithPriceField.MaxVolume">
             <summary>
             最大允许报单数量
             </summary>
         </member>
-        <member name="F:CThostFtdcQueryMaxOrderVolumeWithPriceField.Price">
+        <member name="F:CThostFtdcQryMaxOrderVolumeWithPriceField.Price">
             <summary>
             报单价格
             </summary>
         </member>
-        <member name="F:CThostFtdcQueryMaxOrderVolumeWithPriceField.ExchangeID">
+        <member name="F:CThostFtdcQryMaxOrderVolumeWithPriceField.ExchangeID">
             <summary>
             交易所代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQueryMaxOrderVolumeWithPriceField.InvestUnitID">
+        <member name="F:CThostFtdcQryMaxOrderVolumeWithPriceField.InvestUnitID">
             <summary>
             投资单元代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryMaxOrderVolumeWithPriceField.InstrumentID">
+            <summary>
+            合约代码
             </summary>
         </member>
         <member name="T:CThostFtdcQryBrokerTradingParamsField">
@@ -23071,6 +24221,11 @@
             交易所代码
             </summary>
         </member>
+        <member name="F:CThostFtdcQryBrokerTradingAlgosField.reserve1">
+            <summary>
+            保留的无效字段
+            </summary>
+        </member>
         <member name="F:CThostFtdcQryBrokerTradingAlgosField.InstrumentID">
             <summary>
             合约代码
@@ -23091,9 +24246,9 @@
             交易所代码
             </summary>
         </member>
-        <member name="F:CThostFtdcBrokerTradingAlgosField.InstrumentID">
+        <member name="F:CThostFtdcBrokerTradingAlgosField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcBrokerTradingAlgosField.HandlePositionAlgoID">
@@ -23109,6 +24264,11 @@
         <member name="F:CThostFtdcBrokerTradingAlgosField.HandleTradingAccountAlgoID">
             <summary>
             资金处理算法编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcBrokerTradingAlgosField.InstrumentID">
+            <summary>
+            合约代码
             </summary>
         </member>
         <member name="T:CThostFtdcQueryBrokerDepositField">
@@ -23461,9 +24621,9 @@
             交易所代码
             </summary>
         </member>
-        <member name="F:CThostFtdcEWarrantOffsetField.InstrumentID">
+        <member name="F:CThostFtdcEWarrantOffsetField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcEWarrantOffsetField.Direction">
@@ -23486,6 +24646,11 @@
             投资单元代码
             </summary>
         </member>
+        <member name="F:CThostFtdcEWarrantOffsetField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcQryEWarrantOffsetField">
             <summary>
             查询仓单折抵信息
@@ -23506,14 +24671,19 @@
             交易所代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQryEWarrantOffsetField.InstrumentID">
+        <member name="F:CThostFtdcQryEWarrantOffsetField.reserve1">
             <summary>
-            合约代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryEWarrantOffsetField.InvestUnitID">
             <summary>
             投资单元代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryEWarrantOffsetField.InstrumentID">
+            <summary>
+            合约代码
             </summary>
         </member>
         <member name="T:CThostFtdcQryInvestorProductGroupMarginField">
@@ -23531,9 +24701,9 @@
             投资者代码
             </summary>
         </member>
-        <member name="F:CThostFtdcQryInvestorProductGroupMarginField.ProductGroupID">
+        <member name="F:CThostFtdcQryInvestorProductGroupMarginField.reserve1">
             <summary>
-            品种/跨品种标示
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryInvestorProductGroupMarginField.HedgeFlag">
@@ -23551,14 +24721,19 @@
             投资单元代码
             </summary>
         </member>
+        <member name="F:CThostFtdcQryInvestorProductGroupMarginField.ProductGroupID">
+            <summary>
+            品种/跨品种标示
+            </summary>
+        </member>
         <member name="T:CThostFtdcInvestorProductGroupMarginField">
             <summary>
             投资者品种/跨品种保证金
             </summary>
         </member>
-        <member name="F:CThostFtdcInvestorProductGroupMarginField.ProductGroupID">
+        <member name="F:CThostFtdcInvestorProductGroupMarginField.reserve1">
             <summary>
-            品种/跨品种标示
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcInvestorProductGroupMarginField.BrokerID">
@@ -23701,6 +24876,11 @@
             投资单元代码
             </summary>
         </member>
+        <member name="F:CThostFtdcInvestorProductGroupMarginField.ProductGroupID">
+            <summary>
+            品种/跨品种标示
+            </summary>
+        </member>
         <member name="T:CThostFtdcQueryCFMMCTradingAccountTokenField">
             <summary>
             查询监控中心用户令牌
@@ -23756,9 +24936,9 @@
             查询产品组
             </summary>
         </member>
-        <member name="F:CThostFtdcQryProductGroupField.ProductID">
+        <member name="F:CThostFtdcQryProductGroupField.reserve1">
             <summary>
-            产品代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryProductGroupField.ExchangeID">
@@ -23766,19 +24946,34 @@
             交易所代码
             </summary>
         </member>
+        <member name="F:CThostFtdcQryProductGroupField.ProductID">
+            <summary>
+            产品代码
+            </summary>
+        </member>
         <member name="T:CThostFtdcProductGroupField">
             <summary>
             投资者品种/跨品种保证金产品组
             </summary>
         </member>
-        <member name="F:CThostFtdcProductGroupField.ProductID">
+        <member name="F:CThostFtdcProductGroupField.reserve1">
             <summary>
-            产品代码
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcProductGroupField.ExchangeID">
             <summary>
             交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcProductGroupField.reserve2">
+            <summary>
+            保留的无效字段
+            </summary>
+        </member>
+        <member name="F:CThostFtdcProductGroupField.ProductID">
+            <summary>
+            产品代码
             </summary>
         </member>
         <member name="F:CThostFtdcProductGroupField.ProductGroupID">
@@ -23879,6 +25074,86 @@
         <member name="F:CThostFtdcQryBulletinField.NewsUrgency">
             <summary>
             紧急程度
+            </summary>
+        </member>
+        <member name="T:CThostFtdcMulticastInstrumentField">
+            <summary>
+            MulticastInstrument
+            </summary>
+        </member>
+        <member name="F:CThostFtdcMulticastInstrumentField.TopicID">
+            <summary>
+            主题号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcMulticastInstrumentField.reserve1">
+            <summary>
+            保留的无效字段
+            </summary>
+        </member>
+        <member name="F:CThostFtdcMulticastInstrumentField.InstrumentNo">
+            <summary>
+            合约编号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcMulticastInstrumentField.CodePrice">
+            <summary>
+            基准价
+            </summary>
+        </member>
+        <member name="F:CThostFtdcMulticastInstrumentField.VolumeMultiple">
+            <summary>
+            合约数量乘数
+            </summary>
+        </member>
+        <member name="F:CThostFtdcMulticastInstrumentField.PriceTick">
+            <summary>
+            最小变动价位
+            </summary>
+        </member>
+        <member name="F:CThostFtdcMulticastInstrumentField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="T:CThostFtdcQryMulticastInstrumentField">
+            <summary>
+            QryMulticastInstrument
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryMulticastInstrumentField.TopicID">
+            <summary>
+            主题号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryMulticastInstrumentField.reserve1">
+            <summary>
+            保留的无效字段
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryMulticastInstrumentField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="T:CThostFtdcAppIDAuthAssignField">
+            <summary>
+            App客户端权限分配
+            </summary>
+        </member>
+        <member name="F:CThostFtdcAppIDAuthAssignField.BrokerID">
+            <summary>
+            经纪公司代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcAppIDAuthAssignField.AppID">
+            <summary>
+            App代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcAppIDAuthAssignField.DRIdentityID">
+            <summary>
+            交易中心代码
             </summary>
         </member>
         <member name="T:CThostFtdcReqOpenAccountField">
@@ -28936,6 +30211,11 @@
             用户代码
             </summary>
         </member>
+        <member name="F:CThostFtdcLoginForbiddenUserField.reserve1">
+            <summary>
+            保留的无效字段
+            </summary>
+        </member>
         <member name="F:CThostFtdcLoginForbiddenUserField.IPAddress">
             <summary>
             IP地址
@@ -28954,26 +30234,6 @@
         <member name="F:CThostFtdcQryLoginForbiddenUserField.UserID">
             <summary>
             用户代码
-            </summary>
-        </member>
-        <member name="T:CThostFtdcMulticastGroupInfoField">
-            <summary>
-            UDP组播组信息
-            </summary>
-        </member>
-        <member name="F:CThostFtdcMulticastGroupInfoField.GroupIP">
-            <summary>
-            组播组IP地址
-            </summary>
-        </member>
-        <member name="F:CThostFtdcMulticastGroupInfoField.GroupPort">
-            <summary>
-            组播组IP端口
-            </summary>
-        </member>
-        <member name="F:CThostFtdcMulticastGroupInfoField.SourceIP">
-            <summary>
-            源地址
             </summary>
         </member>
         <member name="T:CThostFtdcTradingAccountReserveField">
@@ -29006,6 +30266,11 @@
             查询禁止登录IP
             </summary>
         </member>
+        <member name="F:CThostFtdcQryLoginForbiddenIPField.reserve1">
+            <summary>
+            保留的无效字段
+            </summary>
+        </member>
         <member name="F:CThostFtdcQryLoginForbiddenIPField.IPAddress">
             <summary>
             IP地址
@@ -29014,6 +30279,11 @@
         <member name="T:CThostFtdcQryIPListField">
             <summary>
             查询IP列表
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryIPListField.reserve1">
+            <summary>
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcQryIPListField.IPAddress">
@@ -29561,51 +30831,6 @@
             境外中介机构资金帐号
             </summary>
         </member>
-        <member name="T:CThostFtdcUserSystemInfoField">
-            <summary>
-            用户系统信息
-            </summary>
-        </member>
-        <member name="F:CThostFtdcUserSystemInfoField.BrokerID">
-            <summary>
-            经纪公司代码
-            </summary>
-        </member>
-        <member name="F:CThostFtdcUserSystemInfoField.UserID">
-            <summary>
-            用户代码
-            </summary>
-        </member>
-        <member name="F:CThostFtdcUserSystemInfoField.ClientSystemInfoLen">
-            <summary>
-            用户端系统内部信息长度
-            </summary>
-        </member>
-        <member name="F:CThostFtdcUserSystemInfoField.ClientSystemInfo">
-            <summary>
-            用户端系统内部信息
-            </summary>
-        </member>
-        <member name="F:CThostFtdcUserSystemInfoField.ClientPublicIP">
-            <summary>
-            用户公网IP
-            </summary>
-        </member>
-        <member name="F:CThostFtdcUserSystemInfoField.ClientIPPort">
-            <summary>
-            终端IP端口
-            </summary>
-        </member>
-        <member name="F:CThostFtdcUserSystemInfoField.ClientLoginTime">
-            <summary>
-            登录成功时间
-            </summary>
-        </member>
-        <member name="F:CThostFtdcUserSystemInfoField.ClientAppID">
-            <summary>
-            App代码
-            </summary>
-        </member>
         <member name="T:CThostFtdcReqUserAuthMethodField">
             <summary>
             用户发出获取安全安全登陆方法请求
@@ -29756,9 +30981,9 @@
             Mac地址
             </summary>
         </member>
-        <member name="F:CThostFtdcReqUserLoginWithCaptchaField.ClientIPAddress">
+        <member name="F:CThostFtdcReqUserLoginWithCaptchaField.reserve1">
             <summary>
-            终端IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcReqUserLoginWithCaptchaField.LoginRemark">
@@ -29774,6 +30999,11 @@
         <member name="F:CThostFtdcReqUserLoginWithCaptchaField.ClientIPPort">
             <summary>
             终端IP端口
+            </summary>
+        </member>
+        <member name="F:CThostFtdcReqUserLoginWithCaptchaField.ClientIPAddress">
+            <summary>
+            终端IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcReqUserLoginWithTextField">
@@ -29821,9 +31051,9 @@
             Mac地址
             </summary>
         </member>
-        <member name="F:CThostFtdcReqUserLoginWithTextField.ClientIPAddress">
+        <member name="F:CThostFtdcReqUserLoginWithTextField.reserve1">
             <summary>
-            终端IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcReqUserLoginWithTextField.LoginRemark">
@@ -29839,6 +31069,11 @@
         <member name="F:CThostFtdcReqUserLoginWithTextField.ClientIPPort">
             <summary>
             终端IP端口
+            </summary>
+        </member>
+        <member name="F:CThostFtdcReqUserLoginWithTextField.ClientIPAddress">
+            <summary>
+            终端IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcReqUserLoginWithOTPField">
@@ -29886,9 +31121,9 @@
             Mac地址
             </summary>
         </member>
-        <member name="F:CThostFtdcReqUserLoginWithOTPField.ClientIPAddress">
+        <member name="F:CThostFtdcReqUserLoginWithOTPField.reserve1">
             <summary>
-            终端IP地址
+            保留的无效字段
             </summary>
         </member>
         <member name="F:CThostFtdcReqUserLoginWithOTPField.LoginRemark">
@@ -29904,6 +31139,11 @@
         <member name="F:CThostFtdcReqUserLoginWithOTPField.ClientIPPort">
             <summary>
             终端IP端口
+            </summary>
+        </member>
+        <member name="F:CThostFtdcReqUserLoginWithOTPField.ClientIPAddress">
+            <summary>
+            终端IP地址
             </summary>
         </member>
         <member name="T:CThostFtdcReqApiHandshakeField">
@@ -29984,6 +31224,241 @@
         <member name="F:CThostFtdcQueryFreqField.QueryFreq">
             <summary>
             查询频率
+            </summary>
+        </member>
+        <member name="T:CThostFtdcAuthForbiddenIPField">
+            <summary>
+            禁止认证IP
+            </summary>
+        </member>
+        <member name="F:CThostFtdcAuthForbiddenIPField.reserve1">
+            <summary>
+            保留的无效字段
+            </summary>
+        </member>
+        <member name="F:CThostFtdcAuthForbiddenIPField.IPAddress">
+            <summary>
+            IP地址
+            </summary>
+        </member>
+        <member name="T:CThostFtdcQryAuthForbiddenIPField">
+            <summary>
+            查询禁止认证IP
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryAuthForbiddenIPField.reserve1">
+            <summary>
+            保留的无效字段
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryAuthForbiddenIPField.IPAddress">
+            <summary>
+            IP地址
+            </summary>
+        </member>
+        <member name="T:CThostFtdcSyncDelaySwapFrozenField">
+            <summary>
+            换汇可提冻结
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSyncDelaySwapFrozenField.DelaySwapSeqNo">
+            <summary>
+            换汇流水号
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSyncDelaySwapFrozenField.BrokerID">
+            <summary>
+            经纪公司代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSyncDelaySwapFrozenField.InvestorID">
+            <summary>
+            投资者代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSyncDelaySwapFrozenField.FromCurrencyID">
+            <summary>
+            源币种
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSyncDelaySwapFrozenField.FromRemainSwap">
+            <summary>
+            源剩余换汇额度(可提冻结)
+            </summary>
+        </member>
+        <member name="F:CThostFtdcSyncDelaySwapFrozenField.IsManualSwap">
+            <summary>
+            是否手工换汇
+            </summary>
+        </member>
+        <member name="T:CThostFtdcUserSystemInfoField">
+            <summary>
+            用户系统信息
+            </summary>
+        </member>
+        <member name="F:CThostFtdcUserSystemInfoField.BrokerID">
+            <summary>
+            经纪公司代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcUserSystemInfoField.UserID">
+            <summary>
+            用户代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcUserSystemInfoField.ClientSystemInfoLen">
+            <summary>
+            用户端系统内部信息长度
+            </summary>
+        </member>
+        <member name="F:CThostFtdcUserSystemInfoField.ClientSystemInfo">
+            <summary>
+            用户端系统内部信息
+            </summary>
+        </member>
+        <member name="F:CThostFtdcUserSystemInfoField.reserve1">
+            <summary>
+            保留的无效字段
+            </summary>
+        </member>
+        <member name="F:CThostFtdcUserSystemInfoField.ClientIPPort">
+            <summary>
+            终端IP端口
+            </summary>
+        </member>
+        <member name="F:CThostFtdcUserSystemInfoField.ClientLoginTime">
+            <summary>
+            登录成功时间
+            </summary>
+        </member>
+        <member name="F:CThostFtdcUserSystemInfoField.ClientAppID">
+            <summary>
+            App代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcUserSystemInfoField.ClientPublicIP">
+            <summary>
+            用户公网IP
+            </summary>
+        </member>
+        <member name="T:CThostFtdcAuthUserIDField">
+            <summary>
+            终端用户绑定信息
+            </summary>
+        </member>
+        <member name="F:CThostFtdcAuthUserIDField.BrokerID">
+            <summary>
+            经纪公司代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcAuthUserIDField.AppID">
+            <summary>
+            App代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcAuthUserIDField.UserID">
+            <summary>
+            用户代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcAuthUserIDField.AuthType">
+            <summary>
+            校验类型
+            </summary>
+        </member>
+        <member name="T:CThostFtdcAuthIPField">
+            <summary>
+            用户IP绑定信息
+            </summary>
+        </member>
+        <member name="F:CThostFtdcAuthIPField.BrokerID">
+            <summary>
+            经纪公司代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcAuthIPField.AppID">
+            <summary>
+            App代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcAuthIPField.IPAddress">
+            <summary>
+            用户代码
+            </summary>
+        </member>
+        <member name="T:CThostFtdcQryClassifiedInstrumentField">
+            <summary>
+            查询分类合约
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryClassifiedInstrumentField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryClassifiedInstrumentField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryClassifiedInstrumentField.ExchangeInstID">
+            <summary>
+            合约在交易所的代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryClassifiedInstrumentField.ProductID">
+            <summary>
+            产品代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryClassifiedInstrumentField.TradingType">
+            <summary>
+            合约交易状态
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryClassifiedInstrumentField.ClassType">
+            <summary>
+            合约分类类型
+            </summary>
+        </member>
+        <member name="T:CThostFtdcQryCombPromotionParamField">
+            <summary>
+            查询组合优惠比例
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryCombPromotionParamField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcQryCombPromotionParamField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="T:CThostFtdcCombPromotionParamField">
+            <summary>
+            组合优惠比例
+            </summary>
+        </member>
+        <member name="F:CThostFtdcCombPromotionParamField.ExchangeID">
+            <summary>
+            交易所代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcCombPromotionParamField.InstrumentID">
+            <summary>
+            合约代码
+            </summary>
+        </member>
+        <member name="F:CThostFtdcCombPromotionParamField.CombHedgeFlag">
+            <summary>
+            投机套保标志
+            </summary>
+        </member>
+        <member name="F:CThostFtdcCombPromotionParamField.Xparameter">
+            <summary>
+            期权组合保证金比例
             </summary>
         </member>
     </members>

@@ -32,7 +32,7 @@ namespace HaiFeng
         private readonly ConcurrentDictionary<string, Tick> _dicTick000 = new ConcurrentDictionary<string, Tick>(); //用于处理000数据
         Account account = new Account();
 
-        public Plat(string server_addr = "broadcast.eicp.net:55881")
+        public Plat(string server_addr)
 
         {
             InitializeComponent();
